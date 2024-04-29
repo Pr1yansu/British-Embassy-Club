@@ -1,5 +1,10 @@
 const dotenv = require("dotenv");
 const express = require("express");
+const connectDB = require("./config/db");
+const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
+const userRoutes = require("./routes/user");
+const session = require("express-session");
 
 // Configuring dotenv
 dotenv.config({
@@ -9,9 +14,28 @@ dotenv.config({
 // express app
 const app = express();
 
+// Database Connection
+connectDB();
+
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+    },
+  })
+);
+app.use(morgan("dev"));
+
+// Routes
+app.use("/api/v1/user", userRoutes);
 
 // Port Running on process.env.PORT
 app.listen(process.env.PORT, () => {
