@@ -1,11 +1,8 @@
 const mongoose = require("mongoose");
 
 const Users = new mongoose.Schema({
+  _id: { type: String, required: true },
   username: {
-    type: String,
-    required: true,
-  },
-  email: {
     type: String,
     required: true,
   },
@@ -30,7 +27,7 @@ const Users = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "user"],
+    enum: ["admin", "user", "club", "developer"],
     default: "user",
   },
   holdingCoupons: [
