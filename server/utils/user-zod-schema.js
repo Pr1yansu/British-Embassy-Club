@@ -36,13 +36,6 @@ const registrationSchema = z.object({
     .max(50, {
       message: "Username must be atmost 50 characters long",
     }),
-  email: z
-    .string({
-      message: "Invalid email address",
-    })
-    .email({
-      message: "Invalid email address",
-    }),
   password: z
     .string({
       message: "Password must be atleast 6 characters long",
