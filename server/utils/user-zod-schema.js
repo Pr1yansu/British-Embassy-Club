@@ -53,13 +53,11 @@ const registrationSchema = z.object({
     .max(15, {
       message: "Mobile number must be atmost 15 characters long",
     }),
-  address: z.string({
-    message: "Invalid address",
-  }),
-  expiryDate: z.string({
-    message: "Invalid expiry date",
-  }),
   profileImage: fileSchema,
 });
+const loginSchema = z.object({
+  username: z.string({ message: "Please enter username" }),
+  password: z.string({ message: "Please enter password" }),
+});
 
-module.exports = registrationSchema;
+module.exports = { registrationSchema, loginSchema };
