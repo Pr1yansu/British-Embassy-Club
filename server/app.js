@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const userRoutes = require("./routes/user");
 const session = require("express-session");
+const clubRoutes = require("./routes/club");
 
 // Configuring dotenv
 dotenv.config({
@@ -26,16 +27,13 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-    },
   })
 );
 app.use(morgan("dev"));
 
 // Routes
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/club", clubRoutes);
 
 // Port Running on process.env.PORT
 app.listen(process.env.PORT, () => {

@@ -53,13 +53,25 @@ const registrationSchema = z.object({
     .max(15, {
       message: "Mobile number must be atmost 15 characters long",
     }),
-  address: z.string({
-    message: "Invalid address",
-  }),
-  expiryDate: z.string({
-    message: "Invalid expiry date",
-  }),
   profileImage: fileSchema,
 });
+const loginSchema = z.object({
+  username: z.string({ message: "Please enter username" }),
+  password: z.string({ message: "Please enter password" }),
+});
 
-module.exports = registrationSchema;
+const forgrtPasswordSchema = z.object({
+  username: z.string({ message: "Please enter username" }),
+});
+
+const resetPasswordSchema = z.object({
+  newPassword: z.string({ message: "Please enter new password" }),
+  token: z.string({ message: "Invalid token" }),
+});
+
+module.exports = {
+  registrationSchema,
+  loginSchema,
+  resetPasswordSchema,
+  forgrtPasswordSchema,
+};
