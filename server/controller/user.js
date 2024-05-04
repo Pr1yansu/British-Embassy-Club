@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const Node_cache = require("node-cache");
 const { sendMail } = require("../utils/mail-service");
 const crypto = require("crypto");
+const { log } = require("console");
 
 const node_cache = new Node_cache();
 
@@ -258,9 +259,7 @@ exports.forgetPassword = async (req, res) => {
     }
     const resetToken = await user.getResetToken();
     Operators.findByIdAndUpdate(res);
-    const resetUrl =
-      process.env.DOMAIN + `/operator/reset-password/${resetToken}`;
-    console.log(resetUrl);
+    const resetUrl = `${process.env.FRONTEND_URL}/operator/reset-password/${resetToken}`;
     const text = `You have requested for password reset. Please click on this link to reset your password ${resetUrl}. If you have not requested for password reset, please ignore this email.`;
     await sendMail(user.email, "Password reset", text);
     return res.status(200).json({
@@ -282,7 +281,10 @@ exports.forgetPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   const { token } = req.body;
-  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const hashedToken = crypto
+    .createHash(process.env.HASH_ALGO)
+    .update(token)
+    .digest("hex");
   await Operators.findOne({
     resetPasswordToken: hashedToken,
     resetPasswordExpire: { $gt: Date.now() },
@@ -296,7 +298,8 @@ exports.resetPassword = async (req, res) => {
           data: null,
         });
       }
-      user.password = bcrypt.hashSync(req.body.newpassword, 10);
+      const { newPassword } = req.body;
+      user.password = bcrypt.hashSync(newPassword, 10);
       user.save();
       return res.status(200).json({
         statusCode: 200,
@@ -314,4 +317,60 @@ exports.resetPassword = async (req, res) => {
         data: null,
       });
     });
+};
+
+exports.logout = async (req, res) => {
+  try {
+    const { id } = req.user;
+    node_cache.del(`user-${id}`);
+    res.clearCookie("auth-token");
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Logout successful",
+      data: null,
+      exception: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      exception: error,
+      data: null,
+    });
+  }
+};
+
+exports.sendResetTokenAgain = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const user = await Operators.findOne({
+      username,
+    });
+    if (!user) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "User not found",
+        exception: null,
+        data: null,
+      });
+    }
+    const resetUrl = `${process.env.FRONTEND_URL}/operator/reset-password/${user.resetPasswordToken}`;
+    const text = `You have requested for password reset. Please click on this link to reset your password ${resetUrl}. If you have not requested for password reset, please ignore this email.`;
+    await sendMail(user.email, "Password reset", text);
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Password reset link sent to your email",
+      exception: null,
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      exception: error,
+      data: null,
+    });
+  }
 };
