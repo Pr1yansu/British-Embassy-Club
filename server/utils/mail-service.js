@@ -12,17 +12,12 @@ exports.sendMail = async (to, subject, text) => {
       },
     });
 
-    console.log(transport);
-
     const info = await transport.sendMail({
       from: process.env.EMAIL,
       to,
       subject,
       text,
     });
-
-    console.log(info);
-
     return info;
   } catch (error) {
     console.log(error);
