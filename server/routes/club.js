@@ -6,7 +6,8 @@ const {
   resetPassword,
   getProfile,
   updateClub,
-  logout,
+  resendOtp,
+  verifyOtp,
 } = require("../controller/club");
 const {
   validateClubRegistration,
@@ -14,15 +15,17 @@ const {
   validateForgetPassword,
   validateResetPassword,
 } = require("../middleware/zod-club-middleware");
-const { isAuthenticatedClub } = require("../middleware/club-auth");
+const { isAuthenticated, isAdmin } = require("../middleware/auth");
+const { verifyOtpSchema } = require("../utils/club-zod-schema");
 
 const app = Router();
 
 app.post("/create", validateClubRegistration, createClub);
 app.post("/login", validateClubLogin, login);
-app.get("/logout", isAuthenticatedClub, logout);
-app.put("/update", isAuthenticatedClub, updateClub);
-app.get("/profile", isAuthenticatedClub, getProfile);
+app.put("/verify-otp", verifyOtpSchema, verifyOtp);
+app.put("/resend-otp", resendOtp);
+app.put("/update", isAuthenticated, isAdmin, updateClub);
+app.get("/profile", isAuthenticated, isAdmin, getProfile);
 app.put("/forget-password", validateForgetPassword, forgetPassword);
 app.put("/reset-password", validateResetPassword, resetPassword);
 

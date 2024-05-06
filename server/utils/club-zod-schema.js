@@ -52,7 +52,14 @@ const resetPasswordSchema = z.object({
   newPassword: z.string().min(6, {
     message: "Password must be atleast 6 characters long",
   }),
+  confirmNewPassword: z.string().min(6, {
+    message: "Password must be atleast 6 characters long",
+  }),
   token: z.string({ message: "Invalid token" }),
+});
+
+const verifyOtpSchema = z.object({
+  otp: z.string().length(6, { message: "Invalid OTP" }),
 });
 
 module.exports = {
@@ -60,4 +67,5 @@ module.exports = {
   clubLoginSchema,
   forgetPasswordSchema,
   resetPasswordSchema,
+  verifyOtpSchema,
 };

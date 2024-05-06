@@ -66,6 +66,7 @@ const forgrtPasswordSchema = z.object({
 
 const resetPasswordSchema = z.object({
   newPassword: z.string({ message: "Please enter new password" }),
+  confirmNewPassword: z.string({ message: "Please confirm new password" }),
   token: z.string({ message: "Invalid token" }),
 });
 
