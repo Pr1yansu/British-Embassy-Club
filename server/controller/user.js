@@ -121,6 +121,15 @@ exports.register = async (req, res) => {
       });
     }
 
+    if (club.role !== process.env.CLUB_ROLE) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "You are not authorized to register operator",
+        data: null,
+        exception: "Unauthorized access",
+      });
+    }
+
     const user = await Operators.findOne({
       $or: [{ username, mobileNumber }],
     });
@@ -213,6 +222,15 @@ exports.loginUser = async (req, res) => {
         message: "Please register in club!",
         data: null,
         exception: "club not found",
+      });
+    }
+
+    if (club.role !== process.env.CLUB_ROLE) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "You are not authorized to register operator",
+        data: null,
+        exception: "Unauthorized access",
       });
     }
 
