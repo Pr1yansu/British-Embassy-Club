@@ -6,7 +6,9 @@ const morgan = require("morgan");
 const userRoutes = require("./routes/user");
 const session = require("express-session");
 const clubRoutes = require("./routes/club");
-const MongoStore = require("connect-mongo");
+const RedisStore = require("connect-redis")(session);
+const redis = require("redis");
+const cors = require("cors");
 
 // Configuring dotenv
 dotenv.config({
@@ -15,6 +17,15 @@ dotenv.config({
 
 // express app
 const app = express();
+
+// Redis Store
+const redisClient = redis.createClient({
+  url: process.env.REDIS_DB_URI,
+});
+
+redisClient.on("error", (err) => {
+  console.log("Redis error: ", err);
+});
 
 // Database Connection
 connectDB();
@@ -28,14 +39,22 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({
-      mongoUrl: process.env.DATABASE_URI,
-      collectionName: process.env.SESSION_COLLECTION_NAME,
-      dbName: process.env.DATABASE_NAME,
-    }),
+    store: new RedisStore({ client: redisClient }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
     },
+  })
+);
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Access-Control-Allow-Origin",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
 app.use(morgan("dev"));

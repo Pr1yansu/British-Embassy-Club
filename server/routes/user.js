@@ -17,7 +17,6 @@ const {
   validateResetPassword,
   validateAddMember,
 } = require("../middleware/zod-user-middleware");
-const { validate } = require("../models/club-authorization");
 const {
   addMember,
   updateMember,

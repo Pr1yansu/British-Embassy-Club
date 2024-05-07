@@ -7,7 +7,18 @@ const cron = require("node-cron");
 
 exports.createClub = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
+
+    if (role === "admin") {
+      const All_ADMIN_MAIL = process.env.ADMIN_EMAILS.split(",");
+      for (let i = 0; i < All_ADMIN_MAIL.length; i++) {
+        sendMail(
+          All_ADMIN_MAIL[i],
+          "New Club Registration",
+          `A new club with username ${username} has registered. Please verify the club.`
+        );
+      }
+    }
 
     const existingClub = await ClubAuthorization.findOne({ username });
     if (existingClub) {
@@ -20,24 +31,20 @@ exports.createClub = async (req, res) => {
 
     const otp = crypto.randomBytes(10).toString("hex");
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const club = await ClubAuthorization.create({
+    await ClubAuthorization.create({
       username,
       password: hashedPassword,
       otp,
     });
 
-    const payload = {
-      club: {
-        username: club.username,
-        role: club.role,
-      },
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: 1000 * 60 * 60 * 24,
-    });
-
-    sendMail(process.env.CLUB_EMAIL, "OTP Verification", otp);
+    const adminMails = process.env.ADMIN_EMAILS.split(",");
+    for (let i = 0; i < adminMails.length; i++) {
+      sendMail(
+        adminMails[i],
+        "New Club Registration",
+        `A new club with username ${username} has registered. Please verify the club.`
+      );
+    }
 
     return res
       .cookie("auth-token", token, {
@@ -87,12 +94,31 @@ exports.verifyOtp = async (req, res) => {
     club.otp = null;
     await club.save();
 
-    return res.status(200).json({
-      statusCode: 200,
-      message: "OTP verified successfully",
-      data: club,
-      error: null,
+    const payload = {
+      club: {
+        username: club.username,
+        role: club.role,
+      },
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: 1000 * 60 * 60 * 24,
     });
+
+    return res
+      .cookie("auth-token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 1000 * 60 * 60 * 24,
+      })
+      .status(200)
+      .json({
+        statusCode: 200,
+        message: "OTP verified successfully",
+        data: club,
+        error: null,
+      });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -321,8 +347,11 @@ exports.forgetPassword = async (req, res) => {
 
     const text = `You have requested for password reset. Please click on this link to reset your password ${url}. If you have not requested for password reset, please ignore this email.`;
 
-    await sendMail(process.env.CLUB_EMAIL, "Reset Password", text);
-    console.log(resetToken);
+    const allAdmins = process.env.ADMIN_EMAILS.split(",");
+
+    for (let i = 0; i < allAdmins.length; i++) {
+      await sendMail(allAdmins[i], "Reset Password", text);
+    }
 
     return res.status(200).json({
       statusCode: 200,
