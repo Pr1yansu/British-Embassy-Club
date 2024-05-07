@@ -3,7 +3,9 @@ const bcrypt = require("bcrypt");
 const Node_cache = require("node-cache");
 const { sendMail } = require("../utils/mail-service");
 const crypto = require("crypto");
+const MemberSchema = require("../models/members");
 const paseto = require("paseto");
+
 
 const node_cache = new Node_cache();
 

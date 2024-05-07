@@ -15,7 +15,16 @@ const {
   validateLogin,
   validateForgetPassword,
   validateResetPassword,
+  validateAddMember,
 } = require("../middleware/zod-user-middleware");
+const { validate } = require("../models/club-authorization");
+const {
+  addMember,
+  updateMember,
+  deleteMember,
+  getAllMembers,
+  searchMember,
+} = require("../controller/member");
 const {
   isAuthenticated,
   isAdmin,
@@ -44,5 +53,11 @@ router.put(
   sendResetTokenAgain
 );
 router.get("/logout", isAuthenticated, logout);
+
+router.post("/add-member", isAuthenticated, validateAddMember, addMember);
+router.post("/update-member", isAuthenticated, validateAddMember, updateMember);
+router.post("/delete-member", isAuthenticated, deleteMember);
+router.get("/all-members", isAuthenticated, getAllMembers);
+router.get("/search-member/:key", isAuthenticated, searchMember);
 
 module.exports = router;
