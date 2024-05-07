@@ -25,7 +25,7 @@ const Operators = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "Operator", "developer"],
+    enum: ["Operator", "developer"],
     default: "Operator",
   },
   resetPasswordToken: String,

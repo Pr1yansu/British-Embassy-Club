@@ -4,11 +4,13 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build":"npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Priyansu && Sayan",
   "license": "ISC",
-  "description": "",
+  "description": "Server for a transactional project",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
@@ -22,8 +24,10 @@
     "mongoose": "^8.3.2",
     "morgan": "^1.10.0",
     "node-cache": "^5.1.2",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
+    "paseto": "^3.1.4",
     "zod": "^3.23.4"
   }
 }

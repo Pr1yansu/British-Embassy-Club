@@ -17,7 +17,6 @@ const {
   validateResetPassword,
   validateAddMember,
 } = require("../middleware/zod-user-middleware");
-const { isAuthenticated, isAdmin } = require("../middleware/auth");
 const { validate } = require("../models/club-authorization");
 const {
   addMember,
@@ -26,13 +25,26 @@ const {
   getAllMembers,
   searchMember,
 } = require("../controller/member");
+const {
+  isAuthenticated,
+  isAdmin,
+  isInClub,
+  isOperator,
+} = require("../middleware/auth");
 const router = Router();
 
 // Routes
 router.get("/all", isAuthenticated, isAdmin, getAllOperators);
-router.post("/register", validateRegistration, register);
-router.post("/login", validateLogin, loginUser);
-router.put("/update", isAuthenticated, updateOperator);
+router.get("/profile", isAuthenticated, isInClub, isOperator, getOperatorById);
+router.post(
+  "/register",
+  isAuthenticated,
+  isInClub,
+  validateRegistration,
+  register
+);
+router.post("/login", isAuthenticated, isInClub, validateLogin, loginUser);
+router.put("/update", isAuthenticated, isInClub, isOperator, updateOperator);
 router.put("/forgot-password", validateForgetPassword, forgetPassword);
 router.put("/reset-password", validateResetPassword, resetPassword);
 router.put(
@@ -41,7 +53,6 @@ router.put(
   sendResetTokenAgain
 );
 router.get("/logout", isAuthenticated, logout);
-router.get("/profile", isAuthenticated, getOperatorById);
 
 router.post("/add-member", isAuthenticated, validateAddMember, addMember);
 router.post("/update-member", isAuthenticated, validateAddMember, updateMember);
