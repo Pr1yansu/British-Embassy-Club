@@ -1,10 +1,9 @@
 const Operators = require("../models/operators");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Node_cache = require("node-cache");
 const { sendMail } = require("../utils/mail-service");
 const crypto = require("crypto");
-const clubAuthorization = require("../models/club-authorization");
+const paseto = require("paseto");
 
 const node_cache = new Node_cache();
 
@@ -84,51 +83,7 @@ exports.register = async (req, res) => {
       address,
       expiryDate,
       profileImage,
-      accessKey,
     } = req.body;
-
-    if (!accessKey) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Please do club registration first!",
-        data: null,
-        exception: "No access key found",
-      });
-    }
-
-    const decodedAccessKey = jwt.verify(accessKey, process.env.JWT_SECRET);
-
-    if (!decodedAccessKey.username || !decodedAccessKey.role) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Invalid access key",
-        data: null,
-        exception: null,
-      });
-    }
-
-    const club = await clubAuthorization.findOne({
-      username: decodedAccessKey.username,
-      accessKey,
-    });
-
-    if (!club) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Please register in club!",
-        data: null,
-        exception: "club not found",
-      });
-    }
-
-    if (club.role !== process.env.CLUB_ROLE) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "You are not authorized to register operator",
-        data: null,
-        exception: "Unauthorized access",
-      });
-    }
 
     const user = await Operators.findOne({
       $or: [{ username, mobileNumber }],
@@ -153,17 +108,19 @@ exports.register = async (req, res) => {
       expiryDate,
       profileImage,
     });
+
     const payload = {
       user: {
         id: newUser._id,
         role: newUser.role,
       },
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+
+    const token = paseto.V2.sign(payload, process.env.PASETO_SECRET, {
       expiresIn: "1d",
     });
     return res
-      .cookie("auth-token", token, {
+      .cookie("user-token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
@@ -189,50 +146,7 @@ exports.register = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   try {
-    const { username, password, accessKey } = req.body;
-
-    if (!accessKey) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Please do club registration first!",
-        data: null,
-        exception: "No access key found",
-      });
-    }
-
-    const decodedAccessKey = jwt.verify(accessKey, process.env.JWT_SECRET);
-
-    if (!decodedAccessKey.username || !decodedAccessKey.role) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Invalid access key",
-        data: null,
-        exception: null,
-      });
-    }
-
-    const club = await clubAuthorization.findOne({
-      username: decodedAccessKey.username,
-      accessKey,
-    });
-
-    if (!club) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Please register in club!",
-        data: null,
-        exception: "club not found",
-      });
-    }
-
-    if (club.role !== process.env.CLUB_ROLE) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "You are not authorized to register operator",
-        data: null,
-        exception: "Unauthorized access",
-      });
-    }
+    const { username, password } = req.body;
 
     const user = await Operators.findOne({ username });
     console.log(user);
@@ -259,12 +173,12 @@ exports.loginUser = async (req, res) => {
         role: user.role,
       },
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    const token = paseto.V2.sign(payload, process.env.PASETO_SECRET, {
       expiresIn: "1d",
     });
 
     return res
-      .cookie("auth-token", token, {
+      .cookie("user-token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
@@ -385,7 +299,15 @@ exports.resetPassword = async (req, res) => {
           data: null,
         });
       }
-      const { newPassword } = req.body;
+      const { newPassword, confirmPassword } = req.body;
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({
+          statusCode: 400,
+          message: "Password does not match",
+          exception: null,
+          data: null,
+        });
+      }
       user.password = bcrypt.hashSync(newPassword, 10);
       user.save();
       return res.status(200).json({
@@ -404,28 +326,6 @@ exports.resetPassword = async (req, res) => {
         data: null,
       });
     });
-};
-
-exports.logout = async (req, res) => {
-  try {
-    const { id } = req.user;
-    node_cache.del(`user-${id}`);
-    res.clearCookie("auth-token");
-    return res.status(200).json({
-      statusCode: 200,
-      message: "Logout successful",
-      data: null,
-      exception: null,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      statusCode: 500,
-      message: "Internal server error",
-      exception: error,
-      data: null,
-    });
-  }
 };
 
 exports.sendResetTokenAgain = async (req, res) => {
@@ -450,6 +350,31 @@ exports.sendResetTokenAgain = async (req, res) => {
       message: "Password reset link sent to your email",
       exception: null,
       data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      exception: error,
+      data: null,
+    });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    const { id } = req.user;
+    node_cache.del(`user-${id}`);
+    const cookies = ["user-token", "auth-token"];
+    cookies.forEach((cookie) => {
+      res.clearCookie(cookie);
+    });
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Logout successful",
+      data: null,
+      exception: null,
     });
   } catch (error) {
     console.log(error);
