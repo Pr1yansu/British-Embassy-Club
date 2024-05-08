@@ -54,6 +54,14 @@ const registrationSchema = z.object({
       message: "Mobile number must be atmost 15 characters long",
     }),
   profileImage: fileSchema,
+  idProof: z.object({
+    idType: z.string({
+      message: "Please enter id type",
+    }),
+    idNumber: z.string({
+      message: "Please enter id number",
+    }),
+  }),
 });
 const loginSchema = z.object({
   username: z.string({ message: "Please enter username" }),

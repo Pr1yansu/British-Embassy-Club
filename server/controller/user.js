@@ -3,11 +3,43 @@ const bcrypt = require("bcrypt");
 const Node_cache = require("node-cache");
 const { sendMail } = require("../utils/mail-service");
 const crypto = require("crypto");
-const MemberSchema = require("../models/members");
-const paseto = require("paseto");
-
 
 const node_cache = new Node_cache();
+
+const encryptPayload = async (payload) => {
+  const algorithm = "aes-256-cbc";
+  const iv = crypto.randomBytes(16);
+
+  const cipher = crypto.createCipheriv(
+    algorithm,
+    Buffer.from(process.env.ENCRYPTION_KEY, "hex"),
+    iv
+  );
+  let encrypted = cipher.update(JSON.stringify(payload), "utf8", "hex");
+  encrypted += cipher.final("hex");
+
+  return {
+    iv: iv.toString("hex"),
+    encryptedData: encrypted,
+    key: process.env.ENCRYPTION_KEY,
+  };
+};
+
+exports.decryptPayload = async (token) => {
+  const algorithm = "aes-256-cbc";
+  const { iv, encryptedData } = token;
+
+  const ivBuffer = Buffer.from(iv, "hex");
+  const encryptedDataBuffer = Buffer.from(encryptedData, "hex");
+  const keyBuffer = Buffer.from(process.env.ENCRYPTION_KEY, "hex");
+
+  const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
+
+  let decrypted = decipher.update(encryptedDataBuffer);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+  return decrypted.toString("utf8");
+};
 
 exports.getOperatorById = async (req, res) => {
   try {
@@ -83,8 +115,8 @@ exports.register = async (req, res) => {
       password,
       mobileNumber,
       address,
-      expiryDate,
       profileImage,
+      idProof: { idType, idNumber },
     } = req.body;
 
     const user = await Operators.findOne({
@@ -107,8 +139,11 @@ exports.register = async (req, res) => {
       mobileNumber,
       email,
       address,
-      expiryDate,
       profileImage,
+      idProof: {
+        idType,
+        idNumber,
+      },
     });
 
     const payload = {
@@ -118,9 +153,8 @@ exports.register = async (req, res) => {
       },
     };
 
-    const token = paseto.V2.sign(payload, process.env.PASETO_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = await encryptPayload(payload);
+
     return res
       .cookie("user-token", token, {
         httpOnly: true,
@@ -137,6 +171,10 @@ exports.register = async (req, res) => {
       });
   } catch (error) {
     console.log(error);
+    await Operators.deleteOne({
+      username: req.body.username,
+      mobileNumber: req.body.mobileNumber,
+    });
     return res.status(500).json({
       statusCode: 500,
       message: "Internal server error",
@@ -175,9 +213,7 @@ exports.loginUser = async (req, res) => {
         role: user.role,
       },
     };
-    const token = paseto.V2.sign(payload, process.env.PASETO_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = await encryptPayload(payload);
 
     return res
       .cookie("user-token", token, {

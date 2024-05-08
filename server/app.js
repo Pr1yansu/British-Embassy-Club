@@ -6,8 +6,10 @@ const morgan = require("morgan");
 const userRoutes = require("./routes/user");
 const session = require("express-session");
 const clubRoutes = require("./routes/club");
-const RedisStore = require("connect-redis")(session);
-const redis = require("redis");
+const adminRoutes = require("./routes/admin");
+const memberRoutes = require("./routes/member");
+const RedisStore = require("connect-redis").default;
+const { createClient } = require("redis");
 const cors = require("cors");
 
 // Configuring dotenv
@@ -19,12 +21,28 @@ dotenv.config({
 const app = express();
 
 // Redis Store
-const redisClient = redis.createClient({
+const redisClient = createClient({
   url: process.env.REDIS_DB_URI,
 });
 
+redisClient.connect();
+
 redisClient.on("error", (err) => {
-  console.log("Redis error: ", err);
+  console.log("Server Disconnected socket closed");
+});
+
+redisClient.on("connect", () => {
+  console.log("Redis Connected");
+});
+
+redisClient.on("end", () => {
+  console.log("Redis Disconnected");
+});
+
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "session:",
+  ttl: 86400,
 });
 
 // Database Connection
@@ -39,7 +57,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new RedisStore({ client: redisClient }),
+    store: redisStore,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -60,8 +78,10 @@ app.use(
 app.use(morgan("dev"));
 
 // Routes
-app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/operator", userRoutes);
 app.use("/api/v1/club", clubRoutes);
+app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/member", memberRoutes);
 
 // Port Running on process.env.PORT
 app.listen(process.env.PORT, () => {
