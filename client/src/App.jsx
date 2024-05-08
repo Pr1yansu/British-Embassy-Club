@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import ClubSignUp from "./pages/Signup/ClubSignUp";
+import ClubLogin from "./pages/Login/ClubLogin";
+import OperatoLogin from "./pages/Login/OperatorLogin";
+import ClubSignUpOtp from "./pages/Signup/Club-signUp-otp";
+import ClubSignUpOtpResend from "./pages/Signup/Club-signUp-otp-resend";
+import OperatorSignup from "./pages/Signup/OperatorSignup";
+import OperatorSignUpOtp from "./pages/Signup/Operator-forgot-pass";
+import OperatorResetPass from "./pages/Signup/Operator-forgotpass-reset";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/ClubSignup" element={<ClubSignUp />} />
+          <Route path="/ClubLogin" element={<ClubLogin />} />
+          <Route path="/ClubSignupOtp" element={<ClubSignUpOtp />} />
+          <Route path="/ClubSignupOtpResend" element={<ClubSignUpOtpResend />} />
+          <Route path="/OperatorLogin" element={<OperatoLogin />} />
+          <Route path="/OperatorSignUp" element={<OperatorSignup />} />
+          <Route path="/OperatorSignUpForgotPass" element={<OperatorSignUpOtp/>}/>
+          <Route path="/OperatorResetPass" element={<OperatorResetPass/>}/>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
