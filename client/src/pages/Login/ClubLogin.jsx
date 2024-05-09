@@ -31,12 +31,14 @@ const ClubLogin = () => {
         <h3 className="font-bold">Logo</h3>
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
           <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-            <InputBox type={"text"} placeholder={"Username"} />
-            <Passwordbox placeholder="Password" />
-            <Button name={"Login"} />
-            <a href="#" className="text-blue-700 font-semibold text-xs">
-              Forget your password?
-            </a>
+            <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
+              <InputBox type={"text"} placeholder={"Username"} />
+              <Passwordbox placeholder="Password" />
+              <Button name={"Login"} />
+              <a href="#" className="text-blue-700 font-semibold text-xs">
+                Forget your password?
+              </a>
+            </div>
           </div>
           <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
             <h1 className="mb-4">
@@ -53,7 +55,9 @@ const ClubLogin = () => {
               className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
             >
               <h4 className="font-semibold ">please</h4>
-              <a href="/ClubSignup" className="font-semibold text-blue-700">register</a>
+              <a href="/ClubSignup" className="font-semibold text-blue-700">
+                register
+              </a>
               <FaArrowRight size={22} color="blue" />
             </a>
           </div>

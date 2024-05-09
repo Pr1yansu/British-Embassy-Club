@@ -6,7 +6,7 @@ const Passwordbox = ( {placeholder, id}) => {
     const [showPassword, setShowPassword] = useState(false);
   return (
     <>
-      <div className="relative w-3/5">
+      <div className="relative sm:w-full max-sm:w-4/5 ">
         <input
           type={showPassword ? "text" : "password"}
           id={id}

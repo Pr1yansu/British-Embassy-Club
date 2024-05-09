@@ -2,14 +2,10 @@ import React, { useEffect, useState } from "react";
 import elipes1 from "../../assets/images/ellipse1.png";
 import elipes2 from "../../assets/images/ellipse2.png";
 import arrow from "../../assets/images/arrow.png";
-import { FaArrowRight } from "react-icons/fa6";
-import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
-import UnstyledSelectTransitions from "../../components/ui/Dropdown";
-
 const ClubSignUpOtpResend = () => {
-    const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,7 +17,7 @@ const ClubSignUpOtpResend = () => {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  const formatedTime = (seconds%60).toString().padStart(2,'0');
+  const formatedTime = (seconds % 60).toString().padStart(2, "0");
   return (
     <div
       className={`hero-background relative h-screen bg-cover bg-center py-10 px-20 `}
@@ -43,19 +39,35 @@ const ClubSignUpOtpResend = () => {
       />
       <h3 className="font-bold">Logo</h3>
 
-    {/* Input starts here */}
+      {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <InputBox placeholder={"Write your verification code here"} type={"text"}/>
-          <p className="text-text_primary font-medium">Your OTP will expire in <span className="text-blue-700 font-medium">00:{formatedTime} seconds</span></p>
-          <div className="flex gap-10">
-            <Button name={"Submit"} />
-            <button className={`shadow-md shadow-blue-500 hover:scale-110 duration-300 px-4 rounded-lg text-text_primary ${formatedTime=='00'?'bg-blue-700 text-white':''}`}>Resend in 00:{formatedTime} seconds</button>
+          <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
+            <InputBox
+              placeholder={"Write your verification code here"}
+              type={"text"}
+            />
+            <p className="text-text_primary font-medium">
+              Your OTP will expire in{" "}
+              <span className="text-blue-700 font-medium">
+                00:{formatedTime} seconds
+              </span>
+            </p>
+            <div className="flex gap-10">
+              <Button name={"Submit"} />
+              <button
+                className={`shadow-md shadow-blue-500 hover:scale-110 duration-300 px-4 rounded-lg text-text_primary ${
+                  formatedTime === "00" ? "bg-blue-700 text-white" : ""
+                }`}
+              >
+                {formatedTime !== "00"
+                  ? `Resend in 00:${formatedTime} seconds`
+                  : "Resend"}
+              </button>
+            </div>
           </div>
         </div>
-    {/* Input ends here  */}
-
-
+        {/* Input ends here  */}
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
           <h1 className="mb-4">
             be a member member of{" "}
