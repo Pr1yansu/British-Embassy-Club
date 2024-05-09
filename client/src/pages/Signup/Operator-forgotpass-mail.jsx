@@ -5,7 +5,7 @@ import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 
-const OperatorResetPass = () => {
+const OperatorResetPassMail = () => {
   return (
     <div
       className="hero-background relative border border-red-600 h-screen bg-cover bg-center px-20 grid grid-rows-11 grid-cols-11 gap-4"
@@ -28,12 +28,10 @@ const OperatorResetPass = () => {
       <h3 className="font-bold absolute top-[60px] left-[120px]">Logo</h3>
 
     {/* Input starts here */}
-        <div className="flex flex-col gap-[1.5rem] items-center justify-center row-start-4 row-end-9 col-start-3 col-end-10">
-            <div className="flex flex-col gap-[1.5rem] w-full">
-                <h1 className="text-[53px]">reset password ?</h1>
-                <h4 className="text-[20px]">You are a step away from accessing your <br /> account !</h4>
-                <Passwordbox placeholder={"New Password"}/>
-                <Passwordbox placeholder={"Confirm Password"}/>
+        <div className="flex flex-col gap-[1.5rem] items-center justify-center row-start-4 row-end-9 col-start-3 col-end-10 border-4">
+            <div className="flex flex-col items-center gap-[1.5rem] w-full">
+                <h1 className="text-[53px]">Check your email</h1>
+                <h4 className="text-[20px]">We just sent an email to your inbox with a <br />link to reset your password</h4>
             </div>
                 <Button name={"Login"}/>
         </div>
@@ -48,4 +46,4 @@ const OperatorResetPass = () => {
   );
 };
 
-export default OperatorResetPass;
+export default OperatorResetPassMail;

@@ -11,7 +11,7 @@ import UnstyledSelectTransitions from "../../components/ui/Dropdown";
 const OperatorSignUpOtp = () => {
   return (
     <div
-      className="hero-background relative border border-red-600 h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4"
+      className="hero-background relative border border-red-600 h-screen bg-cover bg-center px-20 grid grid-rows-11 grid-cols-11 gap-4"
     >
       <img
         src={elipes1}
@@ -31,7 +31,7 @@ const OperatorSignUpOtp = () => {
       <h3 className="font-bold absolute top-[60px] left-[120px]">Logo</h3>
 
     {/* Input starts here */}
-        <div className="flex flex-col items-center justify-center row-start-4 row-end-10 col-start-5 col-end-9">
+        <div className="flex flex-col gap-[1.5rem] items-center justify-center row-start-4 row-end-8 col-start-4 col-end-9 px-[80px]">
             <div className="flex flex-col gap-[1.5rem] w-full">
                 <h1 className="text-[53px]">forgot password ?</h1>
                 <h4 className="text-[20px]">Enter your email address and we’ll send a link to <br />reset your password.</h4>
@@ -42,7 +42,7 @@ const OperatorSignUpOtp = () => {
                 </div>
             </div>
         </div>
-        <p href="#" className="text-text_primary font-bold row-start-11 row-end-12 col-start-6 col-end-9">
+        <p href="#" className="text-text_primary font-bold row-start-10 row-end-11 col-start-5 col-end-8 text-center">
             Already have an account{" "}
             <a href="#" className="text-blue-700 font-bold">
               Login
