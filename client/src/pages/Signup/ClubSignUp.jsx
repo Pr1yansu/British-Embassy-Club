@@ -6,11 +6,9 @@ import { FaArrowRight } from "react-icons/fa6";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
-import UnstyledSelectTransitions from "../../components/ui/Dropdown";
 
 const ClubSignUp = () => {
-  const [role,setRole] = useState("Set user role");
-  // console.log(role);
+  const [role, setRole] = useState("Set user role");
   return (
     <div
       className={`hero-background relative h-screen bg-cover bg-center py-10 px-20 `}
@@ -33,23 +31,26 @@ const ClubSignUp = () => {
       <h3 className="font-bold">Logo</h3>
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <InputBox type={"text"} placeholder={"Username"} />
-          <Passwordbox placeholder="Password" />
-          <Passwordbox placeholder="Confirm Password" />
-          <select
-            className="bg-primary outline-none sm:w-3/5 max-sm:w-4/5 py-5 px-4 rounded-lg font-semibol text-text_primary"
-            value={role} // Set the value to the state variable
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="Viewer" disabled className="bg-primary py-5 px-4 ">Set user role</option>
-            <option value="Viewer" >Viewer</option>
-            <option value="Operator">Operator</option>
-          </select>
-          {/* {UnstyledSelectTransitions()} */}
-          <Button name={"Login"} />
-          <a href="#" className="text-blue-700 font-bold">
-            Forget your password?
-          </a>
+          <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
+            <InputBox type={"text"} placeholder={"Username"} />
+            <Passwordbox placeholder="Password" />
+            <Passwordbox placeholder="Confirm Password" />
+            <select
+              className="bg-primary outline-none sm:w-full max-sm:w-4/5 py-[0.6rem] px-4 rounded-lg font-semibol text-text_primary"
+              value={role} // Set the value to the state variable
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="Viewer" disabled className="bg-primary py-5 px-4 ">
+                Set user role
+              </option>
+              <option value="Viewer">Viewer</option>
+              <option value="Operator">Operator</option>
+            </select>
+            <Button name={"Login"} />
+            <a href="#" className="text-blue-700 font-bold">
+              Forget your password?
+            </a>
+          </div>
         </div>
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
           <h1 className="mb-4">
@@ -62,7 +63,6 @@ const ClubSignUp = () => {
             if you already have an account
           </div>
           <h2
-            href="#"
             className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
           >
             <p className="font-semibold ">please</p>
