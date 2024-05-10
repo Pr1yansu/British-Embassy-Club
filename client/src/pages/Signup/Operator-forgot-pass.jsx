@@ -1,6 +1,4 @@
 import React from "react";
-import elipes1 from "../../assets/images/ellipse1.png";
-import elipes2 from "../../assets/images/ellipse2.png";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import Button from "../../components/ui/Button";
@@ -8,18 +6,9 @@ import Button from "../../components/ui/Button";
 const OperatorSignUpOtp = () => {
   return (
     <div
-      className="hero-background relative border border-red-600 h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4"
+      className="background relative  h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4"
     >
-      <img
-        src={elipes1}
-        alt="background"
-        className="absolute w-[52rem] top-0 right-0 -z-10"
-      />
-      <img
-        src={elipes2}
-        alt="background"
-        className="absolute w-[45rem] bottom-0 left-0 -z-10"
-      />
+      
       <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96 " />
       <h3 className="font-bold absolute top-[60px] left-[120px]">Logo</h3>
 

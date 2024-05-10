@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import elipes1 from "../../assets/images/ellipse1.png";
-import elipes2 from "../../assets/images/ellipse2.png";
 import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
@@ -21,18 +19,8 @@ const OperatorSignup = () => {
 
   return (
     <div
-      className={`hero-background relative min-h-screen bg-cover bg-center py-10 px-20 `}
+      className={`background relative min-h-screen bg-cover bg-center py-10 px-20 `}
     >
-      <img
-        src={elipes1}
-        alt="background"
-        className="absolute w-[52rem] top-0 right-0 -z-10"
-      />
-      <img
-        src={elipes2}
-        alt="background"
-        className="absolute w-[45rem] bottom-0 left-0 -z-10"
-      />
       <img
         src={arrow}
         alt="arrow"

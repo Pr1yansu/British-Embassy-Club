@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import elipes1 from "../../assets/images/ellipse1.png";
-import elipes2 from "../../assets/images/ellipse2.png";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowRight } from "react-icons/fa6";
 import Passwordbox from "../../components/ui/Passwordbox";
@@ -11,18 +9,8 @@ const ClubSignUp = () => {
   const [role, setRole] = useState("Set user role");
   return (
     <div
-      className={`hero-background relative h-screen bg-cover bg-center py-10 px-20 `}
+      className={`background relative h-screen bg-cover bg-center py-10 px-20 `}
     >
-      <img
-        src={elipes1}
-        alt="background"
-        className="absolute w-[52rem] top-0 right-0 -z-10"
-      />
-      <img
-        src={elipes2}
-        alt="background"
-        className="absolute w-[45rem] bottom-0 left-0 -z-10"
-      />
       <img
         src={arrow}
         alt="arrow"
@@ -62,9 +50,7 @@ const ClubSignUp = () => {
           <div className="font-semibold text-2xl">
             if you already have an account
           </div>
-          <h2
-            className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
-          >
+          <h2 className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl">
             <p className="font-semibold ">please</p>
             <a href="/ClubLogin" className="font-semibold text-blue-700">
               login

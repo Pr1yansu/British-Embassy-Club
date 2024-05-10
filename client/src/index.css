@@ -17,6 +17,18 @@ body {
   scroll-behavior: smooth;
 }
 
+/* main Card Component start */
+.card{
+  width: 348px;
+  height: 244px;
+    
+}
+.img-card{
+  width: 124px;
+  height: 124px;
+}
+/* main Card Component end */
+
 h1 {
   font-family: 'Montserrat', sans-serif;
 }
@@ -129,8 +141,8 @@ h6 {
   }
 }
 
-.hero-background{
-  background-image: url("./assets/images/curved_bg.png");
+.background{
+  background-image: url("./assets/images/backgroungd.png");
   background-repeat: no-repeat;
   min-height: 100vh;
   overflow: hidden;

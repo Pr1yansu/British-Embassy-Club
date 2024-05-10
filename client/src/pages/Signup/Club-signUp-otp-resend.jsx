@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import elipes1 from "../../assets/images/ellipse1.png";
-import elipes2 from "../../assets/images/ellipse2.png";
 import arrow from "../../assets/images/arrow.png";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
@@ -20,18 +18,9 @@ const ClubSignUpOtpResend = () => {
   const formatedTime = (seconds % 60).toString().padStart(2, "0");
   return (
     <div
-      className={`hero-background relative h-screen bg-cover bg-center py-10 px-20 `}
+      className={`background relative h-screen bg-cover bg-center py-10 px-20 `}
     >
-      <img
-        src={elipes1}
-        alt="background"
-        className="absolute w-[52rem] top-0 right-0 -z-10"
-      />
-      <img
-        src={elipes2}
-        alt="background"
-        className="absolute w-[45rem] bottom-0 left-0 -z-10"
-      />
+      
       <img
         src={arrow}
         alt="arrow"
