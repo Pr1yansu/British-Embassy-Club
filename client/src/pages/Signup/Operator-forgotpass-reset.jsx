@@ -18,8 +18,10 @@ const OperatorResetPass = () => {
           </h4>
           <Passwordbox placeholder={"New Password"} />
           <Passwordbox placeholder={"Confirm Password"} />
+        <div className="flex justify-center">
+          <Button name={"Login"} />
         </div>
-        <Button name={"Login"} />
+        </div>
       </div>
       <p className="text-text_primary text-center font-bold row-start-11 row-end-12 col-start-5 col-end-9">
         Already have an account{" "}
