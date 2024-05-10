@@ -5,7 +5,6 @@ import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
-import UnstyledSelectTransitions from "../../components/ui/Dropdown";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaArrowRight } from "react-icons/fa6";
 
@@ -44,28 +43,27 @@ const OperatorSignup = () => {
       {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <InputBox placeholder={"Full Name"} type={"text"} />
-          <Passwordbox placeholder={"Password"} />
-          <Passwordbox placeholder={"Confirm Password"} />
-          <InputBox placeholder={"Email"} type={"email"} />
-          <InputBox placeholder={"Mobile Number"} type={"tel"} />
-          <textarea
-            name="Address"
-            id="Address"
-            cols="10"
-            rows="2"
-            placeholder="Address"
-            className="bg-primary outline-none w-3/5 py-5 px-4 rounded-lg text-sm text-text_primary "
-          ></textarea>
-          <label
-            htmlFor="Document"
-            className="flex justify-between items-center bg-primary outline-none w-3/5 py-5 px-4 rounded-lg text-sm text-text_primary"
-          >
-            {selectedID} <IoIosArrowDown onClick={toggle} size={20} />
-          </label>
-          {show && (
-            <>
-              <div className="flex justify-center gap-32 w-full">
+          <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
+            <InputBox placeholder={"Full Name"} type={"text"} />
+            <Passwordbox placeholder={"Password"} />
+            <Passwordbox placeholder={"Confirm Password"} />
+            <InputBox placeholder={"Email"} type={"email"} />
+            <InputBox placeholder={"Mobile Number"} type={"tel"} />
+            <textarea
+              name="Address"
+              id="Address"
+              placeholder="Address"
+              className="bg-primary outline-none w-full h-24 py-5 px-4 rounded-lg text-sm text-text_primary "
+            ></textarea>
+            <label
+              htmlFor="Document"
+              className="flex justify-between items-center bg-primary outline-none w-full py-[0.6rem] px-4 rounded-lg text-sm text-text_primary"
+            >
+              {selectedID} <IoIosArrowDown onClick={toggle} size={20} />
+            </label>
+            {show && (
+              <>
+                <div className="flex justify-center gap-32 w-full">
                   <label className="text-text_primary">
                     <input
                       type="radio"
@@ -86,11 +84,12 @@ const OperatorSignup = () => {
                     />
                     Pan Card
                   </label>
-              </div>
-              <InputBox placeholder={"ID number"} type={"text"} />
-            </>
-          )}
-          <Button name={"Submit"} />
+                </div>
+                <InputBox placeholder={"ID number"} type={"text"} />
+              </>
+            )}
+            <Button name={"Submit"} />
+          </div>
         </div>
         {/* Input ends here  */}
 

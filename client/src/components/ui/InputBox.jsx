@@ -19,14 +19,14 @@ const InputBox = ({ type, placeholder, id, onChange }) => {
           title="Mobile number should be 10 digits"
           id={id}
           placeholder={placeholder && placeholder}
-          className=" bg-primary outline-none sm:w-3/5 max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
+          className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
         />
       ) : (
         <input
           type={type && type}
           id={id}
           placeholder={placeholder && placeholder}
-          className=" bg-primary outline-none sm:w-3/5 max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
+          className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
         />
       )}
     </>
@@ -34,3 +34,5 @@ const InputBox = ({ type, placeholder, id, onChange }) => {
 };
 
 export default InputBox;
+
+// 3/5
