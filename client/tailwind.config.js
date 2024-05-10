@@ -9,6 +9,10 @@ module.exports = {
         btn_primary: "#1d4ed8",
         btn_secondary: "#F8FAFC",
       },
+      boxShadow: {
+        main_card: "0px 6px 8px 0px rgba(0, 0, 0, 0.20)",
+        main_card_hover: " 8px 8px 12px 0px rgba(33, 92, 221, 0.25)",
+      },
     },
   },
   plugins: [],
