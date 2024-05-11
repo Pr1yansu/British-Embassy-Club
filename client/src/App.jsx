@@ -10,13 +10,15 @@ import OperatorSignUpOtp from "./pages/Signup/Operator-forgot-pass";
 import OperatorResetPass from "./pages/Signup/Operator-forgotpass-reset";
 import OperatorResetPassMail from "./pages/Signup/Operator-forgotpass-mail";
 import Dashboard from "./pages/Home/Dashboard";
+import ModalHome from "./components/modals/modalHome";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<ModalHome />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
           <Route path="/ClubLogin" element={<ClubLogin />} />
           <Route path="/ClubSignupOtp" element={<ClubSignUpOtp />} />
