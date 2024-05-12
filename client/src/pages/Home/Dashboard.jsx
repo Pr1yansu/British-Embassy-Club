@@ -27,6 +27,7 @@ const Dashboard = () => {
               shadow={items.shadow}
               posV={items.posV}
               background={items.background}
+              page={items.page}
             />
           );
         })}

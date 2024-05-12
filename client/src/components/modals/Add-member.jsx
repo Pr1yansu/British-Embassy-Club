@@ -44,7 +44,7 @@ const AddMember = ({onModal}) => {
             </label>
             <label htmlFor="">
               Membership Date
-              <InputBox type={"number"} />
+              <InputBox type={"date"} />
             </label>
           </div>
           <div className="flex flex-col w-full">

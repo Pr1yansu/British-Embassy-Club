@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { createPortal } from 'react-dom';
-import FileUpload from "./File-Upload";
-import Modal from "../ui/Modal";
 import AddMember from "./Add-member";
+import Warning from "./Warning";
 
 const ModalHome = () => {
 
@@ -14,7 +12,8 @@ const ModalHome = () => {
         <button className="px-4 py-2 rounded-lg bg-blue-400" onClick={()=> SetOpen(!open)} >Open Modal</button>
         {
             open && (
-                <AddMember onModal={()=> SetOpen(false)}/>
+                <Warning onModal={()=> SetOpen(false)}/>
+                // <AddMember onModal={()=> SetOpen(false)}/>
             )
         }
       </div>
