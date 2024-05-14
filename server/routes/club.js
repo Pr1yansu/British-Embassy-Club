@@ -3,7 +3,6 @@ const {
   createClub,
   login,
   forgetPassword,
-  resetPassword,
   verifyAccessKey,
   temporaryLogin,
   logout,
