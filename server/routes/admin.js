@@ -1,6 +1,5 @@
 const Router = require("express");
 const {
-  getProfile,
   updateClub,
   resetPassword,
   logout,
@@ -16,7 +15,6 @@ const { validateResetPassword } = require("../middleware/zod-user-middleware");
 const app = Router();
 
 app.put("/update", isAuthenticated, isAdmin, updateClub);
-app.get("/profile", isAuthenticated, isAdmin, getProfile);
 app.put(
   "/reset-password",
   isAuthenticated,

@@ -29,6 +29,10 @@ body {
 }
 /* main Card Component end */
 
+.dragover{
+  opacity: 0.6;
+}
+
 h1 {
   font-family: 'Montserrat', sans-serif;
 }

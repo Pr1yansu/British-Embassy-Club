@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../../components/ui/Sidebar";
 import SearchBox from "../../components/ui/SearchBox";
 import SearchButton from "../../components/ui/SearchButton";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { AnimatePresence } from "framer-motion";
+import AddMember from "../../components/modals/Add-member";
 
 const Member = () => {
+  const [open,SetOpen] =  useState(false);
   return (
     <>
       <div className="w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
@@ -23,13 +25,18 @@ const Member = () => {
             type={"text"}
           />
         </div>
-        <div className="row-start-2 row-end-3 col-start-10 col-end-12 ">
+        <div className="row-start-2 row-end-3 col-start-10 col-end-12 " onClick={()=> SetOpen(true)}>
           <SearchButton
             name={"Add Member"}
             icon={<IoMdAddCircleOutline size={22} />}
           />
         </div>
       </div>
+      {
+            open && (
+                <AddMember onModal={()=> SetOpen(false)}/>
+            )
+      }
     </>
   );
 };

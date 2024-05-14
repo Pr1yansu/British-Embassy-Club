@@ -11,13 +11,17 @@ import OperatorResetPass from "./pages/Signup/Operator-forgotpass-reset";
 import OperatorResetPassMail from "./pages/Signup/Operator-forgotpass-mail";
 import Dashboard from "./pages/Home/Dashboard";
 import Member from "./pages/Home/Member";
+import ModalHome from "./components/modals/modalHome";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <Toaster />
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/modal" element={<ModalHome />} />
           <Route path="/member" element={<Member />} />
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
           <Route path="/ClubLogin" element={<ClubLogin />} />

@@ -2,6 +2,7 @@ import Member_icon from "../assets/icons/Member_icon.png";
 import Coupon_icon from "../assets/icons/Coupon_icon.png";
 import Settings_icon from "../assets/icons/Settings_icon.png";
 import Profile_icon from "../assets/icons/Profile_icon.png";
+
 import member from "../assets/icons/member.png";
 import dashboard from "../assets/icons/dashboard.png";
 import coupone from "../assets/icons/coupone.png";
@@ -22,6 +23,7 @@ export const cardData = [
     posV: "self-end",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(252,198,56,0.25)]",
     background: "hover:bg-[#FEF3C7]",
+    page: "/member"
   },
   {
     img: Coupon_icon,
@@ -31,6 +33,7 @@ export const cardData = [
     posV: "self-end",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(229,44,84,0.25)]",
     background: "hover:bg-[#FDA4AF]",
+    page: "/member"
   },
   {
     img: Settings_icon,
@@ -40,6 +43,7 @@ export const cardData = [
     posV: "self-start",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(140,57,214,0.25)]",
     background: "hover:bg-[#D8B4FE]",
+    page: "/member"
   },
   {
     img: Profile_icon,
@@ -49,6 +53,7 @@ export const cardData = [
     posV: "self-start",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(51,203,107,0.25)]",
     background: "hover:bg-[#BBF7D0]",
+    page: "/member"
   },
 ];
 
