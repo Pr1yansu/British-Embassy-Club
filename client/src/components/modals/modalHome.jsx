@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AddMember from "./Add-member";
 import Warning from "./Warning";
 
 const ModalHome = () => {

@@ -1,12 +1,112 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowRight } from "react-icons/fa6";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useGetClubProfileQuery } from "../../store/api/clubAPI";
 
 const ClubSignUp = () => {
-  const [role, setRole] = useState("Set user role");
+  const [role, setRole] = useState("choose role");
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmpassword, setConfirmpassword] = useState();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const { data, error, isLoading } = useGetClubProfileQuery();
+
+  useEffect(() => {
+    console.log(data, error, isLoading);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!username || !email || !password || !confirmpassword) {
+      toast.error("Please enter a valid search", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (role === "choose role") {
+      toast.error("Please select a role", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (password !== confirmpassword) {
+      toast.error("Password do not match with confirmpassword", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      return;
+    }
+
+    try {
+      const { data } = await axios.post("/api/v1/club/create", {
+        username,
+        email,
+        password,
+        role,
+      });
+      console.log(data);
+      toast.success("success", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+
+      if (role !== "admin") {
+        navigate("/OperatorSignUp");
+        return;
+      }
+
+      if (role === "admin") {
+        navigate("/ClubSignupOtp");
+        return;
+      } 
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async (e) => {
+    e.preventDefault();
+    console.log("username", username);
+    console.log("email", email);
+    console.log("password", password);
+    console.log("confirmpassword", confirmpassword);
+    console.log("role", role);
+  };
+
   return (
     <div
       className={`background relative h-screen bg-cover bg-center py-10 px-20 `}
@@ -19,26 +119,45 @@ const ClubSignUp = () => {
       <h3 className="font-bold">Logo</h3>
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
-            <InputBox type={"text"} placeholder={"Username"} />
-            <Passwordbox placeholder="Password" />
-            <Passwordbox placeholder="Confirm Password" />
+          <form
+            onSubmit={handleSubmit}
+            className="w-3/5 flex flex-col gap-4 items-center justify-center"
+          >
+            <InputBox
+              type={"text"}
+              placeholder={"Username"}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <InputBox
+              type={"email"}
+              placeholder={"Email"}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Passwordbox
+              placeholder="Password"
+              onchange={(e) => setPassword(e.target.value)}
+            />
+            <Passwordbox
+              placeholder="Confirm Password"
+              onchange={(e) => setConfirmpassword(e.target.value)}
+            />
             <select
               className="bg-primary outline-none sm:w-full max-sm:w-4/5 py-[0.6rem] px-4 rounded-lg font-semibol text-text_primary"
               value={role} // Set the value to the state variable
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value="Viewer" disabled className="bg-primary py-5 px-4 ">
-                Set user role
+              <option value="Viewer" disabled className="bg-primary py-5 px-4">
+                {role ? role : "Select Role"}
               </option>
-              <option value="Viewer">Viewer</option>
-              <option value="Operator">Operator</option>
+              <option value="admin">admin</option>
+              <option value="operator">operator</option>
             </select>
-            <Button name={"Login"} />
+            <Button name={"Sign up"} type={"submit"} />
+
             <a href="#" className="text-blue-700 font-bold">
               Forget your password?
             </a>
-          </div>
+          </form>
         </div>
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
           <h1 className="mb-4">
