@@ -45,6 +45,7 @@ body {
 
 h1,span {
   font-family: "Inter", sans-serif;
+  font-size: 60px;
 }
 
 .roboto {
@@ -78,11 +79,6 @@ h4 {
 h5,
 h6 {
   font-family: "Prompt", sans-serif;
-}
-
-h1 {
-  font-size: 3rem;
-  font-weight: 700;
 }
 
 h2 {

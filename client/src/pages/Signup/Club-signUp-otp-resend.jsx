@@ -57,10 +57,10 @@ const ClubSignUpOtpResend = () => {
           </div>
         </div>
         {/* Input ends here  */}
-        <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
-          <h1 className="mb-4 font-semibold">
-            be a member of{" "}
-            <span className="text-blue-700 font-semibold">
+        <div className="flex flex-col">
+          <h1 className="mb-4">
+            be a member of <br />{" "}
+            <span className="text-blue-700 font-bold">
               british embassy club
             </span>
           </h1>

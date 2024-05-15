@@ -8,11 +8,19 @@ const Sidebar = () => {
   const [alter, setAlter] = useState("");
   return (
     <>
-      {showSidebar ? (
+      {showSidebar && (
         <motion.div
           className="h-screen w-screen fixed top-0 right-0 left-0 bottom-0 z-40"
-          initial={{ x: -80, opacity: 0, onComplete: () => console.log("initial animation completed.") }}
-          exit={{ x: -80, opacity: 0, onComplete: () => console.log("Exit animation completed.") }}
+          initial={{
+            x: -80,
+            opacity: 0,
+            onComplete: () => console.log("initial animation completed."),
+          }}
+          exit={{
+            x: -80,
+            opacity: 0,
+            onComplete: () => console.log("Exit animation completed."),
+          }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
           onClick={() => {
@@ -66,18 +74,31 @@ const Sidebar = () => {
             </div>
           </div>
         </motion.div>
-      ) : (
-        <div className="h-full grid grid-rows-12 grid-cols-1 rounded-r-2xl bg-[#E2E8F0] z-50 items-center justify-center">
+      )}
+      {!showSidebar && (
+        <motion.div
+          className="h-full grid grid-rows-12 grid-cols-1 rounded-r-2xl bg-[#E2E8F0] z-50 items-center justify-center"
+          initial={{ x: 0, opacity: 1 }}
+          animate={{
+            x: -10,
+            opacity: 1,
+          }}
+          exit={{
+            x: -80,
+            opacity: 0,
+          }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+        >
           <div className="row-start-4 row-end-8 flex flex-col gap-8 items-center ">
             {sidebarItem2.map((item, index) => {
               return (
                 <img
-                    src={item.alter === alter ? item.iconBold : item.icon}
-                    alt={item.alter}
-                    key={index}
-                    className="w-6 cursor-pointer"
-                    onClick={() => setAlter(item.alter)}
-                  />
+                  src={item.alter === alter ? item.iconBold : item.icon}
+                  alt={item.alter}
+                  key={index}
+                  className="w-6 cursor-pointer"
+                  onClick={() => setAlter(item.alter)}
+                />
               );
             })}
           </div>
@@ -89,7 +110,7 @@ const Sidebar = () => {
               className="-rotate-180 w-10 cursor-pointer"
             />
           </div>
-        </div>
+        </motion.div>
       )}
     </>
   );
