@@ -10,7 +10,7 @@ const Passwordbox = ( {placeholder, id ,value,onchange, onclick}) => {
         <input
           type={showPassword ? "text" : "password"}
           id={id}
-          onclick={onclick}
+          onClick={onclick && onclick}
           onChange={onchange}
           value={value}
           placeholder={placeholder && placeholder}

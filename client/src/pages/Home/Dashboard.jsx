@@ -4,6 +4,7 @@ import { cardData } from "../../constants";
 import profile from "../../assets/icons/Snehashis.png";
 
 const Dashboard = () => {
+  
   return (
     <div className="background h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <div className="row-start-1 row-end-3 col-start-2 col-end-12 flex justify-between items-center">

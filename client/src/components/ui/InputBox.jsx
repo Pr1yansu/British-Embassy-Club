@@ -26,6 +26,7 @@ const InputBox = ({ type, placeholder, id, onChange }) => {
           type={type && type}
           id={id}
           placeholder={placeholder && placeholder}
+          onChange={onChange}
           className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
         />
       )}

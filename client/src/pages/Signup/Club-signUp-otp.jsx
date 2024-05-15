@@ -1,9 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ClubSignUpOtp = () => {
+  const navigate = useNavigate();
+  
+  const [otp, setOtp] = useState();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+        const { data } = await axios.post(
+      "/api/v1/club/verify-accessKey",
+      {
+        OneTimeKey : otp
+      },
+      { withCredentials: true }
+    );
+
+    if(data){
+      if (data.statusCode === 200) {
+        toast.success(data.message, {
+          duration: 2000,
+          position: "top-left",
+          style: {
+            background: "#00FF00",
+            color: "#FFFFFF",
+          },
+        });
+        navigate("/");
+      };
+    }
+    } catch (error) {
+      toast.error(error.response.data.message || "Internal Server Error", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+    }
+  }
+
+
   return (
     <div
       className={`background relative h-screen bg-cover bg-center py-10 px-20 `}
@@ -19,10 +63,11 @@ const ClubSignUpOtp = () => {
       {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
+          <form onSubmit={handleSubmit} className="w-3/5 flex flex-col gap-4 items-center justify-center">
             <InputBox
               placeholder={"Write your verification code here"}
               type={"text"}
+              onChange={(e) => setOtp(e.target.value)}
             />
             <p className="text-text_primary roboto">
               Please contact admin for the verification code
@@ -34,7 +79,7 @@ const ClubSignUpOtp = () => {
                 Resend
               </a>
             </p>
-          </div>
+          </form>
         </div>
         {/* Input ends here  */}
 
