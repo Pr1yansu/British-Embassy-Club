@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Warning from "./Warning";
 import MembersDetails from "./Member-details-full";
 import OperatorIssue from "./Operator-issue";
+import AddMember from "./Add-member";
 
 const ModalHome = () => {
 
