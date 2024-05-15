@@ -9,13 +9,13 @@ const Warning = ({ onModal }) => {
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[470px] h-[328px] bg-[#F8FAFC] p-6 flex flex-col justify-between rounded-3xl">
           <div className="w-full flex flex-col gap-3 items-center">
             <h1 className="text-red-600">warining !</h1>
-            <p className="text-center text- font-semibold">
+            <h1 className="text-center text-lg font-semibold">
               Are you sure you want to remove all the data <br /> of the member
               from your database ?
-            </p>
-            <p className="text-base text-text_primary font-medium">
+            </h1>
+            <h1 className="text-base text-text_primary font-medium">
               Deleted data cannot be retrived later.
-            </p>
+            </h1>
           </div>
           <div className="flex justify-between items-center">
             <ButtonGroup

@@ -42,19 +42,19 @@ const ClubSignUp = () => {
         </div>
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
           <h1 className="mb-4">
-            be a member member of{" "}
+            be a member of{" "}
             <span className="text-blue-700 font-bold">
               british embassy club
             </span>
           </h1>
-          <div className="font-semibold text-2xl">
+          <h1 className="font-semibold text-2xl">
             if you already have an account
-          </div>
+          </h1>
           <h2 className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl">
-            <p className="font-semibold ">please</p>
-            <a href="/ClubLogin" className="font-semibold text-blue-700">
+            <h1 className="font-semibold text-2xl">please</h1>
+            <h1 href="/ClubLogin" className="font-semibold text-blue-700 text-2xl">
               login
-            </a>
+            </h1>
             <FaArrowRight size={22} color="blue" />
           </h2>
         </div>

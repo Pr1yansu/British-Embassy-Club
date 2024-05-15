@@ -52,7 +52,7 @@ const FileUpload = (props) => {
           onDrop={onDrop}
         >
           <MdOutlineFileUpload size={100} color="#6B7280" />
-          <p className="text-text_primary">
+          <p className="text-text_primary roboto">
             Click or Drag and Drop your files here
           </p>
           <input
@@ -70,9 +70,9 @@ const FileUpload = (props) => {
           <div className="w-[635px] h-[71px] bg-[#D1D5DB] py-2 px-4 flex items-center justify-between gap-4 rounded-xl">
             <div className="flex gap-4 justify-center items-center">
               <MdOutlineUploadFile size={42} color="#6B7280" />
-              <div>
-                <p>{file.name}</p>
-                <p>Size: {(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+              <div className="flex flex-col gap-1 ">
+                <p className="roboto text-base text-text_primary">{file.name}</p>
+                <p className="roboto text-base text-text_primary">Size: {(file.size / (1024 * 1024)).toFixed(2)} MB</p>
               </div>
             </div>
             <div className="cursor-pointer" onClick={() => fileRemove(file)}>

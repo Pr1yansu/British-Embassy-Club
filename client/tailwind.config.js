@@ -12,7 +12,11 @@ module.exports = {
       boxShadow: {
         main_card: "0px 6px 8px 0px rgba(0, 0, 0, 0.20)",
         main_card_hover: "8px 8px 12px 0px rgba(33, 92, 221, 0.25)",
+        btn_shadow: "-4px 4px 20px 2px rgba(59, 130, 246, 0.25)"
       },
+      fontFamily: {
+        'sans': ['Open Sans', 'sans-serif'],
+      }
     },
   },
   plugins: [],
