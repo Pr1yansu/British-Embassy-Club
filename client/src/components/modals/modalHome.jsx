@@ -3,6 +3,8 @@ import Warning from "./Warning";
 import MembersDetails from "./Member-details-full";
 import OperatorIssue from "./Operator-issue";
 import AddMember from "./Add-member";
+import OperatorQuery from "./Operator-query";
+import OperatorReceive from "./Operator-receive";
 
 const ModalHome = () => {
 
@@ -15,9 +17,11 @@ const ModalHome = () => {
         {
             open && (
                 // <Warning onModal={()=> SetOpen(false)}/>
-                <AddMember onModal={()=> SetOpen(false)}/>
+                // <AddMember onModal={()=> SetOpen(false)}/>
                 // <MembersDetails setOpen={()=> SetOpen(false)}/>
                 // <OperatorIssue />
+                // <OperatorQuery />
+                <OperatorReceive />
             )
         }
       </div>

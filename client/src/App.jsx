@@ -13,6 +13,7 @@ import Dashboard from "./pages/Home/Dashboard";
 import Member from "./pages/Home/Member";
 import ModalHome from "./components/modals/modalHome";
 import { Toaster } from "react-hot-toast";
+import Profile from "./pages/Home/Profile";
 
 function App() {
   return (
@@ -43,6 +44,8 @@ function App() {
             element={<OperatorResetPassMail />}
           />
           <Route path="/OperatorResetPass" element={<OperatorResetPass />} />
+
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>
