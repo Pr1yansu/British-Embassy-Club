@@ -23,6 +23,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/modal" element={<ModalHome />} />
           <Route path="/member" element={<Member />} />
+
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
           <Route path="/ClubLogin" element={<ClubLogin />} />
           <Route path="/ClubSignupOtp" element={<ClubSignUpOtp />} />
@@ -30,6 +31,7 @@ function App() {
             path="/ClubSignUpOtpResend"
             element={<ClubSignUpOtpResend />}
           />
+          
           <Route path="/OperatorLogin" element={<OperatoLogin />} />
           <Route path="/OperatorSignUp" element={<OperatorSignup />} />
           <Route

@@ -28,7 +28,7 @@ const ClubLogin = () => {
               </a>
             </div>
           </div>
-          <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem]">
+          <div className="flex flex-col">
             <h1 className="mb-4">
               are you a member of{" "}
               <span className="text-blue-700 font-bold">
