@@ -15,11 +15,11 @@ const OperatorSignUpOtp = () => {
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-[108px]">
         <div className="flex flex-col gap-[1.5rem] w-full px-[100px]">
-          <h1 className="text-[50px]">forgot password ?</h1>
-          <h4 className="text-[20px]">
+          <h1 className="text-5xl font-semibold">forgot password ?</h1>
+          <h1 className="text-xl font-medium">
             Enter your email address and we’ll send a link to <br />
             reset your password.
-          </h4>
+          </h1>
           <input
             type="email"
             placeholder="Email"
@@ -31,9 +31,9 @@ const OperatorSignUpOtp = () => {
           </div>
         </div>
       </div>
-      <p className="text-text_primary text-center font-bold row-start-11 row-end-12 col-start-5 col-end-9">
+      <p className="text-text_primary text-center font-bold row-start-11 row-end-12 col-start-5 col-end-9 roboto">
         Already have an account{" "}
-        <a href="/OperatorLogin" className="text-blue-700 font-bold">
+        <a href="/OperatorLogin" className="text-blue-700 font-bold roboto">
           Login
         </a>
       </p>

@@ -69,11 +69,11 @@ const ClubSignUpOtp = () => {
               type={"text"}
               onChange={(e) => setOtp(e.target.value)}
             />
-            <p className="text-text_primary">
+            <p className="text-text_primary roboto">
               Please contact admin for the verification code
             </p>
             <Button name={"Submit"} />
-            <p href="#" className="text-text_primary font-semibold">
+            <p href="#" className="text-text_primary roboto font-semibold">
               Didn't recieve any code?{" "}
               <a href="#" className="text-blue-700 font-bold">
                 Resend
@@ -85,7 +85,7 @@ const ClubSignUpOtp = () => {
 
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
           <h1 className="mb-4">
-            be a member member of{" "}
+            be a member of{" "}
             <span className="text-blue-700 font-bold">
               british embassy club
             </span>

@@ -88,17 +88,17 @@ const OperatorSignup = () => {
               british embassy club
             </span>
           </h1>
-          <div className="font-semibold text-2xl">
+          <h1 className="font-semibold text-2xl">
             if you already have an account
-          </div>
+          </h1>
           <h2
             href="#"
             className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
           >
-            <p className="font-semibold ">please</p>
-            <a href="/OperatorLogin" className="font-semibold text-blue-700">
+            <h1 className="font-semibold text-2xl">please</h1>
+            <h1 href="/OperatorLogin" className="font-semibold text-blue-700 text-2xl">
               login
-            </a>
+            </h1>
             <FaArrowRight size={22} color="blue" />
           </h2>
         </div>

@@ -36,9 +36,9 @@ const ClubSignUpOtpResend = () => {
               placeholder={"Write your verification code here"}
               type={"text"}
             />
-            <p className="text-text_primary font-medium">
+            <p className="text-text_primary roboto font-medium">
               Your OTP will expire in{" "}
-              <span className="text-blue-700 font-medium">
+              <span className="text-blue-700 roboto font-medium">
                 00:{formatedTime} seconds
               </span>
             </p>
@@ -58,9 +58,9 @@ const ClubSignUpOtpResend = () => {
         </div>
         {/* Input ends here  */}
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
-          <h1 className="mb-4">
-            be a member member of{" "}
-            <span className="text-blue-700 font-bold">
+          <h1 className="mb-4 font-semibold">
+            be a member of{" "}
+            <span className="text-blue-700 font-semibold">
               british embassy club
             </span>
           </h1>
