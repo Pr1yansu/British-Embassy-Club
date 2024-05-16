@@ -4,7 +4,7 @@ class Auth {
   #ADMIN_ROLE = "admin";
   #OPERATOR_ROLE = "operator";
   #DEVELOPER_ROLE = "developer";
-  #CLUB_ROLE = "club";
+  #CLUB_ROLE = "operator";
   constructor() {
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.isUser = this.isUser.bind(this);
@@ -69,7 +69,10 @@ class Auth {
     }
   }
   isAdmin(req, res, next) {
-    if (req.club.role !== this.#ADMIN_ROLE) {
+    if (
+      req.club.role.toLowerCase() !== this.#ADMIN_ROLE &&
+      req.club.verified === false
+    ) {
       return res.status(401).json({
         statusCode: 401,
         message: "Unauthorized access",
@@ -80,7 +83,10 @@ class Auth {
     next();
   }
   isTemporaryAdmin(req, res, next) {
-    if (req.club.role !== this.#ADMIN_ROLE && req.club.temporary === false) {
+    if (
+      req.club.role.toLowerCase() !== this.#ADMIN_ROLE &&
+      req.club.temporary === false
+    ) {
       return res.status(401).json({
         statusCode: 401,
         message: "Only temporary admin can access this resource",
@@ -99,10 +105,13 @@ class Auth {
         data: null,
       });
     }
-    if (req.club.role !== this.#CLUB_ROLE) {
+    if (
+      req.club.role.toLowerCase() !== this.#CLUB_ROLE &&
+      req.club.verified === false
+    ) {
       return res.status(401).json({
         statusCode: 401,
-        message: "Login as club to access the resource",
+        message: "Login as operator to access the resource",
         exception: null,
         data: null,
       });
@@ -118,7 +127,10 @@ class Auth {
         data: null,
       });
     }
-    if (req.user.role !== this.#OPERATOR_ROLE) {
+    if (
+      req.user.role.toLowerCase() !== this.#OPERATOR_ROLE &&
+      req.user.verified === false
+    ) {
       return res.status(401).json({
         statusCode: 401,
         message: "Unauthorized access",
@@ -137,7 +149,10 @@ class Auth {
         data: null,
       });
     }
-    if (req.user.role !== this.#DEVELOPER_ROLE) {
+    if (
+      req.user.role.toLowerCase() !== this.#DEVELOPER_ROLE &&
+      req.user.verified === false
+    ) {
       return res.status(401).json({
         statusCode: 401,
         message: "Unauthorized access",
