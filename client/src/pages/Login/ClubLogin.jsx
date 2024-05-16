@@ -23,29 +23,29 @@ const ClubLogin = () => {
               <InputBox type={"text"} placeholder={"Username"} />
               <Passwordbox placeholder="Password" />
               <Button name={"Login"} />
-              <a href="#" className="text-blue-700 font-semibold text-xs">
+              <a href="#" className="text-blue-700 font-semibold text-xs roboto">
                 Forget your password?
               </a>
             </div>
           </div>
-          <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem] ">
+          <div className="flex flex-col">
             <h1 className="mb-4">
               are you a member of{" "}
               <span className="text-blue-700 font-bold">
                 british embassy club?
               </span>
             </h1>
-            <div className="font-semibold text-2xl">
+            <h1 className="font-semibold text-2xl">
               if you don't have an account
-            </div>
+            </h1>
             <a
               href="#"
               className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
             >
-              <h4 className="font-semibold ">please</h4>
-              <a href="/ClubSignup" className="font-semibold text-blue-700">
+              <h1 className="font-semibold text-2xl">please</h1>
+              <h1 href="/ClubSignup" className="font-semibold text-blue-700 text-2xl">
                 register
-              </a>
+              </h1>
               <FaArrowRight size={22} color="blue" />
             </a>
           </div>

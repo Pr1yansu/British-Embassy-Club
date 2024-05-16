@@ -13,12 +13,11 @@ const SettingForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Implement password change logic here
     if (newPassword !== confirmPassword) {
       alert("New password and confirm password do not match");
     } else {
       alert("Password changed successfully");
-      // Perform the password change operation (API call, etc.)
+     
     }
   };
   const handleCancel = () => {
@@ -48,7 +47,7 @@ const SettingForm = () => {
               onchange={handleOldPasswordChange}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-6">
             <label
               htmlFor="newPassword"
               className="block text-text_primary mb-1 text-sm"

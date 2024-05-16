@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import arrow from "../../assets/icons/sidebar_arrow.png";
 import { sidebarItem1, sidebarItem2 } from "../../constants";
-const Sidebar = ({value}) => {
+const Sidebar = ({ value }) => {
   const [sidebar, setSidebar] = useState(false);
   const [column, setColumn] = useState("col-end-2");
   const [item, setItem] = useState("items-center");
@@ -25,14 +25,14 @@ const Sidebar = ({value}) => {
     <>
       {column === "col-end-3" && (
         <div
-          className="h-screen w-screen fixed top-0 right-0 left-0 bottom-0 z-50  bg-slate-400/25"
+          className="h-screen w-screen fixed top-0 right-0 left-0 bottom-0 z-10  bg-slate-400/25"
           onClick={() => {
             handleClick();
           }}
         ></div>
       )}
       <div
-        className={`row-start-1 row-end-13 col-start-1 ${column} bg-primary rounded-r-3xl grid grid-rows-12 z-50 `}
+        className={`row-start-1 row-end-13 col-start-1 ${column} bg-primary rounded-r-3xl grid grid-rows-12 z-10 `}
       >
         <div
           className={`row-start-4 row-end-9 flex flex-col ${mergin}  ${item}  gap-11`}

@@ -44,7 +44,7 @@ export default function DataTable() {
           <p>Report</p>
         </div>
       </div>
-      <div className=" bg-red-100" style={{ height: 350, width: "100%" }}>
+      <div className=" " style={{ height: 350, width: "100%" }}>
         <DataGrid
           className=""
           rows={rows}

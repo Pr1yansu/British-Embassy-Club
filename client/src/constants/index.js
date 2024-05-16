@@ -53,7 +53,7 @@ export const cardData = [
     posV: "self-start",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(51,203,107,0.25)]",
     background: "hover:bg-[#BBF7D0]",
-    page: "/member"
+    page: "/profile"
   },
 ];
 

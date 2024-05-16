@@ -23,31 +23,31 @@ const OperatoLogin = () => {
               <InputBox placeholder={"Username"} type={"text"} />
               <Passwordbox placeholder="Password" />
               <Button name={"Signup"} />
-              <a href="#" className="text-blue-700 font-bold">
+              <a href="#" className="text-blue-700 font-bold roboto">
                 Forgot your password?
               </a>
             </div>
           </div>
-          <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem]">
+          <div className="flex flex-col">
             <h1 className="mb-4">
-              a new dashboard system for the{" "}
+              a new dashboard <br />system for the{" "}
               <span className="text-blue-700 font-bold">
-                british embassy club?
+                british embassy club
               </span>
             </h1>
-            <div className=" font-semibold text-2xl">
+            <h1 className=" font-semibold text-2xl">
               if you don’t have an account please
-            </div>
-            <a
+            </h1>
+            <h1
               href="#"
               className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
             >
-              <h4 className="font-semibold ">please</h4>
-              <a href="/OperatorSignUp" className="font-semibold text-blue-700">
+              <h1 className="font-semibold text-2xl">please</h1>
+              <h1 href="/OperatorSignUp" className="font-semibold text-blue-700 text-2xl">
                 register
-              </a>
+              </h1>
               <FaArrowRight size={22} color="blue" />
-            </a>
+            </h1>
           </div>
         </div>
       </div>
