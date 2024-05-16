@@ -28,11 +28,11 @@ const OperatoLogin = () => {
               </a>
             </div>
           </div>
-          <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-[32rem]">
+          <div className="flex flex-col">
             <h1 className="mb-4">
-              a new dashboard system for the{" "}
+              a new dashboard <br />system for the{" "}
               <span className="text-blue-700 font-bold">
-                british embassy club?
+                british embassy club
               </span>
             </h1>
             <h1 className=" font-semibold text-2xl">

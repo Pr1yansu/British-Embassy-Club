@@ -11,8 +11,8 @@ const OperatorResetPassMail = () => {
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-5 col-end-9">
-          <h1 className="text-[56px] mb-6">Check your email</h1>
-          <h1 className="text-xl">
+          <h1 className="text-[56px] mb-6 font-semibold">Check your email</h1>
+          <h1 className="text-xl font-medium">
             We just sent an email to your inbox with a <br />
             link to reset your password
           </h1>

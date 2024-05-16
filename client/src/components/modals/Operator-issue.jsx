@@ -14,7 +14,7 @@ const OperatorIssue = () => {
               <p className="text-btn_primary roboto font-semibold">Member Name</p>
               <p className="lato">John Doe</p>
             </div>
-            <div className="flex gap-10">
+            <div className="flex gap-[73px]">
               <p className="text-btn_primary roboto font-semibold">Member ID</p>
               <p className="lato">BEC20240201DEMO1</p>
             </div>

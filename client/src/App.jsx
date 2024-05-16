@@ -13,6 +13,7 @@ import Dashboard from "./pages/Home/Dashboard";
 import Member from "./pages/Home/Member";
 import ModalHome from "./components/modals/modalHome";
 import { Toaster } from "react-hot-toast";
+import Profile from "./pages/Home/Profile";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/modal" element={<ModalHome />} />
           <Route path="/member" element={<Member />} />
+
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
           <Route path="/ClubLogin" element={<ClubLogin />} />
           <Route path="/ClubSignupOtp" element={<ClubSignUpOtp />} />
@@ -30,6 +32,7 @@ function App() {
             path="/ClubSignUpOtpResend"
             element={<ClubSignUpOtpResend />}
           />
+          
           <Route path="/OperatorLogin" element={<OperatoLogin />} />
           <Route path="/OperatorSignUp" element={<OperatorSignup />} />
           <Route
@@ -41,6 +44,8 @@ function App() {
             element={<OperatorResetPassMail />}
           />
           <Route path="/OperatorResetPass" element={<OperatorResetPass />} />
+
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>
