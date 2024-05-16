@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchButton = ({ name, icon, toggle }) => {
+const AddButton = ({ name, icon, toggle }) => {
   return (
     <>
       <button className="h-full w-full flex items-center justify-center gap-2 px-6 py-2 rounded-lg bg-blue-700 text-white text-xl  hover:shadow-md hover:shadow-blue-500 hover:bg-blue-600  ...">
@@ -20,4 +20,4 @@ const SearchButton = ({ name, icon, toggle }) => {
   );
 };
 
-export default SearchButton;
+export default AddButton;

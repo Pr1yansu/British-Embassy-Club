@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/ui/Sidebar";
 import SearchBox from "../../components/ui/SearchBox";
-import SearchButton from "../../components/ui/SearchButton";
+import AddButton from "../../components/ui/AddButton";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { AnimatePresence } from "framer-motion";
 import AddMember from "../../components/modals/Add-member";
+import MemberCard from "../../components/ui/MemberCard";
 
 const Member = () => {
-  const [open,SetOpen] =  useState(false);
+  const [open, SetOpen] = useState(false);
   return (
     <>
-      <div className="w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
-        <div className="row-start-1 row-end-13 col-start-1 col-end-2">
-          <AnimatePresence>
-            <Sidebar />
-          </AnimatePresence>
-        </div>
-
+      <div className="background bg-cover bg-center w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
+        <Sidebar />
         <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
           <SearchBox
             placeholder={
@@ -25,18 +20,20 @@ const Member = () => {
             type={"text"}
           />
         </div>
-        <div className="row-start-2 row-end-3 col-start-10 col-end-12 " onClick={()=> SetOpen(true)}>
-          <SearchButton
+        <div
+          className="row-start-2 row-end-3 col-start-10 col-end-12 "
+          onClick={() => SetOpen(true)}
+        >
+          <AddButton
             name={"Add Member"}
             icon={<IoMdAddCircleOutline size={22} />}
           />
         </div>
+        <div className="row-start-4 row-end-11 col-start-2 col-end-12 grid grid-rows-6 grid-cols-10 gap-4 ">
+          <MemberCard />
+        </div>
       </div>
-      {
-            open && (
-                <AddMember onModal={()=> SetOpen(false)}/>
-            )
-      }
+      {open && <AddMember onModal={() => SetOpen(false)} />}
     </>
   );
 };
