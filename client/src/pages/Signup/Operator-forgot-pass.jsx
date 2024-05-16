@@ -6,15 +6,15 @@ import Button from "../../components/ui/Button";
 const OperatorSignUpOtp = () => {
   return (
     <div
-      className="background relative  h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4"
+      className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4"
     >
       
-      <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96 " />
-      <h3 className="font-bold absolute top-[60px] left-[120px]">Logo</h3>
+      <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96" />
+      <h3 className="font-bold absolute top-15 left-30">Logo</h3>
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-[108px]">
-        <div className="flex flex-col gap-[1.5rem] w-full px-[100px]">
+        <div className="flex flex-col gap-6 w-full px-25">
           <h1 className="text-5xl font-semibold">forgot password ?</h1>
           <h1 className="text-xl font-medium">
             Enter your email address and we’ll send a link to <br />

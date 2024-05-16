@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 
 const InputBox = ({ type, placeholder, id, onChange }) => {
-  const [mobileNumber, setMobileNumber] = useState("");
 
-  const handleChange = (event) => {
-    const formattedNumber = event.target.value.replace(/[^\d]/g, ""); // Remove non-numeric characters
-    setMobileNumber(formattedNumber);
-  };
   return (
     <>
       {type === "tel" ? (
@@ -14,7 +9,7 @@ const InputBox = ({ type, placeholder, id, onChange }) => {
           type={type && type}
           maxLength="10"
           minLength="10"
-          onChange={handleChange}
+          onChange={onChange && onChange}
           pattern="[0-9]{10}"
           title="Mobile number should be 10 digits"
           id={id}

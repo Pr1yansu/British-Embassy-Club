@@ -142,7 +142,7 @@ const ClubSignUp = () => {
               onchange={(e) => setConfirmpassword(e.target.value)}
             />
             <select
-              className="bg-primary outline-none sm:w-full max-sm:w-4/5 py-[0.6rem] px-4 rounded-lg font-semibol text-text_primary"
+              className="bg-primary outline-none sm:w-full max-sm:w-4/5 py-2.5 px-4 rounded-lg font-semibol text-text_primary"
               value={role} // Set the value to the state variable
               onChange={(e) => setRole(e.target.value)}
             >
