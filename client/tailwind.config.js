@@ -16,10 +16,10 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Open Sans", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
       },
       fontSize: {
         "5.5xl": "3.313rem",
-
       },
       spacing: {
         15: "3.75rem",
@@ -35,7 +35,7 @@ module.exports = {
       },
       width: {
         120: "32rem",
-      }
+      },
     },
   },
   plugins: [],

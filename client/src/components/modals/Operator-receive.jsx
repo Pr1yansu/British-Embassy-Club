@@ -1,10 +1,12 @@
+import React from "react";
 import { BsArrowUpSquareFill } from "react-icons/bs";
+import { MdAddCircle } from "react-icons/md";
+import { AiFillMinusCircle } from "react-icons/ai";
 import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
-import React from "react";
 import ReactDOM from "react-dom";
 
-const OperatorIssue = () => {
+const OperatorReceive = () => {
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)]">
@@ -27,63 +29,67 @@ const OperatorIssue = () => {
           <form className="flex flex-col gap-4 w-full px-9">
             {/* 1st row starts here */}
             <div className="flex justify-between items-center">
-              <div className="flex flex-col gap-6 w-52">
-                <p className="text-btn_primary roboto font-semibold">
-                  Issue Type:
+              <div className="flex flex-col gap-3">
+                <p className="text-btn_primary roboto font-medium">
+                  Enter Receivable amount :
                 </p>
-                <label htmlFor="" className="flex flex-col gap-2 lato">
-                  Payment amount only
-                  <InputBox type={"text"} placeholder={"Enter Amount"} />
-                </label>
+                <div className="flex justify-stretch items-center gap-2 w-64">
+                  <div className="cursor-pointer">
+                    <MdAddCircle size={40} color="#3B82F6" />
+                  </div>
+                  <InputBox type={"text"} placeholder={"0"} />
+                  <div className="cursor-pointer">
+                    <AiFillMinusCircle size={40} color="#3B82F6" />
+                  </div>
+                  <div className="cursor-pointer">
+                    <BsArrowUpSquareFill size={30} color="#1D4ED8" />
+                  </div>
+                </div>
               </div>
               <div className="w-52">
-                <label htmlFor="" className="flex flex-col gap-2 lato">
+                <label
+                  htmlFor=""
+                  className="flex flex-col items-end gap-3 text-btn_primary roboto font-medium"
+                >
                   Current Wallet Balance
-                  <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">1200</div>
+                  <div className="w-28">
+                    <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
+                      1200
+                    </div>
+                  </div>
                 </label>
               </div>
             </div>
             {/* 1st row ends here */}
 
-            {/* 2nd row starts here*/}
-            <div className="w-96 flex flex-col items-start gap-2">
-              <p className="lato">Payment amount with Wallet amount</p>
-              <div className="flex gap-6 items-center">
-                <InputBox placeholder={"Payment Amount"} type={"text"} />
-                <InputBox placeholder={"Wallet Amount"} type={"text"} />
-                <div className="cursor-pointer">
-                  <BsArrowUpSquareFill size={30} color="#1D4ED8" />
+            {/* 2nd row starts here */}
+            <div className="w-56 flex flex-col items-center gap-2 self-center mt-12 mb-20">
+              <p className="text-btn_primary roboto font-medium text-center">
+                {" "}
+                Updated Wallet Balance
+              </p>
+              <div className="w-32">
+                <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
+                  1200
                 </div>
               </div>
             </div>
             {/* 2nd row ends here */}
 
             {/* 3rd row starts here */}
-            <div className="w-56 flex flex-col gap-2">
-              <p className="lato"> Wallet amount only</p>
-              <div className="flex gap-6 items-center">
-                <InputBox placeholder={"Enter Amount"} type={"text"} />
-                <div className="cursor-pointer">
-                  <BsArrowUpSquareFill size={30} color="#1D4ED8" />
-                </div>
-              </div>
-            </div>
-            {/* 3rd row ends here */}
-
-            {/* 4th row starts here */}
             <div className="flex justify-end w-full gap-6">
               <ButtonGroup
-                name={"Confirm"}
+                name={"Cancel"}
                 color={"bg-[#F8FAFC]"}
                 textColor={"text-[#1D4ED8]"}
               />
               <ButtonGroup
-                name={"Cancel"}
+                name={"Confirm"}
                 color={"bg-[#F8FAFC]"}
                 textColor={"text-[#6B7280]"}
               />
             </div>
-            {/* 4th row ends here */}
+            {/* 3rd row ends here */}
           </form>
           {/* Lower part ends here */}
         </div>
@@ -92,4 +98,5 @@ const OperatorIssue = () => {
     document.getElementById("portal")
   );
 };
-export default OperatorIssue;
+
+export default OperatorReceive;
