@@ -15,8 +15,7 @@ const ClubAuthorization = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "club"],
-    default: "club",
+    enum: ["admin", "operator", "developer"],
   },
   accessKey: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +31,6 @@ const ClubAuthorization = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    expires: 3600,
     default: Date.now(),
   },
 });

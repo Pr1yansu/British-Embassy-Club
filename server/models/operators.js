@@ -11,6 +11,10 @@ const Operators = new mongoose.Schema({
     type: String,
     required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
   mobileNumber: {
     type: String,
     required: true,
@@ -29,6 +33,7 @@ const Operators = new mongoose.Schema({
   },
   role: {
     type: String,
+    enum: ["operator"],
     default: "operator",
   },
   idProof: {
