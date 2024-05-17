@@ -26,7 +26,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/modal" element={<ModalHome />} />
           <Route path="/member" element={<Member />} />
-          <Route path="/coupone" element={<Coupone />} />
+          <Route path="/coupon" element={<Coupone />} />
           <Route path="/settings" element={<Settings />} />
 
           <Route path="/ClubSignUp" element={<ClubSignUp />} />

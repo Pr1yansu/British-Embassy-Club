@@ -46,7 +46,6 @@ export default function DataTable() {
       </div>
       <div className=" " style={{ height: 350, width: "100%" }}>
         <DataGrid
-          className=""
           rows={rows}
           columns={columns}
           initialState={{

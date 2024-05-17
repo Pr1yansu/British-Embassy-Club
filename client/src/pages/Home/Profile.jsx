@@ -3,6 +3,7 @@ import ButtonGroup from "../../components/ui/ButtonGroup";
 import InputBox from "../../components/ui/InputBox";
 import profilePic from "../../assets/images/profilePic.png";
 import FileUpload from "../../components/modals/File-Upload";
+import Sidebar from "../../components/ui/Sidebar";
 
 const Profile = () => {
   const [open, SetOpen] = useState(false);
@@ -10,6 +11,7 @@ const Profile = () => {
   return (
     <>
       <div className="background grid grid-rows-12 grid-cols-12 bg-cover bg-center h-screen">
+        <Sidebar/>
         <div className="row-start-2 row-end-12 col-start-3 col-end-11 bg-white p-6 rounded-3xl">
           <div className="flex justify-start items-center gap-6 mb-5">
             <img src={profilePic} alt="" className="w-32 h-32" />

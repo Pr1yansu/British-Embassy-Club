@@ -10,7 +10,7 @@ const AddMember = ({onModal}) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)]">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)] z-20">
         <div className="w-[512px] h-[652px] px-16 py-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 justify-center items-center border bg-[#F8FAFD] rounded-lg text-blue-700">
           <div className="w-full flex flex-col items-center gap-3">
             <p className="roboto">Add Profile Picture</p>
