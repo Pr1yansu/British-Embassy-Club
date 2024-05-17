@@ -71,3 +71,22 @@ export const sidebarItem2 = [
   { icon: settings, alter: "settings", iconBold: settings_bold },
   { icon: profile, alter: "profile", iconBold: profile_bold },
 ];
+
+export const memberItem = [
+  {
+    img: profile,
+    name: "John Deo",
+    email: "@username",
+    info: "info",
+    member_ID: "BEC20240201DEM1",
+    membership: "Expires on 21.10.24",
+    mobile: "+91 1234567890",
+    balance: "450.00",
+  },
+];
+
+ export const managementData = [
+   { id: 1, name: "John Doe", roles: "Admin" },
+   { id: 2, name: "Jane Smith", roles: "Operator" },
+   { id: 3, name: "Mike Johnson", roles: "Auditor" },
+ ];

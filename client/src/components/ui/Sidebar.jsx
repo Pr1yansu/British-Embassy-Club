@@ -1,117 +1,94 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import arrow from "../../assets/icons/sidebar_arrow.png";
 import { sidebarItem1, sidebarItem2 } from "../../constants";
-const Sidebar = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
+const Sidebar = ({ value }) => {
+  const [sidebar, setSidebar] = useState(false);
+  const [column, setColumn] = useState("col-end-2");
+  const [item, setItem] = useState("items-center");
+  const [mergin, setMergin] = useState("");
   const [title, setTitle] = useState("");
+  const [toggle, setToggle] = useState(true);
+  const [rotate, setRotate] = useState("-rotate-180");
   const [alter, setAlter] = useState("");
+  const handleClick = () => {
+    sidebar ? setColumn("col-end-3") : setColumn("col-end-2");
+    column === "col-end-2" ? setColumn("col-end-3") : setColumn("col-end-2");
+    rotate === "-rotate-180"
+      ? setRotate("-rotate-0")
+      : setRotate("-rotate-180");
+    item === "items-center" ? setItem("items-start") : setItem("items-center");
+    mergin === "" ? setMergin("mx-16") : setMergin("");
+    setToggle(!toggle);
+    setSidebar(!sidebar);
+  };
   return (
     <>
-      {showSidebar && (
-        <motion.div
-          className="h-screen w-screen fixed top-0 right-0 left-0 bottom-0 z-40"
-          initial={{
-            x: -80,
-            opacity: 0,
-            onComplete: () => console.log("initial animation completed."),
-          }}
-          exit={{
-            x: -80,
-            opacity: 0,
-            onComplete: () => console.log("Exit animation completed."),
-          }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+      {column === "col-end-3" && (
+        <div
+          className="h-screen w-screen fixed top-0 right-0 left-0 bottom-0 z-10  bg-slate-400/25"
           onClick={() => {
-            setShowSidebar(false);
+            handleClick();
           }}
-        >
-          <div
-            className=" absolute top-0 left-0 bottom-0 grid grid-rows-12 grid-cols-4 rounded-r-2xl w-[280px] z-50 items-center justify-center  bg-[#E2E8F0]"
-            onClick={(val) => {
-              val.stopPropagation();
-            }}
-          >
-            <div className=" row-start-1 row-end-3 col-start-2 col-end-4  text-center p-6">
-              Logo
-            </div>
-            <div className="row-start-4 row-end-8 col-start-2 col-end-4 flex flex-col items-start justify-center gap-7 mb-[5px]">
-              {sidebarItem1.map((item, index) => {
-                return (
-                  <div
-                    className="flex gap-4 items-start justify-center cursor-pointer"
-                    key={index}
-                    onClick={() => {
-                      setTitle(item.title);
-                    }}
-                  >
-                    <img
-                      className="cursor-pointer"
-                      src={item.title === title ? item.iconBold : item.icon}
-                      alt="icons"
-                    />
-                    <p
-                      className={`text-lg ${
-                        item.title === title
-                          ? "text-black font-semibold"
-                          : "text-text_primary"
-                      } `}
-                    >
-                      {item.title}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="rounded-full row-start-11 row-end-12 col-start-2 col-end-4  flex items-center justify-center ">
-              <img
-                src={arrow}
-                alt="sidebar_arrow"
-                className="cursor-pointer w-10"
-                onClick={() => setShowSidebar(!showSidebar)}
-              />
-            </div>
-          </div>
-        </motion.div>
+        ></div>
       )}
-      {!showSidebar && (
-        <motion.div
-          className="h-full grid grid-rows-12 grid-cols-1 rounded-r-2xl bg-[#E2E8F0] z-50 items-center justify-center"
-          initial={{ x: 0, opacity: 1 }}
-          animate={{
-            x: -10,
-            opacity: 1,
-          }}
-          exit={{
-            x: -80,
-            opacity: 0,
-          }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+      <div
+        className={`row-start-1 row-end-13 col-start-1 ${column} bg-primary rounded-r-3xl grid grid-rows-12 z-10 `}
+      >
+        <div
+          className={`row-start-4 row-end-9 flex flex-col ${mergin}  ${item}  gap-11`}
         >
-          <div className="row-start-4 row-end-8 flex flex-col gap-8 items-center ">
-            {sidebarItem2.map((item, index) => {
+          {toggle &&
+            sidebarItem2.map((item, index) => {
               return (
-                <img
-                  src={item.alter === alter ? item.iconBold : item.icon}
-                  alt={item.alter}
-                  key={index}
-                  className="w-6 cursor-pointer"
-                  onClick={() => setAlter(item.alter)}
-                />
+                <>
+                  <img
+                    src={item.alter === alter ? item.iconBold : item.icon}
+                    alt={item.alter}
+                    className="w-6 cursor-pointer"
+                    onClick={() => setAlter(item.alter)}
+                  />
+                </>
               );
             })}
-          </div>
-          <div className="row-start-11 row-end-12 rounded-full flex items-center justify-center ">
-            <img
-              onClick={() => setShowSidebar(!showSidebar)}
-              src={arrow}
-              alt="sidebar_arrow"
-              className="-rotate-180 w-10 cursor-pointer"
-            />
-          </div>
-        </motion.div>
-      )}
+          {!toggle &&
+            sidebarItem1.map((item, index) => {
+              return (
+                <div
+                  className="flex gap-4 items-start cursor-pointer"
+                  id={index}
+                  onClick={() => {
+                    setTitle(item.title);
+                  }}
+                >
+                  <img
+                    className="cursor-pointer"
+                    src={item.title === title ? item.iconBold : item.icon}
+                    alt="icons"
+                  />
+                  <p
+                    className={`text-lg ${
+                      item.title === title
+                        ? "text-black font-semibold"
+                        : "text-text_primary"
+                    } `}
+                  >
+                    {item.title}
+                  </p>
+                </div>
+              );
+            })}
+        </div>
+        <div className="row-start-11 row-end-12 rounded-full flex items-center justify-center ">
+          <img
+            onClick={() => {
+              handleClick();
+            }}
+            src={arrow}
+            alt="sidebar_arrow"
+            className={`${rotate} w-10 cursor-pointer `}
+          />
+        </div>
+      </div>
     </>
   );
 };
