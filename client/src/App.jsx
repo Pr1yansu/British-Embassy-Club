@@ -16,6 +16,7 @@ import { Toaster } from "react-hot-toast";
 import Coupone from "./pages/Home/Coupone";
 import Settings from "./pages/Home/Settings";
 import Profile from "./pages/Home/Profile";
+import SettingsAdmin from "./pages/Home/SettingsAdmin";
 
 function App() {
   return (
@@ -28,7 +29,9 @@ function App() {
           <Route path="/member" element={<Member />} />
           <Route path="/coupon" element={<Coupone />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/settingsAdmin" element={<SettingsAdmin />} />
 
+          
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
           <Route path="/ClubLogin" element={<ClubLogin />} />
           <Route path="/ClubSignupOtp" element={<ClubSignUpOtp />} />

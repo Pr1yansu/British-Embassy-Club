@@ -5,8 +5,12 @@ module.exports = {
     extend: {
       colors: {
         primary: "#E2E8F0",
+        secondary: "#BBF7D0",
+        tettiary: "#FDA4AF",
         text_primary: "#6B7280",
         text_secondary: "#1d4ed8",
+        text_tertiaary: "#22C55E",
+        text_quaternary: "#BE123C",
         btn_primary: "#1d4ed8",
         btn_secondary: "#F8FAFC",
       },
@@ -16,13 +20,13 @@ module.exports = {
         table_shadow: "2px 2px 12px rgba(0, 0, 0, 0.10)",
         member_card: "2px 2px 12px 0px rgba(0, 0, 0, 0.10)",
         btn_shadow: "-4px 4px 20px 2px rgba(59, 130, 246, 0.25)",
+        danger_shadow: "-4px 4px 20px 2px rgba(225, 29, 72, 0.20)",
+        sidebar_shadow: "2px 1px 8px 0px rgba(0, 0, 0, 0.25)"
       },
       fontFamily: {
         sans: ["Open Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
-      },
-      fontSize: {
-        "5.5xl": "3.313rem",
+        inter: ["Inter","sans-serif"],
       },
       spacing: {
         15: "3.75rem",

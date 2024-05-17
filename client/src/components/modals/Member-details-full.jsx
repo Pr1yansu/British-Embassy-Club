@@ -23,7 +23,7 @@ const MembersDetails = ({setOpen}) => {
   );
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)]">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/10 z-20">
         <div className="w-[712px] h-[504px] border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">

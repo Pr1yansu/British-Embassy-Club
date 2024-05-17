@@ -14,110 +14,118 @@ const OperatorSignup = () => {
     setShow(!show);
   };
   const [selectedID, setSelectedID] = useState("Select your documnet");
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [address, setAddress] = useState('');
-  const [idType, setIdType] = useState('Select your documnet');
-  const [idNumber, setIdNumber] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [idType, setIdType] = useState("Select your documnet");
+  const [idNumber, setIdNumber] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = async (event) => {
     setIdType(event.target.value);
   };
 
-  const handleRegister = async (e) => { 
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-        if (!username || !email || !password || !confirmPassword || !mobileNumber || !address || !idType || !idNumber) {
-          toast.error("Please enter a valid search", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#FF0000",
-              color: "#FFFFFF",
-            },
-          });
-          setLoading(false);
-          return;
-        }
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !mobileNumber ||
+      !address ||
+      !idType ||
+      !idNumber
+    ) {
+      toast.error("Please enter a valid search", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      setLoading(false);
+      return;
+    }
 
-        if (password !== confirmPassword) {
-          toast.error("Password do not match with confirmpassword", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#FF0000",
-              color: "#FFFFFF",
-            },
-          });
-          return;
-        }
+    if (password !== confirmPassword) {
+      toast.error("Password do not match with confirmpassword", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      return;
+    }
 
-        if (mobileNumber.length !== 10) {
-          toast.error("Please enter a valid mobile number", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#FF0000",
-              color: "#FFFFFF",
-            },
-          });
-          return;
-        }
+    if (mobileNumber.length !== 10) {
+      toast.error("Please enter a valid mobile number", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      return;
+    }
 
-        if (idType === "Select your documnet") {
-          toast.error("Please select a document type", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#FF0000",
-              color: "#FFFFFF",
-            },
-          });
-          setLoading(false);
-          return;
-        }
+    if (idType === "Select your documnet") {
+      toast.error("Please select a document type", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      setLoading(false);
+      return;
+    }
 
-        try {
-          const { data } = await axios.post(
-            "/api/v1/operator/register",
-            {
-              username,
-              email,
-              password,
-              mobileNumber,
-              address,
-              idProof: {
-                idType,
-                idNumber,
-              },
-            },
-            { withCredentials: true }
-          );
-          console.log(data);
-          toast.success("success", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#FF0000",
-              color: "#FFFFFF",
-            },
-          });
-    
-        } catch (error) {
-          toast.error(error.response.data.message || "Internal Server Error", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "green",
-              color: "#FFFFFF",
-            },
-          });
-        }
-  }
+    try {
+      const { data } = await axios.post(
+        "/api/v1/operator/register",
+        {
+          username,
+          email,
+          password,
+          mobileNumber,
+          address,
+          idProof: {
+            idType,
+            idNumber,
+          },
+        },
+        { withCredentials: true }
+      );
+      console.log(data);
+      toast.success("success", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+    } catch (error) {
+      toast.error(error.response.data.message || "Internal Server Error", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "green",
+          color: "#FFFFFF",
+        },
+      });
+    }
+  };
 
   const handleConsole = (e) => {
     e.preventDefault();
@@ -129,7 +137,7 @@ const OperatorSignup = () => {
     console.log(address);
     console.log(idType);
     console.log(idNumber);
-  }
+  };
 
   return (
     <div
@@ -138,60 +146,69 @@ const OperatorSignup = () => {
       <img
         src={arrow}
         alt="arrow"
-        className="absolute top-0 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+        className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
       <h3 className="font-bold">Logo</h3>
 
       {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <form onSubmit={handleRegister} className="w-3/5 flex flex-col gap-4 items-center justify-center">
-            <InputBox placeholder={"Full Name"} type={"text"} onChange={(e)=>setUsername(e.target.value)} />
-            <Passwordbox placeholder={"Password"} onchange={(e)=>setPassword(e.target.value)} />
-            <Passwordbox placeholder={"Confirm Password"} onchange={(e)=>setConfirmPassword(e.target.value)} />
-            <InputBox placeholder={"Email"} type={"email"} onChange={(e)=>setEmail(e.target.value)} />
-            <InputBox placeholder={"Mobile Number"} type={"tel"} onChange={(e)=>setMobileNumber(e.target.value)} />
+          <form
+            onSubmit={handleRegister}
+            className="w-3/5 flex flex-col gap-4 items-center justify-center"
+          >
+            <InputBox
+              placeholder={"Full Name"}
+              type={"text"}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Passwordbox
+              placeholder={"Password"}
+              onchange={(e) => setPassword(e.target.value)}
+            />
+            <Passwordbox
+              placeholder={"Confirm Password"}
+              onchange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <InputBox
+              placeholder={"Email"}
+              type={"email"}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <InputBox
+              placeholder={"Mobile Number"}
+              type={"tel"}
+              onChange={(e) => setMobileNumber(e.target.value)}
+            />
             <textarea
               name="Address"
               id="Address"
               placeholder="Address"
-              className="bg-primary outline-none w-full h-24 py-5 px-4 rounded-lg text-sm text-text_primary "
-              onChange={(e)=>setAddress(e.target.value)}
+              className="bg-primary outline-none w-full h-24 py-5 px-4 rounded-lg text-sm text-text_primary resize-none"
+              onChange={(e) => setAddress(e.target.value)}
             ></textarea>
-            <label
-              htmlFor="Document"
-              className="flex justify-between items-center bg-primary outline-none w-full py-[0.6rem] px-4 rounded-lg text-sm text-text_primary"
-            >
-              {idType} <IoIosArrowDown onClick={toggle} size={20} />
-            </label>
             {show && (
               <>
-                <div className="flex justify-center gap-32 w-full">
-                  <label className="text-text_primary">
-                    <input
-                      type="radio"
-                      value="Aadhaar Card"
-                      checked={selectedID === "Aadhaar Card"}
-                      onChange={handleChange}
-                      className="mr-2"
-                    />
-                    Aadhaar Card
-                  </label>
-                  <label className="text-text_primary">
-                    <input
-                      type="radio"
-                      value="Pan Card"
-                      checked={selectedID === "Pan Card"}
-                      onChange={handleChange}
-                      className="mr-2"
-                    />
-                    Pan Card
-                  </label>
-                </div>
-                <InputBox placeholder={"ID number"} type={"text"} onChange={(e)=>setIdNumber(e.target.value)} />
+                <div className="flex items-center bg-primary outline-none w-full h-6 py-5 px-4 rounded-lg text-sm">
+                <select
+                  name=""
+                  id=""
+                  className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none"
+                >
+                  <option value="">Addhar Card</option>
+                  <option value="">Voter Card</option>
+                  <option value="">Pan Card</option>
+                </select>
+                <input
+                  type="text"
+                  id=""
+                  placeholder="Id Number"
+                  className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-sm text-text_primary "
+                />
+              </div>
               </>
             )}
-            <Button name={"Submit"} type={"submit"} />
+            <Button name={"Signup"} type={"submit"} />
           </form>
         </div>
         {/* Input ends here  */}
@@ -203,17 +220,19 @@ const OperatorSignup = () => {
               british embassy club
             </span>
           </h1>
-          <h1 className="font-semibold text-2xl">
+          <p className="font-medium text-3xl font-inter tracking-tight">
             if you already have an account
-          </h1>
-          <h2
-            href="#"
-            className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
-          >
-            <h1 className="font-semibold text-2xl">please</h1>
-            <h1 href="/OperatorLogin" className="font-semibold text-blue-700 text-2xl">
+          </p>
+          <h2 className="flex items-center max:lg-justify-center gap-2 font-medium text-3xl">
+            <p className="font-medium text-3xl font-inter tracking-tight">
+              please
+            </p>
+            <p
+              href="/ClubLogin"
+              className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
+            >
               login
-            </h1>
+            </p>
             <FaArrowRight size={22} color="blue" />
           </h2>
         </div>

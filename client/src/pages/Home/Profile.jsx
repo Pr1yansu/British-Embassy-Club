@@ -12,7 +12,7 @@ const Profile = () => {
     <>
       <div className="background grid grid-rows-12 grid-cols-12 bg-cover bg-center h-screen">
         <Sidebar/>
-        <div className="row-start-2 row-end-12 col-start-3 col-end-11 bg-white p-6 rounded-3xl">
+        <div className="row-start-2 row-end-12 col-start-3 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
           <div className="flex justify-start items-center gap-6 mb-5">
             <img src={profilePic} alt="" className="w-32 h-32" />
             <div
@@ -57,7 +57,7 @@ const Profile = () => {
                 <select
                   name=""
                   id=""
-                  className="bg-primary w-52 rounded-l-lg text-text_primary"
+                  className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none roboto font-medium"
                 >
                   <option value="">Addhar Card</option>
                   <option value="">Voter Card</option>
