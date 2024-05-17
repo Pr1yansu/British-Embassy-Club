@@ -84,3 +84,9 @@ export const memberItem = [
     balance: "450.00",
   },
 ];
+
+ export const managementData = [
+   { id: 1, name: "John Doe", roles: "Admin" },
+   { id: 2, name: "Jane Smith", roles: "Operator" },
+   { id: 3, name: "Mike Johnson", roles: "Auditor" },
+ ];

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Passwordbox from "../ui/Passwordbox";
-import Button from "../ui/Button";
+import ButtonGroup from "../ui/ButtonGroup";
 
-const SettingForm = () => {
+const ChangePassword = ({ colStart, colEnd }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,7 +17,6 @@ const SettingForm = () => {
       alert("New password and confirm password do not match");
     } else {
       alert("Password changed successfully");
-     
     }
   };
   const handleCancel = () => {
@@ -28,10 +27,18 @@ const SettingForm = () => {
 
   return (
     <>
-      <div className="row-start-2 row-end-9 col-start-5 col-end-9 flex flex-col justify-center p-8 bg-white shadow-member_card rounded-3xl">
-        <p className="mb-6 text-lg text-text_secondary font-semibold">
-          Change Password
-        </p>
+      <div
+        className={`row-start-2 row-end-9 ${colStart} ${colEnd}   flex flex-col justify-center p-8 bg-white shadow-member_card rounded-3xl`}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <p className=" text-lg text-text_secondary font-semibold">
+            Change Password
+          </p>
+          <p className="text-text_secondary text-xs underline cursor-pointer">
+            Password Policy*
+          </p>
+        </div>
+
         <form className="" onSubmit={handleSubmit}>
           <div className="mb-6">
             <label
@@ -83,7 +90,7 @@ const SettingForm = () => {
             >
               Cancel
             </button>
-            <Button name={"Confirm"} type={"submit"} />
+            <ButtonGroup name={"Confirm"} textColor={"text-text_secondary"} />
           </div>
         </form>
       </div>
@@ -91,4 +98,4 @@ const SettingForm = () => {
   );
 };
 
-export default SettingForm;
+export default ChangePassword;
