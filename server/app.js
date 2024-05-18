@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 const express = require("express");
-const connectDB = require("./config/db");
+const { connectDB } = require("./config/db");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const userRoutes = require("./routes/user");
@@ -9,11 +9,15 @@ const clubRoutes = require("./routes/club");
 const adminRoutes = require("./routes/admin");
 const memberRoutes = require("./routes/member");
 const walletRoutes = require("./routes/wallet");
-const RedisStore = require("connect-redis").default;
-const { createClient } = require("redis");
 const cors = require("cors");
 const cloudinary = require("cloudinary").v2;
 const fileUpload = require("express-fileupload");
+const MongoStore = require("connect-mongo");
+const cron = require("node-cron");
+const {
+  deleteUnverifiedUsers,
+  removeTemporaryAdmins,
+} = require("./controller/club");
 
 // Configuring dotenv
 dotenv.config({
@@ -29,31 +33,6 @@ cloudinary.config({
 
 // express app
 const app = express();
-
-// Redis Store
-const redisClient = createClient({
-  url: process.env.REDIS_DB_URI,
-});
-
-redisClient.connect();
-
-redisClient.on("error", (err) => {
-  console.log("Server Disconnected socket closed");
-});
-
-redisClient.on("connect", () => {
-  console.log("Redis Connected");
-});
-
-redisClient.on("end", () => {
-  console.log("Redis Disconnected");
-});
-
-const redisStore = new RedisStore({
-  client: redisClient,
-  prefix: "session:",
-  ttl: 86400,
-});
 
 // Database Connection
 connectDB();
@@ -73,10 +52,9 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: redisStore,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-    },
+    store: MongoStore.create({
+      mongoUrl: process.env.DATABASE_URI,
+    }),
   })
 );
 app.use(
@@ -107,4 +85,9 @@ app.listen(process.env.PORT, () => {
 
 app.get("/", (req, res) => {
   res.send(`welcome to the club app, ${req.hostname}!`);
+});
+
+cron.schedule("0 3 * * *", async () => {
+  await deleteUnverifiedUsers();
+  await removeTemporaryAdmins();
 });
