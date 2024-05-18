@@ -23,7 +23,7 @@ const ClubLogin = () => {
               <InputBox type={"text"} placeholder={"Username"} />
               <Passwordbox placeholder="Password" />
               <Button name={"Login"} />
-              <a href="#" className="text-blue-700 font-semibold text-xs roboto">
+              <a href="#" className="text-blue-700 font-medium text-xs roboto">
                 Forget your password?
               </a>
             </div>
@@ -39,7 +39,7 @@ const ClubLogin = () => {
             <p className="font-medium text-3xl font-inter tracking-tight">
             if you don’t have an account
           </p>
-          <h2 className="flex items-center max:lg-justify-center gap-2 font-medium text-3xl">
+          <h2 className="flex items-center max:lg-justify-center gap-2">
             <p className="font-medium text-3xl font-inter tracking-tight">please</p>
             <p href="/ClubLogin" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
             register

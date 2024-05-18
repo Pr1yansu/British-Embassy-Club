@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ButtonGroup from "../ui/ButtonGroup";
 
-const MembersDetails = ({setOpen}) => {
+const MembersDetails = ({ setOpen }) => {
   const [user, setUser] = useState({
     name: "John Doe",
     userName: "@username",
@@ -29,24 +29,43 @@ const MembersDetails = ({setOpen}) => {
             <div className="flex justify-center items-center gap-9">
               <CgProfile size={128} color="#6B7280" />
               <div className="flex flex-col gap-2">
-                <p className="text-3xl text-btn_primary font-bold font-sans">{user.name}</p>
+                <p className="text-3xl text-btn_primary font-bold font-sans">
+                  {user.name}
+                </p>
                 <p className="text-text_primary roboto">{user.userName}</p>
               </div>
             </div>
-            <div onClick={()=>{setOpen()}} className="cursor-pointer">
-            <IoIosCloseCircleOutline size={30} color="blue" />
+            <div
+              onClick={() => {
+                setOpen();
+              }}
+              className="cursor-pointer"
+            >
+              <IoIosCloseCircleOutline size={30} color="blue" />
             </div>
           </div>
           <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
             {filteredKeys.map((key, index) => (
-              <div key={index} className="flex flex-col gap-2">
+              <div key={index} className="flex flex-col">
                 <p className="text-btn_primary roboto font-normal">{key}</p>
-                <p className="lato text-sm text-text_primary font-normal">{user[key]}</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {user[key]}
+                </p>
               </div>
             ))}
           </div>
           <div className="w-full flex justify-end">
-            <ButtonGroup name={'Remove Member'} color={'bg-[#F8FAFC]'} textColor={'text-[#6B7280]'} toggle={false} icon={<IoIosCloseCircleOutline size={30} color="#6B7280" />}/>
+            <ButtonGroup
+              name={"Remove Member"}
+              textColor={"text-text_primary"}
+              HovertextColor={"hover:text-white"}
+              toggle={false}
+              color={"bg-white"}
+              HoverColor={"hover:bg-red-600"}
+              Hovershadow={"hover:shadow-danger_shadow"}
+              shadow={"shadow-danger_shadow"}
+              icon={<IoIosCloseCircleOutline size={30} />}
+            />
           </div>
         </div>
       </div>

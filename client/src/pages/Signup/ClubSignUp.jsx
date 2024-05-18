@@ -153,11 +153,10 @@ const ClubSignUp = () => {
               <option value="admin">admin</option>
               <option value="operator">operator</option>
             </select>
+            <div className="mt-20">
             <Button name={"Sign up"} type={"submit"} />
 
-            <a href="#" className="text-blue-700 font-bold">
-              Forget your password?
-            </a>
+            </div>
           </form>
         </div>
         <div className="flex flex-col">
@@ -165,7 +164,7 @@ const ClubSignUp = () => {
           <p className="font-medium text-3xl font-inter tracking-tight">
             if you already have an account
           </p>
-          <h2 className="flex items-center max:lg-justify-center gap-2 font-medium text-3xl">
+          <h2 className="flex items-center max:lg-justify-center gap-2">
             <p className="font-medium text-3xl font-inter tracking-tight">please</p>
             <p href="/ClubLogin" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
               login

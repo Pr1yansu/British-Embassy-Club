@@ -14,8 +14,8 @@ const MainCard = ({img,title,subtitle,position,background,shadow,posV,page}) => 
             />
           </div>
           <div className="flex flex-col gap-1">
-            <p className="text-lg font-semibold card-title">{title}</p>
-            <p className="text-xs text-text_primary card-Subtitle
+            <p className="text-2xl font-medium font-roboto card-title">{title}</p>
+            <p className="text-xs font-roboto font-normal text-text_primary card-Subtitle
             ">{subtitle}</p>
           </div>
       </div>

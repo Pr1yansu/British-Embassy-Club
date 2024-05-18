@@ -51,7 +51,7 @@ const Sidebar = ({ value }) => {
                     alt="icons"
                   />
                   {!toggle && (<p
-                    className={`text-lg ${
+                    className={`text-xl roboto ${
                       item.title === title
                         ? "text-black font-semibold"
                         : "text-text_primary"

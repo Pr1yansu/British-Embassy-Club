@@ -22,7 +22,7 @@ const MemberCard = () => {
           return (
             <>
               <div className="w-64 h-40 p-3 rounded-lg shadow-member_card cursor-pointer bg-white" onClick={()=> SetOpen(true)}>
-                <div className="flex items-center justify-between my-1 pb-3 border-b-2 border-primary mb-3">
+                <div className="flex items-center justify-between my-1 pb-3 border-b-2 border-primary mb-2">
                   <div className="flex items-center gap-3">
                     <img src={item.img} className="w-10" alt="member" />
                     <div className="flex flex-col">

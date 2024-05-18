@@ -12,8 +12,8 @@ const Profile = () => {
     <>
       <div className="background grid grid-rows-12 grid-cols-12 bg-cover bg-center h-screen">
         <Sidebar/>
-        <div className="row-start-2 row-end-12 col-start-3 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
-          <div className="flex justify-start items-center gap-6 mb-5">
+        <div className="row-start-2 row-end-12 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
+          <div className="flex justify-start items-center gap-6 mb-4">
             <img src={profilePic} alt="" className="w-32 h-32" />
             <div
               onClick={() => {
@@ -34,7 +34,7 @@ const Profile = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-5">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-4">
             <label htmlFor="" className="roboto font-medium text-btn_primary">
               FirstName
               <InputBox type={"text"} />
@@ -57,9 +57,9 @@ const Profile = () => {
                 <select
                   name=""
                   id=""
-                  className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none roboto font-medium"
+                  className="bg-primary w-52 rounded-l-lg text-text_primary outline-none roboto font-medium p-2 text-base"
                 >
-                  <option value="">Addhar Card</option>
+                  <option value="" >Addhar Card</option>
                   <option value="">Voter Card</option>
                   <option value="">Pan Card</option>
                 </select>
@@ -84,7 +84,7 @@ const Profile = () => {
             </label>
           </div>
 
-          <div className="flex justify-end w-full gap-6 mt-6">
+          <div className="flex justify-end w-full gap-6 mt-4">
             <ButtonGroup
               name={"Cancel"}
               color={"bg-[#F8FAFC]"}

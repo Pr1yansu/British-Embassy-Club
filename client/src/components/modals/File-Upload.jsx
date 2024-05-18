@@ -26,7 +26,7 @@ const FileUpload = (props) => {
 
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)] z-10">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)] z-20">
         <div className="w-[712px] h-[504px] border bg-[#E2E8F0] px-9 py-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           {/* Heading section starts here */}
           <div className="flex justify-between w-full">
@@ -52,7 +52,7 @@ const FileUpload = (props) => {
             onDrop={onDrop}
           >
             <MdOutlineFileUpload size={100} color="#6B7280" />
-            <p className="text-text_primary roboto">
+            <p className="text-text_primary roboto text-base font-medium">
               Click or Drag and Drop your files here
             </p>
             <input

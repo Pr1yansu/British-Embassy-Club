@@ -11,7 +11,7 @@ const Dashboard = () => {
         <h3>Logo</h3>
         <div className="flex gap-4 items-center justify-center">
           <div className="flex flex-col items-end">
-            <h4 className="text-xl">Snehashis Gharai</h4>
+            <h4 className="text-xl font-roboto">Snehashis Gharai</h4>
             <h6 className="text-text_primary">Operator</h6>
           </div>
           <img src={profile} alt="" className="w-16 h-16"/>
