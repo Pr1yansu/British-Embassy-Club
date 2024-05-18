@@ -83,13 +83,7 @@ const ChangePassword = ({ colStart, colEnd }) => {
             />
           </div>
           <div className="flex justify-end gap-4">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="px-4 py-2 bg-gray-400 text-white rounded-lg"
-            >
-              Cancel
-            </button>
+          <ButtonGroup name={"Cancel"} textColor={"text-text_secondary"} color={'bg-primary'}/>
             <ButtonGroup name={"Confirm"} textColor={"text-text_secondary"} />
           </div>
         </form>

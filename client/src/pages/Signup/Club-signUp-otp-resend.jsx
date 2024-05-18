@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
+import ClubRight from "../../components/auth/ClubRight";
 const ClubSignUpOtpResend = () => {
   const [seconds, setSeconds] = useState(30);
 
@@ -24,7 +25,7 @@ const ClubSignUpOtpResend = () => {
       <img
         src={arrow}
         alt="arrow"
-        className="absolute top-0 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+        className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
       <h3 className="font-bold">Logo</h3>
 
@@ -35,36 +36,21 @@ const ClubSignUpOtpResend = () => {
             <InputBox
               placeholder={"Write your verification code here"}
               type={"text"}
-            />
-            <p className="text-text_primary roboto font-medium">
+            /> 
+            <h2 className="text-text_primary roboto font-medium flex gap-2">
               Your OTP will expire in{" "}
-              <span className="text-blue-700 roboto font-medium">
+              <h3 className="text-blue-700 roboto font-medium">
                 00:{formatedTime} seconds
-              </span>
-            </p>
+              </h3>
+            </h2>
             <div className="flex gap-10">
               <Button name={"Submit"} />
-              <button
-                className={`shadow-md shadow-blue-500 hover:scale-110 duration-300 px-4 rounded-lg text-text_primary ${
-                  formatedTime === "00" ? "bg-blue-700 text-white" : ""
-                }`}
-              >
-                {formatedTime !== "00"
-                  ? `Resend in 00:${formatedTime} seconds`
-                  : "Resend"}
-              </button>
+              <Button name={"Resend"}/>
             </div>
           </div>
         </div>
         {/* Input ends here  */}
-        <div className="flex flex-col">
-          <h1 className="mb-4">
-            be a member of <br />{" "}
-            <span className="text-blue-700 font-bold">
-              british embassy club
-            </span>
-          </h1>
-        </div>
+        <ClubRight/>
       </div>
     </div>
   );

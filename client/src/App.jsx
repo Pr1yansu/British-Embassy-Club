@@ -24,10 +24,11 @@ function App() {
       <BrowserRouter>
         <Toaster />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<ClubLogin />} />
           <Route path="/modal" element={<ModalHome />} />
           <Route path="/member" element={<Member />} />
-          <Route path="/coupone" element={<Coupone />} />
+          <Route path="/coupon" element={<Coupone />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/settingsAdmin" element={<SettingsAdmin />} />
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
@@ -37,7 +38,6 @@ function App() {
             path="/ClubSignUpOtpResend"
             element={<ClubSignUpOtpResend />}
           />
-          
           <Route path="/OperatorLogin" element={<OperatoLogin />} />
           <Route path="/OperatorSignUp" element={<OperatorSignup />} />
           <Route
@@ -49,7 +49,6 @@ function App() {
             element={<OperatorResetPassMail />}
           />
           <Route path="/OperatorResetPass" element={<OperatorResetPass />} />
-
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>

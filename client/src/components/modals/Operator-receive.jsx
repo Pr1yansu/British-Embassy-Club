@@ -9,24 +9,24 @@ import ReactDOM from "react-dom";
 const OperatorReceive = () => {
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25">
-        <div className="w-[712px] h-[504px] border bg-btn_secondary rounded-lg flex flex-col items-center gap-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)]">
+        <div className="w-[712px] h-[504px] border bg-btn_secondary rounded-lg flex flex-col items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
             <div className="flex gap-10">
-              <p className="text-btn_primary roboto font-semibold">
+              <p className="text-btn_primary roboto font-medium">
                 Member Name
               </p>
               <p className="lato">John Doe</p>
             </div>
             <div className="flex gap-[73px]">
-              <p className="text-btn_primary roboto font-semibold">Member ID</p>
+              <p className="text-btn_primary roboto font-medium">Member ID</p>
               <p className="lato">BEC20240201DEMO1</p>
             </div>
           </div>
           {/* Upper part ends here */}
 
           {/* Lower part starts here */}
-          <form className="flex flex-col gap-4 w-full px-9">
+          <form className="flex flex-col w-full px-9 py-6">
             {/* 1st row starts here */}
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-3">

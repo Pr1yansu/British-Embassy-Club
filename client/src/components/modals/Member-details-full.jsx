@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ButtonGroup from "../ui/ButtonGroup";
 
-const MembersDetails = ({setOpen}) => {
+const MembersDetails = ({ setOpen }) => {
   const [user, setUser] = useState({
     name: "John Doe",
     userName: "@username",
@@ -23,7 +23,7 @@ const MembersDetails = ({setOpen}) => {
   );
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/10 z-20">
         <div className="w-[712px] h-[504px] border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
@@ -46,7 +46,7 @@ const MembersDetails = ({setOpen}) => {
           </div>
           <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
             {filteredKeys.map((key, index) => (
-              <div key={index} className="flex flex-col gap-2">
+              <div key={index} className="flex flex-col">
                 <p className="text-btn_primary roboto font-normal">{key}</p>
                 <p className="lato text-sm text-text_primary font-normal">
                   {user[key]}
@@ -57,10 +57,14 @@ const MembersDetails = ({setOpen}) => {
           <div className="w-full flex justify-end">
             <ButtonGroup
               name={"Remove Member"}
-              color={"bg-[#F8FAFC]"}
-              textColor={"text-[#6B7280]"}
+              textColor={"text-text_primary"}
+              HovertextColor={"hover:text-white"}
               toggle={false}
-              icon={<IoIosCloseCircleOutline size={30} color="#6B7280" />}
+              color={"bg-white"}
+              HoverColor={"hover:bg-red-600"}
+              Hovershadow={"hover:shadow-danger_shadow"}
+              shadow={"shadow-danger_shadow"}
+              icon={<IoIosCloseCircleOutline size={30} />}
             />
           </div>
         </div>

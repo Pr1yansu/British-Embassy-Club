@@ -31,13 +31,8 @@ const CouponeTable = () => {
     ["2", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
     ["3", "BEC20240201DEMO1", "ISSUE", "1000", "10:30", "Paid"],
     ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
-    ["4", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
+    ["5", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
+    ["6", "BEC20240201DEMO1", "RECEIVE", "1000", "10:30", "Due"],
   ];
 
   const options = {
@@ -48,18 +43,21 @@ const CouponeTable = () => {
     search: false,
     filter: false,
     print: false,
-    download: false,
+    // download: false,
+    viewColumns: false,
   };
+
   const getMuiTheme = () =>
     createTheme({
       typography: {
-        fontFamily: "Roboto,sans-serif",
+        // fontFamily: "Roboto,sans-serif",
+        // fontSize: 20,
       },
       components: {
         MuiTableCell: {
           styleOverrides: {
-            head: { padding: "10px 0px", borderBottom: "none" },
-            body: { padding: "7px 15px", borderBottom: "none" },
+            head: { padding: "10px 0px" },
+            body: { padding: "7px 17px" },
           },
         },
       },

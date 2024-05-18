@@ -13,9 +13,9 @@ const OperatorResetPass = () => {
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-62">
         <div className="flex flex-col gap-6 w-full">
           <h1 className="text-5.5xl">reset password ?</h1>
-          <h1 className="text-xl">
+          <p className="font-medium text-2xl font-inter tracking-tight">
             You are a step away from accessing your <br /> account !
-          </h1>
+          </p>
           <Passwordbox placeholder={"New Password"} />
           <Passwordbox placeholder={"Confirm Password"} />
         <div className="flex justify-center">
@@ -23,12 +23,6 @@ const OperatorResetPass = () => {
         </div>
         </div>
       </div>
-      <p className="text-text_primary text-center font-bold row-start-11 row-end-12 col-start-5 col-end-9 roboto">
-        Already have an account{" "}
-        <a href="/OperatorLogin" className="text-blue-700 font-bold roboto">
-          Login
-        </a>
-      </p>
       {/* Input ends here  */}
     </div>
   );

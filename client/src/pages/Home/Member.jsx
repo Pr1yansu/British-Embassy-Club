@@ -32,10 +32,9 @@ const Member = () => {
             icon={<IoMdAddCircleOutline size={22} />}
           />
         </div>
-        <div className="row-start-3 row-end-10 col-start-2 col-end-12 grid grid-cols-5 gap-4">
-            <MemberCard
-            />
-        </div>
+        <div className="row-start-3 row-end-11 col-start-2 col-end-12">
+          <MemberCard />
+        </div>   
       </div>
       {open && <AddMember onModal={() => SetOpen(false)} />}
     </>

@@ -9,15 +9,15 @@ const OperatorQuery = () => {
       <section className="w-[712px] h-[418px] border bg-btn_secondary rounded-lg flex flex-col items-center gap-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         {/* Upper div starts here */}
         <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
-          <div className="flex gap-10">
-            <p className="text-btn_primary roboto font-semibold">Member Name</p>
-            <p className="lato">John Doe</p>
+            <div className="flex gap-10">
+              <p className="text-btn_primary roboto font-medium">Member Name</p>
+              <p className="lato">John Doe</p>
+            </div>
+            <div className="flex gap-[73px]">
+              <p className="text-btn_primary roboto font-medium">Member ID</p>
+              <p className="lato">BEC20240201DEMO1</p>
+            </div>
           </div>
-          <div className="flex gap-[73px]">
-            <p className="text-btn_primary roboto font-semibold">Member ID</p>
-            <p className="lato">BEC20240201DEMO1</p>
-          </div>
-        </div>
         {/* Upper div ends hete */}
 
         {/* Lower div starts here */}
