@@ -9,7 +9,7 @@ import ReactDOM from "react-dom";
 const OperatorReceive = () => {
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)]">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25">
         <div className="w-[712px] h-[504px] border bg-btn_secondary rounded-lg flex flex-col items-center gap-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
             <div className="flex gap-10">

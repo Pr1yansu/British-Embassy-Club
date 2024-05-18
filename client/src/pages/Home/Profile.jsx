@@ -55,7 +55,7 @@ const Profile = () => {
                 <select
                   name=""
                   id=""
-                  className="bg-primary w-52 rounded-l-lg text-text_primary"
+                  className="bg-primary w-52 text-base focus:outline-none rounded-l-lg text-text_primary"
                 >
                   <option value="">Addhar Card</option>
                   <option value="">Voter Card</option>
