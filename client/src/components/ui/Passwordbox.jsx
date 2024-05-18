@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-const Passwordbox = ( {placeholder, id ,value,onchange, onclick}) => {
-
+const Passwordbox = ({ placeholder, id, value, onchange, onclick }) => {
   const [eye, setEye] = useState(true);
-    const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <>
       <div className="relative sm:w-full max-sm:w-4/5 ">
@@ -14,6 +13,7 @@ const Passwordbox = ( {placeholder, id ,value,onchange, onclick}) => {
           onChange={onchange}
           value={value}
           placeholder={placeholder && placeholder}
+          required
           className=" bg-primary outline-none w-full  h-6 py-5 pl-4 pr-12 rounded-lg text-sm text-text_primary"
         />
 

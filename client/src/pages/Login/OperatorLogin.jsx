@@ -14,7 +14,7 @@ const OperatoLogin = () => {
         <img
           src={arrow}
           alt="arrow"
-          className="absolute top-0 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+          className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
         />
         <h3 className="font-bold">Logo</h3>
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
@@ -23,31 +23,37 @@ const OperatoLogin = () => {
               <InputBox placeholder={"Username"} type={"text"} />
               <Passwordbox placeholder="Password" />
               <Button name={"Signup"} />
-              <a href="#" className="text-blue-700 font-bold roboto">
+              <a href="#" className="text-blue-700  roboto">
                 Forgot your password?
               </a>
             </div>
           </div>
+
           <div className="flex flex-col">
             <h1 className="mb-4">
-              a new dashboard <br />system for the{" "}
+              a new dashboard <br />
+              system for the{" "}
               <span className="text-blue-700 font-bold">
                 british embassy club
               </span>
             </h1>
-            <h1 className=" font-semibold text-2xl">
-              if you don’t have an account please
-            </h1>
-            <h1
-              href="#"
-              className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl"
-            >
-              <h1 className="font-semibold text-2xl">please</h1>
-              <h1 href="/OperatorSignUp" className="font-semibold text-blue-700 text-2xl">
-                register
-              </h1>
-              <FaArrowRight size={22} color="blue" />
-            </h1>
+            <div className="flex flex-col">
+              <p className="font-medium text-3xl font-inter tracking-tight">
+                if you don’t have an account
+              </p>
+              <h2 className="flex items-center max:lg-justify-center gap-2 font-medium text-3xl">
+                <p className="font-medium text-3xl font-inter tracking-tight">
+                  please
+                </p>
+                <p
+                  href="/ClubLogin"
+                  className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
+                >
+                  register
+                </p>
+                <FaArrowRight size={22} color="blue" />
+              </h2>
+            </div>
           </div>
         </div>
       </div>
