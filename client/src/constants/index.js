@@ -23,7 +23,7 @@ export const cardData = [
     posV: "self-end",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(252,198,56,0.25)]",
     background: "hover:bg-[#FEF3C7]",
-    page: "/member"
+    page: "/member",
   },
   {
     img: Coupon_icon,
@@ -33,7 +33,7 @@ export const cardData = [
     posV: "self-end",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(229,44,84,0.25)]",
     background: "hover:bg-[#FDA4AF]",
-    page: "/member"
+    page: "/member",
   },
   {
     img: Settings_icon,
@@ -43,7 +43,7 @@ export const cardData = [
     posV: "self-start",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(140,57,214,0.25)]",
     background: "hover:bg-[#D8B4FE]",
-    page: "/member"
+    page: "/member",
   },
   {
     img: Profile_icon,
@@ -53,7 +53,7 @@ export const cardData = [
     posV: "self-start",
     shadow: "hover:shadow-[8px_8px_16px_0px_rgba(51,203,107,0.25)]",
     background: "hover:bg-[#BBF7D0]",
-    page: "/profile"
+    page: "/profile",
   },
 ];
 
@@ -85,8 +85,8 @@ export const memberItem = [
   },
 ];
 
- export const managementData = [
-   { id: 1, name: "John Doe", roles: "Admin" },
-   { id: 2, name: "Jane Smith", roles: "Operator" },
-   { id: 3, name: "Mike Johnson", roles: "Auditor" },
- ];
+export const managementData = [
+  { id: 1, name: "John Doe", roles: "Admin" },
+  { id: 2, name: "Jane Smith", roles: "Operator" },
+  { id: 3, name: "Mike Johnson", roles: "Auditor" },
+];
