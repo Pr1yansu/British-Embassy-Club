@@ -1,11 +1,36 @@
-import { React } from "react";
+import { React, useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowRight } from "react-icons/fa6";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const OperatoLogin = () => {
+    const navigate = useNavigate();
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      const { data } = await axios.post("/api/v1/operator/login", {
+        username,
+        password,
+      });
+      if (data) {
+         toast.success(data.message, {
+           duration: 2000,
+           position: "top-left",
+           style: {
+             background: "#00FF00",
+             color: "#FFFFFF",
+           },
+         });
+          navigate("/dashboard");
+      }
+  };
   return (
     <>
       <div
@@ -19,14 +44,14 @@ const OperatoLogin = () => {
         <h3 className="font-bold">Logo</h3>
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
           <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-            <div className="w-3/5 flex flex-col gap-4 items-center justify-center ">
-              <InputBox placeholder={"Username"} type={"text"} />
-              <Passwordbox placeholder="Password" />
+            <form onSubmit={handleLogin} className="w-3/5 flex flex-col gap-4 items-center justify-center ">
+              <InputBox placeholder={"Username"} type={"text"} onChange={(e)=>setUsername(e.target.value)} />
+              <Passwordbox placeholder="Password" onchange={(e)=>setPassword(e.target.value)} />
               <Button name={"Signup"} />
               <a href="#" className="text-blue-700  roboto">
                 Forgot your password?
               </a>
-            </div>
+            </form>
           </div>
 
           <div className="flex flex-col">

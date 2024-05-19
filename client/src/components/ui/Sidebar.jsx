@@ -39,7 +39,7 @@ const Sidebar = ({ value }) => {
           { sidebarItem1.map((item, index) => {
               return (
                 <div
-                  className="flex gap-4 items-start cursor-pointer"
+                  className="flex gap-4 items-center cursor-pointer"
                   id={index}
                   onClick={() => {
                     setTitle(item.title);

@@ -17,11 +17,11 @@ const ModalHome = () => {
         {
             open && (
                 // <Warning onModal={()=> SetOpen(false)}/>
-                <AddMember onModal={()=> SetOpen(false)}/>
+                // <AddMember onModal={()=> SetOpen(false)}/>
                 // <MembersDetails setOpen={()=> SetOpen(false)}/>
                 // <OperatorIssue />
                 // <OperatorQuery />
-                // <OperatorReceive />
+                <OperatorReceive />
             )
         }
       </div>

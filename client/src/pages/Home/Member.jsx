@@ -5,9 +5,12 @@ import AddButton from "../../components/ui/AddButton";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import AddMember from "../../components/modals/Add-member";
 import MemberCard from "../../components/ui/MemberCard";
+import { ListItem } from "@mui/material";
+import { memberItem } from "../../constants/index";
 
 const Member = () => {
   const [open, SetOpen] = useState(false);
+
   return (
     <>
       <div className="background bg-cover bg-center w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">

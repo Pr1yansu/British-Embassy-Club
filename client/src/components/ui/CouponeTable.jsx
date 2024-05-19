@@ -44,18 +44,19 @@ const CouponeTable = () => {
     filter: false,
     print: false,
     // download: false,
-    viewColumns	: false
+    viewColumns: false,
   };
 
   const getMuiTheme = () =>
     createTheme({
       typography: {
-        fontFamily: "Roboto,sans-serif",
+        // fontFamily: "Roboto,sans-serif",
+        // fontSize: 20,
       },
       components: {
         MuiTableCell: {
           styleOverrides: {
-            head: { padding: "10px 0px"},
+            head: { padding: "10px 0px" },
             body: { padding: "7px 17px" },
           },
         },

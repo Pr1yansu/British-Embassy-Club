@@ -1,11 +1,42 @@
-import { React } from "react";
+import { React, useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowRight } from "react-icons/fa6";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ClubLogin = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.post("/api/v1/club/login", {
+      username,
+      password,
+    });
+    if (data) {
+      // console.log(data.data.role);
+      if(data.data.role === "admin"){
+        navigate("/dashboard");
+      }
+      if(data.data.role === "operator"){
+        navigate("/OperatorLogin");
+      }
+      toast.success(data.message, {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#00FF00",
+          color: "#FFFFFF",
+        },
+      });
+    } 
+  };
   return (
     <>
       <div
@@ -19,14 +50,21 @@ const ClubLogin = () => {
         <h3 className="font-bold">Logo</h3>
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
           <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-            <div className="w-3/5 flex flex-col gap-4 items-center justify-center">
-              <InputBox type={"text"} placeholder={"Username"} />
-              <Passwordbox placeholder="Password" />
-              <Button name={"Login"} />
+            <form onSubmit={handleLogin} className="w-3/5 flex flex-col gap-4 items-center justify-center">
+              <InputBox
+                type={"text"}
+                placeholder={"Username"}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Passwordbox
+                placeholder="Password"
+                onchange={(e) => setPassword(e.target.value)}
+              />
+              <Button name={"Login"} type={"submit"} />
               <a href="#" className="text-blue-700 font-medium text-xs roboto">
                 Forget your password?
               </a>
-            </div>
+            </form>
           </div>
 
           <div className="flex flex-col">
@@ -37,15 +75,20 @@ const ClubLogin = () => {
               </span>
             </h1>
             <p className="font-medium text-3xl font-inter tracking-tight">
-            if you don’t have an account
-          </p>
-          <h2 className="flex items-center max:lg-justify-center gap-2">
-            <p className="font-medium text-3xl font-inter tracking-tight">please</p>
-            <p href="/ClubLogin" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
-            register
+              if you don’t have an account
             </p>
-            <FaArrowRight size={22} color="blue" />
-          </h2>
+            <h2 className="flex items-center max:lg-justify-center gap-2">
+              <p className="font-medium text-3xl font-inter tracking-tight">
+                please
+              </p>
+              <p
+                href="/ClubLogin"
+                className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
+              >
+                register
+              </p>
+              <FaArrowRight size={22} color="blue" />
+            </h2>
           </div>
         </div>
       </div>

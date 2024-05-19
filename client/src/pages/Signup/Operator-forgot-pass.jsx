@@ -13,7 +13,7 @@ const OperatorSignUpOtp = () => {
       <h3 className="font-bold absolute top-15 left-30">Logo</h3>
 
       {/* Input starts here */}
-      <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-[108px]">
+      <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-24">
         <div className="flex flex-col gap-6 w-full px-25">
           <h1 className="font-semibold">forgot password ?</h1>
           <p className="font-medium text-2xl font-inter tracking-tight">

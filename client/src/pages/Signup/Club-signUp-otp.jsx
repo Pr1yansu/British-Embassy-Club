@@ -33,7 +33,12 @@ const ClubSignUpOtp = () => {
             color: "#FFFFFF",
           },
         });
-        navigate("/");
+        if (data.data.role === "admin") {
+          navigate("/");
+        }
+        if (data.data.role === "operator") {
+          navigate("/OperatorLogin");
+        }
       };
     }
     } catch (error) {

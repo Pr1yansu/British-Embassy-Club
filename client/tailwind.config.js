@@ -21,12 +21,12 @@ module.exports = {
         member_card: "2px 2px 12px 0px rgba(0, 0, 0, 0.10)",
         btn_shadow: "-4px 4px 20px 2px rgba(59, 130, 246, 0.25)",
         danger_shadow: "-4px 4px 20px 2px rgba(225, 29, 72, 0.20)",
-        sidebar_shadow: "2px 1px 8px 0px rgba(0, 0, 0, 0.25)"
+        sidebar_shadow: "2px 1px 8px 0px rgba(0, 0, 0, 0.25)",
       },
       fontFamily: {
         sans: ["Open Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
-        inter: ["Inter","sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
       spacing: {
         15: "3.75rem",
@@ -42,6 +42,8 @@ module.exports = {
       },
       width: {
         120: "32rem",
+        // 227 px into rem
+        57: "232px",
       },
     },
   },

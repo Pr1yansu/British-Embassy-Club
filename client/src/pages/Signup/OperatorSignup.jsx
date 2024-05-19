@@ -7,13 +7,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import { FaArrowRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const OperatorSignup = () => {
   const [show, setShow] = useState(false);
   const toggle = () => {
     setShow(!show);
   };
-  const [selectedID, setSelectedID] = useState("Select your documnet");
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -106,15 +107,18 @@ const OperatorSignup = () => {
         },
         { withCredentials: true }
       );
-      console.log(data);
-      toast.success("success", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      if (data) {
+        console.log(data);
+        toast.success("success", {
+          duration: 2000,
+          position: "top-left",
+          style: {
+            background: "#FF0000",
+            color: "#FFFFFF",
+          },
+        });
+        navigate("/OperatorLogin");
+      }
     } catch (error) {
       toast.error(error.response.data.message || "Internal Server Error", {
         duration: 2000,
@@ -187,27 +191,27 @@ const OperatorSignup = () => {
               className="bg-primary outline-none w-full h-24 py-5 px-4 rounded-lg text-sm text-text_primary resize-none"
               onChange={(e) => setAddress(e.target.value)}
             ></textarea>
-            {show && (
-              <>
-                <div className="flex items-center bg-primary outline-none w-full h-6 py-5 px-4 rounded-lg text-sm">
-                <select
-                  name=""
-                  id=""
-                  className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none"
-                >
-                  <option value="">Addhar Card</option>
-                  <option value="">Voter Card</option>
-                  <option value="">Pan Card</option>
-                </select>
-                <input
-                  type="text"
-                  id=""
-                  placeholder="Id Number"
-                  className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-sm text-text_primary "
-                />
-              </div>
-              </>
-            )}
+
+            <div className="flex items-center bg-primary outline-none w-full h-6 py-5 px-4 rounded-lg text-sm">
+              <select
+                name=""
+                id=""
+                className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none"
+                onChange={handleChange}
+              >
+                <option value="Aadhar Card">Aadhar Card</option>
+                <option value="Voter Card">Voter Card</option>
+                <option value="Pan Card">Pan Card</option>
+              </select>
+              <input
+                type="text"
+                id=""
+                placeholder="Id Number"
+                onChange={(e) => setIdNumber(e.target.value)}
+                className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-sm text-text_primary "
+              />
+            </div>
+
             <Button name={"Signup"} type={"submit"} />
           </form>
         </div>

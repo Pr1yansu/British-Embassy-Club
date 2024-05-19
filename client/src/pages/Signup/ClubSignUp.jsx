@@ -83,8 +83,8 @@ const ClubSignUp = () => {
         },
       });
 
-      if (role !== "admin") {
-        navigate("/OperatorSignUp");
+      if (role === "operator") {
+        navigate("/ClubSignupOtp");
         return;
       }
 

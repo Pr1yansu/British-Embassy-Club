@@ -13,11 +13,11 @@ const OperatorResetPassMail = () => {
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-5 col-end-9">
         <h1 className="text-6xl mb-6 font-semibold">Check your email</h1>
-        <p className="font-medium text-2xl font-inter tracking-tight">
+        <p className="font-medium text-xl font-inter tracking-tight">
           We just sent an email to your inbox with a <br />
           link to reset your password
         </p>
-        <img src={mailbox} className="h-60 w-60 mx-auto" />
+        <img src={mailbox} className="h-60 w-60 self-center" />
       </div>
       <div className="row-start-10 row-end-11 col-start-5 col-end-9 flex justify-between">
         <ButtonGroup name={"Go Back"} textColor={"text-btn_primary"} icon={<IoIosArrowRoundBack size={30}/>} toggle={false}/>
