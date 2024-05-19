@@ -72,6 +72,7 @@ const MembersDetails = ({ setOpen }) => {
               icon={<IoIosCloseCircleOutline size={30} />}
               onClick={() => SetOpen(true)}
             />
+            {open && <Warning onModal={() => SetOpen(false)} />}
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 const Warning = ({ onModal }) => {
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-500/25 z-20">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25 z-20">
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[470px] h-[328px] bg-[#F8FAFC] p-6 flex flex-col justify-between rounded-3xl">
           <div className="w-full flex flex-col gap-3 items-center">
             <p className="text-red-600 font-semibold text-5xl font-inter">warining !</p>

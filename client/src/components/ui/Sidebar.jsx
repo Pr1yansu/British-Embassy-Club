@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import arrow from "../../assets/icons/sidebar_arrow.png";
 import { sidebarItem1 } from "../../constants";
 import { useNavigate } from "react-router-dom";
+
 const Sidebar = ({ value }) => {
   const navigate = useNavigate();
   const [sidebar, setSidebar] = useState(false);
@@ -44,8 +45,8 @@ const Sidebar = ({ value }) => {
                 className="flex gap-4 items-center cursor-pointer"
                 id={index}
                 onClick={() => {
-                  handleClick();
                   setTitle(item.title);
+                  handleClick();
                   navigate(item.page);
                 }}
               >
