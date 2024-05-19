@@ -1,9 +1,11 @@
 import React from "react";
 import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
-import Button from "../../components/ui/Button";
+import ButtonGroup from "../../components/ui/ButtonGroup";
+import { useNavigate } from "react-router-dom";
 
 const OperatorResetPass = () => {
+  const navigate = useNavigate();
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96 " />
@@ -19,7 +21,7 @@ const OperatorResetPass = () => {
           <Passwordbox placeholder={"New Password"} />
           <Passwordbox placeholder={"Confirm Password"} />
         <div className="flex justify-center">
-          <Button name={"Login"} />
+          <ButtonGroup textColor={"text-btn_primary"} name={"Login"} onClick={()=>navigate("/login/operator")}/>
         </div>
         </div>
       </div>

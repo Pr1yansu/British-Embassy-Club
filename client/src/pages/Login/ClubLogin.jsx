@@ -61,7 +61,7 @@ const ClubLogin = () => {
                 onchange={(e) => setPassword(e.target.value)}
               />
               <Button name={"Login"} type={"submit"} />
-              <a href="#" className="text-blue-700 font-medium text-xs roboto">
+              <a href="/login/operator/forgotPass" className="text-blue-700 font-medium text-xs roboto">
                 Forget your password?
               </a>
             </form>
@@ -81,12 +81,12 @@ const ClubLogin = () => {
               <p className="font-medium text-3xl font-inter tracking-tight">
                 please
               </p>
-              <p
-                href="/ClubLogin"
+              <a
+                href="/signup/club"
                 className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
               >
                 register
-              </p>
+              </a>
               <FaArrowRight size={22} color="blue" />
             </h2>
           </div>

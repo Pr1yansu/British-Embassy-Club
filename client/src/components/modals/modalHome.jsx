@@ -20,8 +20,8 @@ const ModalHome = () => {
                 // <AddMember onModal={()=> SetOpen(false)}/>
                 // <MembersDetails setOpen={()=> SetOpen(false)}/>
                 // <OperatorIssue />
-                // <OperatorQuery />
-                <OperatorReceive />
+                <OperatorQuery onOpen={()=> SetOpen(false)}/>
+                // <OperatorReceive />
             )
         }
       </div>

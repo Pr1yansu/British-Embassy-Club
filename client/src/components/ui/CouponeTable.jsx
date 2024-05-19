@@ -36,7 +36,7 @@ const CouponeTable = () => {
   ];
 
   const options = {
-    selectableRows: false,
+    selectableRows: 'none',
     elevation: 0,
     rowsPerPage: 5,
     rowsPerPageOptions: [5, 10],

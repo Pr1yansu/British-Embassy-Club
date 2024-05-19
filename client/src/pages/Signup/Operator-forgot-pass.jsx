@@ -2,8 +2,11 @@ import React from "react";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import Button from "../../components/ui/Button";
+import ButtonGroup from "../../components/ui/ButtonGroup";
+import { useNavigate } from "react-router-dom";
 
 const OperatorSignUpOtp = () => {
+  const navigate = useNavigate();
   return (
     <div
       className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4"
@@ -26,14 +29,14 @@ const OperatorSignUpOtp = () => {
             className="bg-primary outline-none w-full h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
           />
           <div className="flex justify-between">
-            <Button name={"Go Back"} icon={<FaArrowLeft />} />
-            <Button name={"Send Link"} toggle={true} icon={<FaArrowRight />} />
+            <ButtonGroup name={"Go Back"} textColor={"text-btn_primary"} icon={<FaArrowLeft />} onClick={()=>navigate('/login/operator/')}/>
+            <ButtonGroup name={"Send Link"} textColor={"text-btn_primary"} toggle={true} icon={<FaArrowRight />} onClick={()=>navigate('/login/operator/forgotPass/mail')}/>
           </div>
         </div>
       </div>
       <p className="text-text_primary text-center row-start-11 row-end-12 col-start-5 col-end-9 roboto">
         Already have an account{" "}
-        <a href="/OperatorLogin" className="text-blue-700 roboto">
+        <a href="/login/operator" className="text-blue-700 roboto">
           Login
         </a>
       </p>

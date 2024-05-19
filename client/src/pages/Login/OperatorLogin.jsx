@@ -47,8 +47,8 @@ const OperatoLogin = () => {
             <form onSubmit={handleLogin} className="w-3/5 flex flex-col gap-4 items-center justify-center ">
               <InputBox placeholder={"Username"} type={"text"} onChange={(e)=>setUsername(e.target.value)} />
               <Passwordbox placeholder="Password" onchange={(e)=>setPassword(e.target.value)} />
-              <Button name={"Signup"} />
-              <a href="#" className="text-blue-700  roboto">
+              <Button name={"Login"} />
+              <a href="/login/operator/forgotPass" className="text-blue-700 roboto">
                 Forgot your password?
               </a>
             </form>
@@ -70,12 +70,12 @@ const OperatoLogin = () => {
                 <p className="font-medium text-3xl font-inter tracking-tight">
                   please
                 </p>
-                <p
-                  href="/ClubLogin"
+                <a
+                  href="/signup/operator"
                   className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
                 >
                   register
-                </p>
+                </a>
                 <FaArrowRight size={22} color="blue" />
               </h2>
             </div>
