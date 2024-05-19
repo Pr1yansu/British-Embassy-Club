@@ -1,29 +1,28 @@
 import React, { useState } from "react";
 import arrow from "../../assets/icons/sidebar_arrow.png";
-import { sidebarItem1, sidebarItem2 } from "../../constants";
+import { sidebarItem1 } from "../../constants";
+import { useNavigate } from "react-router-dom";
 const Sidebar = ({ value }) => {
+  const navigate = useNavigate();
   const [sidebar, setSidebar] = useState(false);
-  const [column, setColumn] = useState("col-end-2");
+
   const [item, setItem] = useState("items-center");
-  const [mergin, setMergin] = useState("");
+  const [margin, setMargin] = useState("");
   const [title, setTitle] = useState("");
   const [toggle, setToggle] = useState(true);
   const [rotate, setRotate] = useState("-rotate-180");
-  const [alter, setAlter] = useState("");
+
   const handleClick = () => {
-    sidebar ? setColumn("col-end-3") : setColumn("col-end-2");
-    column === "col-end-2" ? setColumn("col-end-3") : setColumn("col-end-2");
-    rotate === "-rotate-180"
-      ? setRotate("-rotate-0")
-      : setRotate("-rotate-180");
-    item === "items-center" ? setItem("items-start") : setItem("items-center");
-    mergin === "" ? setMergin("mx-16") : setMergin("");
-    setToggle(!toggle);
     setSidebar(!sidebar);
+    setRotate(rotate === "-rotate-180" ? "-rotate-0" : "-rotate-180");
+    setItem(item === "items-center" ? "items-start" : "items-center");
+    setMargin(margin === "" ? "mx-16" : "");
+    setToggle(!toggle);
   };
+
   return (
     <>
-      {column === "col-end-3" && (
+      {sidebar && (
         <div
           className="h-screen w-screen fixed top-0 right-0 left-0 bottom-0 z-10  bg-slate-400/25"
           onClick={() => {
@@ -32,41 +31,32 @@ const Sidebar = ({ value }) => {
         ></div>
       )}
       <div
-        className={`row-start-1 row-end-13 col-start-1 ${column} bg-primary rounded-r-3xl grid grid-rows-12 z-10 `}
+        className={`row-start-1 row-end-13 col-start-1 bg-primary rounded-r-3xl grid grid-rows-12 z-10 transition-all duration-300 ease-in overflow-hidden ${
+          sidebar ? "w-60" : "w-28"
+        } shadow-sidebar_shadow`}
       >
         <div
-          className={`row-start-4 row-end-9 flex flex-col ${mergin}  ${item}  gap-11`}
+          className={`row-start-4 row-end-9 flex flex-col ${margin}  ${item}  gap-11`}
         >
-          {toggle &&
-            sidebarItem2.map((item, index) => {
-              return (
-                <>
-                  <img
-                    src={item.alter === alter ? item.iconBold : item.icon}
-                    alt={item.alter}
-                    className="w-6 cursor-pointer"
-                    onClick={() => setAlter(item.alter)}
-                  />
-                </>
-              );
-            })}
-          {!toggle &&
-            sidebarItem1.map((item, index) => {
-              return (
-                <div
-                  className="flex gap-4 items-start cursor-pointer"
-                  id={index}
-                  onClick={() => {
-                    setTitle(item.title);
-                  }}
-                >
-                  <img
-                    className="cursor-pointer"
-                    src={item.title === title ? item.iconBold : item.icon}
-                    alt="icons"
-                  />
+          {sidebarItem1.map((item, index) => {
+            return (
+              <div
+                className="flex gap-4 items-center cursor-pointer"
+                id={index}
+                onClick={() => {
+                  handleClick();
+                  setTitle(item.title);
+                  navigate(item.page);
+                }}
+              >
+                <img
+                  className="cursor-pointer"
+                  src={item.title === title ? item.iconBold : item.icon}
+                  alt="icons"
+                />
+                {!toggle && (
                   <p
-                    className={`text-lg ${
+                    className={`text-xl roboto ${
                       item.title === title
                         ? "text-black font-semibold"
                         : "text-text_primary"
@@ -74,9 +64,10 @@ const Sidebar = ({ value }) => {
                   >
                     {item.title}
                   </p>
-                </div>
-              );
-            })}
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className="row-start-11 row-end-12 rounded-full flex items-center justify-center ">
           <img

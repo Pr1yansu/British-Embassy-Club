@@ -5,6 +5,7 @@ import InputBox from "../../components/ui/InputBox";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import ClubRight from "../../components/auth/ClubRight";
 
 const ClubSignUpOtp = () => {
   const navigate = useNavigate();
@@ -32,7 +33,12 @@ const ClubSignUpOtp = () => {
             color: "#FFFFFF",
           },
         });
-        navigate("/");
+        if (data.data.role === "admin") {
+          navigate("/");
+        }
+        if (data.data.role === "operator") {
+          navigate("/OperatorLogin");
+        }
       };
     }
     } catch (error) {
@@ -56,7 +62,7 @@ const ClubSignUpOtp = () => {
       <img
         src={arrow}
         alt="arrow"
-        className="absolute top-0 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+        className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
       <h3 className="font-bold">Logo</h3>
 
@@ -83,14 +89,7 @@ const ClubSignUpOtp = () => {
         </div>
         {/* Input ends here  */}
 
-        <div className="flex flex-col">
-          <h1 className="mb-4">
-            be a member of <br />{" "}
-            <span className="text-blue-700 font-bold">
-              british embassy club
-            </span>
-          </h1>
-        </div>
+        <ClubRight/>
       </div>
     </div>
   );

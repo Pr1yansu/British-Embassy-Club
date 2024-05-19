@@ -4,7 +4,6 @@ const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendMail } = require("../utils/mail-service");
-const nodeCron = require("node-cron");
 const NodeCache = require("node-cache");
 
 const cache = new NodeCache();
@@ -26,80 +25,82 @@ exports.createClub = async (req, res) => {
       role: "admin",
       verified: true,
     });
-    if (role && role.toLowerCase() === "admin" && adminMails.length > 0) {
-      for (let i = 0; i < adminMails.length; i++) {
-        await sendMail(
-          adminMails[i].email,
-          "New Club Registration",
-          `A new club with username <b>${username}</b> has registered.He/She wants to be an admin. Please verify.`
-        );
-      }
-    }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
     const club = new ClubAuthorization({
       username,
       password: hashedPassword,
       email,
+      role,
     });
 
-    if (role === "admin") {
-      const token = jwt.sign(
-        {
-          username,
-          role,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: 1000 * 60 * 60 * 24,
-        }
-      );
+    const token = crypto.randomBytes(12).toString("hex");
 
-      const accessKey = new AccessKey({
-        key: token,
-        club: club._id,
-      });
+    const accessKey = new AccessKey({
+      key: token,
+      club: club._id,
+    });
 
-      await accessKey.save();
+    await accessKey.save();
 
-      club.accessKey = accessKey._id;
-    }
+    club.accessKey = accessKey._id;
 
     await (await club.save()).populate("accessKey");
+
+    const html = `<html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Authorization</title>
+  <head>
+    <title>Access Key for ${username}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333333;
+      }
+      p {
+        color: #666666;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Access key for ${username} is:</p>
+    <p><strong>${club.accessKey.key}</strong></p>
+    <p>The user wants to be an ${role} of the club.</p>
+    <p>Please verify the club and provide the key to the user</p>
+  </body>
+</html>`;
+
+    if (adminMails.length < 1) {
+      await sendMail(
+        process.env.ADMIN_EMAIL,
+        `Access key for ${username}`,
+        null,
+        html
+      );
+    }
 
     for (let i = 0; i < adminMails.length; i++) {
       await sendMail(
         adminMails[i].email,
-        "Access Key",
-        `Access key for ${username} is ${club.accessKey}`
+        `Access key for ${username}`,
+        null,
+        html
       );
-    }
-
-    if (!role || role.toLowerCase() !== "admin") {
-      const payload = {
-        club: {
-          username: club.username,
-          role: club.role,
-          temporary: club.temporary || false,
-        },
-      };
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: 1000 * 60 * 60 * 24,
-      });
-      return res
-        .cookie("auth-token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "strict",
-          maxAge: 1000 * 60 * 60 * 24,
-        })
-        .status(201)
-        .json({
-          statusCode: 201,
-          message: "Club created successfully",
-          data: null,
-          exception: null,
-        });
     }
 
     return res.status(201).json({
@@ -115,6 +116,99 @@ exports.createClub = async (req, res) => {
       statusCode: 500,
       message: "Internal server error",
       exception: error || null,
+      data: null,
+    });
+  }
+};
+
+exports.resendAccessKey = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    const club = await ClubAuthorization.findOne({ username });
+
+    if (!club) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    const adminMails = await ClubAuthorization.find({
+      role: "admin",
+      verified: true,
+    });
+
+    const html = `
+            <html>
+            <head>
+              <title>Access Key for ${username}</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f4f4f4;
+                  margin: 0;
+                  padding: 0;
+                }
+                .container {
+                  max-width: 600px;
+                  margin: 0 auto;
+                  padding: 20px;
+                  background-color: #ffffff;
+                  border-radius: 10px;
+                  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+                }
+                h1 {
+                  color: #333333;
+                }
+                p {
+                  color: #666666;
+                  margin-bottom: 20px;
+                }
+              </style>
+            </head>
+            <body>
+              <p>Access key for ${username} is:</p>
+              <p><strong>${club.accessKey.key}</strong></p>
+              <P>
+                The user wants to be an ${club.role} of the club.
+              </P>
+              <p>Please verify the club and provide the key to the user</p>
+            </body>
+            </html>
+          `;
+
+    if (adminMails.length < 0) {
+      await sendMail(
+        process.env.ADMIN_EMAIL,
+        `Access key for ${username}`,
+        null,
+        html
+      );
+    }
+
+    for (let i = 0; i < adminMails.length; i++) {
+      await sendMail(
+        adminMails[i].email,
+        `Access key for ${username}`,
+        null,
+        html
+      );
+    }
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Access key sent successfully",
+      data: null,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
       data: null,
     });
   }
@@ -154,7 +248,6 @@ exports.verifyAccessKey = async (req, res) => {
       });
     }
 
-    club.role = "admin";
     club.verified = true;
     await club.save();
 
@@ -163,6 +256,7 @@ exports.verifyAccessKey = async (req, res) => {
         username: club.username,
         role: club.role,
         temporary: club.temporary || false,
+        verified: club.verified,
       },
     };
 
@@ -209,6 +303,15 @@ exports.login = async (req, res) => {
       });
     }
 
+    if (!club.verified) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Please verify your account first",
+        data: null,
+        error: null,
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, club.password);
     if (!isMatch) {
       return res.status(400).json({
@@ -224,6 +327,7 @@ exports.login = async (req, res) => {
         username: club.username,
         role: club.role,
         temporary: club.temporary || false,
+        verified: club.verified,
       },
     };
 
@@ -271,21 +375,30 @@ exports.updateClub = async (req, res) => {
     }
 
     const { newPassword, newUsername } = req.body;
-    const newToken = jwt.sign(
-      {
-        username: newUsername,
-        role: club.role,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: 1000 * 60 * 60 * 24,
-      }
-    );
 
-    const hashedPassword = bcrypt.hashSync(newPassword, 10);
-    club.password = hashedPassword;
-    club.username = newUsername;
+    if (newPassword) {
+      const hashedPassword = bcrypt.hashSync(newPassword, 10);
+      club.password = hashedPassword;
+    }
+
+    if (newUsername) {
+      club.username = newUsername;
+    }
+
     await club.save();
+
+    const payload = {
+      club: {
+        username: club.username,
+        role: club.role,
+        temporary: club.temporary,
+        verified: club.verified,
+      },
+    };
+
+    const newToken = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: 1000 * 60 * 60 * 24,
+    });
 
     return res
       .cookie("auth-token", newToken, {
@@ -385,7 +498,7 @@ exports.forgetPassword = async (req, res) => {
       username: temporaryUsername,
       password: hashedPassword,
       email: club.email,
-      role: "club",
+      role: "admin",
       temporary: true,
     });
 
@@ -401,13 +514,6 @@ exports.forgetPassword = async (req, res) => {
     }
 
     cache.set(username, true);
-
-    nodeCron.schedule("0 */60 * * * *", async () => {
-      await ClubAuthorization.deleteOne({
-        username: temporaryUsername,
-        temporary: true,
-      });
-    });
 
     return res.status(200).json({
       statusCode: 200,
@@ -454,6 +560,7 @@ exports.temporaryLogin = async (req, res) => {
         username: club.username,
         role: club.role,
         temporary: club.temporary,
+        verified: club.verified,
       },
     };
 
@@ -570,5 +677,127 @@ exports.logout = async (req, res) => {
       data: null,
       error: error,
     });
+  }
+};
+
+exports.getAllOperator = async (req, res) => {
+  try {
+    const operators = await ClubAuthorization.find({ role: "operator" });
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Operators fetched successfully",
+      data: operators,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      data: null,
+      error: error,
+    });
+  }
+};
+
+exports.removeOperator = async (req, res) => {
+  try {
+    const { operatorId } = req.params;
+    const isOperator = await ClubAuthorization.findOne({
+      _id: operatorId,
+      role: "operator",
+    });
+
+    if (!isOperator) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Operator not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    const operator = await ClubAuthorization.findByIdAndDelete({
+      _id: operatorId,
+    });
+    if (!operator) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Operator not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Operator removed successfully",
+      data: null,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      data: null,
+      error: error,
+    });
+  }
+};
+
+exports.changeRole = async (req, res) => {
+  try {
+    const { username, role } = req.body;
+    const club = await ClubAuthorization.findOne({ username });
+    if (!club) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    club.role = role;
+
+    await club.save();
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Role updated successfully",
+      data: club,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      data: null,
+      error: error,
+    });
+  }
+};
+
+exports.deleteUnverifiedClubs = async (req, res) => {
+  try {
+    console.log("Deleting unverified clubs");
+    const deletedClubs = await ClubAuthorization.deleteMany({
+      verified: false,
+      temporary: false,
+    });
+    await AccessKey.deleteMany({ club: { $in: deletedClubs } });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.removeTemporaryAdmins = async (req, res) => {
+  try {
+    console.log("Deleting temporary admins");
+    await ClubAuthorization.deleteMany({ temporary: true, role: "admin" });
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useGetClubProfileQuery } from "../../store/api/clubAPI";
+import ClubRight from "../../components/auth/ClubRight";
 
 const ClubSignUp = () => {
   const [role, setRole] = useState("choose role");
@@ -82,8 +83,8 @@ const ClubSignUp = () => {
         },
       });
 
-      if (role !== "admin") {
-        navigate("/OperatorSignUp");
+      if (role === "operator") {
+        navigate("/ClubSignupOtp");
         return;
       }
 
@@ -114,7 +115,7 @@ const ClubSignUp = () => {
       <img
         src={arrow}
         alt="arrow"
-        className="absolute top-0 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+        className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
       <h3 className="font-bold">Logo</h3>
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
@@ -152,28 +153,22 @@ const ClubSignUp = () => {
               <option value="admin">admin</option>
               <option value="operator">operator</option>
             </select>
+            <div className="mt-20">
             <Button name={"Sign up"} type={"submit"} />
 
-            <a href="#" className="text-blue-700 font-bold">
-              Forget your password?
-            </a>
+            </div>
           </form>
         </div>
         <div className="flex flex-col">
-          <h1 className="mb-4">
-            be a member of<br />{" "}
-            <span className="text-blue-700 font-bold">
-              british embassy club
-            </span>
-          </h1>
-          <h1 className="font-semibold text-2xl">
+          <ClubRight/>
+          <p className="font-medium text-3xl font-inter tracking-tight">
             if you already have an account
-          </h1>
-          <h2 className="flex items-center max:lg-justify-center gap-2  font-semibold text-2xl">
-            <h1 className="font-semibold text-2xl">please</h1>
-            <h1 href="/ClubLogin" className="font-semibold text-blue-700 text-2xl">
+          </p>
+          <h2 className="flex items-center max:lg-justify-center gap-2">
+            <p className="font-medium text-3xl font-inter tracking-tight">please</p>
+            <p href="/ClubLogin" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
               login
-            </h1>
+            </p>
             <FaArrowRight size={22} color="blue" />
           </h2>
         </div>
