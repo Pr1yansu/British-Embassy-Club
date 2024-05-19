@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "../../components/ui/Sidebar";
 import SearchBox from "../../components/ui/SearchBox";
 import CouponeTable from "../../components/ui/CouponeTable";
+import CouponTable from "../../components/ui/CouponTable";
 const Coupone = () => {
   return (
     <>
@@ -11,7 +12,7 @@ const Coupone = () => {
           <SearchBox placeholder={"Search by ID"} type={"text"} />
         </div>
         <div className="row-start-4 row-end-12 col-start-3 col-end-11">
-          <CouponeTable />
+          <CouponTable/>
         </div>
       </div>
     </>
