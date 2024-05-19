@@ -3,8 +3,10 @@ import ReactDOM from "react-dom";
 import { CgProfile } from "react-icons/cg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import ButtonGroup from "../ui/ButtonGroup";
+import Warning from "./Warning";
 
 const MembersDetails = ({ setOpen }) => {
+  const [open, SetOpen] = useState(false);
   const [user, setUser] = useState({
     name: "John Doe",
     userName: "@username",
@@ -68,7 +70,9 @@ const MembersDetails = ({ setOpen }) => {
               Hovershadow={"hover:shadow-danger_shadow"}
               shadow={"shadow-danger_shadow"}
               icon={<IoIosCloseCircleOutline size={30} />}
+              onClick={() => SetOpen(true)}
             />
+            {open && <Warning onModal={() => SetOpen(false)} />}
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import arrow from "../../assets/icons/sidebar_arrow.png";
 import { sidebarItem1 } from "../../constants";
+import {useNavigate} from "react-router-dom" 
+
 const Sidebar = ({ value }) => {
   const [sidebar, setSidebar] = useState(false);
 
@@ -10,6 +12,7 @@ const Sidebar = ({ value }) => {
   const [toggle, setToggle] = useState(true);
   const [rotate, setRotate] = useState("-rotate-180");
 
+  const navigate = useNavigate();
   const handleClick = () => {
     setSidebar(!sidebar);
     setRotate(rotate === "-rotate-180" ? "-rotate-0" : "-rotate-180");
@@ -43,6 +46,8 @@ const Sidebar = ({ value }) => {
                   id={index}
                   onClick={() => {
                     setTitle(item.title);
+                    handleClick();
+                    navigate(item.page);
                   }}
                 >
                   <img

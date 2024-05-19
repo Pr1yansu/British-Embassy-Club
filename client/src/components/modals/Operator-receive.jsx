@@ -6,7 +6,7 @@ import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
 
-const OperatorReceive = () => {
+const OperatorReceive = ({onModal}) => {
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)]">
@@ -82,6 +82,7 @@ const OperatorReceive = () => {
                 name={"Cancel"}
                 color={"bg-[#F8FAFC]"}
                 textColor={"text-[#1D4ED8]"}
+                onClick={()=>onModal()}
               />
               <ButtonGroup
                 name={"Confirm"}

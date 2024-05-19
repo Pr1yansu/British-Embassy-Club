@@ -58,18 +58,36 @@ export const cardData = [
 ];
 
 export const sidebarItem1 = [
-  { icon: dashboard, title: "Dashboard", iconBold: dashboard_bold },
-  { icon: member, title: "Member", iconBold: member_bold },
-  { icon: coupone, title: "Coupone", iconBold: coupone_bold },
-  { icon: settings, title: "Settings", iconBold: settings_bold },
-  { icon: profile, title: "Profile", iconBold: profile_bold },
-];
-export const sidebarItem2 = [
-  { icon: dashboard, alter: "dashboard", iconBold: dashboard_bold },
-  { icon: member, alter: "member", iconBold: member_bold },
-  { icon: coupone, alter: "coupone", iconBold: coupone_bold },
-  { icon: settings, alter: "settings", iconBold: settings_bold },
-  { icon: profile, alter: "profile", iconBold: profile_bold },
+  {
+    icon: dashboard,
+    title: "Dashboard",
+    iconBold: dashboard_bold,
+    page: "/dashboard",
+  },
+  {
+    icon: member,
+    title: "Member",
+    iconBold: member_bold,
+    page: "/member",
+  },
+  {
+    icon: coupone,
+    title: "Coupone",
+    iconBold: coupone_bold,
+    page: "/coupon",
+  },
+  {
+    icon: settings,
+    title: "Settings",
+    iconBold: settings_bold,
+    page: "/settings",
+  },
+  {
+    icon: profile,
+    title: "Profile",
+    iconBold: profile_bold,
+    page: "/profile",
+  },
 ];
 
 export const memberItem = [

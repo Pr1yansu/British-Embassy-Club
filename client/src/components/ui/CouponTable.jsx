@@ -59,7 +59,7 @@ const CouponTable = () => {
   return (
     <div className="container p-4 bg-white rounded-2xl shadow-table_shadow">
       <h1 className="text-2xl tracking-tighter font-medium">
-        Issue Coupone Table
+        Issue Coupon Table
       </h1>
       <TablePagination
         headers={headers}
@@ -69,7 +69,7 @@ const CouponTable = () => {
         totalCount={data.length}
         className="border border-gray-300"
         columnClassName="border border-gray-300 px-4 py-2"
-        headerClassName="bg-gray-200 border border-gray-300 px-4 py-2"
+        headerClassName={`bg-red-500 border border-gray-300 px-4 py-2`}
         bodyClassName={`capitalize px-3 py-1 rounded-full inline-block`}
       />
     </div>

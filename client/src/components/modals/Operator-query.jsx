@@ -1,23 +1,27 @@
-import React from "react";
-import ReactDom from 'react-dom'
+import React, { useState } from "react";
+import ReactDom from "react-dom";
 import { IoExitOutline } from "react-icons/io5";
 import ButtonGroup from "../ui/ButtonGroup";
+import OperatorIssue from "./Operator-issue";
+import OperatorReceive from "./Operator-receive";
 
-const OperatorQuery = () => {
+const OperatorQuery = ({onOpen}) => {
+  const [openIssue, SetopenIssue] = useState(false);
+  const [openReceive,SetopenReceive] = useState(false);
   return ReactDom.createPortal(
-    <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25">
+    <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25 z-20">
       <section className="w-[712px] h-[418px] border bg-btn_secondary rounded-lg flex flex-col items-center gap-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         {/* Upper div starts here */}
         <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
-            <div className="flex gap-10">
-              <p className="text-btn_primary roboto font-medium">Member Name</p>
-              <p className="lato">John Doe</p>
-            </div>
-            <div className="flex gap-[73px]">
-              <p className="text-btn_primary roboto font-medium">Member ID</p>
-              <p className="lato">BEC20240201DEMO1</p>
-            </div>
+          <div className="flex gap-10">
+            <p className="text-btn_primary roboto font-medium">Member Name</p>
+            <p className="lato">John Doe</p>
           </div>
+          <div className="flex gap-[73px]">
+            <p className="text-btn_primary roboto font-medium">Member ID</p>
+            <p className="lato">BEC20240201DEMO1</p>
+          </div>
+        </div>
         {/* Upper div ends hete */}
 
         {/* Lower div starts here */}
@@ -32,7 +36,7 @@ const OperatorQuery = () => {
 
           {/* Buttons starts */}
           <div className="flex gap-24">
-            <div className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer">
+            <div className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer" onClick={()=>SetopenIssue(true)}>
               <p className="text-2xl font-roboto font-medium text-btn_primary">
                 Issue Coupon
               </p>
@@ -40,7 +44,8 @@ const OperatorQuery = () => {
                 <IoExitOutline size={50} color="#1D4ED8" />
               </div>
             </div>
-            <div className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer">
+            {openIssue && <OperatorIssue onModal={()=> SetopenIssue(false)}/>}
+            <div className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer"  onClick={()=>SetopenReceive(true)}>
               <p className="text-2xl font-roboto font-medium text-btn_primary">
                 Receive Coupon
               </p>
@@ -48,6 +53,7 @@ const OperatorQuery = () => {
                 <IoExitOutline size={50} color="#1D4ED8" />
               </div>
             </div>
+            {openReceive && <OperatorReceive onModal={()=> SetopenReceive(false)}/>}
           </div>
           {/* Buttons ends */}
 
@@ -57,6 +63,7 @@ const OperatorQuery = () => {
               color={"bg-btn_secondary"}
               textColor={"text-text_primary"}
               name={"Cancel"}
+              onClick={()=> onOpen()}
             />
           </div>
           {/* Cancel button ends */}
