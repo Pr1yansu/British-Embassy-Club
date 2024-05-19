@@ -5,8 +5,7 @@ import AddButton from "../../components/ui/AddButton";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import AddMember from "../../components/modals/Add-member";
 import MemberCard from "../../components/ui/MemberCard";
-import { ListItem } from "@mui/material";
-import { memberItem } from "../../constants/index";
+
 
 const Member = () => {
   const [open, SetOpen] = useState(false);
@@ -14,7 +13,6 @@ const Member = () => {
   return (
     <>
       <div className="background bg-cover bg-center w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
-        <Sidebar />
         <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
           <SearchBox
             placeholder={

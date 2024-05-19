@@ -6,7 +6,7 @@ import ButtonGroup from "../ui/ButtonGroup";
 import Warning from "./Warning";
 
 const MembersDetails = ({ setOpen }) => {
-  const [open, SetOpen] = useState(false);
+  const [OpenWarning, setOpenWarning] = useState(false);
   const [user, setUser] = useState({
     name: "John Doe",
     userName: "@username",
@@ -21,16 +21,18 @@ const MembersDetails = ({ setOpen }) => {
     OrganizationName: "ABC Pvt Ltd",
     Nationality: "Indian",
   });
+
   const keysToExclude = ["name", "userName"];
 
   const filteredKeys = Object.keys(user).filter(
     (key) => !keysToExclude.includes(key)
   );
+
   return ReactDOM.createPortal(
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/10 z-20">
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/35 z-20">
         <div className="w-full max-w-2xl h-auto border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-          <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6">
+          <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6" >
             <div className="flex justify-center items-center gap-9">
               <CgProfile size={128} color="#6B7280" />
               <div className="flex flex-col gap-2">
@@ -41,9 +43,7 @@ const MembersDetails = ({ setOpen }) => {
               </div>
             </div>
             <div
-              onClick={() => {
-                setOpen();
-              }}
+              onClick={() => {setOpen(false)}}
               className="cursor-pointer"
             >
               <IoIosCloseCircleOutline size={30} color="blue" />
@@ -70,13 +70,12 @@ const MembersDetails = ({ setOpen }) => {
               Hovershadow={"hover:shadow-danger_shadow"}
               shadow={"shadow-danger_shadow"}
               icon={<IoIosCloseCircleOutline size={30} />}
-              onClick={() => SetOpen(true)}
+              onClick={() => setOpenWarning(true)}
             />
-            {open && <Warning onModal={() => SetOpen(false)} />}
+            {OpenWarning && <Warning onModal={() => setOpenWarning(false)} />}
           </div>
         </div>
       </div>
-      {open && <Warning onModal={() => SetOpen(false)} />}
     </>,
     document.getElementById("portal")
   );

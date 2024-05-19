@@ -79,9 +79,9 @@ const ClubSignUpOtp = () => {
               Please contact admin for the verification code
             </p>
             <Button name={"Submit"} />
-            <p href="#" className="text-text_primary roboto font-semibold">
+            <p href="#" className="text-text_primary roboto font-medium">
               Didn't recieve any code?{" "}
-              <a href="#" className="text-blue-700 font-bold">
+              <a href="#" className="text-blue-700 roboto font-medium">
                 Resend
               </a>
             </p>

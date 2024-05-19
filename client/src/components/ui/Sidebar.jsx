@@ -32,7 +32,7 @@ const Sidebar = ({ value }) => {
         ></div>
       )}
       <div
-        className={`row-start-1 row-end-13 col-start-1 bg-primary rounded-r-3xl grid grid-rows-12 z-10 transition-all duration-300 ease-in overflow-hidden ${
+        className={`row-start-1 row-end-13 fixed bottom-0 top-0 col-start-1 bg-primary rounded-r-3xl grid grid-rows-12 z-10 transition-all duration-300 ease-in overflow-hidden ${
           sidebar ? "w-60" : "w-28"
         } shadow-sidebar_shadow`}
       >
@@ -49,6 +49,7 @@ const Sidebar = ({ value }) => {
                   handleClick();
                   navigate(item.page);
                 }}
+                key={index}
               >
                 <img
                   className="cursor-pointer"

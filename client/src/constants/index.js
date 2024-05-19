@@ -14,6 +14,15 @@ import coupone_bold from "../assets/icons/coupone_bold.png";
 import settings_bold from "../assets/icons/settings_bold.png";
 import profile_bold from "../assets/icons/profile_bold.png";
 
+export const locations = [
+  "/member",
+  "/coupon",
+  "/profile",
+  "/settings",
+  "/settingsAdmin",
+  "/settingsAdminTemp",
+]
+
 export const cardData = [
   {
     img: Member_icon,
@@ -72,7 +81,7 @@ export const sidebarItem1 = [
   },
   {
     icon: coupone,
-    title: "Coupone",
+    title: "Coupon",
     iconBold: coupone_bold,
     page: "/coupon",
   },

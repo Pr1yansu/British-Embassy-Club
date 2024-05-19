@@ -5,7 +5,9 @@ const SearchBox = ({ type, placeholder, onchange, value }) => {
   const [openQuery, setopenQuery] = useState(false);
   return (
     <>
-      <div className="relative h-full rounded-lg">
+      <div
+        className="relative h-full rounded-lg"
+      >
         <input
           type={type}
           placeholder={placeholder}
@@ -20,7 +22,7 @@ const SearchBox = ({ type, placeholder, onchange, value }) => {
           onClick={() => setopenQuery(true)}
         />
       </div>
-        {openQuery && <OperatorQuery onOpen={setopenQuery(false)} />}
+      {openQuery && <OperatorQuery onOpen={() => setopenQuery(false)} />}
     </>
   );
 };

@@ -9,7 +9,7 @@ const OperatorQuery = ({onOpen}) => {
   const [openIssue, SetopenIssue] = useState(false);
   const [openReceive,SetopenReceive] = useState(false);
   return ReactDom.createPortal(
-    <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25 z-20">
+    <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25 z-10">
       <section className="w-[712px] h-[418px] border bg-btn_secondary rounded-lg flex flex-col items-center gap-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
         {/* Upper div starts here */}
         <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
@@ -63,7 +63,7 @@ const OperatorQuery = ({onOpen}) => {
               color={"bg-btn_secondary"}
               textColor={"text-text_primary"}
               name={"Cancel"}
-              onClick={()=> onOpen()}
+              onClick={onOpen}
             />
           </div>
           {/* Cancel button ends */}
