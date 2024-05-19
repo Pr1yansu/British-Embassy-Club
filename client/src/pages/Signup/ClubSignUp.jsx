@@ -166,9 +166,9 @@ const ClubSignUp = () => {
           </p>
           <h2 className="flex items-center max:lg-justify-center gap-2">
             <p className="font-medium text-3xl font-inter tracking-tight">please</p>
-            <p href="/ClubLogin" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
+            <a href="/login/club" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
               login
-            </p>
+            </a>
             <FaArrowRight size={22} color="blue" />
           </h2>
         </div>

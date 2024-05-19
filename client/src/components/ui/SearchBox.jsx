@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
+import OperatorQuery from "../modals/Operator-query";
 const SearchBox = ({ type, placeholder, onchange, value }) => {
+  const [openQuery, setopenQuery] = useState(false);
   return (
     <>
-      <div className="relative h-full rounded-lg">
+      <div
+        className="relative h-full rounded-lg"
+      >
         <input
           type={type}
           placeholder={placeholder}
@@ -15,8 +19,10 @@ const SearchBox = ({ type, placeholder, onchange, value }) => {
           className=" absolute cursor-pointer right-5 top-1/3 "
           size={20}
           color="grey"
+          onClick={() => setopenQuery(true)}
         />
       </div>
+      {openQuery && <OperatorQuery onOpen={() => setopenQuery(false)} />}
     </>
   );
 };

@@ -231,12 +231,12 @@ const OperatorSignup = () => {
             <p className="font-medium text-3xl font-inter tracking-tight">
               please
             </p>
-            <p
-              href="/ClubLogin"
+            <a
+              href="/login/operator"
               className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
             >
               login
-            </p>
+            </a>
             <FaArrowRight size={22} color="blue" />
           </h2>
         </div>
