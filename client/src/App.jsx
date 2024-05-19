@@ -17,6 +17,7 @@ import Coupone from "./pages/Home/Coupone";
 import Settings from "./pages/Home/Settings";
 import Profile from "./pages/Home/Profile";
 import SettingsAdmin from "./pages/Home/SettingsAdmin";
+import SettingsAdminTemp from "./pages/Home/SettingsAdminTemp";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/coupon" element={<Coupone />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/settingsAdmin" element={<SettingsAdmin />} />
+          <Route path="/settingsAdminTemp" element={<SettingsAdminTemp />} />
           <Route path="/ClubSignUp" element={<ClubSignUp />} />
           <Route path="/ClubLogin" element={<ClubLogin />} />
           <Route path="/ClubSignupOtp" element={<ClubSignUpOtp />} />

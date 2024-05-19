@@ -15,6 +15,9 @@ const MembersDetails = ({ setOpen }) => {
       "Suite 464 3259 Steve Drives, East Dino, WV 78050 Pin code - 447125",
     MobileNumber: "+91 1234567890",
     WalletAmount: "450.00",
+    BloodGroup: "O+",
+    OrganizationName: "ABC Pvt Ltd",
+    Nationality: "Indian",
   });
   const keysToExclude = ["name", "userName"];
 
@@ -24,7 +27,7 @@ const MembersDetails = ({ setOpen }) => {
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/10 z-20">
-        <div className="w-[712px] h-[504px] border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+        <div className="w-full max-w-2xl h-auto border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
               <CgProfile size={128} color="#6B7280" />
