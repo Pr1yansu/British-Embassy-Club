@@ -20,17 +20,19 @@ import SettingsAdmin from "./pages/Home/SettingsAdmin";
 import SettingsAdminTemp from "./pages/Home/SettingsAdminTemp";
 import Sidebar from "./components/ui/Sidebar";
 import { locations } from "./constants";
+import ClubForgotPass from "./pages/Signup/Club-forgot-pass";
+import ClubLoginTemp from "./pages/Login/Club-login-temp";
+import NotFound from "./pages/Error/NotFound";
 
 function App() {
   const location = useLocation();
   return (
     <>
       <Toaster />
-      {locations.includes(location.pathname) ? <Sidebar />: null}
+      {locations.includes(location.pathname) ? <Sidebar /> : null}
       <Routes>
         {/* Route for testing purpose */}
-          <Route path="/modal" element={<ModalHome />} />
-
+        <Route path="/modal" element={<ModalHome />} />
 
         {/*Routes for Main pages */}
         <>
@@ -56,6 +58,8 @@ function App() {
             path="/signup/club/otp/resend"
             element={<ClubSignUpOtpResend />}
           />
+          <Route path="/login/club/forgotPass" element={<ClubForgotPass />} />
+          <Route path="/login/club/temp" element={<ClubLoginTemp />} />
         </>
 
         {/* Routes for Operator Auths */}
@@ -74,6 +78,8 @@ function App() {
             path="/login/operator/forgotPass/reset"
             element={<OperatorResetPass />}
           />
+          {/*Routes for Error pages */}
+          <Route path="/error" element={<NotFound />} />
         </>
       </Routes>
     </>

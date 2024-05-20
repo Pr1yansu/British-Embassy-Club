@@ -44,6 +44,8 @@ module.exports = {
         120: "32rem",
         // 227 px into rem
         57: "232px",
+        "10xl": "200px",
+        195: "822px",
       },
     },
   },
