@@ -5,6 +5,8 @@ import OperatorIssue from "./Operator-issue";
 import AddMember from "./Add-member";
 import OperatorQuery from "./Operator-query";
 import OperatorReceive from "./Operator-receive";
+import ValidityExtend from "./ValidityExtend";
+import ConfirmationExtend from "./ConfirmationExtend";
 
 const ModalHome = () => {
 
@@ -19,9 +21,11 @@ const ModalHome = () => {
                 // <Warning onModal={()=> SetOpen(false)}/>
                 // <AddMember onModal={()=> SetOpen(false)}/>
                 // <MembersDetails setOpen={()=> SetOpen(false)}/>
-                // <OperatorIssue />
-                <OperatorQuery onOpen={()=> SetOpen(false)}/>
+                <OperatorIssue />
+                // <OperatorQuery onOpen={()=> SetOpen(false)}/>
                 // <OperatorReceive />
+                // <ValidityExtend/>
+                // <ConfirmationExtend/>
             )
         }
       </div>

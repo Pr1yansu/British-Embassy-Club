@@ -6,7 +6,6 @@ import MembersDetails from "../modals/Member-details-full";
 
 const MemberCard = () => {
   const [open, setOpen] = useState(false);
-  console.log("Open state in Parent:", open);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(15);
 

@@ -4,14 +4,17 @@ import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import { CgProfile } from "react-icons/cg";
 import FileUpload from "./File-Upload";
+import { BsArrowUpSquareFill } from "react-icons/bs";
+import ValidityExtend from "./ValidityExtend";
+import { motion, AnimatePresence } from "framer-motion";
 
 const AddMember = ({ onModal }) => {
   const [open, setOpen] = useState(false);
-
+  const [openExtend, setOpenExtend] = useState(false);
   return ReactDOM.createPortal(
     <>
-      <div className="fixed inset-0 bg-[rgba(0,0,0,.7)] z-20 flex items-center justify-center">
-        <div className="w-full max-w-xl bg-[#F8FAFD] rounded-lg text-blue-700 mx-4 p-6 flex flex-col gap-4 overflow-auto max-h-[90vh]">
+      <div className="fixed inset-0 bg-zinc-700/30 z-20 flex items-center justify-center">
+        <div className="w-full max-w-xl bg-btn_secondary rounded-lg text-blue-700 font-roboto text-xl mx-4 p-6 flex flex-col gap-4 overflow-auto max-h-[90vh]">
           <div className="flex flex-col items-center gap-3">
             <p className="text-xl font-medium">Add Profile Picture</p>
             <div
@@ -51,22 +54,69 @@ const AddMember = ({ onModal }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex flex-col font-medium">
-              Mobile Number
-              <InputBox type="tel" />
+              Membership Valid From
+              <div className="flex items-center gap-1">
+                <InputBox type="date" />
+                <div
+                  onClick={() => setOpenExtend(!openExtend)}
+                  className="cursor-pointer"
+                >
+                  <BsArrowUpSquareFill
+                    size={30}
+                    color="#1d4ed8"
+                    className={`${openExtend && "rotate-180"}`}
+                  />
+                </div>
+              </div>
+              <AnimatePresence>
+                {openExtend && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ValidityExtend onOpen={() => setOpenExtend(false)} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </label>
             <label className="flex flex-col font-medium">
-              Membership Date
+              Membership Valid Upto
               <InputBox type="date" />
             </label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex flex-col font-medium">
-              Organization Name
+              Mobile Number
               <InputBox type="tel" />
             </label>
             <label className="flex flex-col font-medium">
-              Nationality
-              <InputBox type="text" />
+              Organization Name
+              <InputBox type="tel" />
+            </label>
+          </div>
+          <div>
+            <label className="flex flex-col font-medium">
+              National ID
+              <div className="flex items-center">
+                <select
+                  name=""
+                  id=""
+                  className="bg-primary h-10 text-xl w-52 rounded-l-lg text-text_primary p-2 outline-none font-medium"
+                >
+                  <option value="">Choose</option>
+                  <option value="Aadhar Card">Aadhar Card</option>
+                  <option value="Voter Card">Voter Card</option>
+                  <option value="Pan Card">Pan Card</option>
+                </select>
+                <input
+                  type="text"
+                  id=""
+                  placeholder="Aadhar No. / Passport No. / Other"
+                  className="bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-text_primary"
+                />
+              </div>
             </label>
           </div>
           <div>
