@@ -1,10 +1,6 @@
 import React from "react";
-import Sidebar from "../../components/ui/Sidebar";
-import ChangePassword from "../../components/form/ChangePassword";
 import UserManagement from "../../components/modals/UserManagement";
 import ButtonGroup from "../../components/ui/ButtonGroup";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { TbLogout } from "react-icons/tb";
 const SettingsAdminTemp = () => {
   return (
     <>
