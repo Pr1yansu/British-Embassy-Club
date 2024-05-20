@@ -42,7 +42,7 @@ const ClubForgotPass = () => {
       </div>
       <p className="text-text_primary text-center row-start-11 row-end-12 col-start-5 col-end-9 roboto">
         Already have an account?{" "}
-        <a href="/login/operator" className="text-blue-700 roboto">
+        <a href="/login/club" className="text-blue-700 roboto">
           Login
         </a>
       </p>
