@@ -41,9 +41,6 @@ const OperatorReceive = ({onModal}) => {
                   <div className="cursor-pointer">
                     <AiFillMinusCircle size={40} color="#3B82F6" />
                   </div>
-                  <div className="cursor-pointer">
-                    <BsArrowUpSquareFill size={30} color="#1D4ED8" />
-                  </div>
                 </div>
               </div>
               <div className="w-52">
