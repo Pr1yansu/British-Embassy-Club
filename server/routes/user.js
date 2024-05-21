@@ -9,12 +9,14 @@ const {
   resetPassword,
   logout,
   sendResetTokenAgain,
+  addOperatorImage,
 } = require("../controller/user");
 const {
   validateRegistration,
   validateLogin,
   validateForgetPassword,
   validateResetPassword,
+  validateChangePassword,
 } = require("../middleware/zod-user-middleware");
 
 const {
@@ -34,7 +36,13 @@ router.post(
   validateRegistration,
   register
 );
-router.get("/all", isAuthenticated, isAdmin, getAllOperators);
+router.post(
+  "/add-operator-image",
+  isAuthenticated,
+  isInClub,
+  isOperator,
+  addOperatorImage
+);
 router.get(
   "/profile",
   isAuthenticated,
@@ -59,6 +67,8 @@ router.put(
   validateForgetPassword,
   sendResetTokenAgain
 );
-router.get("/logout", isAuthenticated, logout);
+router.patch("/change-password", isAuthenticated, isInClub, isUser, isOperator,validateChangePassword, changePassword);
+router.get("/logout", isAuthenticated, isInClub, isUser, isOperator, logout);
+
 
 module.exports = router;
