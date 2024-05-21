@@ -6,14 +6,13 @@ import MembersDetails from "../modals/Member-details-full";
 
 const MemberCard = () => {
   const [open, setOpen] = useState(false);
-  console.log("Open state in Parent:", open);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(15);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPost = memberItem.slice(indexOfFirstPost, indexOfLastPost);
-
+  console.log(currentPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -21,7 +20,7 @@ const MemberCard = () => {
       <div className="grid grid-rows-4 grid-cols-5 gap-4">
         {currentPost.map((item, index) => (
           <div
-            className="col-span-1 p-1 rounded-lg shadow-member_card cursor-pointer bg-white"
+            className="col-span-1 p-2 rounded-lg shadow-member_card cursor-pointer bg-white"
             onClick={() => setOpen(true)}
             key={index}
           >

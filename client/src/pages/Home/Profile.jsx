@@ -9,7 +9,8 @@ const Profile = () => {
 
   return (
     <>
-      <div className="background grid grid-rows-12 grid-cols-12 bg-cover bg-center h-screen">
+    <div className="background bg-cover bg-center">
+      <div className="container grid grid-rows-12 grid-cols-12  h-screen">
         <div className="row-start-2 row-end-12 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
           <div className="flex justify-start items-center gap-6 mb-4">
             <img src={profilePic} alt="" className="w-32 h-32" />
@@ -77,7 +78,7 @@ const Profile = () => {
               <textarea
                 name=""
                 id=""
-                className="w-full h-24 bg-primary outline-none resize-none p-3 text-text_primary rounded-xl"
+                className="w-full h-24 text-sm bg-primary outline-none resize-none p-3 text-text_primary rounded-xl"
               ></textarea>
             </label>
           </div>
@@ -96,6 +97,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 };

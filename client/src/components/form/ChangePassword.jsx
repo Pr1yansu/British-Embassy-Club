@@ -83,7 +83,7 @@ const ChangePassword = ({ colStart, colEnd }) => {
             />
           </div>
           <div className="flex justify-end gap-4">
-          <ButtonGroup name={"Cancel"} textColor={"text-text_secondary"} color={'bg-primary'}/>
+          <ButtonGroup name={"Cancel"} textColor={"text-text_secondary"} color={'bg-btn_secondary'}/>
             <ButtonGroup name={"Confirm"} textColor={"text-text_secondary"} />
           </div>
         </form>

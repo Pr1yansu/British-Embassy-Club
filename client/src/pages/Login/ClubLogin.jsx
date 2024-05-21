@@ -61,7 +61,7 @@ const ClubLogin = () => {
                 onchange={(e) => setPassword(e.target.value)}
               />
               <Button name={"Login"} type={"submit"} />
-              <a href="/login/operator/forgotPass" className="text-blue-700 font-medium text-xs roboto">
+              <a href="/login/club/forgotPass" className="text-blue-700 font-medium text-xs roboto">
                 Forget your password?
               </a>
             </form>
