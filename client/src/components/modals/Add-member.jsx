@@ -103,18 +103,18 @@ const AddMember = ({ onModal }) => {
                 <select
                   name=""
                   id=""
-                  className="bg-primary h-10 text-xl w-52 rounded-l-lg text-text_primary p-2 outline-none font-medium"
+                  className="bg-primary h-10 text-sm w-52 rounded-l-lg text-text_primary p-2 outline-none font-roboto font-medium"
                 >
                   <option value="">Choose</option>
                   <option value="Aadhar Card">Aadhar Card</option>
-                  <option value="Voter Card">Voter Card</option>
-                  <option value="Pan Card">Pan Card</option>
+                  <option value="Voter Card">Passport No</option>
+                  <option value="Pan Card">Others</option>
                 </select>
                 <input
                   type="text"
                   id=""
                   placeholder="Aadhar No. / Passport No. / Other"
-                  className="bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-text_primary"
+                  className="bg-primary text-sm font-roboto font-normal outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-text_primary"
                 />
               </div>
             </label>
@@ -122,7 +122,7 @@ const AddMember = ({ onModal }) => {
           <div>
             <label className="flex flex-col font-medium">
               Address
-              <textarea className="bg-primary rounded-lg p-3 text-text_primary outline-none resize-none h-24"></textarea>
+              <textarea className="bg-primary rounded-lg p-3 text-text_primary font-normal text-sm font-roboto  outline-none resize-none h-24"></textarea>
             </label>
           </div>
           <div className="flex justify-end gap-4 mt-4">

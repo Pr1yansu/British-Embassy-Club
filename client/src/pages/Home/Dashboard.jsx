@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const navigate = useNavigate();
   return (
-    <div className="background h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
+    <div className="background h-screen bg-cover bg-center">
+    <div className="container px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <div className="row-start-1 row-end-3 col-start-2 col-end-12 flex justify-between items-center">
         <h3>Logo</h3>
         <div className="flex gap-4 items-center justify-center cursor-pointer" onClick={()=>navigate('/profile')}>
@@ -35,6 +36,7 @@ const Dashboard = () => {
         })}
       </div>
       {/* <MainCard/> */}
+    </div>
     </div>
   );
 };

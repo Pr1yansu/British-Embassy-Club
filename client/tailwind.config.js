@@ -13,14 +13,15 @@ module.exports = {
         text_quaternary: "#BE123C",
         btn_primary: "#1d4ed8",
         btn_secondary: "#F8FAFC",
+        text_black: "#030712"
       },
       boxShadow: {
         main_card: "0px 6px 8px 0px rgba(0, 0, 0, 0.20)",
         main_card_hover: "8px 8px 12px 0px rgba(33, 92, 221, 0.25)",
         table_shadow: "2px 2px 12px rgba(0, 0, 0, 0.10)",
         member_card: "2px 2px 12px 0px rgba(0, 0, 0, 0.10)",
-        btn_shadow: "-4px 4px 20px 2px rgba(59, 130, 246, 0.25)",
-        danger_shadow: "-4px 4px 20px 2px rgba(225, 29, 72, 0.20)",
+        btn_shadow: "-2px 2px 16px 0px rgba(59, 130, 246, 0.20)",
+        danger_shadow: "-2px 2px 16px 0px rgba(225, 29, 72, 0.20)",
         sidebar_shadow: "2px 1px 8px 0px rgba(0, 0, 0, 0.25)",
       },
       fontFamily: {

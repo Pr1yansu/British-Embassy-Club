@@ -12,7 +12,8 @@ const Member = () => {
 
   return (
     <>
-      <div className="background bg-cover bg-center w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
+    <div className="background bg-cover bg-center">
+      <div className="container w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
         <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
           <SearchBox
             placeholder={
@@ -34,6 +35,7 @@ const Member = () => {
           <MemberCard />
         </div>   
       </div>
+    </div>
       {open && <AddMember onModal={() => SetOpen(false)} />}
     </>
   );

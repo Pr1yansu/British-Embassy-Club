@@ -13,7 +13,7 @@ const ValidityExtend = () => {
             <p className="font-roboto font-medium text-btn_primary text-xl">
               Extend Validity for
             </p>
-            <div className="flex flex-col">
+            <div className="flex flex-col text-text_black">
               <label
                 for="extend"
                 className="flex items-center gap-2 lato text-xl"

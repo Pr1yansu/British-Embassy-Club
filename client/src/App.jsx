@@ -18,7 +18,7 @@ import Settings from "./pages/Home/Settings";
 import Profile from "./pages/Home/Profile";
 import SettingsAdmin from "./pages/Home/SettingsAdmin";
 import SettingsAdminTemp from "./pages/Home/SettingsAdminTemp";
-import Sidebar from "./components/ui/Sidebar";
+import Sidebar from "./components/form/Sidebar";
 import { locations } from "./constants";
 import ClubForgotPass from "./pages/Signup/Club-forgot-pass";
 import ClubLoginTemp from "./pages/Login/Club-login-temp";
@@ -37,6 +37,7 @@ function App() {
         {/*Routes for Main pages */}
         <>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/member" element={<Member />} />
           <Route path="/coupon" element={<Coupon />} />
           <Route path="/profile" element={<Profile />} />
