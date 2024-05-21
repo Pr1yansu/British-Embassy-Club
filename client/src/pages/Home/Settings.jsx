@@ -23,7 +23,7 @@ const Settings = () => {
             icon={<IoIosCloseCircleOutline />}
             Hovershadow={"hover:shadow-danger_shadow"}
             shadow={"shadow-danger_shadow"}
-            onClick={()=>setWarning(true)}
+            onClick={() => setWarning(true)}
           />
           <ButtonGroup
             textColor={"text-red-600"}
@@ -36,9 +36,7 @@ const Settings = () => {
             Hovershadow={"hover:shadow-danger_shadow"}
             shadow={"shadow-danger_shadow"}
           />
-          {
-            warning && <Warning onModal={()=> setWarning(false)}/>
-          }
+          {warning && <Warning onModal={() => setWarning(false)} />}
         </div>
       </div>
     </>
