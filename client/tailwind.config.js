@@ -42,6 +42,7 @@ module.exports = {
         1.5: "0.375rem",
       },
       width: {
+        150: "591px",
         120: "32rem",
         // 227 px into rem
         57: "232px",

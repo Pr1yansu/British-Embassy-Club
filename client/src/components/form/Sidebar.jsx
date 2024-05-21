@@ -9,19 +9,34 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const menus = [
-    { names: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
-    { names: "Member", link: "/member", icon: MdOutlinePeopleAlt },
+    {
+      names: "Dashboard",
+      link: "/dashboard",
+      icon: MdOutlineDashboard,
+    },
+    {
+      names: "Member",
+      link: "/member",
+      icon: MdOutlinePeopleAlt,
+    },
     { names: "Coupon", link: "/coupon", icon: LuTicket },
-    { names: "Settings", link: "/settings", icon: IoIosSettings },
-    { names: "Profile", link: "/profile", icon: RxAvatar },
+    {
+      names: "Settings",
+      link: "/settings",
+      icon: IoIosSettings,
+    },
+    {
+      names: "Profile",
+      link: "/profile",
+      icon: RxAvatar,
+    },
   ];
   const [open, setOpen] = useState(false);
   const [activeName, setActiveName] = useState("");
- 
+
   const activeMenu = (name) => {
     setActiveName(name);
   };
-
 
   return (
     <div
@@ -48,7 +63,9 @@ const Sidebar = () => {
                   : "text-text_primary"
               }`}
             >
-              {React.createElement(menu?.icon, { size: "24" })}
+              {React.createElement(menu?.icon, {
+                size: "24",
+              })}
             </div>
 
             <h2
