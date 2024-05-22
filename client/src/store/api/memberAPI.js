@@ -43,10 +43,13 @@ export const addMemberImageApi = createApi({
   }),
   endpoints: (builder) => ({
     addMemberImage: builder.mutation({
-      query: (file) => ({
+      query: (image) => ({
         url: `/add-member-image`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         method: "POST",
-        body: { file },
+        body: { image },
       }),
     }),
   }),

@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAddMemberMutation } from "../../store/api/memberAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAddMemberImageMutation } from "../../store/api/memberAPI";
 
 const AddMember = ({ onModal }) => {
   const [openExtend, setOpenExtend] = useState(false);
@@ -30,8 +31,16 @@ const AddMember = ({ onModal }) => {
   const [imageUrl, setImageUrl] = useState(null);
 
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
+  const [
+    addMemberImage,
+    {
+      isSuccess: isImageSuccess,
+      isLoading: isImageLoading,
+      isError: isImageError,
+    },
+  ] = useAddMemberImageMutation();
   const navigate = useNavigate();
- 
+
   useEffect(() => {
     setName(`${firstname} ${lastname}`);
   }, [firstname, lastname]);
@@ -114,16 +123,17 @@ const AddMember = ({ onModal }) => {
       });
     }
   };
-  const onFileDrop = (e) => {
+
+  const onFileDrop = async (e) => {
     const newFile = e.target.files[0];
+    
     if (newFile) {
-      // FileReader to read file
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Set image URL to the result of FileReader
-        setImageUrl(reader.result);
-      };
-      reader.readAsDataURL(newFile);
+      const file = new FormData();
+      file.append("name", "newFile");
+      file.append("image", newFile);
+      console.log(file.get("image"));
+      const { data } = await addMemberImage(file).unwrap();
+      console.log(data);
     }
   };
 
@@ -137,14 +147,20 @@ const AddMember = ({ onModal }) => {
           <div className="flex flex-col items-center gap-3">
             <p className="text-xl font-medium">Add Profile Picture</p>
             <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
-              {
-                imageUrl ? ( <img src={imageUrl} alt="profile" className="w-24 h-24 object-cover rounded-lg" /> ) : ( <CgProfile size={80} color="#6B7280" /> )
-              }
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt="profile"
+                  className="w-24 h-24 object-cover rounded-lg"
+                />
+              ) : (
+                <CgProfile size={80} color="#6B7280" />
+              )}
               <input
                 type="file"
                 name="image"
                 className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-                value=""
+                accept="image/*"
                 onChange={onFileDrop}
               />
             </div>
@@ -202,19 +218,43 @@ const AddMember = ({ onModal }) => {
                 <BsArrowUpSquareFill
                   size={30}
                   onClick={() => setOpenExtend(!openExtend)}
-                  className={`${!openExtend && "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
+                  className={`${!openExtend &&
+                    "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
                 />
               </div>
               {openExtend && (
                 <div className="bg-primary outline-none rounded-b-lg font-semibol text-text_primary absolute top-17 left-40 border-t-2 border-btn_primary">
-                  <ul
-                    className="flex flex-col items-center cursor-pointer"
-                  >
-                    <li onClick={() => setExpiryLimit(1)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  pt-2.5 pb-1 px-4">1 year</li>
-                    <li onClick={() => setExpiryLimit(2)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4">2 years</li>
-                    <li onClick={() => setExpiryLimit(3)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4">3 years</li>
-                    <li onClick={() => setExpiryLimit(4)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4">4 years</li>
-                    <li onClick={() => setExpiryLimit(5)} className="hover:bg-btn_secondary hover:text-btn_primary w-full pt-1  pb-2.5 px-4">5 years</li>
+                  <ul className="flex flex-col items-center cursor-pointer">
+                    <li
+                      onClick={() => setExpiryLimit(1)}
+                      className="hover:bg-btn_secondary hover:text-btn_primary w-full  pt-2.5 pb-1 px-4"
+                    >
+                      1 year
+                    </li>
+                    <li
+                      onClick={() => setExpiryLimit(2)}
+                      className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
+                    >
+                      2 years
+                    </li>
+                    <li
+                      onClick={() => setExpiryLimit(3)}
+                      className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
+                    >
+                      3 years
+                    </li>
+                    <li
+                      onClick={() => setExpiryLimit(4)}
+                      className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
+                    >
+                      4 years
+                    </li>
+                    <li
+                      onClick={() => setExpiryLimit(5)}
+                      className="hover:bg-btn_secondary hover:text-btn_primary w-full pt-1  pb-2.5 px-4"
+                    >
+                      5 years
+                    </li>
                   </ul>
                 </div>
               )}

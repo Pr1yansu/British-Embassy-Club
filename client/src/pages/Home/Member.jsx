@@ -54,7 +54,7 @@ const Member = () => {
           </div>
           <div className="row-start-3 row-end-11 col-start-2 col-end-12">
             <div className="grid grid-cols-12 gap-4">
-              {currentItems.map((item, index) => {
+              {currentItems && currentItems.map((item, index) => {
                 return <MemberCard item={item} index={index} />;
               })}
             </div>
