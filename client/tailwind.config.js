@@ -13,7 +13,7 @@ module.exports = {
         text_quaternary: "#BE123C",
         btn_primary: "#1d4ed8",
         btn_secondary: "#F8FAFC",
-        text_black: "#030712"
+        text_black: "#030712",
       },
       boxShadow: {
         main_card: "0px 6px 8px 0px rgba(0, 0, 0, 0.20)",
@@ -51,5 +51,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

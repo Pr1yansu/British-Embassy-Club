@@ -8,6 +8,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { LuLoader2 } from "react-icons/lu";
 
 const OperatorSignup = () => {
   const [show, setShow] = useState(false);
@@ -212,7 +213,18 @@ const OperatorSignup = () => {
               />
             </div>
 
-            <Button name={"Signup"} type={"submit"} />
+            <Button
+              name={
+                loading ? (
+                  <>
+                    <LuLoader2 className="animate-spin" size={20} />
+                  </>
+                ) : (
+                  <>Sign up</>
+                )
+              }
+              type={"submit"}
+            />
           </form>
         </div>
         {/* Input ends here  */}
