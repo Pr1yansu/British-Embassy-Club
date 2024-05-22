@@ -4,7 +4,7 @@ const { MemberFilter } = require("../utils/filters");
 
 exports.addMember = async (req, res) => {
   try {
-    const { name, mobileNumber, address, expiryDate, bloodGroup, organization } = req.body;
+    const { name, mobileNumber, address, expiryDate, bloodGroup, organization, idType, idNumber } = req.body;
 
     const mobileNumberPattern = /^[0-9]{10}$/;
 
@@ -41,6 +41,10 @@ exports.addMember = async (req, res) => {
       name,
       mobileNumber,
       address,
+      idProof: {
+        idType,
+        idNumber
+      },
       expiryDate,
       bloodGroup,
       organization
@@ -96,7 +100,7 @@ exports.updateMember = async (req, res) => {
   try {
     const { memberId } = req.params;
     const file = req.files;
-    const { mobileNumber, bloodGroup, organization, address, expiryDate, timeStamp } = req.body;
+    const { mobileNumber, bloodGroup, organization, address, expiryDate, timeStamp, idNumber, idType } = req.body;
 
     const memberData = await MemberSchema.findById(memberId);
 
@@ -131,6 +135,10 @@ exports.updateMember = async (req, res) => {
     const member = await MemberSchema.findByIdAndUpdate(memberId, {
       mobileNumber: mobileNumber? mobileNumber : memberData.mobileNumber,
       address: address? address : memberData.address,
+      idProof: {
+        idType:idType? idType : memberData.idType,
+        idNumber:idNumber? idNumber : memberData.idNumber
+      },
       expiryDate: expiryDate? expiryDate : memberData.expiryDate,
       timeStamp: timeStamp? timeStamp : memberData.timeStamp,
       image: {
