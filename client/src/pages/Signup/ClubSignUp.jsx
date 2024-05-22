@@ -76,6 +76,7 @@ const ClubSignUp = () => {
         role,
       });
       console.log(data);
+     if(data){
       toast.success("success", {
         duration: 2000,
         position: "top-left",
@@ -84,6 +85,7 @@ const ClubSignUp = () => {
           color: "#FFFFFF",
         },
       });
+     }
 
       if (role === "operator") {
         navigate("/signup/club/otp");
