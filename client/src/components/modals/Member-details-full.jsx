@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { CgProfile } from "react-icons/cg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -10,33 +10,18 @@ import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 const MembersDetails = ({ setOpen, memberId }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
-  const [user, setUser] = useState({
-    "name": "John Doe",
-    "userName": "@username",
-    "Member ID": "BEC20240201DEM1",
-    "Email": "abc@gmail.com",
-    "Membership Validity": "Expires on 21/10/24",
-    "Address":
-      "Suite 464 3259 Steve Drives, East Dino, WV 78050 Pin code - 447125",
-    "Mobile Number": "+91 1234567890",
-    "Wallet Amount": "450.00",
-    "Blood Group": "O+",
-    "Organization Name": "ABC Pvt Ltd",
-    "National ID" : "Indian",
-  });
   const {data,isError,isLoading,isSuccess} = useGetMemberByIdQuery(memberId);
 
   if(isLoading) return <div>Loading...</div>
-
+  
   console.log("details",data); 
-
-  const keysToExclude = ["name", "userName"];
-
-  const filteredKeys = Object.keys(user).filter(
+  
+  const keysToExclude = ["name", "userName",'__v'];
+  
+  const filteredKeys = Object.keys(data.data).filter(
     (key) => !keysToExclude.includes(key)
   );
-
-
+  
 
   return ReactDOM.createPortal(
     <>
@@ -47,9 +32,9 @@ const MembersDetails = ({ setOpen, memberId }) => {
               <CgProfile size={128} color="#6B7280" />
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
-                  {user.name}
+                  {data.data.name}
                 </p>
-                <p className="text-text_primary roboto">{user.userName}</p>
+                <p className="text-text_primary roboto">{data.data.userName}</p>
               </div>
             </div>
             <div
@@ -66,7 +51,7 @@ const MembersDetails = ({ setOpen, memberId }) => {
               <div key={index} className="flex flex-col">
                 <p className="text-btn_primary roboto font-normal">{key}</p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {user[key]}
+                  {data.data[key]}
                 </p>
               </div>
             ))}

@@ -219,28 +219,6 @@ const AddMember = ({ onModal }) => {
                 </div>
               )}
             </label>
-            {/* <label className="flex flex-col font-medium">
-              Membership Valid Upto
-              <div className="flex items-center gap-1">
-                <select
-                  className="bg-primary outline-none  py-2.5 px-4 rounded-lg font-semibol text-text_primary"
-                  onChange={(e) => setExpiryLimit(e.target.value)}
-                >
-                  <option
-                    value="Viewer"
-                    disabled
-                    className="bg-primary py-5 px-4"
-                  >
-                    choice
-                  </option>
-                  <option value="1">1 year</option>
-                  <option value="2">2 year</option>
-                  <option value="3">3 year</option>
-                  <option value="4">4 year</option>
-                  <option value="5">5 year</option>
-                </select>
-              </div>
-            </label> */}
             <label className="flex flex-col font-medium">
               Membership Valid Upto
               <div className=" bg-primary outline-none flex items-center h-6 py-5 px-4 rounded-lg text-sm text-text_primary">
