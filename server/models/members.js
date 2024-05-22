@@ -16,6 +16,11 @@ const memberSchema = new mongoose.Schema({
     min: 10,
     max: 15,
   },
+  email: {
+    type: String,
+    min: 6,
+    max: 255,
+  },
   image: {
     url: {
       type: String,
