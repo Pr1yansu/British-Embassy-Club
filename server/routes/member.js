@@ -58,7 +58,7 @@ router.get(
   getMembers
 );
 router.post(
-  "/add-member-image/:memberId",
+  "/add-member-image",
   isAuthenticated,
   isInClub,
   isUser,

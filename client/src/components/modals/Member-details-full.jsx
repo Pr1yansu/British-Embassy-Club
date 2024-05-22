@@ -5,6 +5,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import ButtonGroup from "../ui/ButtonGroup";
 import Warning from "./Warning";
 import AddMember from "./Add-member";
+import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 
 const MembersDetails = ({ setOpen }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
@@ -23,6 +24,9 @@ const MembersDetails = ({ setOpen }) => {
     "Organization Name": "ABC Pvt Ltd",
     "National ID" : "Indian",
   });
+  const {data,isError,isLoading,isSuccess} = useGetMemberByIdQuery();
+
+  console.log(data);
 
   const keysToExclude = ["name", "userName"];
 
