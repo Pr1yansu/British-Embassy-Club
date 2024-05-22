@@ -4,14 +4,18 @@ import { MdOutlineFileUpload, MdOutlineUploadFile } from "react-icons/md";
 import PropTypes from "prop-types";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
+import toast from "react-hot-toast";
+import {useAddMemberImageMutation} from "../../store/api/memberAPI";
 
 const FileUpload = (props) => {
   const wrapperRef = useRef(null);
   const [file, setFile] = useState(null);
-
+  const [addMemberImage, { isSuccess, isLoading, isError }] = useAddMemberImageMutation();
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
+
+  console.log(file);
 
   const onFileDrop = (e) => {
     const newFile = e.target.files[0];
@@ -23,6 +27,40 @@ const FileUpload = (props) => {
   const fileRemove = () => {
     setFile(null);
   };
+   const handleImageSubmit = async (e) => {
+      if (props.user === "member" && props.type === "register") {
+        try {
+          const data = await addMemberImage({
+            file: file,
+          }).unwrap();
+          props.setImage(data);
+
+
+          if (isSuccess) {
+            toast.success("Image added successfully", {
+              duration: 2000,
+              position: "top-left",
+              style: {
+                background: "#00FF00",
+                color: "#FFFFFF",
+              },
+            });
+            props.onModal();
+          }
+        } catch (error) {
+          toast.error(error?.data?.message || "Internal Server Error", {
+            duration: 2000,
+            position: "top-left",
+            style: {
+              background: "#FF0000",
+              color: "#FFFFFF",
+            },
+          });
+        }
+      }
+   };
+
+
 
   return ReactDOM.createPortal(
     <>
@@ -97,8 +135,10 @@ const FileUpload = (props) => {
               name={"Submit"}
               color={"bg-blue-700"}
               textColor={"text-white"}
+              onClick={handleImageSubmit}
             />
           </div>
+
         </div>
       </div>
     </>,

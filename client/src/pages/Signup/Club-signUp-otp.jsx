@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
@@ -9,38 +9,53 @@ import ClubRight from "../../components/auth/ClubRight";
 
 const ClubSignUpOtp = () => {
   const navigate = useNavigate();
-  
+
   const [otp, setOtp] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const [seconds, setSeconds] = useState(59);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [seconds]);
+
+  const formatedTime = (seconds % 60).toString().padStart(2, "0");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-        const { data } = await axios.post(
-      "/api/v1/club/verify-accessKey",
-      {
-        OneTimeKey : otp
-      },
-      { withCredentials: true }
-    );
+    try {
+      const { data } = await axios.post(
+        "/api/v1/club/verify-accessKey",
+        {
+          OneTimeKey: otp,
+        },
+        { withCredentials: true }
+      );
 
-    if(data){
-      if (data.statusCode === 200) {
-        toast.success(data.message, {
-          duration: 2000,
-          position: "top-left",
-          style: {
-            background: "#00FF00",
-            color: "#FFFFFF",
-          },
-        });
-        if (data.data.role === "admin") {
-          navigate("/");
+      if (data) {
+        if (data.statusCode === 200) {
+          toast.success(data.message, {
+            duration: 2000,
+            position: "top-left",
+            style: {
+              background: "#00FF00",
+              color: "#FFFFFF",
+            },
+          });
+          if (data.data.role === "admin") {
+            navigate("/");
+          }
+          if (data.data.role === "operator") {
+            navigate("/Login/Operator");
+          }
         }
-        if (data.data.role === "operator") {
-          navigate("/OperatorLogin");
-        }
-      };
-    }
+      }
     } catch (error) {
       toast.error(error.response.data.message || "Internal Server Error", {
         duration: 2000,
@@ -51,14 +66,12 @@ const ClubSignUpOtp = () => {
         },
       });
     }
-  }
-
+  };
 
   return (
     <div
       className={`background relative h-screen bg-cover bg-center py-10 px-20 `}
     >
-      
       <img
         src={arrow}
         alt="arrow"
@@ -69,27 +82,31 @@ const ClubSignUpOtp = () => {
       {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-          <form onSubmit={handleSubmit} className="w-3/5 flex flex-col gap-4 items-center justify-center">
+          <form
+            onSubmit={handleSubmit}
+            className="w-3/5 flex flex-col gap-4 items-center justify-center"
+          >
             <InputBox
               placeholder={"Write your verification code here"}
               type={"text"}
               onChange={(e) => setOtp(e.target.value)}
             />
-            <p className="text-text_primary roboto">
-              Please contact admin for the verification code
-            </p>
-            <Button name={"Submit"} />
-            <p href="#" className="text-text_primary roboto font-medium">
-              Didn't recieve any code?{" "}
-              <a href="#" className="text-blue-700 roboto font-medium">
-                Resend
-              </a>
-            </p>
+            <h2 className="text-text_primary roboto font-medium flex gap-2">
+              Your OTP will expire in{" "}
+              <h3 className="text-blue-700 roboto font-medium">
+                00:{formatedTime}
+                seconds
+              </h3>
+            </h2>
+            <div className="flex gap-10">
+              <Button name={"Submit"} />
+              <Button name={"Resend"} />
+            </div>
           </form>
         </div>
         {/* Input ends here  */}
 
-        <ClubRight/>
+        <ClubRight />
       </div>
     </div>
   );

@@ -5,8 +5,9 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import ButtonGroup from "../ui/ButtonGroup";
 import Warning from "./Warning";
 import AddMember from "./Add-member";
+import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 
-const MembersDetails = ({ setOpen }) => {
+const MembersDetails = ({ setOpen, memberId }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
   const [user, setUser] = useState({
@@ -23,12 +24,19 @@ const MembersDetails = ({ setOpen }) => {
     "Organization Name": "ABC Pvt Ltd",
     "National ID" : "Indian",
   });
+  const {data,isError,isLoading,isSuccess} = useGetMemberByIdQuery(memberId);
+
+  if(isLoading) return <div>Loading...</div>
+
+  console.log("details",data); 
 
   const keysToExclude = ["name", "userName"];
 
   const filteredKeys = Object.keys(user).filter(
     (key) => !keysToExclude.includes(key)
   );
+
+
 
   return ReactDOM.createPortal(
     <>

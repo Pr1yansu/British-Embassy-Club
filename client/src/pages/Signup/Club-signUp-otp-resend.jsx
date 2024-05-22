@@ -45,7 +45,7 @@ const ClubSignUpOtpResend = () => {
             </h2>
             <div className="flex gap-10">
               <Button name={"Submit"} />
-              <Button name={"Resend"}/>
+              <Button name={"Resend"} />
             </div>
           </div>
         </div>

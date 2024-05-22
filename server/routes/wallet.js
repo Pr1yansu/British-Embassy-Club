@@ -12,6 +12,7 @@ const {
   addTransaction,
   fetchTransactions,
   updateTransaction,
+  updateCouponExpires,
 } = require("../controller/wallet.js");
 
 router.post("/add", isAuthenticated, isInClub, isUser, isOperator, addWallet);

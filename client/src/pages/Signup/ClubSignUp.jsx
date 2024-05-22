@@ -9,6 +9,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useGetClubProfileQuery } from "../../store/api/clubAPI";
 import ClubRight from "../../components/auth/ClubRight";
+import { LuLoader2 } from "react-icons/lu";
+
 
 const ClubSignUp = () => {
   const [role, setRole] = useState("choose role");
@@ -84,12 +86,12 @@ const ClubSignUp = () => {
       });
 
       if (role === "operator") {
-        navigate("/ClubSignupOtp");
+        navigate("/signup/club/otp");
         return;
       }
 
       if (role === "admin") {
-        navigate("/ClubSignupOtp");
+        navigate("/signup/club/otp");
         return;
       } 
     } catch (error) {
@@ -154,19 +156,34 @@ const ClubSignUp = () => {
               <option value="operator">operator</option>
             </select>
             <div className="mt-20">
-            <Button name={"Sign up"} type={"submit"} />
-
+              <Button
+                name={
+                  loading ? (
+                    <>
+                      <LuLoader2 className="animate-spin" size={20} />
+                    </>
+                  ) : (
+                    <>Sign up</>
+                  )
+                }
+                type={"submit"}
+              />
             </div>
           </form>
         </div>
         <div className="flex flex-col">
-          <ClubRight/>
+          <ClubRight />
           <p className="font-medium text-3xl font-inter tracking-tight">
             if you already have an account
           </p>
           <h2 className="flex items-center max:lg-justify-center gap-2">
-            <p className="font-medium text-3xl font-inter tracking-tight">please</p>
-            <a href="/login/club" className="font-medium text-blue-700 text-3xl font-inter tracking-tight">
+            <p className="font-medium text-3xl font-inter tracking-tight">
+              please
+            </p>
+            <a
+              href="/login/club"
+              className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
+            >
               login
             </a>
             <FaArrowRight size={22} color="blue" />

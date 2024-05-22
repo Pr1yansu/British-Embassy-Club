@@ -10,6 +10,7 @@ const {
   logout,
   sendResetTokenAgain,
   addOperatorImage,
+  changePassword,
 } = require("../controller/user");
 const {
   validateRegistration,

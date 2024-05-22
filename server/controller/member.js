@@ -325,9 +325,11 @@ exports.getMemberById = async (req, res) => {
         exception: null,
         data: cache.get(memberId),
       });
+
     }
 
     const member = await MemberSchema.findById(memberId);
+    console.log(member);
     if (!member) {
       return res.status(404).json({
         statusCode: 404,

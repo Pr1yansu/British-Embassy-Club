@@ -42,6 +42,78 @@ const data = [
     TIMESTAMP: "10:30",
     STATUS: "Due",
   },
+  {
+    SLNO: 6,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 7,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 8,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 9,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 10,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 11,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 12,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 13,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
+  {
+    SLNO: 14,
+    MEMBERID: "BEC20240201DEMO01",
+    COUPONETYPE: "RECEIVE",
+    CASH: 1000,
+    TIMESTAMP: "10:30",
+    STATUS: "Due",
+  },
 ];
 
 const columns = [
@@ -52,9 +124,8 @@ const columns = [
   {
     name: "Member ID",
     selector: (row) => row.MEMBERID,
-    sortable: true,
     grow: 2,
-    wrap: true, 
+    wrap: true,
   },
   {
     name: "Coupone Type",
@@ -70,21 +141,21 @@ const columns = [
     name: "Timestamp",
     selector: (row) => row.TIMESTAMP,
     // sortable: true,
-    
   },
   {
     name: "Status",
     selector: (row) => row.STATUS,
     cell: (row) => (
-      <span
-        className={`px-6 py-1 rounded-full text-white text-sm tracking-tighter ${
-          row.STATUS === "Paid" ? "bg-green-500" : "bg-red-500"
+      <p
+        className={`rounded-full flex items-center text-white tracking-tighter ${
+          row.STATUS === "Paid" ? "bg-[#22C55E]" : "bg-[#E11D48]"
         }`}
+        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px"}}
       >
         {row.STATUS}
-      </span>
+      </p>
     ),
-    width: "100px",
+    // width: "100px",
   },
 ];
 
@@ -94,8 +165,8 @@ const customStyles = {
       backgroundColor: "#FFFFFF",
       width: "100%",
       borderRadius: "0.75rem",
-      overflow: "hidden",
       boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      overflowY: "auto",
     },
   },
   headRow: {
@@ -105,62 +176,49 @@ const customStyles = {
   },
   headCells: {
     style: {
-      color: "#1E3A8A",
+      color: "#6B7280",
+      fontFamily: "Roboto",
       fontSize: "14px",
-      fontWeight: "600",
+      fontStyle: "normal",
+      fontWeight: 500,
+      lineHeight: "normal",
     },
   },
   cells: {
     style: {
-      fontSize: "14px",
-      fontWeight: "400",
-      alignItems: "center",
-      padding: "8px", // Adjust the padding as necessary
+      color: "#030712",
+      fontFamily: "Lato",
+      fontSize: "12px",
+      fontStyle: "normal",
+      fontWeight: 400,
+      lineHeight: "normal",
     },
   },
-
-};
-
-const customPaginationComponent = ({
-  currentPage,
-  totalPages,
-  pageCount,
-  changePage,
-}) => {
-  return (
-    <div className="flex justify-between items-center">
-      <button
-        disabled={currentPage <= 1}
-        onClick={() => changePage(currentPage - 1)}
-        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-      >
-        Previous
-      </button>
-      <span className="mx-2 text-sm">
-        Page {currentPage} of {totalPages}
-      </span>
-      <button
-        disabled={currentPage >= totalPages}
-        onClick={() => changePage(currentPage + 1)}
-        className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-      >
-        Next
-      </button>
-    </div>
-  );
 };
 
 const CouponTable = () => {
   return (
-    <div className="p-6 bg-white rounded-2xl shadow-lg">
-      {/* Your existing content... */}
+    <div className="p-6 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
+      <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">
+        Issue Coupons Table
+      </h1>
+      <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter mb-2">
+        100 Coupons Today
+      </h1>
       <DataTable
         columns={columns}
         data={data}
         customStyles={customStyles}
         pagination
         paginationPerPage={5}
-        paginationComponent={customPaginationComponent}
+        paginationRowsPerPageOptions={[5, 10, 15, 20]}
+        paginationComponentOptions={{
+          rowsPerPageText: "Rows:",
+          rangeSeparatorText: "of",
+          noRowsPerPage: false,
+          selectAllRowsItem: false,
+          selectAllRowsItemText: "All",
+        }}
         highlightOnHover
         pointerOnHover
         striped
@@ -168,7 +226,6 @@ const CouponTable = () => {
         noHeader
         responsive
         noDataComponent="No data available"
-        className="text-sm tracking-tighter"
       />
     </div>
   );
