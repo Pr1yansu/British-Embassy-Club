@@ -81,7 +81,7 @@ const MemberCard = () => {
             paginate={paginate}
           />
         </div>
-        {open && <MembersDetails setOpen={setOpen} />}
+        {open && <MembersDetails memberId={memberId} setOpen={setOpen} />}
       </div>
     </>
   );
