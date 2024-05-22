@@ -9,12 +9,13 @@ import ValidityExtend from "./ValidityExtend";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAddMemberMutation } from "../../store/api/memberAPI";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddMember = ({ onModal }) => {
-  const [open, setOpen] = useState(false);
   const [openExtend, setOpenExtend] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [idType, setIdType] = useState("");
@@ -26,11 +27,11 @@ const AddMember = ({ onModal }) => {
   const [expiryDate, setExpiryDate] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [organization, setOrganization] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
+
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
-  const [image, setImage] = useState(null);
-
-  console.log(image);
-
+  const navigate = useNavigate();
+ 
   useEffect(() => {
     setName(`${firstname} ${lastname}`);
   }, [firstname, lastname]);
@@ -54,6 +55,27 @@ const AddMember = ({ onModal }) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
+    if (
+      !name ||
+      !email ||
+      !mobileNumber ||
+      !address ||
+      !expiryDate ||
+      !bloodGroup ||
+      !organization ||
+      !idType ||
+      !idNumber
+    ) {
+      toast.error("Please enter a valid search", {
+        duration: 2000,
+        position: "top-left",
+        style: {
+          background: "#FF0000",
+          color: "#FFFFFF",
+        },
+      });
+      return;
+    }
     try {
       const data = await addMember({
         name,
@@ -78,6 +100,7 @@ const AddMember = ({ onModal }) => {
           },
         });
         onModal();
+        navigate(0);
       }
     } catch (error) {
       console.log(error);
@@ -91,8 +114,18 @@ const AddMember = ({ onModal }) => {
       });
     }
   };
-
- 
+  const onFileDrop = (e) => {
+    const newFile = e.target.files[0];
+    if (newFile) {
+      // FileReader to read file
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Set image URL to the result of FileReader
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(newFile);
+    }
+  };
 
   return ReactDOM.createPortal(
     <>
@@ -103,21 +136,18 @@ const AddMember = ({ onModal }) => {
         >
           <div className="flex flex-col items-center gap-3">
             <p className="text-xl font-medium">Add Profile Picture</p>
-            <div
-              className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer"
-              onClick={() => setOpen(true)}
-            >
-              <CgProfile size={80} color="#6B7280" />
-            </div>
-            {open && (
-              <FileUpload
-                image={image}
-                setImage={setImage}
-                type={"register"}
-                user={"member"}
-                onModal={() => setOpen(false)}
+            <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
+              {
+                imageUrl ? ( <img src={imageUrl} alt="profile" className="w-24 h-24 object-cover rounded-lg" /> ) : ( <CgProfile size={80} color="#6B7280" /> )
+              }
+              <input
+                type="file"
+                name="image"
+                className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+                value=""
+                onChange={onFileDrop}
               />
-            )}
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex flex-col font-medium">
@@ -135,7 +165,14 @@ const AddMember = ({ onModal }) => {
               />
             </label>
           </div>
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="flex flex-col font-medium">
+              User Name
+              <InputBox
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
             <label className="flex flex-col font-medium">
               Blood Group
               <InputBox
@@ -155,16 +192,34 @@ const AddMember = ({ onModal }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="flex flex-col font-medium">
+            <label className="flex flex-col font-medium relative">
               Membership Valid From
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 bg-primary pr-2 rounded-t-lg">
                 <InputBox
                   type="date"
                   onChange={(e) => setMembershipFromDate(e.target.value)}
                 />
+                <BsArrowUpSquareFill
+                  size={30}
+                  onClick={() => setOpenExtend(!openExtend)}
+                  className={`${!openExtend && "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
+                />
               </div>
+              {openExtend && (
+                <div className="bg-primary outline-none rounded-b-lg font-semibol text-text_primary absolute top-17 left-40 border-t-2 border-btn_primary">
+                  <ul
+                    className="flex flex-col items-center cursor-pointer"
+                  >
+                    <li onClick={() => setExpiryLimit(1)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  pt-2.5 pb-1 px-4">1 year</li>
+                    <li onClick={() => setExpiryLimit(2)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4">2 years</li>
+                    <li onClick={() => setExpiryLimit(3)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4">3 years</li>
+                    <li onClick={() => setExpiryLimit(4)} className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4">4 years</li>
+                    <li onClick={() => setExpiryLimit(5)} className="hover:bg-btn_secondary hover:text-btn_primary w-full pt-1  pb-2.5 px-4">5 years</li>
+                  </ul>
+                </div>
+              )}
             </label>
-            <label className="flex flex-col font-medium">
+            {/* <label className="flex flex-col font-medium">
               Membership Valid Upto
               <div className="flex items-center gap-1">
                 <select
@@ -185,9 +240,7 @@ const AddMember = ({ onModal }) => {
                   <option value="5">5 year</option>
                 </select>
               </div>
-            </label>
-          </div>
-          <div>
+            </label> */}
             <label className="flex flex-col font-medium">
               Membership Valid Upto
               <div className=" bg-primary outline-none flex items-center h-6 py-5 px-4 rounded-lg text-sm text-text_primary">

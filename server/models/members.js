@@ -24,10 +24,12 @@ const memberSchema = new mongoose.Schema({
   image: {
     url: {
       type: String,
+      default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
     },
     public_id: {
       type: String,
     },
+
   },
   address: {
     type: String,
