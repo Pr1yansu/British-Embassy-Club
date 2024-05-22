@@ -44,15 +44,14 @@ exports.addMember = async (req, res) => {
 
     const allMembersCount = await MemberSchema.find().countDocuments();
 
-    const timeStamp = await new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "");
+    const timeStamp = new Date().toISOString().slice(0, 10);
 
-    const memberId = await `BEC${timeStamp}${name}${allMembersCount + 1}`;
+    const firstName = name.split(" ")[0];
+
+    const memberId = `BEC${timeStamp}${firstName}${allMembersCount + 1}`;
 
     const member = await MemberSchema.create({
-      _id: memberId,
+      _id: memberId.replace(/\s/g, ""),
       name,
       mobileNumber,
       address,
@@ -131,8 +130,6 @@ exports.updateMember = async (req, res) => {
       idType,
       username,
     } = req.body;
-
-    const removeSpaceUsername = username.replace(/\s/g, "");
 
     const memberData = await MemberSchema.findById(memberId);
 
@@ -256,11 +253,13 @@ exports.updateImage = async (req, res) => {
 
 exports.getMembers = async (req, res) => {
   try {
+    const totalMembers = await MemberSchema.find().countDocuments();
     const filter = new MemberFilter(req.query).filter().sort().paginate();
     const members = await filter.exec();
     return res.status(200).json({
       statusCode: 200,
       message: "Members found",
+      totalMembers: totalMembers,
       exception: null,
       data: members,
     });
@@ -325,7 +324,6 @@ exports.getMemberById = async (req, res) => {
         exception: null,
         data: cache.get(memberId),
       });
-
     }
 
     const member = await MemberSchema.findById(memberId);
