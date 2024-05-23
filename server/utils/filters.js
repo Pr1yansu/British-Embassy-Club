@@ -40,6 +40,7 @@ class TransactionFilter {
       .model("TransactionSchema")
       .find(this.queryString.sort ? this.queryString : {})
       .sort(this.queryString.sort)
+      .limit(this.pagination.limit)
       .skip(this.pagination.skip);
     return transactions;
   }
@@ -76,11 +77,13 @@ class MemberFilter {
   }
 
   async exec() {
+    console.log(this.queryString, this.pagination);
     const members = await mongoose
       .model("MemberSchema")
       .find(this.queryString.sort ? this.queryString : {})
       .sort(this.queryString.sort)
       .skip(this.pagination.skip)
+      .limit(this.pagination.limit)
       .populate("wallet");
     return members;
   }

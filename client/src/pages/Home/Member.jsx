@@ -7,25 +7,25 @@ import MemberCard from "../../components/ui/MemberCard";
 import { useGetAllMembersQuery } from "../../store/api/memberAPI";
 import ReactPaginate from 'react-paginate';
 import { GrPrevious,GrNext } from "react-icons/gr";
+import Lottie from "react-lottie";
 const Member = () => {
   const [open, SetOpen] = useState(false);
-  const [postsPerPage, setPostsPerPage] = useState(12);
-  const [itemOffset, setItemOffset] = useState(0);
+  const [page, setPage] = useState(1);
 
-  const { data, isSuccess, isLoading } = useGetAllMembersQuery();
+  const { data, isSuccess, isLoading } = useGetAllMembersQuery({ page: page, limit: 10});
 
   if (isLoading) return <div>Loading...</div>;
 
   console.log("From memeber ", data);
 
-  const endOffset = itemOffset + postsPerPage;
-  const currentItems = data?.data.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(data?.data?.length / postsPerPage);
+  const pageCount = Math.ceil(data?.totalMembers / data?.data?.length);
+
+  console.log("page count", data?.totalMembers);
+  console.log(typeof data?.data?.length);
 
   const handlePageChange = (event) => {
     const selectedPage = event.selected;
-    setItemOffset(selectedPage * postsPerPage);
-
+    setPage(selectedPage + 1);
   };
   
 
@@ -33,6 +33,7 @@ const Member = () => {
 
   return (
     <>
+    {isLoading && <Lottie options={{loop:true,autoplay:true,animationData:require('../../assets/animations/loader.json')}} height={150} width={150} />}
       <div className="background bg-cover bg-center">
         <div className="container w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
           <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
@@ -54,7 +55,7 @@ const Member = () => {
           </div>
           <div className="row-start-3 row-end-11 col-start-2 col-end-12">
             <div className="grid grid-cols-12 gap-4">
-              {currentItems.map((item, index) => {
+              {data && data.data.map((item, index) => {
                 return <MemberCard item={item} index={index} />;
               })}
             </div>
@@ -62,7 +63,8 @@ const Member = () => {
               <div className="flex gap-2">
                 <ReactPaginate
                   pageCount={pageCount}
-                  setPostsPerPage={setPostsPerPage}
+                  setPostsPerPage={data.data.length}
+                  
                   onPageChange={handlePageChange}
                   nextLabel={<GrNext />}
                   previousLabel={<GrPrevious />}

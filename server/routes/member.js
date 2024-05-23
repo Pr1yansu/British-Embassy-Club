@@ -61,10 +61,7 @@ router.delete(
 );
 router.get(
   "/get-all-members",
-  isAuthenticated,
-  isInClub,
-  isUser,
-  isOperator,
+
   getMembers
 );
 router.post(
