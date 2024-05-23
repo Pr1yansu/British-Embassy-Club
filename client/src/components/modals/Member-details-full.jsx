@@ -16,11 +16,6 @@ const MembersDetails = ({ setOpen, memberId }) => {
   
   console.log("details",data); 
   
-  const keysToExclude = ["name", "userName",'__v'];
-  
-  const filteredKeys = Object.keys(data.data).filter(
-    (key) => !keysToExclude.includes(key)
-  );
   
 
   return ReactDOM.createPortal(
@@ -46,7 +41,7 @@ const MembersDetails = ({ setOpen, memberId }) => {
               <IoIosCloseCircleOutline size={30} color="blue" />
             </div>
           </div>
-          <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
+          {/* <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
             {filteredKeys.map((key, index) => (
               <div key={index} className="flex flex-col">
                 <p className="text-btn_primary roboto font-normal">{key}</p>
@@ -55,6 +50,24 @@ const MembersDetails = ({ setOpen, memberId }) => {
                 </p>
               </div>
             ))}
+          </div> */}
+          <div className="flex flex-col border-1 border-red-600 w-full">
+            <div className="flex justify-between">
+              <div>
+                <p className="text-btn_primary roboto font-normal">Member ID</p>
+                <p className="lato text-sm text-text_primary font-normal">{data.data._id}</p>
+              </div>
+              <div>
+                <p>Email</p>
+                <p>abc@gmail.com</p>
+              </div>
+            </div>
+            <div>
+
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
           <div className="w-full flex justify-end gap-6">
             <ButtonGroup
