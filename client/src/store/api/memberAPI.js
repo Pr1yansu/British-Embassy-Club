@@ -116,7 +116,7 @@ export const getAllMembersApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllMembers: builder.query({
-      query: () => "/get-all-members?page=1&limit=10",
+      query: ({page=1,limit=10}) => `/get-all-members?page=${page}&limit=${limit}`,
     }),
   }),
 });
