@@ -88,6 +88,7 @@ const AddMember = ({ onModal }) => {
     try {
       const data = await addMember({
         name,
+        email,
         mobileNumber,
         address,
         expiryDate,

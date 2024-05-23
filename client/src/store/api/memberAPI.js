@@ -10,6 +10,7 @@ export const addMemberApi = createApi({
     addMember: builder.mutation({
       query: ({
         name,
+        email,
         mobileNumber,
         address,
         expiryDate,
@@ -28,6 +29,7 @@ export const addMemberApi = createApi({
           bloodGroup,
           organization,
           idType,
+          email,
           idNumber,
         },
       }),
