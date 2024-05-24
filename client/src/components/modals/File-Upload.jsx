@@ -1,16 +1,25 @@
 import React, { useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { MdOutlineFileUpload, MdOutlineUploadFile } from "react-icons/md";
+import {
+  MdError,
+  MdOutlineFileUpload,
+  MdOutlineUploadFile,
+} from "react-icons/md";
 import PropTypes from "prop-types";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
 import toast from "react-hot-toast";
-import {useAddMemberImageMutation} from "../../store/api/memberAPI";
+import { useAddMemberImageMutation } from "../../store/api/memberAPI";
+import Toasts from "../ui/Toasts";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const FileUpload = (props) => {
   const wrapperRef = useRef(null);
   const [file, setFile] = useState(null);
-  const [addMemberImage, { isSuccess, isLoading, isError }] = useAddMemberImageMutation();
+  const [
+    addMemberImage,
+    { isSuccess, isLoading, isError },
+  ] = useAddMemberImageMutation();
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
@@ -27,40 +36,52 @@ const FileUpload = (props) => {
   const fileRemove = () => {
     setFile(null);
   };
-   const handleImageSubmit = async (e) => {
-      if (props.user === "member" && props.type === "register") {
-        try {
-          const data = await addMemberImage({
-            file: file,
-          }).unwrap();
-          props.setImage(data);
+  const handleImageSubmit = async (e) => {
+    if (props.user === "member" && props.type === "register") {
+      try {
+        const data = await addMemberImage({
+          file: file,
+        }).unwrap();
+        props.setImage(data);
 
-
-          if (isSuccess) {
-            toast.success("Image added successfully", {
-              duration: 2000,
+        if (isSuccess) {
+          toast.custom(
+            <>
+              <Toasts
+                boldMessage={"Success!"}
+                message={"Image added successfully"}
+                icon={
+                  <IoCheckmarkDoneCircleOutline
+                    className="text-text_tertiaary"
+                    size={32}
+                  />
+                }
+              />
+            </>,
+            {
               position: "top-left",
-              style: {
-                background: "#00FF00",
-                color: "#FFFFFF",
-              },
-            });
-            props.onModal();
-          }
-        } catch (error) {
-          toast.error(error?.data?.message || "Internal Server Error", {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#FF0000",
-              color: "#FFFFFF",
-            },
-          });
+              duration: 2000,
+            }
+          );
+          props.onModal();
         }
+      } catch (error) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={error?.data?.message || "Internal Server Error"}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
       }
-   };
-
-
+    }
+  };
 
   return ReactDOM.createPortal(
     <>
@@ -138,7 +159,6 @@ const FileUpload = (props) => {
               onClick={handleImageSubmit}
             />
           </div>
-
         </div>
       </div>
     </>,

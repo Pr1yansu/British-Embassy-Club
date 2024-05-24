@@ -8,48 +8,57 @@ import Warning from "../../components/modals/Warning";
 import { useLogoutMutation } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Toasts from "../../components/ui/Toasts";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { MdError } from "react-icons/md";
 
 const Settings = () => {
   const navigate = useNavigate();
   const [warning, setWarning] = useState();
-   const [logout, { isLoading, isError, data }] = useLogoutMutation();
+  const [logout, { isLoading, isError, data }] = useLogoutMutation();
 
-   const handleLogout = async () => {
-     try {
+  const handleLogout = async () => {
+    try {
       const data = await logout().unwrap();
 
-      if(data){
-        toast.success("Logout Successfully",{
-          duration: 2000,
-          position: "top-right",
-          style: {
-            background: "#4BB543",
-            color: "#fff",
-          },
-          iconTheme: {
-            primary: "#fff",
-            secondary: "#4BB543",
-          },
-        });
+      if (data) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={"Logout Successfully"}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
         navigate("/login/club");
       }
-       
-     } catch (error) {
-       console.error("Failed to logout:", error);
-       toast.error("Logout Failed",{
-        duration: 2000,
-        position: "top-right",
-        style: {
-          background: "#FF0000",
-          color: "#fff",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#FF0000",
-        },
-      });
-     }
-   };
+    } catch (error) {
+      console.error("Failed to logout:", error);
+       toast.custom(
+         <>
+           <Toasts
+             boldMessage={"Error!"}
+             message={"Logout Failed"}
+             icon={<MdError className="text-text_red" size={32} />}
+           />
+         </>,
+         {
+           position: "top-left",
+           duration: 2000,
+         }
+       );
+    }
+  };
   return (
     <>
       <div className="background bg-cover bg-center">

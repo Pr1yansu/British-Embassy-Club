@@ -19,8 +19,7 @@ export const locations = [
   "/coupon",
   "/profile",
   "/settings",
-  "/settingsAdmin",
-  "/settingsAdminTemp",
+  "/settings/admin",
 ]
 
 export const cardData = [
@@ -86,16 +85,16 @@ export const sidebarItem1 = [
     page: "/coupon",
   },
   {
-    icon: settings,
-    title: "Settings",
-    iconBold: settings_bold,
-    page: "/settings",
-  },
-  {
     icon: profile,
     title: "Profile",
     iconBold: profile_bold,
     page: "/profile",
+  },
+  {
+    icon: settings,
+    title: "Settings",
+    iconBold: settings_bold,
+    page: "/settings",
   },
 ];
 

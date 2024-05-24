@@ -1,20 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MainCard from "../../components/ui/MainCard";
 import { cardData } from "../../constants";
 import profile from "../../assets/icons/Snehashis.png";
 import { useNavigate } from "react-router-dom";
-
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
+import Lottie from "react-lottie";
+import loadingAnimationData from "../../assets/animations/loader.json";
+import logo from "../../assets/images/LOGO.png";
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { data: profiledata, error, isLoading } = useGetOperatorProfileQuery();
+
+  // Logging profiledata to check its state
+  useEffect(() => {
+    console.log(profiledata);
+  }, [profiledata]);
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loadingAnimationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Lottie options={defaultOptions} height={400} width={400} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading profile data</div>;
+  }
+
+  if (!profiledata || !profiledata.data) {
+    return <div>No profile data found</div>;
+  }
+
   return (
     <div className="background h-screen bg-cover bg-center">
     <div className="container px-20 grid grid-rows-12 grid-cols-12 gap-4">
-      <div className="row-start-1 row-end-3 col-start-2 col-end-12 flex justify-between items-center">
-        <h3>Logo</h3>
+      <div className="row-start-1 row-end-3 col-start-2 col-end-12 flex justify-end items-center">
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
         <div className="flex gap-4 items-center justify-center cursor-pointer" onClick={()=>navigate('/profile')}>
           <div className="flex flex-col items-end">
-            <h4 className="text-xl font-roboto">Snehashis Gharai</h4>
-            <h6 className="text-text_primary">Operator</h6>
+            <h4 className="text-xl font-roboto">{profiledata.data.username }</h4>
+            <h6 className="text-text_primary">{profiledata.data.role}</h6>
           </div>
           <img src={profile} alt="" className="w-16 h-16"/>
         </div>

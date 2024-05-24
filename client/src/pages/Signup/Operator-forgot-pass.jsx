@@ -6,49 +6,67 @@ import { useNavigate } from "react-router-dom";
 import { useSendResetLinkMutation } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { LuLoader2 } from "react-icons/lu";
-
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import Toasts from "../../components/ui/Toasts";
+import { MdError } from "react-icons/md";import logo from "../../assets/images/LOGO.png";
 
 const OperatorSignUpOtp = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sendResetLink, { isLoading, isSuccess, isError, data }] = useSendResetLinkMutation();
- 
+  const [
+    sendResetLink,
+    { isLoading, isSuccess, isError, data },
+  ] = useSendResetLinkMutation();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
    const data =  await sendResetLink(username).unwrap();
 
-      if (data) {
-        toast.success("Reset link sent successfully", {
-          duration: 2000,
-          position: "top-left",
-          style: {
-            background: "#00FF00",
-            color: "#FFFFFF",
-          },
-        });
+      if (isSuccess) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={"Reset link sent successfully"}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
         navigate("/login/operator/forgotPass/mail");
       }
-      
     } catch (error) {
-      toast.error(error?.data?.message || "Internal Server Error", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+     
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error?.data?.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
-
-
 
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute -top-10 h-56 left-96" />
-      <h3 className="font-bold absolute top-15 left-30">Logo</h3>
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-24">

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import InputBox from "../../components/ui/InputBox";
 import profilePic from "../../assets/images/profilePic.png";
-import FileUpload from "../../components/modals/File-Upload";
 import {
   useAddOperatorImageMutation,
   useGetOperatorProfileQuery,
   useUpdateOperatorProfileMutation,
 } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import Toasts from "../../components/ui/Toasts";
+import { MdError } from "react-icons/md";
 
 const Profile = () => {
   const [open, SetOpen] = useState(false);
@@ -56,35 +58,40 @@ const Profile = () => {
         const data = await addOperatorImage(formData).unwrap();
         console.log("Response data:", data);
         if (data) {
-          toast.success("Image uploaded successfully", {
-            duration: 2000,
-            position: "top-right",
-            style: {
-              border: "1px solid #333",
-              padding: "16px",
-              color: "#333",
-            },
-            iconTheme: {
-              primary: "#333",
-              secondary: "#FFFAEE",
-            },
-          });
+          toast.custom(
+            <>
+              <Toasts
+                boldMessage={"Success!"}
+                message={"Image uploaded successfully"}
+                icon={
+                  <IoCheckmarkDoneCircleOutline
+                    className="text-text_tertiaary"
+                    size={32}
+                  />
+                }
+              />
+            </>,
+            {
+              position: "top-left",
+              duration: 2000,
+            }
+          );
         }
       } catch (error) {
         console.log(error);
-        toast.error("Image not uploaded", {
-          duration: 2000,
-          position: "top-right",
-          style: {
-            border: "1px solid #333",
-            padding: "16px",
-            color: "#333",
-          },
-          iconTheme: {
-            primary: "#333",
-            secondary: "#FFFAEE",
-          },
-        });
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={"Image not uploaded"}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
       }
     }
   };
@@ -103,50 +110,55 @@ const Profile = () => {
       }).unwrap();
 
       if (updateisSuccess) {
-        toast.success("Profile updated successfully", {
-          duration: 2000,
-          position: "top-right",
-          style: {
-            border: "1px solid #333",
-            padding: "16px",
-            color: "#333",
-          },
-          iconTheme: {
-            primary: "#333",
-            secondary: "#FFFAEE",
-          },
-        });
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={"Profile updated successfully"}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
       }
 
       if (updateisError) {
-        toast.error(updatedData.data.error || "Profile not updated", {
-          duration: 2000,
-          position: "top-right",
-          style: {
-            border: "1px solid #333",
-            padding: "16px",
-            color: "#333",
-          },
-          iconTheme: {
-            primary: "#333",
-            secondary: "#FFFAEE",
-          },
-        });
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={updatedData.data.error || "Profile not updated"}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
       }
     } catch (error) {
-      toast.error(error || "Profile not updated", {
-        duration: 2000,
-        position: "top-right",
-        style: {
-          border: "1px solid #333",
-          padding: "16px",
-          color: "#333",
-        },
-        iconTheme: {
-          primary: "#333",
-          secondary: "#FFFAEE",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error || "Profile not updated"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 
@@ -157,7 +169,11 @@ const Profile = () => {
           <div className="row-start-2 row-end-12 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
             <div className="flex justify-start items-center gap-6 mb-4">
               <div className="relative h-32 w-32">
-                <img src={profilePic?profilePic:""} alt="" className="w-32 h-32" />
+                <img
+                  src={profilePic ? profilePic : ""}
+                  alt=""
+                  className="w-32 h-32"
+                />
                 <input
                   type="file"
                   name="image"

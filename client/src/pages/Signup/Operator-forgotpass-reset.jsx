@@ -3,13 +3,13 @@ import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import { useNavigate } from "react-router-dom";
-
+import logo from "../../assets/images/LOGO.png";
 const OperatorResetPass = () => {
   const navigate = useNavigate();
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96 " />
-      <h3 className="font-bold absolute top-15 left-30">Logo</h3>
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-62">

@@ -21,14 +21,14 @@ const Sidebar = () => {
     },
     { names: "Coupon", link: "/coupon", icon: LuTicket },
     {
-      names: "Settings",
-      link: "/settings",
-      icon: IoIosSettings,
-    },
-    {
       names: "Profile",
       link: "/profile",
       icon: RxAvatar,
+    },
+    {
+      names: "Settings",
+      link: "/settings",
+      icon: IoIosSettings,
     },
   ];
   const [open, setOpen] = useState(false);
