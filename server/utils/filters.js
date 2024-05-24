@@ -55,10 +55,7 @@ class MemberFilter {
   }
 
   filter() {
-    if (this.query.name) this.queryString.name = this.query.name;
-    if (this.query.email) this.queryString.email = this.query.email;
-    if (this.query.phone) this.queryString.phone = this.query.phone;
-    if (this.query.memberId) this.queryString._id = this.query.memberId;
+    if (this.query.search) this.queryString.search = this.query.search;
     return this;
   }
 
@@ -82,9 +79,10 @@ class MemberFilter {
       .model("MemberSchema")
       .find({
         $or: [
-          { name: this.queryString.name },
-          { email: this.queryString.email },
-          { phone: this.queryString.phone },
+          { name: this.queryString.search },
+          { email: this.queryString.search },
+          { phone: this.queryString.search },
+          { memberId: this.queryString.search },
         ],
       })
       .sort(this.queryString.sort)
