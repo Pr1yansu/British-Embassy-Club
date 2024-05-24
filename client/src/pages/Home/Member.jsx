@@ -7,7 +7,6 @@ import MemberCard from "../../components/ui/MemberCard";
 import { useGetAllMembersQuery } from "../../store/api/memberAPI";
 import ReactPaginate from 'react-paginate';
 import { GrPrevious,GrNext } from "react-icons/gr";
-import Lottie from "react-lottie";
 const Member = () => {
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -33,7 +32,6 @@ const Member = () => {
 
   return (
     <>
-    {isLoading && <Lottie options={{loop:true,autoplay:true,animationData:require('../../assets/animations/loader.json')}} height={150} width={150} />}
       <div className="background bg-cover bg-center">
         <div className="container w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
           <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
