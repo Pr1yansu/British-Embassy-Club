@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { LuLoader2 } from "react-icons/lu";
+import Toasts from "../../components/ui/Toasts";
+import { MdError } from "react-icons/md";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const OperatorSignup = () => {
   const [show, setShow] = useState(false);
@@ -43,51 +46,71 @@ const OperatorSignup = () => {
       !idType ||
       !idNumber
     ) {
-      toast.error("Please enter a valid search", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please enter a valid search"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error("Password do not match with confirmpassword", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Password do not match with confirmpassword"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       return;
     }
 
     if (mobileNumber.length !== 10) {
-      toast.error("Please enter a valid mobile number", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please enter a valid mobile number"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       return;
     }
 
     if (idType === "Select your documnet") {
-      toast.error("Please select a document type", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please select a document type"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       setLoading(false);
       return;
     }
@@ -110,25 +133,40 @@ const OperatorSignup = () => {
       );
       if (data) {
         console.log(data);
-        toast.success("success", {
-          duration: 2000,
-          position: "top-left",
-          style: {
-            background: "#FF0000",
-            color: "#FFFFFF",
-          },
-        });
+
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
         navigate("/OperatorLogin");
       }
     } catch (error) {
-      toast.error(error.response.data.message || "Internal Server Error", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "green",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 

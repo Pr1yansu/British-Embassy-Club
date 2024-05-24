@@ -6,44 +6,62 @@ import { useNavigate } from "react-router-dom";
 import { useSendResetLinkMutation } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { LuLoader2 } from "react-icons/lu";
-
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import Toasts from "../../components/ui/Toasts";
+import { MdError } from "react-icons/md";
 
 const OperatorSignUpOtp = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sendResetLink, { isLoading, isSuccess, isError, data }] = useSendResetLinkMutation();
- 
+  const [
+    sendResetLink,
+    { isLoading, isSuccess, isError, data },
+  ] = useSendResetLinkMutation();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await sendResetLink(username).unwrap();
 
       if (isSuccess) {
-        toast.success("Reset link sent successfully", {
-          duration: 2000,
-          position: "top-left",
-          style: {
-            background: "#00FF00",
-            color: "#FFFFFF",
-          },
-        });
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={"Reset link sent successfully"}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
         navigate("/login/operator/forgotPass/mail");
       }
-      
     } catch (error) {
-      toast.error(error?.data?.message || "Internal Server Error", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+     
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error?.data?.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
-
-
 
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">

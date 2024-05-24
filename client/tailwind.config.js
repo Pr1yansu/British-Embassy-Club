@@ -7,6 +7,7 @@ module.exports = {
         primary: "#E2E8F0",
         secondary: "#BBF7D0",
         tettiary: "#FDA4AF",
+        text_red: "#E11D48",
         text_primary: "#6B7280",
         text_secondary: "#1d4ed8",
         text_tertiaary: "#22C55E",

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import mailbox from "../../assets/images/mailbox.png";
-import Button from "../../components/ui/Button";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import {useNavigate} from "react-router-dom"

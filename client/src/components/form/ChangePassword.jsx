@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Passwordbox from "../ui/Passwordbox";
 import ButtonGroup from "../../components/ui/ButtonGroup";
-import {useChangePasswordMutation} from "../../store/api/operatorAPI";
+import { useChangePasswordMutation } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Toasts from "../ui/Toasts";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { MdError } from "react-icons/md";
 
 const ChangePassword = ({ colStart, colEnd }) => {
   const navigate = useNavigate();
@@ -11,7 +14,10 @@ const ChangePassword = ({ colStart, colEnd }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [changePassword,{isError,isLoading,isSuccess}] = useChangePasswordMutation();
+  const [
+    changePassword,
+    { isError, isLoading, isSuccess },
+  ] = useChangePasswordMutation();
 
   const handleOldPasswordChange = (e) => setOldPassword(e.target.value);
   const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
@@ -20,43 +26,48 @@ const ChangePassword = ({ colStart, colEnd }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await changePassword({
-      oldPassword : oldPassword,
-      newPassword : newPassword,
-      confirmPassword : confirmPassword
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+      confirmPassword: confirmPassword,
     }).unwrap();
 
-    if(data){
-      toast.success("Password Changed Successfully",{
-        duration: 2000,
-        position: "top-right",
-        style: {
-          background: "#4BB543",
-          color: "#fff",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#4BB543",
-        },
-      });
+    if (data) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Success!"}
+            message={"Password Changed Successfully"}
+            icon={
+              <IoCheckmarkDoneCircleOutline
+                className="text-text_tertiaary"
+                size={32}
+              />
+            }
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       navigate("/");
     }
 
-    if(isError){
-      toast.error(data.error||"Password Change Failed",{
-        duration: 2000,
-        position: "top-right",
-        style: {
-          background: "#FF0000",
-          color: "#fff",
-        },
-        iconTheme: {
-          primary: "#fff",
-          secondary: "#FF0000",
-        },
-      });
+    if (isError) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={data.error || "Password Change Failed"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
-
-
   };
   const handleCancel = () => {
     setOldPassword("");
@@ -128,7 +139,11 @@ const ChangePassword = ({ colStart, colEnd }) => {
               color={"bg-btn_secondary"}
               onClick={handleCancel}
             />
-            <ButtonGroup name={"Confirm"} textColor={"text-text_secondary"} type={"submit"} />
+            <ButtonGroup
+              name={"Confirm"}
+              textColor={"text-text_secondary"}
+              type={"submit"}
+            />
           </div>
         </form>
       </div>

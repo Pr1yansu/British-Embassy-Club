@@ -6,6 +6,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ClubRight from "../../components/auth/ClubRight";
+import Toasts from "../../components/ui/Toasts";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { MdError } from "react-icons/md";
 
 const ClubSignUpOtp = () => {
   const navigate = useNavigate();
@@ -40,14 +43,24 @@ const ClubSignUpOtp = () => {
 
       if (data) {
         if (data.statusCode === 200) {
-          toast.success(data.message, {
-            duration: 2000,
-            position: "top-left",
-            style: {
-              background: "#00FF00",
-              color: "#FFFFFF",
-            },
-          });
+          toast.custom(
+            <>
+              <Toasts
+                boldMessage={"Success!"}
+                message={data.message}
+                icon={
+                  <IoCheckmarkDoneCircleOutline
+                    className="text-text_tertiaary"
+                    size={32}
+                  />
+                }
+              />
+            </>,
+            {
+              position: "top-left",
+              duration: 2000,
+            }
+          );
           if (data.data.role === "admin") {
             navigate("/");
           }
@@ -57,14 +70,19 @@ const ClubSignUpOtp = () => {
         }
       }
     } catch (error) {
-      toast.error(error.response.data.message || "Internal Server Error", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 

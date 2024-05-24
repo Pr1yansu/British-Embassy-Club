@@ -7,6 +7,8 @@ import InputBox from "../../components/ui/InputBox";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Toasts from "../../components/ui/Toasts";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const OperatoLogin = () => {
     const navigate = useNavigate();
@@ -20,14 +22,24 @@ const OperatoLogin = () => {
         password,
       });
       if (data) {
-         toast.success(data.message, {
-           duration: 2000,
-           position: "top-left",
-           style: {
-             background: "#00FF00",
-             color: "#FFFFFF",
-           },
-         });
+         toast.custom(
+           <>
+             <Toasts
+               boldMessage={"Success!"}
+               message={data.message}
+               icon={
+                 <IoCheckmarkDoneCircleOutline
+                   className="text-text_tertiaary"
+                   size={32}
+                 />
+               }
+             />
+           </>,
+           {
+             position: "top-left",
+             duration: 2000,
+           }
+         );
           navigate("/dashboard");
       }
   };

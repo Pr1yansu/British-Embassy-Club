@@ -10,7 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { useGetClubProfileQuery } from "../../store/api/clubAPI";
 import ClubRight from "../../components/auth/ClubRight";
 import { LuLoader2 } from "react-icons/lu";
-
+import Toasts from "../../components/ui/Toasts";
+import { MdError } from "react-icons/md";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const ClubSignUp = () => {
   const [role, setRole] = useState("choose role");
@@ -31,40 +33,55 @@ const ClubSignUp = () => {
     e.preventDefault();
     setLoading(true);
     if (!username || !email || !password || !confirmpassword) {
-      toast.error("Please enter a valid search", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please enter a valid search"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       setLoading(false);
       return;
     }
 
     if (role === "choose role") {
-      toast.error("Please select a role", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please select a role"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       setLoading(false);
       return;
     }
 
     if (password !== confirmpassword) {
-      toast.error("Password do not match with confirmpassword", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Password do not match with confirmpassword"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
       return;
     }
 
@@ -76,16 +93,26 @@ const ClubSignUp = () => {
         role,
       });
       console.log(data);
-     if(data){
-      toast.success("success", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
-     }
+      if (data) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+             
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      }
 
       if (role === "operator") {
         navigate("/signup/club/otp");
@@ -95,10 +122,10 @@ const ClubSignUp = () => {
       if (role === "admin") {
         navigate("/signup/club/otp");
         return;
-      } 
+      }
     } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
