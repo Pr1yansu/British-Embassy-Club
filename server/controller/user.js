@@ -263,8 +263,18 @@ exports.addOperatorImage = async (req, res) => {
         data: null,
       });
     }
+    const file = req.files;
+    if (!file) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "No file uploaded",
+        exception: null,
+        data: null,
+      });
+    }
     const { url, public_id } = await uploadImage({
-      file: req.files.image,
+      
+      file: file.image,
       folder: "operators",
       name: user._id,
     });
@@ -356,7 +366,7 @@ exports.updateOperator = async (req, res) => {
         data: null,
       });
     }
-    const { email, mobileNumber, profileImage, idType, idNumber } = req.body;
+    const { email, mobileNumber, profileImage, idType, idNumber, address } = req.body;
     const user = await Operators.findById(id);
     if (!user) {
       return res.status(404).json({
@@ -365,15 +375,16 @@ exports.updateOperator = async (req, res) => {
       });
     }
     const hashedPassword = null;
-    if(req.body.password){
+    if (req.body.password) {
       hashedPassword = bcrypt.hashSync(req.body.password, 10);
     }
-    
+
     const updatedUser = await Operators.findByIdAndUpdate(id, {
-      password: hashedPassword? hashedPassword : user.password,
+      password: hashedPassword ? hashedPassword : user.password,
       mobileNumber,
       profileImage,
       email,
+      address,
       idProof: {
         idType,
         idNumber,

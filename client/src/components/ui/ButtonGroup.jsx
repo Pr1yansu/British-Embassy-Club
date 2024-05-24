@@ -12,6 +12,8 @@ const ButtonGroup = ({
   onClick,
   Hovershadow = 'hover:shadow-blue-500',
   shadow='shadow-btn_shadow hover:shadow-blue-500',
+  // disable= 'disabled:opacity-50',
+  disabled=false,
 }) => {
   return (
     <>
@@ -19,6 +21,7 @@ const ButtonGroup = ({
         className={`flex gap-2 items-center justify-center px-6 py-2 rounded-xl transition ease-in-out delay-150 ${color} ${HoverColor} ${textColor} ${HovertextColor} text-xl font-medium ${Hovershadow} duration-300 roboto ${shadow}`}
         type={type}
         onClick={onClick}
+        disabled={disabled}
       >
         {toggle ? (
           <>

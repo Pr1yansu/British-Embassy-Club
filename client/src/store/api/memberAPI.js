@@ -10,6 +10,7 @@ export const addMemberApi = createApi({
     addMember: builder.mutation({
       query: ({
         name,
+        email,
         mobileNumber,
         address,
         expiryDate,
@@ -28,6 +29,7 @@ export const addMemberApi = createApi({
           bloodGroup,
           organization,
           idType,
+          email,
           idNumber,
         },
       }),
@@ -43,10 +45,13 @@ export const addMemberImageApi = createApi({
   }),
   endpoints: (builder) => ({
     addMemberImage: builder.mutation({
-      query: (file) => ({
+      query: (image) => ({
         url: `/add-member-image`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
         method: "POST",
-        body: { file },
+        body: { image },
       }),
     }),
   }),
@@ -113,7 +118,7 @@ export const getAllMembersApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllMembers: builder.query({
-      query: () => "/get-all-members?page=1&limit=10",
+      query: ({page=1,limit=10}) => `/get-all-members?page=${page}&limit=${limit}`,
     }),
   }),
 });

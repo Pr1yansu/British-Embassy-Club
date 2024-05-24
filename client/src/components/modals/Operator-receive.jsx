@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsArrowUpSquareFill } from "react-icons/bs";
 import { MdAddCircle } from "react-icons/md";
 import { AiFillMinusCircle } from "react-icons/ai";
@@ -6,16 +6,36 @@ import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
 
-const OperatorReceive = ({onModal}) => {
+const OperatorReceive = ({ onModal }) => {
+  const [amount, setAmount] = useState(0);
+
+  const handleAmountChange = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      setAmount(""); // Set amount to empty string if input is empty
+    } else {
+      const parsedValue = parseInt(value, 10);
+      if (!isNaN(parsedValue)) {
+        setAmount(parsedValue);
+      }
+    }
+  };
+
+  const increaseAmount = () => {
+    setAmount((prevAmount) => prevAmount + 50);
+  };
+
+  const decreaseAmount = () => {
+    setAmount((prevAmount) => (prevAmount - 50 >= 0 ? prevAmount - 50 : 0));
+  };
+
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)] z-20">
         <div className="w-[712px] h-[504px] border bg-btn_secondary rounded-lg flex flex-col items-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
             <div className="flex gap-10">
-              <p className="text-btn_primary roboto font-medium">
-                Member Name
-              </p>
+              <p className="text-btn_primary roboto font-medium">Member Name</p>
               <p className="lato">John Doe</p>
             </div>
             <div className="flex gap-[73px]">
@@ -35,11 +55,24 @@ const OperatorReceive = ({onModal}) => {
                 </p>
                 <div className="flex justify-stretch items-center gap-2 w-64">
                   <div className="cursor-pointer">
-                    <MdAddCircle size={40} color="#3B82F6" />
+                    <AiFillMinusCircle
+                      size={40}
+                      color="#3B82F6"
+                      onClick={decreaseAmount}
+                    />
                   </div>
-                  <InputBox type={"text"} placeholder={"0"} />
+                  <input
+                    type="number"
+                    className="bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary appearance-none"
+                    value={amount}
+                    onChange={handleAmountChange}
+                  />
                   <div className="cursor-pointer">
-                    <AiFillMinusCircle size={40} color="#3B82F6" />
+                    <MdAddCircle
+                      size={40}
+                      color="#3B82F6"
+                      onClick={increaseAmount}
+                    />
                   </div>
                 </div>
               </div>
@@ -62,7 +95,6 @@ const OperatorReceive = ({onModal}) => {
             {/* 2nd row starts here */}
             <div className="w-56 flex flex-col items-center gap-2 self-center mt-12 mb-20">
               <p className="text-btn_primary roboto font-medium text-center">
-                {" "}
                 Updated Wallet Balance
               </p>
               <div className="w-32">
@@ -79,7 +111,7 @@ const OperatorReceive = ({onModal}) => {
                 name={"Cancel"}
                 color={"bg-[#F8FAFC]"}
                 textColor={"text-[#1D4ED8]"}
-                onClick={()=>onModal()}
+                onClick={() => onModal()}
               />
               <ButtonGroup
                 name={"Confirm"}

@@ -277,12 +277,15 @@ exports.getMembers = async (req, res) => {
 exports.addMemberImage = async (req, res) => {
   try {
     const file = req.files;
+    
+    console.log(file);
 
     const image = await uploadImage({
       file: file.image,
       folder: "members",
       name: memberData.name,
     });
+
 
     if (!image) {
       return res.status(400).json({

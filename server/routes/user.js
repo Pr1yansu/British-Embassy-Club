@@ -41,6 +41,7 @@ router.post(
   "/add-operator-image",
   isAuthenticated,
   isInClub,
+  isUser,
   isOperator,
   addOperatorImage
 );

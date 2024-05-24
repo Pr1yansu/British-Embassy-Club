@@ -1,23 +1,62 @@
 import React, { useState } from "react";
 import Passwordbox from "../ui/Passwordbox";
-import ButtonGroup from "../ui/ButtonGroup";
+import ButtonGroup from "../../components/ui/ButtonGroup";
+import {useChangePasswordMutation} from "../../store/api/operatorAPI";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = ({ colStart, colEnd }) => {
+  const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [changePassword,{isError,isLoading,isSuccess}] = useChangePasswordMutation();
 
   const handleOldPasswordChange = (e) => setOldPassword(e.target.value);
   const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
   const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      alert("New password and confirm password do not match");
-    } else {
-      alert("Password changed successfully");
+    const data = await changePassword({
+      oldPassword : oldPassword,
+      newPassword : newPassword,
+      confirmPassword : confirmPassword
+    }).unwrap();
+
+    if(data){
+      toast.success("Password Changed Successfully",{
+        duration: 2000,
+        position: "top-right",
+        style: {
+          background: "#4BB543",
+          color: "#fff",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#4BB543",
+        },
+      });
+      navigate("/");
     }
+
+    if(isError){
+      toast.error(data.error||"Password Change Failed",{
+        duration: 2000,
+        position: "top-right",
+        style: {
+          background: "#FF0000",
+          color: "#fff",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#FF0000",
+        },
+      });
+    }
+
+
   };
   const handleCancel = () => {
     setOldPassword("");
@@ -49,7 +88,7 @@ const ChangePassword = ({ colStart, colEnd }) => {
             </label>
             <Passwordbox
               placeholder={"Password"}
-              value={oldPassword}
+              // value={oldPassword}
               id={"oldPassword"}
               onchange={handleOldPasswordChange}
             />
@@ -63,7 +102,7 @@ const ChangePassword = ({ colStart, colEnd }) => {
             </label>
             <Passwordbox
               placeholder={"Password"}
-              value={newPassword}
+              // value={newPassword}
               id={"newPassword"}
               onchange={handleNewPasswordChange}
             />
@@ -77,14 +116,19 @@ const ChangePassword = ({ colStart, colEnd }) => {
             </label>
             <Passwordbox
               placeholder={"Password"}
-              value={confirmPassword}
+              // value={confirmPassword}
               id={"confirmPassword"}
               onchange={handleConfirmPasswordChange}
             />
           </div>
           <div className="flex justify-end gap-4">
-          <ButtonGroup name={"Cancel"} textColor={"text-text_secondary"} color={'bg-btn_secondary'}/>
-            <ButtonGroup name={"Confirm"} textColor={"text-text_secondary"} />
+            <ButtonGroup
+              name={"Cancel"}
+              textColor={"text-text_secondary"}
+              color={"bg-btn_secondary"}
+              onClick={handleCancel}
+            />
+            <ButtonGroup name={"Confirm"} textColor={"text-text_secondary"} type={"submit"} />
           </div>
         </form>
       </div>

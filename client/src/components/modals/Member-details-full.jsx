@@ -10,18 +10,13 @@ import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 const MembersDetails = ({ setOpen, memberId }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
-  const {data,isError,isLoading,isSuccess} = useGetMemberByIdQuery(memberId);
-
-  if(isLoading) return <div>Loading...</div>
-  
-  console.log("details",data); 
-  
-  const keysToExclude = ["name", "userName",'__v'];
-  
-  const filteredKeys = Object.keys(data.data).filter(
-    (key) => !keysToExclude.includes(key)
+  const { data, isError, isLoading, isSuccess } = useGetMemberByIdQuery(
+    memberId
   );
-  
+
+  if (isLoading) return <div>Loading...</div>;
+
+  console.log("details", data);
 
   return ReactDOM.createPortal(
     <>
@@ -46,7 +41,7 @@ const MembersDetails = ({ setOpen, memberId }) => {
               <IoIosCloseCircleOutline size={30} color="blue" />
             </div>
           </div>
-          <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
+          {/* <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
             {filteredKeys.map((key, index) => (
               <div key={index} className="flex flex-col">
                 <p className="text-btn_primary roboto font-normal">{key}</p>
@@ -55,6 +50,82 @@ const MembersDetails = ({ setOpen, memberId }) => {
                 </p>
               </div>
             ))}
+          </div> */}
+          <div className="flex flex-col gap-3 border-1 border-red-600 w-full">
+            {/* Row1 starts here */}
+            <div className="flex">
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Member ID</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data._id}
+                </p>
+              </div>
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Email</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.email ? data.data.email : "abc@email"}
+                </p>
+              </div>
+            </div>
+            {/* Row1 ends here */}
+            {/* Row2 starts here */}
+            <div className="flex">
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Membership Validity</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  Expires on {data.data.expiryTime}
+                </p>
+              </div>
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Address</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.address}
+                </p>
+              </div>
+            </div>
+            {/* Row2 ends here */}
+            {/* Row3 starts here */}
+            <div className="flex">
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Mobile No</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.mobileNumber}
+                </p>
+              </div>
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Wallet Amount</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.wallet ? data.data.wallet : 1000}
+                </p>
+              </div>
+            </div>
+            {/* Row3 ends here */}
+            {/* Row4 starts here */}
+            <div className="flex">
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Blood Group</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.bloodGroup}
+                </p>
+              </div>
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">Organization Name</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.organization}
+                </p>
+              </div>
+            </div>
+            {/* Row4 ends here */}
+            {/* Row5 starts here */}
+            <div className="flex">
+              <div className="w-1/2">
+                <p className="text-btn_primary roboto font-normal">National ID</p>
+                <p className="lato text-sm text-text_primary font-normal">
+                  {data.data.idProof?data.data.idProof.idNumber:"N/A"}
+                </p>
+              </div>
+            </div>
+            {/* Row5 ends here */}
           </div>
           <div className="w-full flex justify-end gap-6">
             <ButtonGroup
