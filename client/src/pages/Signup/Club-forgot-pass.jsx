@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import logo from "../../assets/images/LOGO.png";
 const ClubForgotPass = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState();
@@ -97,8 +98,7 @@ const ClubForgotPass = () => {
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute -top-10 h-56 left-96" />
-      <h3 className="font-bold absolute top-15 left-30">Logo</h3>
-
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-24">
         <form

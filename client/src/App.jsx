@@ -46,8 +46,8 @@ function App() {
         {/* Routes for Settings*/}
         <>
           <Route path="/settings" element={<Settings />} />
-          <Route path="/settingsAdmin" element={<SettingsAdmin />} />
-          <Route path="/settingsAdminTemp" element={<SettingsAdminTemp />} />
+          <Route path="/settings/admin" element={<SettingsAdmin />} />
+          <Route path="/settings/admin/temp" element={<SettingsAdminTemp />} />
         </>
 
         {/* Routes for Club Auths */}

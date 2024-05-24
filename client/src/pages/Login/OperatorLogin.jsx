@@ -9,11 +9,12 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import logo from "../../assets/images/LOGO.png";
 
 const OperatoLogin = () => {
-    const navigate = useNavigate();
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+  const navigate = useNavigate();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
     const handleLogin = async (e) => {
       e.preventDefault();
@@ -53,14 +54,27 @@ const OperatoLogin = () => {
           alt="arrow"
           className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
         />
-        <h3 className="font-bold">Logo</h3>
+        <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
           <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-            <form onSubmit={handleLogin} className="w-3/5 flex flex-col gap-4 items-center justify-center ">
-              <InputBox placeholder={"Username"} type={"text"} onChange={(e)=>setUsername(e.target.value)} />
-              <Passwordbox placeholder="Password" onchange={(e)=>setPassword(e.target.value)} />
+            <form
+              onSubmit={handleLogin}
+              className="w-3/5 flex flex-col gap-4 items-center justify-center "
+            >
+              <InputBox
+                placeholder={"Username"}
+                type={"text"}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Passwordbox
+                placeholder="Password"
+                onchange={(e) => setPassword(e.target.value)}
+              />
               <Button name={"Login"} />
-              <a href="/login/operator/forgotPass" className="text-blue-700 roboto">
+              <a
+                href="/login/operator/forgotPass"
+                className="text-blue-700 roboto"
+              >
                 Forgot your password?
               </a>
             </form>
@@ -71,7 +85,8 @@ const OperatoLogin = () => {
               a new dashboard <br />
               system for the{" "}
               <span className="text-blue-700 font-bold">
-                british embassy club
+                british <br />
+                club kolkata 
               </span>
             </h1>
             <div className="flex flex-col">

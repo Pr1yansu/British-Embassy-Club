@@ -12,6 +12,7 @@ import { LuLoader2 } from "react-icons/lu";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import logo from "../../assets/images/LOGO.png";
 
 const OperatorSignup = () => {
   const [show, setShow] = useState(false);
@@ -191,7 +192,7 @@ const OperatorSignup = () => {
         alt="arrow"
         className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
-      <h3 className="font-bold">Logo</h3>
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
 
       {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
@@ -269,9 +270,11 @@ const OperatorSignup = () => {
 
         <div className="flex flex-col max-lg:items-center max-sm:items-start max-sm:text-left max-lg:justify-center max-lg:order-1 max-lg:text-center lg:max-w-120 ">
           <h1 className="mb-4">
-            be a member of{" "}
+            a new dashboard <br />
+            system for the{" "}
             <span className="text-blue-700 font-bold">
-              british embassy club
+              british <br />
+              club kolkata
             </span>
           </h1>
           <p className="font-medium text-3xl font-inter tracking-tight">
