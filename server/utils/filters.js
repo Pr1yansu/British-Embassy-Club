@@ -80,7 +80,13 @@ class MemberFilter {
     console.log(this.queryString, this.pagination);
     const members = await mongoose
       .model("MemberSchema")
-      .find(this.queryString.sort ? this.queryString : {})
+      .find({
+        $or: [
+          { name: this.queryString.name },
+          { email: this.queryString.email },
+          { phone: this.queryString.phone },
+        ],
+      })
       .sort(this.queryString.sort)
       .skip(this.pagination.skip)
       .limit(this.pagination.limit)
