@@ -159,7 +159,6 @@ const AddMember = ({ onModal }) => {
               )}
               <input
                 type="file"
-                name="image"
                 className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
                 accept="image/*"
                 onChange={onFileDrop}
