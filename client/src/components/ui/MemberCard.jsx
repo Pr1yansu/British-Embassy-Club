@@ -51,25 +51,6 @@ const MemberCard = ({ item, index }) => {
           </div>
           </div>
         </div>
-
-        {/* <div className="grid grid-rows-2 grid-cols-2 gap-2 justify-center">
-          <div className="">
-            <p className="text-xs text-text_secondary">Membership ID</p>
-            <p className="text-xs">{item._id}</p>
-          </div>
-          <div className="">
-            <p className="text-xs text-text_secondary">Membership</p>
-            <p className="text-xs ">{formatDate(item.expiryTime).toString()}</p>
-          </div>
-          <div className="">
-            <p className="text-xs text-text_secondary">Mobile No.</p>
-            <p className="text-xs">{item.mobileNumber}</p>
-          </div>
-          <div className="">
-            <p className="text-xs text-text_secondary">Wallet</p>
-            <p className="text-xs">{item.balance}</p>
-          </div>
-        </div> */}
       </div>
       {open && <MembersDetails memberId={memberId} setOpen={setOpen} />}
     </>

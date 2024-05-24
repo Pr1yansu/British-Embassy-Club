@@ -11,24 +11,25 @@ const Member = () => {
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { data, isSuccess, isLoading } = useGetAllMembersQuery({ page: page, limit: 10});
+  const { data, isSuccess, isLoading } = useGetAllMembersQuery({ page: page===0?1:page, limit: 12});
 
   if (isLoading) return <div>Loading...</div>;
 
   console.log("From memeber ", data);
 
-  const pageCount = Math.ceil(data?.totalMembers / data?.data?.length);
+  const pageCount = Math.ceil(data?.totalMembers / 12);
 
-  console.log("page count", data?.totalMembers);
-  console.log(typeof data?.data?.length);
+  // console.log("total member", data?.totalMembers);
+  // console.log(typeof data?.length);
 
   const handlePageChange = (event) => {
     const selectedPage = event.selected;
-    setPage(selectedPage + 1);
+    setPage(selectedPage+1);
+    // console.log(selectedPage);
   };
   
-
-  console.log("page count", pageCount);
+  // console.log("page count", pageCount);
+  // console.log("page", page);
 
   return (
     <>
@@ -54,7 +55,7 @@ const Member = () => {
           <div className="row-start-3 row-end-11 col-start-2 col-end-12">
             <div className="grid grid-cols-12 gap-4">
               {data && data.data.map((item, index) => {
-                return <MemberCard item={item} index={index} />;
+                return <MemberCard item={item} index={index} key={index}/>;
               })}
             </div>
             <div className="fixed right-20 bottom-5">
@@ -62,7 +63,6 @@ const Member = () => {
                 <ReactPaginate
                   pageCount={pageCount}
                   setPostsPerPage={data.data.length}
-                  
                   onPageChange={handlePageChange}
                   nextLabel={<GrNext />}
                   previousLabel={<GrPrevious />}

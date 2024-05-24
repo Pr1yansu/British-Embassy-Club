@@ -37,12 +37,13 @@ const Profile = () => {
     { isLoading, isSuccess, isError },
   ] = useAddOperatorImageMutation();
 
-    useEffect(() => {
-      setName(`${firstname}${lastname}`);
-    }, [firstname, lastname]);
+  useEffect(() => {
+    setName(`${firstname}${lastname}`);
+  }, [firstname, lastname]);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+    console.log(selectedFile);
   };
 
   const handleImageSubmit = async (event) => {
@@ -125,8 +126,8 @@ const Profile = () => {
             border: "1px solid #333",
             padding: "16px",
             color: "#333",
-          },    
-          iconTheme: {  
+          },
+          iconTheme: {
             primary: "#333",
             secondary: "#FFFAEE",
           },
@@ -146,7 +147,6 @@ const Profile = () => {
           secondary: "#FFFAEE",
         },
       });
-
     }
   };
 
@@ -156,15 +156,8 @@ const Profile = () => {
         <div className="container grid grid-rows-12 grid-cols-12  h-screen">
           <div className="row-start-2 row-end-12 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
             <div className="flex justify-start items-center gap-6 mb-4">
-              <img src={profilePic} alt="" className="w-32 h-32" />
-              <form onSubmit={handleImageSubmit} className="relative">
-                <ButtonGroup
-                  color={"bg-btn_primary"}
-                  textColor={"text-btn_secondary"}
-                  name={"Upload new picture"}
-                  type={"submit"}
-                  disable={isLoading}
-                />
+              <div className="relative h-32 w-32">
+                <img src={profilePic?profilePic:""} alt="" className="w-32 h-32" />
                 <input
                   type="file"
                   name="image"
@@ -172,6 +165,15 @@ const Profile = () => {
                   accept="image/*"
                   value=""
                   onChange={handleFileChange}
+                />
+              </div>
+              <form onSubmit={handleImageSubmit} className="relative">
+                <ButtonGroup
+                  color={"bg-btn_primary"}
+                  textColor={"text-btn_secondary"}
+                  name={"Upload new picture"}
+                  type={"submit"}
+                  disable={isLoading}
                 />
               </form>
               <ButtonGroup
@@ -260,7 +262,7 @@ const Profile = () => {
                   ></textarea>
                 </label>
               </div>
-              <div className="flex justify-end w-full gap-6 mt-4">
+              <div className="fixed bottom-18 right-96 flex justify-end w-full gap-6 mt-4">
                 <ButtonGroup
                   name={"Cancel"}
                   color={"bg-[#F8FAFC]"}
