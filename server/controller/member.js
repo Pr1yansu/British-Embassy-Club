@@ -130,6 +130,7 @@ exports.updateMember = async (req, res) => {
       idType,
       username,
     } = req.body;
+   
 
     const memberData = await MemberSchema.findById(memberId);
 
@@ -141,6 +142,7 @@ exports.updateMember = async (req, res) => {
         data: null,
       });
     }
+    
 
     const member = await MemberSchema.findByIdAndUpdate(memberId, {
       mobileNumber: mobileNumber ? mobileNumber : memberData.mobileNumber,
@@ -149,13 +151,15 @@ exports.updateMember = async (req, res) => {
         idType: idType ? idType : memberData.idType,
         idNumber: idNumber ? idNumber : memberData.idNumber,
       },
-      expiryDate: expiryDate ? expiryDate : memberData.expiryDate,
+      expiryTime: expiryDate ? expiryDate : memberData.expiryDate,
       timeStamp: timeStamp ? timeStamp : memberData.timeStamp,
       bloodGroup: bloodGroup ? bloodGroup : memberData.bloodGroup,
       organization: organization ? organization : memberData.organization,
-      username: username ? removeSpaceUsername : memberData.username,
+      username: username ? username : memberData.username,
       email: email ? email : memberData.email,
     });
+
+    console.log(member);
 
     if (!member) {
       return res.status(404).json({
@@ -330,7 +334,6 @@ exports.getMemberById = async (req, res) => {
     }
 
     const member = await MemberSchema.findById(memberId);
-    console.log(member);
     if (!member) {
       return res.status(404).json({
         statusCode: 404,

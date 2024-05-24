@@ -262,7 +262,7 @@ const Profile = () => {
                   ></textarea>
                 </label>
               </div>
-              <div className="fixed bottom-18 right-96 flex justify-end w-full gap-6 mt-4">
+              <div className="fixed bottom-18 right-80 flex justify-end w-full gap-6">
                 <ButtonGroup
                   name={"Cancel"}
                   color={"bg-[#F8FAFC]"}

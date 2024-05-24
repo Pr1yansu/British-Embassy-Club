@@ -52,13 +52,10 @@ class MemberFilter {
     this.queryString = {};
     this.page = query.page ? parseInt(query.page, 10) : 1;
     this.limit = query.limit ? parseInt(query.limit, 10) : 10;
-  }       
+  }
 
   filter() {
-    if (this.query.name) this.queryString.name = this.query.name;
-    if (this.query.email) this.queryString.email = this.query.email;
-    if (this.query.phone) this.queryString.phone = this.query.phone;
-    if (this.query.memberId) this.queryString._id = this.query.memberId;
+    if (this.query.search) this.queryString.search = this.query.search;
     return this;
   }
 
@@ -78,13 +75,15 @@ class MemberFilter {
 
   async exec() {
     console.log(this.queryString, this.pagination);
+    const searchRegex = new RegExp(this.queryString.search, "i");
     const members = await mongoose
       .model("MemberSchema")
       .find({
         $or: [
-          { name: this.queryString.name, $options: "i" },
-          { email: this.queryString.email, $options: "i"},
-          { phone: this.queryString.phone, $options: "i"},
+          { name: { $regex: searchRegex } },
+          { email: { $regex: searchRegex } },
+          { mobileNumber: { $regex: searchRegex } },
+          { _id: { $regex: searchRegex } },
         ],
       })
       .sort(this.queryString.sort)

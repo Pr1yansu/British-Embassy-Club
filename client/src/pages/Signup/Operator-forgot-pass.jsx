@@ -17,9 +17,9 @@ const OperatorSignUpOtp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await sendResetLink(username).unwrap();
+   const data =  await sendResetLink(username).unwrap();
 
-      if (isSuccess) {
+      if (data) {
         toast.success("Reset link sent successfully", {
           duration: 2000,
           position: "top-left",

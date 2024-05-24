@@ -664,7 +664,7 @@ exports.resetPassword = async (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, 10);
     club.password = hashedPassword;
-
+  
     await club.save();
 
     return res.status(200).json({

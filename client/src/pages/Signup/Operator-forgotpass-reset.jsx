@@ -20,9 +20,13 @@ const OperatorResetPass = () => {
           </p>
           <Passwordbox placeholder={"New Password"} />
           <Passwordbox placeholder={"Confirm Password"} />
-        <div className="flex justify-center">
-          <ButtonGroup textColor={"text-btn_primary"} name={"Login"} onClick={()=>navigate("/login/operator")}/>
-        </div>
+          <div className="flex justify-center">
+            <ButtonGroup
+              textColor={"text-btn_primary"}
+              name={"Login"}
+              onClick={() => navigate("/operator/reset-password/:token")}
+            />
+          </div>
         </div>
       </div>
       {/* Input ends here  */}
