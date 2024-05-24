@@ -5,13 +5,17 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import AddMember from "../../components/modals/Add-member";
 import MemberCard from "../../components/ui/MemberCard";
 import { useGetAllMembersQuery } from "../../store/api/memberAPI";
-import ReactPaginate from 'react-paginate';
-import { GrPrevious,GrNext } from "react-icons/gr";
+import ReactPaginate from "react-paginate";
+import { GrPrevious, GrNext } from "react-icons/gr";
 const Member = () => {
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
-
-  const { data, isSuccess, isLoading } = useGetAllMembersQuery({ page: page===0?1:page, limit: 12});
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const { data, isSuccess, isLoading } = useGetAllMembersQuery({
+    page: page === 0 ? 1 : page,
+    limit: 12,
+  });
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -24,10 +28,10 @@ const Member = () => {
 
   const handlePageChange = (event) => {
     const selectedPage = event.selected;
-    setPage(selectedPage+1);
+    setPage(selectedPage + 1);
     // console.log(selectedPage);
   };
-  
+
   // console.log("page count", pageCount);
   // console.log("page", page);
 
@@ -54,9 +58,10 @@ const Member = () => {
           </div>
           <div className="row-start-3 row-end-11 col-start-2 col-end-12">
             <div className="grid grid-cols-12 gap-4">
-              {data && data.data.map((item, index) => {
-                return <MemberCard item={item} index={index} key={index}/>;
-              })}
+              {data &&
+                data.data.map((item, index) => {
+                  return <MemberCard item={item} index={index} key={index} />;
+                })}
             </div>
             <div className="fixed right-20 bottom-5">
               <div className="flex gap-2">

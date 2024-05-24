@@ -52,7 +52,7 @@ class MemberFilter {
     this.queryString = {};
     this.page = query.page ? parseInt(query.page, 10) : 1;
     this.limit = query.limit ? parseInt(query.limit, 10) : 10;
-  }
+  }       
 
   filter() {
     if (this.query.name) this.queryString.name = this.query.name;
