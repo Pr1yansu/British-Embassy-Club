@@ -4,12 +4,46 @@ import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
 import { useNavigate } from "react-router-dom";
+import { useTemporaryLoginMutation } from "../../store/api/clubAPI";
+import toast from "react-hot-toast";
 const ClubLoginTemp = () => {
+  const [temporaryLogin,{isLoading,isSuccess,isError}] = useTemporaryLoginMutation();
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const handleLogin = () => {
-    // handle login code
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await temporaryLogin({username,password}).unwrap();
+      if(data){
+        toast.success("Login successful",{
+          duration: 2000,
+          position: "top-center",
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#333",
+          },
+        });
+        navigate("/settingsAdminTemp");
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || "Internal Server Error",{
+        duration: 2000,
+        position: "top-center",
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+        iconTheme: {
+          primary: "#fff",
+          secondary: "#333",
+        },
+      });
+    }
   };
   return (
     <>

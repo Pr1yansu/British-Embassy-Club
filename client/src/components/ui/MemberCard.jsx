@@ -31,28 +31,36 @@ const MemberCard = ({ item, index }) => {
         </div>
         <div className="flex justify-between items-center p-1">
           <div className="flex flex-col justify-between gap-3">
-          <div className="">
-            <p className="text-xs text-text_secondary">Membership ID</p>
-            <p className="text-xs">{item._id}</p>
-          </div>
-          <div className="">
-            <p className="text-xs text-text_secondary">Membership</p>
-            <p className="text-xs ">{formatDate(item.expiryTime).toString()}</p>
-          </div>
+            <div className="">
+              <p className="text-xs text-text_secondary">Membership ID</p>
+              <p className="text-xs">{item._id}</p>
+            </div>
+            <div className="">
+              <p className="text-xs text-text_secondary">Membership</p>
+              <p className="text-xs ">
+                {formatDate(item.expiryTime).toString()}
+              </p>
+            </div>
           </div>
           <div className="flex flex-col justify-between gap-3">
-          <div className="">
-            <p className="text-xs text-text_secondary">Mobile No.</p>
-            <p className="text-xs">{item.mobileNumber}</p>
-          </div>
-          <div className="">
-            <p className="text-xs text-text_secondary">Wallet</p>
-            <p className="text-xs">1000</p>
-          </div>
+            <div className="">
+              <p className="text-xs text-text_secondary">Mobile No.</p>
+              <p className="text-xs">{item.mobileNumber}</p>
+            </div>
+            <div className="">
+              <p className="text-xs text-text_secondary">Wallet</p>
+              <p className="text-xs">1000</p>
+            </div>
           </div>
         </div>
       </div>
-      {open && <MembersDetails memberId={memberId} setOpen={setOpen} />}
+      {open && (
+        <MembersDetails
+          memberId={memberId}
+          expiryTime={item.expiryTime}
+          setOpen={setOpen}
+        />
+      )}
     </>
   );
 };
