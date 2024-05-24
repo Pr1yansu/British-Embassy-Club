@@ -19,8 +19,7 @@ export const locations = [
   "/coupon",
   "/profile",
   "/settings",
-  "/settingsAdmin",
-  "/settingsAdminTemp",
+  "/settings/admin",
 ]
 
 export const cardData = [

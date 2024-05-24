@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetClubProfileQuery } from "../../store/api/clubAPI";
 import ClubRight from "../../components/auth/ClubRight";
 import { LuLoader2 } from "react-icons/lu";
-
+import logo from "../../assets/images/LOGO.png";
 
 const ClubSignUp = () => {
   const [role, setRole] = useState("choose role");
@@ -121,7 +121,7 @@ const ClubSignUp = () => {
         alt="arrow"
         className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
-      <h3 className="font-bold">Logo</h3>
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
           <form

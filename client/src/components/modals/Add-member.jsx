@@ -127,7 +127,7 @@ const AddMember = ({ onModal }) => {
 
   const onFileDrop = async (e) => {
     const newFile = e.target.files[0];
-    
+
     if (newFile) {
       const file = new FormData();
       file.append("name", "newFile");
@@ -211,7 +211,7 @@ const AddMember = ({ onModal }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="flex flex-col font-medium relative">
               Membership Valid From
-              <div className="flex items-center gap-1 bg-primary pr-2 rounded-t-lg">
+              <div className="flex items-center gap-1 bg-primary pr-2 rounded-lg">
                 <InputBox
                   type="date"
                   onChange={(e) => setMembershipFromDate(e.target.value)}
@@ -227,31 +227,46 @@ const AddMember = ({ onModal }) => {
                 <div className="bg-primary outline-none rounded-b-lg font-semibol text-text_primary absolute top-17 left-40 border-t-2 border-btn_primary">
                   <ul className="flex flex-col items-center cursor-pointer">
                     <li
-                      onClick={() => setExpiryLimit(1)}
+                      onClick={() => {
+                        setExpiryLimit(1);
+                        setOpenExtend(false);
+                      }}
                       className="hover:bg-btn_secondary hover:text-btn_primary w-full  pt-2.5 pb-1 px-4"
                     >
                       1 year
                     </li>
                     <li
-                      onClick={() => setExpiryLimit(2)}
+                      onClick={() => {
+                        setExpiryLimit(2);
+                        setOpenExtend(false);
+                      }}
                       className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
                     >
                       2 years
                     </li>
                     <li
-                      onClick={() => setExpiryLimit(3)}
+                      onClick={() => {
+                        setExpiryLimit(3);
+                        setOpenExtend(false);
+                      }}
                       className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
                     >
                       3 years
                     </li>
                     <li
-                      onClick={() => setExpiryLimit(4)}
+                      onClick={() => {
+                        setExpiryLimit(4);
+                        setOpenExtend(false);
+                      }}
                       className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
                     >
                       4 years
                     </li>
                     <li
-                      onClick={() => setExpiryLimit(5)}
+                      onClick={() => {
+                        setExpiryLimit(5);
+                        setOpenExtend(false);
+                      }}
                       className="hover:bg-btn_secondary hover:text-btn_primary w-full pt-1  pb-2.5 px-4"
                     >
                       5 years

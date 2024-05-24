@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSendResetLinkMutation } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { LuLoader2 } from "react-icons/lu";
-
+import logo from "../../assets/images/LOGO.png";
 
 const OperatorSignUpOtp = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const OperatorSignUpOtp = () => {
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute -top-10 h-56 left-96" />
-      <h3 className="font-bold absolute top-15 left-30">Logo</h3>
+      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-24">
