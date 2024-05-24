@@ -82,9 +82,9 @@ class MemberFilter {
       .model("MemberSchema")
       .find({
         $or: [
-          { name: this.queryString.name },
-          { email: this.queryString.email },
-          { phone: this.queryString.phone },
+          { name: this.queryString.name, $options: "i" },
+          { email: this.queryString.email, $options: "i"},
+          { phone: this.queryString.phone, $options: "i"},
         ],
       })
       .sort(this.queryString.sort)
