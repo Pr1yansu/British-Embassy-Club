@@ -5,36 +5,32 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import AddMember from "../../components/modals/Add-member";
 import MemberCard from "../../components/ui/MemberCard";
 import { useGetAllMembersQuery } from "../../store/api/memberAPI";
-import ReactPaginate from 'react-paginate';
-import { GrPrevious,GrNext } from "react-icons/gr";
-import Lottie from "react-lottie";
+import ReactPaginate from "react-paginate";
+import { GrPrevious, GrNext } from "react-icons/gr";
 const Member = () => {
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
+  // const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
+  const { data, isSuccess, isLoading } = useGetAllMembersQuery({
+    page: page === 0 ? 1 : page,
+    limit: 12,
+    search: search,
+  });
 
-  const { data, isSuccess, isLoading } = useGetAllMembersQuery({ page: page===0?1:page, limit: 12});
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading........</div>;
 
   console.log("From memeber ", data);
 
   const pageCount = Math.ceil(data?.totalMembers / 12);
 
-  // console.log("total member", data?.totalMembers);
-  // console.log(typeof data?.length);
-
   const handlePageChange = (event) => {
     const selectedPage = event.selected;
-    setPage(selectedPage+1);
-    // console.log(selectedPage);
+    setPage(selectedPage + 1);
   };
-  
-  // console.log("page count", pageCount);
-  // console.log("page", page);
 
   return (
     <>
-    {isLoading && <Lottie options={{loop:true,autoplay:true,animationData:require('../../assets/animations/loader.json')}} height={150} width={150} />}
       <div className="background bg-cover bg-center">
         <div className="container w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
           <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
@@ -43,6 +39,7 @@ const Member = () => {
                 "Search by Member Ref. number, Name, Email, Phone number......"
               }
               type={"text"}
+              onchange={(e) => setTimeout(() => {setSearch(e.target.value)}, 2000)}
             />
           </div>
           <div
@@ -56,15 +53,16 @@ const Member = () => {
           </div>
           <div className="row-start-3 row-end-11 col-start-2 col-end-12">
             <div className="grid grid-cols-12 gap-4">
-              {data && data.data.map((item, index) => {
-                return <MemberCard item={item} index={index} key={index}/>;
-              })}
+              {data &&
+                data.data.map((item, index) => {
+                  return <MemberCard item={item} index={index} key={index} />
+                })}
             </div>
             <div className="fixed right-20 bottom-5">
               <div className="flex gap-2">
                 <ReactPaginate
                   pageCount={pageCount}
-                  setPostsPerPage={data.data.length}
+                  setPostsPerPage={12}
                   onPageChange={handlePageChange}
                   nextLabel={<GrNext />}
                   previousLabel={<GrPrevious />}

@@ -75,39 +75,46 @@ export const deleteMemberApi = createApi({
 });
 
 export const updateMemberApi = createApi({
-  reducerPath: "updateMemberApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/member",
-    credentials: "include",
-  }),
-  endpoints: (builder) => ({
-    updateMember: builder.mutation({
-      query: ({
-        memberId,
-        mobileNumber,
-        bloodGroup,
-        organization,
-        address,
-        expiryDate,
-        timeStamp,
-        image,
-      }) => {
-        return {
-          url: `/update-member/${memberId}`,
-          method: "PUT",
-          body: {
-            mobileNumber,
-            bloodGroup,
-            organization,
-            address,
-            expiryDate,
-            timeStamp,
-            image,
-          },
-        };
-      },
-    }),
-  }),
+         reducerPath: "updateMemberApi",
+         baseQuery: fetchBaseQuery({
+           baseUrl: "/api/v1/member",
+           credentials: "include",
+         }),
+         endpoints: (builder) => ({
+           updateMember: builder.mutation({
+             query: ({
+               memberId,
+               mobileNumber,
+               bloodGroup,
+               organization,
+               address,
+               email,
+               expiryDate,
+               timeStamp,
+               idNumber,
+               idType,
+               username,
+             }) => {
+               return {
+                 url: `/update-member/${memberId}`,
+                 method: "PUT",
+                 body: {
+                   memberId,
+                   mobileNumber,
+                   bloodGroup,
+                   organization,
+                   address,
+                   email,
+                   expiryDate,
+                   timeStamp,
+                   idNumber,
+                   idType,
+                   username,
+                 },
+               };
+             },
+           }),
+         }),
 });
 
 export const getAllMembersApi = createApi({
@@ -118,7 +125,7 @@ export const getAllMembersApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllMembers: builder.query({
-      query: ({page=1,limit=10}) => `/get-all-members?page=${page}&limit=${limit}`,
+      query: ({page=1,limit=10,search=""}) => `/get-all-members?page=${page}&limit=${limit}&search=${search}`,
     }),
   }),
 });

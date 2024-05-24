@@ -75,14 +75,15 @@ class MemberFilter {
 
   async exec() {
     console.log(this.queryString, this.pagination);
+    const searchRegex = new RegExp(this.queryString.search, "i");
     const members = await mongoose
       .model("MemberSchema")
       .find({
         $or: [
-          { name: this.queryString.search },
-          { email: this.queryString.search },
-          { phone: this.queryString.search },
-          { memberId: this.queryString.search },
+          { name: { $regex: searchRegex } },
+          { email: { $regex: searchRegex } },
+          { mobileNumber: { $regex: searchRegex } },
+          { _id: { $regex: searchRegex } },
         ],
       })
       .sort(this.queryString.sort)

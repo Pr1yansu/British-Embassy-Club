@@ -1,8 +1,50 @@
 import React from "react";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
+import { useDeleteMemberMutation } from "../../store/api/memberAPI";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const Warning = ({ onModal }) => {
+const Warning = ({ onModal, memberId }) => {
+     const navigate = useNavigate();
+    const [deleteMember, { isLoading, isError }] = useDeleteMemberMutation();
+
+    const handleDelete = async () => {
+      try {
+       const deleteData = await deleteMember(memberId).unwrap();
+        if (deleteData) {
+          toast.success("Member deleted successfully",{
+            duration: 4000,
+           position: "top-center",
+           style: {
+              background: "#333",
+              color: "#fff",
+            },
+            iconTheme: {
+              primary: "#fff",
+              secondary: "#333",
+            },
+          });
+          onModal();
+          navigate(0);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to delete the member", {
+          duration: 4000,
+          position: "top-center",
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+          iconTheme: {
+            primary: "#fff",
+            secondary: "#333",
+          },
+        });
+      }
+    };
+
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25 z-20">
@@ -30,6 +72,7 @@ const Warning = ({ onModal }) => {
               name={"Submit"}
               color={"bg-blue-700"}
               textColor={"text-white"}
+              onClick={handleDelete}
             />
           </div>
         </div>

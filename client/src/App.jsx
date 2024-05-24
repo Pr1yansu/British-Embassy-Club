@@ -76,7 +76,7 @@ function App() {
             element={<OperatorResetPassMail />}
           />
           <Route
-            path="/login/operator/forgotPass/reset"
+            path="/operator/reset-password/:token"
             element={<OperatorResetPass />}
           />
           {/*Routes for Error pages */}

@@ -39,7 +39,7 @@ const ClubForgotPass = () => {
       "/api/v1/club/forget-password",
       { username },
       { withCredentials: true }
-    );
+    );  
 
     if (username !== data.findone.username) {
       toast.custom(

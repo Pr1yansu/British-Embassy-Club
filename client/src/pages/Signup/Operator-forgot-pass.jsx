@@ -22,7 +22,7 @@ const OperatorSignUpOtp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await sendResetLink(username).unwrap();
+   const data =  await sendResetLink(username).unwrap();
 
       if (isSuccess) {
         toast.custom(

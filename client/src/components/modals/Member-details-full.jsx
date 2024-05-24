@@ -6,8 +6,9 @@ import ButtonGroup from "../ui/ButtonGroup";
 import Warning from "./Warning";
 import AddMember from "./Add-member";
 import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
+import UpdateMember from "./Update-member";
 
-const MembersDetails = ({ setOpen, memberId }) => {
+const MembersDetails = ({ setOpen, memberId, expiryTime }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
   const { data, isError, isLoading, isSuccess } = useGetMemberByIdQuery(
@@ -71,7 +72,9 @@ const MembersDetails = ({ setOpen, memberId }) => {
             {/* Row2 starts here */}
             <div className="flex">
               <div className="w-1/2">
-                <p className="text-btn_primary roboto font-normal">Membership Validity</p>
+                <p className="text-btn_primary roboto font-normal">
+                  Membership Validity
+                </p>
                 <p className="lato text-sm text-text_primary font-normal">
                   Expires on {data.data.expiryTime}
                 </p>
@@ -93,7 +96,9 @@ const MembersDetails = ({ setOpen, memberId }) => {
                 </p>
               </div>
               <div className="w-1/2">
-                <p className="text-btn_primary roboto font-normal">Wallet Amount</p>
+                <p className="text-btn_primary roboto font-normal">
+                  Wallet Amount
+                </p>
                 <p className="lato text-sm text-text_primary font-normal">
                   {data.data.wallet ? data.data.wallet : 1000}
                 </p>
@@ -103,13 +108,17 @@ const MembersDetails = ({ setOpen, memberId }) => {
             {/* Row4 starts here */}
             <div className="flex">
               <div className="w-1/2">
-                <p className="text-btn_primary roboto font-normal">Blood Group</p>
+                <p className="text-btn_primary roboto font-normal">
+                  Blood Group
+                </p>
                 <p className="lato text-sm text-text_primary font-normal">
                   {data.data.bloodGroup}
                 </p>
               </div>
               <div className="w-1/2">
-                <p className="text-btn_primary roboto font-normal">Organization Name</p>
+                <p className="text-btn_primary roboto font-normal">
+                  Organization Name
+                </p>
                 <p className="lato text-sm text-text_primary font-normal">
                   {data.data.organization}
                 </p>
@@ -119,9 +128,11 @@ const MembersDetails = ({ setOpen, memberId }) => {
             {/* Row5 starts here */}
             <div className="flex">
               <div className="w-1/2">
-                <p className="text-btn_primary roboto font-normal">National ID</p>
+                <p className="text-btn_primary roboto font-normal">
+                  National ID
+                </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.idProof?data.data.idProof.idNumber:"N/A"}
+                  {data.data.idProof ? data.data.idProof.idNumber : "N/A"}
                 </p>
               </div>
             </div>
@@ -146,8 +157,15 @@ const MembersDetails = ({ setOpen, memberId }) => {
               icon={<IoIosCloseCircleOutline size={30} />}
               onClick={() => setOpenWarning(true)}
             />
-            {OpenWarning && <Warning onModal={() => setOpenWarning(false)} />}
-            {OpenUpdate && <AddMember onModal={() => setOpenUpdate(false)} />}
+            {OpenWarning && (
+              <Warning
+                memberId={memberId}
+                onModal={() => setOpenWarning(false)}
+              />
+            )}
+            {OpenUpdate && (
+              <UpdateMember expiryTime={expiryTime} memberId={memberId} onModal={() => setOpenUpdate(false)} />
+            )}
           </div>
         </div>
       </div>
