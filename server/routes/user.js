@@ -1,16 +1,14 @@
 const Router = require("express");
 const {
   register,
-  getAllOperators,
   updateOperator,
   loginUser,
-  getOperatorById,
   forgetPassword,
   resetPassword,
-  logout,
   sendResetTokenAgain,
   addOperatorImage,
   changePassword,
+  getCurrentUser,
 } = require("../controller/user");
 const {
   validateRegistration,
@@ -22,7 +20,6 @@ const {
 
 const {
   isAuthenticated,
-  isAdmin,
   isInClub,
   isOperator,
   isUser,
@@ -45,14 +42,7 @@ router.post(
   isOperator,
   addOperatorImage
 );
-router.get(
-  "/profile",
-  isAuthenticated,
-  isInClub,
-  isUser,
-  isOperator,
-  getOperatorById
-);
+router.get("/profile", isAuthenticated, isInClub, getCurrentUser);
 router.post("/login", isAuthenticated, isInClub, validateLogin, loginUser);
 router.put(
   "/update",
@@ -69,8 +59,14 @@ router.put(
   validateForgetPassword,
   sendResetTokenAgain
 );
-router.patch("/change-password", isAuthenticated, isInClub, isUser, isOperator,validateChangePassword, changePassword);
-router.get("/logout", isAuthenticated, isInClub, isUser, isOperator, logout);
-
+router.patch(
+  "/change-password",
+  isAuthenticated,
+  isInClub,
+  isUser,
+  isOperator,
+  validateChangePassword,
+  changePassword
+);
 
 module.exports = router;

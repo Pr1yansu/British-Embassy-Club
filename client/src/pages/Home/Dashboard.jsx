@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MainCard from "../../components/ui/MainCard";
 import { cardData } from "../../constants";
 import profile from "../../assets/icons/Snehashis.png";
 import { useNavigate } from "react-router-dom";
-import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import Lottie from "react-lottie";
 import loadingAnimationData from "../../assets/animations/loader.json";
 import logo from "../../assets/images/LOGO.png";
-const Dashboard = () => {
+const Dashboard = ({ profiledata, isLoading, error }) => {
   const navigate = useNavigate();
-  const { data: profiledata, error, isLoading } = useGetOperatorProfileQuery();
-
-  // Logging profiledata to check its state
-  useEffect(() => {
-    console.log(profiledata);
-  }, [profiledata]);
 
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: loadingAnimationData,
     rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   if (isLoading) {
@@ -34,44 +27,49 @@ const Dashboard = () => {
   }
 
   if (error) {
-    return <div>Error loading profile data</div>;
-  }
-
-  if (!profiledata || !profiledata.data) {
-    return <div>No profile data found</div>;
+    return <div>Error</div>;
   }
 
   return (
     <div className="background h-screen bg-cover bg-center">
-    <div className="container px-20 grid grid-rows-12 grid-cols-12 gap-4">
-      <div className="row-start-1 row-end-3 col-start-2 col-end-12 flex justify-end items-center">
-      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
-        <div className="flex gap-4 items-center justify-center cursor-pointer" onClick={()=>navigate('/profile')}>
-          <div className="flex flex-col items-end">
-            <h4 className="text-xl font-roboto">{profiledata.data.username }</h4>
-            <h6 className="text-text_primary">{profiledata.data.role}</h6>
+      <div className="container px-20 grid grid-rows-12 grid-cols-12 gap-4">
+        <div className="row-start-1 row-end-3 col-start-2 col-end-12 flex justify-end items-center">
+          <img
+            src={logo}
+            alt="logo"
+            className="font-bold absolute top-6 left-20"
+          />
+          <div
+            className="flex gap-4 items-center justify-center cursor-pointer"
+            onClick={() => navigate("/profile")}
+          >
+            <div className="flex flex-col items-end">
+              <h4 className="text-xl font-roboto">
+                {profiledata.data.username}
+              </h4>
+              <h6 className="text-text_primary">{profiledata.data.role}</h6>
+            </div>
+            <img src={profile} alt="" className="w-16 h-16" />
           </div>
-          <img src={profile} alt="" className="w-16 h-16"/>
         </div>
+        <div className="row-start-3 row-end-11 col-start-4 col-end-10 grid grid-rows-2 grid-cols-2 gap-6">
+          {cardData.map((items, index) => {
+            return (
+              <MainCard
+                img={items.img}
+                title={items.title}
+                subtitle={items.subtitle}
+                position={items.position}
+                shadow={items.shadow}
+                posV={items.posV}
+                background={items.background}
+                page={items.page}
+              />
+            );
+          })}
+        </div>
+        {/* <MainCard/> */}
       </div>
-      <div className="row-start-3 row-end-11 col-start-4 col-end-10 grid grid-rows-2 grid-cols-2 gap-6">
-        {cardData.map((items, index) => {
-          return (
-            <MainCard
-              img={items.img}
-              title={items.title}
-              subtitle={items.subtitle}
-              position={items.position}
-              shadow={items.shadow}
-              posV={items.posV}
-              background={items.background}
-              page={items.page}
-            />
-          );
-        })}
-      </div>
-      {/* <MainCard/> */}
-    </div>
     </div>
   );
 };

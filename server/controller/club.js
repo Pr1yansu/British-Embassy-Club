@@ -420,8 +420,10 @@ exports.updateClub = async (req, res) => {
     }
 
     const { newPassword, newUsername } = req.body;
-    
-    const existingUsername = await ClubAuthorization.findOne({ username: newUsername }); 
+
+    const existingUsername = await ClubAuthorization.findOne({
+      username: newUsername,
+    });
 
     if (existingUsername && newUsername !== username) {
       return res.status(400).json({
@@ -565,7 +567,8 @@ exports.forgetPassword = async (req, res) => {
       await sendMail(
         adminMails[i].email,
         "Temporary Club Credentials",
-        `Temporary username: ${temporaryUsername}\nTemporary password: ${randomPassword}`,null
+        `Temporary username: ${temporaryUsername}\nTemporary password: ${randomPassword}`,
+        null
       );
     }
 
@@ -664,7 +667,7 @@ exports.resetPassword = async (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, 10);
     club.password = hashedPassword;
-  
+
     await club.save();
 
     return res.status(200).json({
@@ -716,29 +719,9 @@ exports.temporaryLogout = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
   try {
-    res.clearCookie("auth-token");
-    return res.status(200).json({
-      statusCode: 200,
-      message: "Logged out successfully",
-      data: null,
-      error: null,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      statusCode: 500,
-      message: "Internal server error",
-      data: null,
-      error: error,
-    });
-  }
-};
-
-exports.getAllOperator = async (req, res) => {
-  try {
-    const operators = await ClubAuthorization.find({ role: "operator" });
+    const operators = await ClubAuthorization.find();
     return res.status(200).json({
       statusCode: 200,
       message: "Operators fetched successfully",
@@ -871,7 +854,7 @@ exports.removeTemporaryAdmins = async (req, res) => {
 exports.changePassword = async (req, res) => {
   try {
     const { username } = req.club;
-    const {oldPassword, newPassword, confirmPassword } = req.body;
+    const { oldPassword, newPassword, confirmPassword } = req.body;
     const club = await ClubAuthorization.findOne({ username });
     if (!club) {
       return res.status(400).json({
@@ -882,7 +865,7 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    if(newPassword !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       return res.status(400).json({
         statusCode: 400,
         message: "Passwords do not match",
@@ -914,8 +897,7 @@ exports.changePassword = async (req, res) => {
       data: club,
       error: null,
     });
-  }
-  catch(error) {
+  } catch (error) {
     console.error(error);
     return res.status(500).json({
       statusCode: 500,
@@ -924,4 +906,4 @@ exports.changePassword = async (req, res) => {
       error: error,
     });
   }
-}
+};

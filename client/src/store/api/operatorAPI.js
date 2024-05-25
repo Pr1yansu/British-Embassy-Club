@@ -94,8 +94,7 @@ export const operatorChangePasswordApi = createApi({
 export const operatorLogoutApi = createApi({
   reducerPath: "operatorLogoutApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/operator",
-    credentials: "include",
+    baseUrl: "/api/v1",
   }),
   endpoints: (builder) => ({
     logout: builder.mutation({

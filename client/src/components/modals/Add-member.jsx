@@ -14,6 +14,7 @@ import { useAddMemberImageMutation } from "../../store/api/memberAPI";
 import Toasts from "../ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import axios from "axios";
 
 const AddMember = ({ onModal }) => {
   const [openExtend, setOpenExtend] = useState(false);
@@ -32,6 +33,7 @@ const AddMember = ({ onModal }) => {
   const [bloodGroup, setBloodGroup] = useState("");
   const [organization, setOrganization] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
+  const [publicId, setPublicId] = useState(null);
 
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
   const [
@@ -153,11 +155,33 @@ const AddMember = ({ onModal }) => {
 
     if (newFile) {
       const file = new FormData();
-      file.append("name", "newFile");
       file.append("image", newFile);
       console.log(file.get("image"));
-      const { data } = await addMemberImage(file).unwrap();
+      const { data } = await axios.post(
+        "/api/v1/member/add-member-image",
+        file
+      );
       console.log(data);
+      if (data) {
+        setImageUrl(data.image);
+        setPublicId(data.public_id);
+      }
+
+      if (data.status === 400) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={data.message}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      }
     }
   };
 
@@ -182,7 +206,6 @@ const AddMember = ({ onModal }) => {
               )}
               <input
                 type="file"
-                name="image"
                 className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
                 accept="image/*"
                 onChange={onFileDrop}

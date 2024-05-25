@@ -20,7 +20,8 @@ export const locations = [
   "/profile",
   "/settings",
   "/settings/admin",
-]
+  "/",
+];
 
 export const cardData = [
   {

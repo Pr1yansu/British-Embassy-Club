@@ -11,7 +11,6 @@ import OperatorResetPass from "./pages/Signup/Operator-forgotpass-reset";
 import OperatorResetPassMail from "./pages/Signup/Operator-forgotpass-mail";
 import Dashboard from "./pages/Home/Dashboard";
 import Member from "./pages/Home/Member";
-import ModalHome from "./components/modals/modalHome";
 import { Toaster } from "react-hot-toast";
 import Coupon from "./pages/Home/Coupon";
 import Settings from "./pages/Home/Settings";
@@ -22,22 +21,37 @@ import Sidebar from "./components/form/Sidebar";
 import { locations } from "./constants";
 import ClubForgotPass from "./pages/Signup/Club-forgot-pass";
 import ClubLoginTemp from "./pages/Login/Club-login-temp";
-import NotFound from "./pages/Error/NotFound";
+import { useGetOperatorProfileQuery } from "./store/api/operatorAPI";
+import ErrorPage from "./pages/Error/NotFound";
 
 function App() {
   const location = useLocation();
+  const {
+    data: profiledata,
+    isError,
+    isLoading,
+  } = useGetOperatorProfileQuery();
+
+  console.log(profiledata);
+
   return (
     <>
       <Toaster />
       {locations.includes(location.pathname) ? <Sidebar /> : null}
       <Routes>
-        {/* Route for testing purpose */}
-        <Route path="/modal" element={<ModalHome />} />
-
         {/*Routes for Main pages */}
         <>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route
+            path="/"
+            element={
+              <Dashboard
+                profiledata={profiledata}
+                isLoading={isLoading}
+                error={isError}
+              />
+            }
+          />
+
           <Route path="/member" element={<Member />} />
           <Route path="/coupon" element={<Coupon />} />
           <Route path="/profile" element={<Profile />} />
@@ -45,8 +59,8 @@ function App() {
 
         {/* Routes for Settings*/}
         <>
-          <Route path="/settings" element={<Settings />} />
           <Route path="/settings/admin" element={<SettingsAdmin />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/settings/admin/temp" element={<SettingsAdminTemp />} />
         </>
 
@@ -79,8 +93,9 @@ function App() {
             path="/operator/reset-password/:token"
             element={<OperatorResetPass />}
           />
-          {/*Routes for Error pages */}
-          <Route path="/error" element={<NotFound />} />
+        </>
+        <>
+          <Route path="*" element={<ErrorPage />} />
         </>
       </Routes>
     </>
