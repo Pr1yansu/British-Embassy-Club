@@ -4,6 +4,18 @@ const memberSchema = new mongoose.Schema({
   _id: {
     type: String,
   },
+  firstname: {
+    type: String,
+    required: true,
+    min: 6,
+    max: 255,
+  },
+  lastname: {
+    type: String,
+    required: true,
+    min: 6,
+    max: 255,
+  },
   name: {
     type: String,
     required: true,
@@ -24,12 +36,12 @@ const memberSchema = new mongoose.Schema({
   image: {
     url: {
       type: String,
-      default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
     public_id: {
       type: String,
     },
-
   },
   address: {
     type: String,

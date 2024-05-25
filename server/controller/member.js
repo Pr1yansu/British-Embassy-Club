@@ -1,4 +1,5 @@
-const MemberSchema = require("../models/members");
+const MemberSchema = require("../models/members.js");
+const WalletSchema = require("../models/wallet.js");
 const { uploadImage, deleteImage } = require("../utils/cloudinary.js");
 const { MemberFilter } = require("../utils/filters");
 const Cache = require("node-cache");
@@ -8,6 +9,8 @@ const cache = new Cache();
 exports.addMember = async (req, res) => {
   try {
     const {
+      firstName,
+      lastname,
       name,
       email,
       mobileNumber,
@@ -46,12 +49,12 @@ exports.addMember = async (req, res) => {
 
     const timeStamp = new Date().toISOString().slice(0, 10);
 
-    const firstName = name.split(" ")[0];
-
-    const memberId = `BEC${timeStamp}${firstName}${allMembersCount + 1}`;
+    const memberId = `BEC${timeStamp}${name}${allMembersCount + 1}`;
 
     const member = await MemberSchema.create({
       _id: memberId.replace(/\s/g, ""),
+      firstname: firstName,
+      lastname: lastname,
       name,
       mobileNumber,
       address,
@@ -68,11 +71,28 @@ exports.addMember = async (req, res) => {
         public_id,
       },
     });
+
+    const wallet = await WalletSchema.create({
+      memberId: memberId.replace(/\s/g, ""),
+    });
+
+    if (!member || !wallet) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Member not added",
+        exception: null,
+        data: null,
+      });
+    }
+
     return res.status(201).json({
       statusCode: 201,
       message: "Member added successfully",
       exception: null,
-      data: member,
+      data: {
+        member,
+        wallet,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -98,6 +118,9 @@ exports.deleteMember = async (req, res) => {
       });
     }
     await deleteImage(member.image.public_id);
+
+    await WalletSchema.findOneAndDelete({ memberId: member._id });
+
     return res.status(200).json({
       statusCode: 200,
       message: "Member deleted successfully",
@@ -119,6 +142,8 @@ exports.updateMember = async (req, res) => {
   try {
     const { memberId } = req.params;
     const {
+      firstName,
+      lastname,
       mobileNumber,
       bloodGroup,
       organization,
@@ -130,7 +155,6 @@ exports.updateMember = async (req, res) => {
       idType,
       username,
     } = req.body;
-   
 
     const memberData = await MemberSchema.findById(memberId);
 
@@ -142,9 +166,10 @@ exports.updateMember = async (req, res) => {
         data: null,
       });
     }
-    
 
     const member = await MemberSchema.findByIdAndUpdate(memberId, {
+      firstname: firstName ? firstName : memberData.firstname,
+      lastname: lastname ? lastname : memberData.lastname,
       mobileNumber: mobileNumber ? mobileNumber : memberData.mobileNumber,
       address: address ? address : memberData.address,
       idProof: {
@@ -158,8 +183,6 @@ exports.updateMember = async (req, res) => {
       username: username ? username : memberData.username,
       email: email ? email : memberData.email,
     });
-
-    console.log(member);
 
     if (!member) {
       return res.status(404).json({
@@ -281,15 +304,20 @@ exports.getMembers = async (req, res) => {
 exports.addMemberImage = async (req, res) => {
   try {
     const file = req.files;
-    
-    console.log(file);
+
+    if (!file || !file.image) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Image not uploaded",
+        exception: null,
+        data: null,
+      });
+    }
 
     const image = await uploadImage({
       file: file.image,
       folder: "members",
-      name: memberData.name,
     });
-
 
     if (!image) {
       return res.status(400).json({
@@ -302,12 +330,11 @@ exports.addMemberImage = async (req, res) => {
 
     return res.status(200).json({
       statusCode: 200,
-      message: {
+      data: {
         image: image.url,
         public_id: image.public_id,
       },
       exception: null,
-      data: member,
     });
   } catch (error) {
     console.log(error);

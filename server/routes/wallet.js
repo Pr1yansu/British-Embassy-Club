@@ -7,7 +7,6 @@ const {
   isUser,
 } = require("../middleware/auth.js");
 const {
-  addWallet,
   getWallet,
   addTransaction,
   fetchTransactions,
@@ -15,8 +14,14 @@ const {
   updateCouponExpires,
 } = require("../controller/wallet.js");
 
-router.post("/add", isAuthenticated, isInClub, isUser, isOperator, addWallet);
-router.get("/get/:memberId", isAuthenticated, isInClub, isUser, isOperator, getWallet);
+router.get(
+  "/get/:memberId",
+  isAuthenticated,
+  isInClub,
+  isUser,
+  isOperator,
+  getWallet
+);
 router.post(
   "/addTransaction",
   isAuthenticated,
@@ -34,10 +39,22 @@ router.get(
   fetchTransactions
 );
 
-router.put("/update-transaction/:transactionId", isAuthenticated, isInClub, isUser, isOperator, updateTransaction);
+router.put(
+  "/update-transaction/:transactionId",
+  isAuthenticated,
+  isInClub,
+  isUser,
+  isOperator,
+  updateTransaction
+);
 
-router.put("/update-coupon/:couponId", isAuthenticated, isInClub, isUser, isOperator, updateCouponExpires);
-
-
+router.put(
+  "/update-coupon/:couponId",
+  isAuthenticated,
+  isInClub,
+  isUser,
+  isOperator,
+  updateCouponExpires
+);
 
 module.exports = router;

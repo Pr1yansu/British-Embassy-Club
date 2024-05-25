@@ -7,89 +7,6 @@ const Cache = require("node-cache");
 
 const cache = new Cache();
 
-exports.addWallet = async (req, res) => {
-  try {
-    const { memberId, balance } = req.body;
-
-    if (!memberId || !balance) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Member ID and Balance are required",
-        data: null,
-      });
-    }
-
-    if (isNaN(balance)) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Balance should be a number",
-        data: null,
-      });
-    }
-
-    if (balance < 0) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Balance should be greater than 0",
-        data: null,
-      });
-    }
-
-    if (cache.get(memberId)) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Wallet already exists for this member",
-        data: null,
-      });
-    }
-
-    const member = await MemberSchema.findById(memberId).populate("wallet");
-
-    if (!member) {
-      return res.status(404).json({
-        statusCode: 404,
-        message: "Member not found",
-        data: null,
-      });
-    }
-
-    if (member.wallet) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Wallet already exists for this member",
-        data: null,
-      });
-    }
-
-    const wallet = new WalletSchema({
-      balance,
-      memberId
-    });
-
-    await wallet.save();
-
-    member.wallet = wallet;
-
-    await member.save();
-
-    cache.set(wallet._id.toHexString(), wallet);
-
-    return res.status(200).json({
-      statusCode: 200,
-      message: "Wallet created successfully",
-      data: wallet,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      statusCode: 500,
-      message: "Internal Server Error",
-      exception: error,
-      data: null,
-    });
-  }
-};
-
 exports.getWallet = async (req, res) => {
   try {
     const { memberId } = req.params;
@@ -356,7 +273,7 @@ exports.updateTransaction = async (req, res) => {
         message: "Transaction not found",
         data: null,
       });
-    } 
+    }
 
     const wallet = await WalletSchema.findById(transactionId);
 
@@ -378,17 +295,20 @@ exports.updateTransaction = async (req, res) => {
       });
     }
 
-    const updatedCoupon = await CouponSchema.findByIdAndUpdate
-    (transaction.couponId, {
-      amount: couponAmount,
-      memberId: member._id,
-    });
+    const updatedCoupon = await CouponSchema.findByIdAndUpdate(
+      transaction.couponId,
+      {
+        amount: couponAmount,
+        memberId: member._id,
+      }
+    );
 
     transaction.walletAmount = wallet.balance + payableAmount - couponAmount;
     transaction.payableAmount = payableAmount;
     transaction.couponAmount = couponAmount;
     transaction.type = type;
-    transaction.status = wallet.balance + payableAmount - couponAmount < 0 ? "due" : "paid";
+    transaction.status =
+      wallet.balance + payableAmount - couponAmount < 0 ? "due" : "paid";
 
     await transaction.save();
 
@@ -401,8 +321,7 @@ exports.updateTransaction = async (req, res) => {
       message: "Transaction updated successfully",
       data: transaction,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
     return res.status(500).json({
       statusCode: 500,
@@ -411,7 +330,7 @@ exports.updateTransaction = async (req, res) => {
       data: null,
     });
   }
-}
+};
 
 exports.updateCouponExpires = async (req, res) => {
   try {
@@ -463,5 +382,4 @@ exports.updateCouponExpires = async (req, res) => {
       data: null,
     });
   }
-}
-    
+};

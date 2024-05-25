@@ -42,16 +42,16 @@ export const addMemberImageApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1/member",
     credentials: "include",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   }),
   endpoints: (builder) => ({
     addMemberImage: builder.mutation({
-      query: (image) => ({
+      query: ({ file }) => ({
         url: `/add-member-image`,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
         method: "POST",
-        body: { image },
+        body: { file },
       }),
     }),
   }),
@@ -75,46 +75,46 @@ export const deleteMemberApi = createApi({
 });
 
 export const updateMemberApi = createApi({
-         reducerPath: "updateMemberApi",
-         baseQuery: fetchBaseQuery({
-           baseUrl: "/api/v1/member",
-           credentials: "include",
-         }),
-         endpoints: (builder) => ({
-           updateMember: builder.mutation({
-             query: ({
-               memberId,
-               mobileNumber,
-               bloodGroup,
-               organization,
-               address,
-               email,
-               expiryDate,
-               timeStamp,
-               idNumber,
-               idType,
-               username,
-             }) => {
-               return {
-                 url: `/update-member/${memberId}`,
-                 method: "PUT",
-                 body: {
-                   memberId,
-                   mobileNumber,
-                   bloodGroup,
-                   organization,
-                   address,
-                   email,
-                   expiryDate,
-                   timeStamp,
-                   idNumber,
-                   idType,
-                   username,
-                 },
-               };
-             },
-           }),
-         }),
+  reducerPath: "updateMemberApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/member",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    updateMember: builder.mutation({
+      query: ({
+        memberId,
+        mobileNumber,
+        bloodGroup,
+        organization,
+        address,
+        email,
+        expiryDate,
+        timeStamp,
+        idNumber,
+        idType,
+        username,
+      }) => {
+        return {
+          url: `/update-member/${memberId}`,
+          method: "PUT",
+          body: {
+            memberId,
+            mobileNumber,
+            bloodGroup,
+            organization,
+            address,
+            email,
+            expiryDate,
+            timeStamp,
+            idNumber,
+            idType,
+            username,
+          },
+        };
+      },
+    }),
+  }),
 });
 
 export const getAllMembersApi = createApi({
@@ -125,7 +125,8 @@ export const getAllMembersApi = createApi({
   }),
   endpoints: (builder) => ({
     getAllMembers: builder.query({
-      query: ({page=1,limit=10,search=""}) => `/get-all-members?page=${page}&limit=${limit}&search=${search}`,
+      query: ({ page = 1, limit = 10, search = "" }) =>
+        `/get-all-members?page=${page}&limit=${limit}&search=${search}`,
     }),
   }),
 });
