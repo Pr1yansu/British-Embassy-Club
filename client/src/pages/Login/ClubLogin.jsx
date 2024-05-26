@@ -24,7 +24,7 @@ const ClubLogin = () => {
     if (data) {
       // console.log(data.data.role);
       if (data.data.role === "admin") {
-        navigate("/dashboard");
+        navigate("/");
       }
       if (data.data.role === "operator") {
         navigate("/login/operator");

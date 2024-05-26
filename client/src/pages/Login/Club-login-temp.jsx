@@ -29,7 +29,7 @@ const ClubLoginTemp = () => {
             secondary: "#333",
           },
         });
-        navigate("/settingsAdminTemp");
+        navigate("/settings/admin/temp");
       }
     } catch (error) {
       toast.error(error?.data?.message || "Internal Server Error",{

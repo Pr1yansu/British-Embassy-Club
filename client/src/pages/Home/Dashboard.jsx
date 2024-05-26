@@ -49,7 +49,11 @@ const Dashboard = ({ profiledata, isLoading, error }) => {
               </h4>
               <h6 className="text-text_primary">{profiledata.data.role}</h6>
             </div>
-            <img src={profile} alt="" className="w-16 h-16" />
+            <img
+              src={profiledata.data.profileImage || profile}
+              alt=""
+              className="w-16 h-16"
+            />
           </div>
         </div>
         <div className="row-start-3 row-end-11 col-start-4 col-end-10 grid grid-rows-2 grid-cols-2 gap-6">
@@ -64,6 +68,7 @@ const Dashboard = ({ profiledata, isLoading, error }) => {
                 posV={items.posV}
                 background={items.background}
                 page={items.page}
+                profiledata={profiledata}
               />
             );
           })}

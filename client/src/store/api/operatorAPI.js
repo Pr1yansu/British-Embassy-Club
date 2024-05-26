@@ -13,6 +13,19 @@ export const operatorProfileApi = createApi({
   }),
 });
 
+export const operatorAllProfileApi = createApi({
+  reducerPath: "operatorAllProfileApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/operator/profile-all",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    getAllOperatorProfile: builder.query({
+      query: () => "/",
+    }),
+  }),
+});
+
 export const operatorForgetPasswordApi = createApi({
   reducerPath: "operatorForgetPasswordApi",
   baseQuery: fetchBaseQuery({
@@ -123,6 +136,7 @@ export const operatorLogoutApi = createApi({
 // });
 
 export const { useGetOperatorProfileQuery } = operatorProfileApi;
+export const { useGetAllOperatorProfileQuery } = operatorAllProfileApi;
 export const { useSendResetLinkMutation } = operatorForgetPasswordApi;
 export const { useAddOperatorImageMutation } = operatorImageApi;
 export const { useUpdateOperatorProfileMutation } = operatorUpdateProfileApi;

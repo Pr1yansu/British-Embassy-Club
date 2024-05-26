@@ -71,7 +71,7 @@ export const sidebarItem1 = [
     icon: dashboard,
     title: "Dashboard",
     iconBold: dashboard_bold,
-    page: "/dashboard",
+    page: "/",
   },
   {
     icon: member,

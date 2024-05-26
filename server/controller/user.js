@@ -1,10 +1,10 @@
-const Operators = require("../models/operators");
 const bcrypt = require("bcrypt");
 const Node_cache = require("node-cache");
 const { sendMail } = require("../utils/mail-service");
 const crypto = require("crypto");
 const { uploadImage } = require("../utils/cloudinary");
 const ClubAuthorization = require("../models/club-authorization");
+const operators = require("../models/operators");
 
 const node_cache = new Node_cache();
 
@@ -158,7 +158,7 @@ exports.getCurrentUser = async (req, res) => {
 
 exports.getAllOperators = async (req, res) => {
   try {
-    const Operators = await Operators.find();
+    const Operators = await operators.find();
     if (!Operators) {
       return res.status(404).json({ message: "No Operators found" });
     }
