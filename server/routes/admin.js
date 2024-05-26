@@ -7,6 +7,8 @@ const {
   removeOperator,
   changePassword,
   getAllUsers,
+  changePasswordAll,
+  changeOperatorPassword,
 } = require("../controller/club");
 
 const {
@@ -18,6 +20,7 @@ const {
   validateResetPassword,
   validateChangePassword,
 } = require("../middleware/zod-user-middleware");
+const { getAllOperators } = require("../controller/user");
 
 const app = Router();
 
@@ -30,7 +33,8 @@ app.put(
   validateResetPassword,
   resetPassword
 );
-app.get("/get-all-operator", isAuthenticated, isAdmin, getAllUsers);
+app.get("/get-all-operators", isAuthenticated, isAdmin, getAllOperators);
+app.get("/get-all-users", isAuthenticated, isAdmin, getAllUsers);
 app.post("/change-role", isAuthenticated, isAdmin, changeRole);
 app.delete(
   "/delete-operator/:operatorId",
@@ -44,6 +48,13 @@ app.patch(
   isAdmin,
   validateChangePassword,
   changePassword
+);
+app.patch("/change-password-all", isAuthenticated, isAdmin, changePasswordAll);
+app.patch(
+  "/change-operator-password",
+  isAuthenticated,
+  isAdmin,
+  changeOperatorPassword
 );
 
 module.exports = app;

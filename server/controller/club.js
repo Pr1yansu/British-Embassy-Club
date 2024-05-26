@@ -1,4 +1,5 @@
 const ClubAuthorization = require("../models/club-authorization");
+const Operators = require("../models/operators");
 const AccessKey = require("../models/access-key");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
@@ -721,11 +722,11 @@ exports.temporaryLogout = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const operators = await ClubAuthorization.find();
+    const users = await ClubAuthorization.find();
     return res.status(200).json({
       statusCode: 200,
       message: "Operators fetched successfully",
-      data: operators,
+      data: users,
       error: null,
     });
   } catch (error) {
@@ -895,6 +896,145 @@ exports.changePassword = async (req, res) => {
       statusCode: 200,
       message: "Password changed successfully",
       data: club,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      data: null,
+      error: error,
+    });
+  }
+};
+
+exports.getAllClub = async (req, res) => {
+  try {
+    const { clubId } = req.params;
+    const club = await ClubAuthorization.findById(clubId);
+    if (!club) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club not found",
+        data: null,
+        error: null,
+      });
+    }
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Club fetched successfully",
+      data: club,
+      error: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      data: null,
+      error: error,
+    });
+  }
+};
+
+exports.changePasswordAll = async (req, res) => {
+  try {
+    const { clubId } = req.params;
+
+    if (!clubId) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club ID is required",
+        data: null,
+        error: null,
+      });
+    }
+
+    const { newPassword, confirmPassword } = req.body;
+    const { username } = req.club;
+    const club = await ClubAuthorization.findOne({ username });
+    if (!club) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Passwords do not match",
+        data: null,
+        error: null,
+      });
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+
+    const newClub = await ClubAuthorization.findByIdAndUpdate(
+      clubId,
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Password changed successfully",
+      data: newClub,
+      error: null,
+    });
+  } catch {
+    console.error(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      data: null,
+      error: error,
+    });
+  }
+};
+
+exports.changeOperatorPassword = async (req, res) => {
+  try {
+    const { operatorId } = req.params;
+    const { username } = req.club;
+    const { newPassword, confirmPassword } = req.body;
+    const club = await ClubAuthorization.findOne({
+      username,
+    });
+    if (!club) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Passwords do not match",
+        data: null,
+        error: null,
+      });
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+
+    const operator = await ClubAuthorization.findByIdAndUpdate(
+      operatorId,
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Password changed successfully",
+      data: operator,
       error: null,
     });
   } catch (error) {
