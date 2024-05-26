@@ -1,6 +1,5 @@
 import React from "react";
 import { MdModeEditOutline } from "react-icons/md";
-import { managementData } from "../../constants";
 import Roles from "../ui/Roles";
 const UserManagement = ({ colStart, colEnd, allprofiledata }) => {
   return (
