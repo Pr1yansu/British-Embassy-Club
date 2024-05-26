@@ -49,9 +49,14 @@ app.patch(
   validateChangePassword,
   changePassword
 );
-app.patch("/change-password-all", isAuthenticated, isAdmin, changePasswordAll);
 app.patch(
-  "/change-operator-password",
+  "/change-password-all/:clubId",
+  isAuthenticated,
+  isAdmin,
+  changePasswordAll
+);
+app.patch(
+  "/change-operator-password/:operatorId",
   isAuthenticated,
   isAdmin,
   changeOperatorPassword
