@@ -7,6 +7,7 @@ import {
   operatorUpdateProfileApi,
   operatorChangePasswordApi,
   operatorLogoutApi,
+  operatorAllProfileApi
 } from "./api/operatorAPI";
 import { addMemberApi } from "./api/memberAPI";
 import {
@@ -22,6 +23,7 @@ const store = configureStore({
     [clubProfileApi.reducerPath]: clubProfileApi.reducer,
     [clubTemporaryLogin.reducerPath]: clubTemporaryLogin.reducer,
     [operatorProfileApi.reducerPath]: operatorProfileApi.reducer,
+    [operatorAllProfileApi.reducerPath]: operatorAllProfileApi.reducer,
     [operatorForgetPasswordApi.reducerPath]: operatorForgetPasswordApi.reducer,
     [operatorUpdateProfileApi.reducerPath]: operatorUpdateProfileApi.reducer,
     [operatorImageApi.reducerPath]: operatorImageApi.reducer,
@@ -39,6 +41,7 @@ const store = configureStore({
       .concat(clubProfileApi.middleware)
       .concat(clubTemporaryLogin.middleware)
       .concat(operatorProfileApi.middleware)
+      .concat(operatorAllProfileApi.middleware)
       .concat(operatorForgetPasswordApi.middleware)
       .concat(operatorImageApi.middleware)
       .concat(operatorUpdateProfileApi.middleware)

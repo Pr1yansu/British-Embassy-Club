@@ -32,12 +32,12 @@ function App() {
     isLoading,
   } = useGetOperatorProfileQuery();
 
-  console.log(profiledata);
+  // console.log(profiledata);
 
   return (
     <>
       <Toaster />
-      {locations.includes(location.pathname) ? <Sidebar /> : null}
+      {locations.includes(location.pathname) ? <Sidebar profiledata={profiledata} /> : null}
       <Routes>
         {/*Routes for Main pages */}
         <>

@@ -7,11 +7,13 @@ import { RxAvatar } from "react-icons/rx";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ profiledata }) => {
+  const { data: { role } = {} } = profiledata || {};
+
   const menus = [
     {
       names: "Dashboard",
-      link: "/dashboard",
+      link: "/",
       icon: MdOutlineDashboard,
     },
     {
@@ -20,14 +22,16 @@ const Sidebar = () => {
       icon: MdOutlinePeopleAlt,
     },
     { names: "Coupon", link: "/coupon", icon: LuTicket },
+
     {
       names: "Profile",
       link: "/profile",
       icon: RxAvatar,
     },
+
     {
       names: "Settings",
-      link: "/settings",
+      link: role === "admin" ? "/settings/admin" : "/settings",
       icon: IoIosSettings,
     },
   ];
@@ -48,32 +52,21 @@ const Sidebar = () => {
       } shadow-sidebar_shadow rounded-r-3xl`}
     >
       <div className=" flex flex-1 justify-center flex-col gap-4  relative">
-        {menus?.map((menu, i) => (
-          <Link
-            to={menu?.link}
-            key={i}
-            onClick={() => activeMenu(menu.names)}
-            className={` ${menu?.margin &&
-              "mt-5"}  group flex items-center text-xl roboto gap-4 font-medium p-2`}
-          >
-            <div
-              className={` ${
-                activeName === menu?.names
-                  ? "text-black font-semibold"
-                  : "text-text_primary"
-              }`}
-            >
-              {React.createElement(menu?.icon, {
-                size: "24",
-              })}
-            </div>
-
-            <h2
-              style={{
-                transitionDelay: `${i + 3}00ms`,
+        {menus?.map((menu, i) => {
+          const isProfileAdmin = menu.names === "Profile" && role === "admin";
+          return (
+            <Link
+              to={isProfileAdmin ? "#" : menu?.link}
+              key={i}
+              onClick={() => {
+                if (!isProfileAdmin) {
+                  activeMenu(menu.names);
+                }
               }}
-              className={`whitespace-pre duration-500 ${!open &&
-                "opacity-0 translate-x-28 overflow-hidden"}`}
+              className={` ${menu?.margin &&
+                "mt-5"}  group flex items-center text-xl roboto gap-4 font-medium p-2 ${
+                isProfileAdmin ? "cursor-not-allowed" : ""
+              }`}
             >
               <div
                 className={` ${
@@ -82,17 +75,37 @@ const Sidebar = () => {
                     : "text-text_primary"
                 }`}
               >
-                {menu?.names}
+                {React.createElement(menu?.icon, {
+                  size: "24",
+                })}
               </div>
-            </h2>
-            <h2
-              className={`${open &&
-                "hidden"} fixed left-48 bg-white font-semibold whitespace-pre text-sm text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
-            >
-              {menu?.names}
-            </h2>
-          </Link>
-        ))}
+
+              <h2
+                style={{
+                  transitionDelay: `${i + 3}00ms`,
+                }}
+                className={`whitespace-pre duration-500 ${!open &&
+                  "opacity-0 translate-x-28 overflow-hidden"}`}
+              >
+                <div
+                  className={` ${
+                    activeName === menu?.names
+                      ? "text-black font-semibold"
+                      : "text-text_primary"
+                  }`}
+                >
+                  {menu?.names}
+                </div>
+              </h2>
+              <h2
+                className={`${open &&
+                  "hidden"} fixed left-48 bg-white font-semibold whitespace-pre text-sm text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
+              >
+                {isProfileAdmin ? "disable" :  menu?.names}
+              </h2>
+            </Link>
+          );
+        })}
       </div>
       <div className="flex justify-center py-7">
         {open ? (

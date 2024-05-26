@@ -41,7 +41,7 @@ const OperatoLogin = () => {
              duration: 2000,
            }
          );
-          navigate("/dashboard");
+          navigate("/");
       }
   };
   return (

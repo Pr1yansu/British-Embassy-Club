@@ -2,7 +2,7 @@ import React from "react";
 import { MdModeEditOutline } from "react-icons/md";
 import { managementData } from "../../constants";
 import Roles from "../ui/Roles";
-const UserManagement = ({ colStart, colEnd }) => {
+const UserManagement = ({ colStart, colEnd, allprofiledata }) => {
   return (
     <>
       <div
@@ -25,20 +25,21 @@ const UserManagement = ({ colStart, colEnd }) => {
               </tr>
             </thead>
             <tbody>
-              {managementData.map((row) => (
-                <tr key={row.id}>
-                  <td className="py-2 px-4 text-sm">{row.name}</td>
-                  <td className="py-2 px-4 text-start text-sm ">
-                    <Roles data={row.roles} />
-                  </td>
-                  <td className="py-2 px-4 flex justify-end text-sm">
-                    <a href="#" className="flex gap-2 text-text_primary">
-                      <MdModeEditOutline size={20} color="primary" />
-                      <p>Edit Password</p>
-                    </a>
-                  </td>
-                </tr>
-              ))}
+              {allprofiledata &&
+                allprofiledata.map((row) => (
+                  <tr key={row.id}>
+                    <td className="py-2 px-4 text-sm">{row.username}</td>
+                    <td className="py-2 px-4 text-start text-sm ">
+                      <Roles data={row.role} />
+                    </td>
+                    <td className="py-2 px-4 flex justify-end text-sm">
+                      <a href="#" className="flex gap-2 text-text_primary">
+                        <MdModeEditOutline size={20} color="primary" />
+                        <p>Edit Password</p>
+                      </a>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

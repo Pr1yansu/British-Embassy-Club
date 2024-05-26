@@ -9,6 +9,7 @@ const {
   addOperatorImage,
   changePassword,
   getCurrentUser,
+  getAllOperators,
 } = require("../controller/user");
 const {
   validateRegistration,
@@ -43,6 +44,7 @@ router.post(
   addOperatorImage
 );
 router.get("/profile", isAuthenticated, isInClub, getCurrentUser);
+router.get("/profile-all",isAuthenticated, isInClub, getAllOperators)
 router.post("/login", isAuthenticated, isInClub, validateLogin, loginUser);
 router.put(
   "/update",
