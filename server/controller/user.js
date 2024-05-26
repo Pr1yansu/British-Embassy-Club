@@ -4,7 +4,7 @@ const { sendMail } = require("../utils/mail-service");
 const crypto = require("crypto");
 const { uploadImage } = require("../utils/cloudinary");
 const ClubAuthorization = require("../models/club-authorization");
-const operators = require("../models/operators");
+const Operators = require("../models/operators");
 
 const node_cache = new Node_cache();
 
@@ -158,15 +158,15 @@ exports.getCurrentUser = async (req, res) => {
 
 exports.getAllOperators = async (req, res) => {
   try {
-    const Operators = await operators.find();
-    if (!Operators) {
+    const operators = await Operators.find();
+    if (!operators) {
       return res.status(404).json({ message: "No Operators found" });
     }
     if (node_cache.has("Operators")) {
       return res.status(200).json(node_cache.get("Operators"));
     }
-    node_cache.set("Operators", Operators);
-    return res.status(200).json({ statusCode: 200, Operators });
+    node_cache.set("Operators", operators);
+    return res.status(200).json({ statusCode: 200, operators });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
