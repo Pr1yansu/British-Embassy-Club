@@ -35,5 +35,43 @@ export const clubTemporaryLogin = createApi({
   }),
 });
 
+export const changeAdminOperatorPasswordApi = createApi({
+         reducerPath: "changeAdminOperatorPasswordApi",
+         baseQuery: fetchBaseQuery({
+           baseUrl: "/api/v1/admin",
+           credentials: "include",
+         }),
+         endpoints: (builder) => ({
+           changeAdminOperatorPassword: builder.mutation({
+             query: ({ id, newPassword, confirmPassword }) => {
+               return {
+                 url: `/change-password-all/${id}`,
+                 method: "PATCH",
+                 body: {
+                   id,
+                   newPassword,
+                   confirmPassword,
+                 },
+               };
+             },
+           }),
+         }),
+});
+
+export const allProfileApi = createApi({
+  reducerPath: "allProfileApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/admin/get-all-users",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    getAllProfile: builder.query({
+      query: () => "/",
+    }),
+  }),
+});
+
 export const { useGetClubProfileQuery } = clubProfileApi;
 export const { useTemporaryLoginMutation } = clubTemporaryLogin;
+export const { useChangeAdminOperatorPasswordMutation } = changeAdminOperatorPasswordApi;
+export const { useGetAllProfileQuery } = allProfileApi;

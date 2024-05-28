@@ -601,8 +601,6 @@ exports.sendResetTokenAgain = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    const { id } = req.user;
-    node_cache.del(`user-${id}`);
     const cookies = ["user-token", "auth-token"];
     cookies.forEach((cookie) => {
       res.clearCookie(cookie);

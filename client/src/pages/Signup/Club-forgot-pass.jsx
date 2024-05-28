@@ -33,7 +33,6 @@ const ClubForgotPass = () => {
       return;
     }
 
-    //  i want to find the username is in database or not using findone method
 
     const { data } = await axios.post(
       "/api/v1/club/forget-password",
@@ -41,22 +40,22 @@ const ClubForgotPass = () => {
       { withCredentials: true }
     );  
 
-    if (username !== data.findone.username) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={"Username not found"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
-      return;
-    }
+    // if (username !== data.findone.username) {
+    //   toast.custom(
+    //     <>
+    //       <Toasts
+    //         boldMessage={"Error!"}
+    //         message={"Username not found"}
+    //         icon={<MdError className="text-text_red" size={32} />}
+    //       />
+    //     </>,
+    //     {
+    //       position: "top-left",
+    //       duration: 2000,
+    //     }
+    //   );
+    //   return;
+    // }
 
     if (data) {
       toast.custom(
@@ -78,6 +77,7 @@ const ClubForgotPass = () => {
         }
       );
       navigate("/login/club/temp");
+
     } else {
       toast.custom(
         <>

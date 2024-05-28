@@ -152,7 +152,7 @@ const OperatorSignup = () => {
             duration: 2000,
           }
         );
-        navigate("/OperatorLogin");
+        navigate("/");
       }
     } catch (error) {
       toast.custom(
@@ -202,7 +202,7 @@ const OperatorSignup = () => {
             className="w-3/5 flex flex-col gap-4 items-center justify-center"
           >
             <InputBox
-              placeholder={"Full Name"}
+              placeholder={"Username"}
               type={"text"}
               onChange={(e) => setUsername(e.target.value)}
             />
