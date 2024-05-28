@@ -78,7 +78,7 @@ const ChangePassword = ({ colStart, colEnd }) => {
   return (
     <>
       <div
-        className={`row-start-2 row-end-9 ${colStart} ${colEnd}   flex flex-col justify-center p-8 bg-white shadow-member_card rounded-3xl`}
+        className={`row-start-2 row-end-9 ${colStart} ${colEnd} flex flex-col justify-center p-8 bg-white shadow-member_card rounded-3xl`}
       >
         <div className="flex justify-between items-center mb-6">
           <p className=" text-lg text-text_secondary font-semibold">

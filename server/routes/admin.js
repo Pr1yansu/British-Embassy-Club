@@ -50,7 +50,7 @@ app.patch(
   changePassword
 );
 app.patch(
-  "/change-password-all/:clubId",
+  "/change-password-all/:id",
   isAuthenticated,
   isAdmin,
   changePasswordAll

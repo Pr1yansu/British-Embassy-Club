@@ -4,14 +4,62 @@ import UserManagement from "../../components/modals/UserManagement";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
-import {useGetAllOperatorProfileQuery} from "../../store/api/operatorAPI";
+import {useGetAllProfileQuery} from "../../store/api/clubAPI";
+import { useNavigate } from "react-router-dom";
+import { MdError } from "react-icons/md";
+import toast from "react-hot-toast";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import Toasts from "../../components/ui/Toasts";
+import { useLogoutMutation } from "../../store/api/operatorAPI";
 const SettingsAdmin = () => {
+ const navigate = useNavigate();
 
-  const {
-    data: allprofiledata,
-    isError,
-    isLoading,
-  } = useGetAllOperatorProfileQuery();
+  const { data: allprofiledata, isError, isLoading } = useGetAllProfileQuery();
+  
+   const [logout, { isLoading:logoutLoading, isError:logoutIsError, data:logoutData }] = useLogoutMutation();
+
+   const handleLogout = async () => {
+     try {
+       const data = await logout().unwrap();
+
+       if (data) {
+         toast.custom(
+           <>
+             <Toasts
+               boldMessage={"Success!"}
+               message={"Logout Successfully"}
+               icon={
+                 <IoCheckmarkDoneCircleOutline
+                   className="text-text_tertiaary"
+                   size={32}
+                 />
+               }
+             />
+           </>,
+           {
+             position: "top-left",
+             duration: 2000,
+           }
+         );
+         navigate("/login/club");
+       }
+     } catch (error) {
+       console.error("Failed to logout:", error);
+       toast.custom(
+         <>
+           <Toasts
+             boldMessage={"Error!"}
+             message={"Logout Failed"}
+             icon={<MdError className="text-text_red" size={32} />}
+           />
+         </>,
+         {
+           position: "top-left",
+           duration: 2000,
+         }
+       );
+     }
+   };
 
 
   if(isLoading) return <>loading....</>
@@ -25,6 +73,7 @@ const SettingsAdmin = () => {
         <div className="container grid grid-rows-12 grid-cols-12 gap-4">
           <ChangePassword colStart={"col-start-3"} colEnd={"col-end-7"} />
           <UserManagement
+            isLoading={isLoading}
             allprofiledata={allprofiledata}
             colStart={"col-start-7"}
             colEnd={"col-end-11"}
@@ -47,7 +96,8 @@ const SettingsAdmin = () => {
               toggle={false}
               color={"bg-white"}
               HoverColor={"hover:bg-red-600"}
-              name={"Logout"}
+              name={logoutLoading ? "Logging Out..." : "Logout" }
+              onClick={handleLogout}
               icon={<TbLogout />}
               Hovershadow={"hover:shadow-danger_shadow"}
               shadow={"shadow-danger_shadow"}

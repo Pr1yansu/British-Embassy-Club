@@ -703,7 +703,7 @@ exports.temporaryLogout = async (req, res) => {
 
     await ClubAuthorization.deleteOne({ username, temporary: true });
 
-    return res.status(200).json({
+    return res.clearCookie("auth-token").status(200).json({
       statusCode: 200,
       message: "Logged out successfully",
       data: null,
@@ -940,20 +940,11 @@ exports.getAllClub = async (req, res) => {
 
 exports.changePasswordAll = async (req, res) => {
   try {
-    const { clubId } = req.params;
-
-    if (!clubId) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Club ID is required",
-        data: null,
-        error: null,
-      });
-    }
 
     const { newPassword, confirmPassword } = req.body;
-    const { username } = req.club;
-    const club = await ClubAuthorization.findOne({ username });
+    const { id } = req.params;
+    console.log(id);
+    const club = await ClubAuthorization.findById(id);
     if (!club) {
       return res.status(400).json({
         statusCode: 400,
@@ -975,7 +966,7 @@ exports.changePasswordAll = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
     const newClub = await ClubAuthorization.findByIdAndUpdate(
-      clubId,
+      id,
       { password: hashedPassword },
       { new: true }
     );
@@ -986,7 +977,7 @@ exports.changePasswordAll = async (req, res) => {
       data: newClub,
       error: null,
     });
-  } catch {
+  } catch (error) {
     console.error(error);
     return res.status(500).json({
       statusCode: 500,
@@ -1030,7 +1021,14 @@ exports.changeOperatorPassword = async (req, res) => {
       { password: hashedPassword },
       { new: true }
     );
-
+    if (!operator) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Operator not found",
+        data: null,
+        error: null,
+      });
+    }
     return res.status(200).json({
       statusCode: 200,
       message: "Password changed successfully",

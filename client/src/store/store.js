@@ -7,10 +7,10 @@ import {
   operatorUpdateProfileApi,
   operatorChangePasswordApi,
   operatorLogoutApi,
-  operatorAllProfileApi
 } from "./api/operatorAPI";
-import { addMemberApi } from "./api/memberAPI";
+import { changeAdminOperatorPasswordApi,allProfileApi } from "./api/clubAPI";
 import {
+  addMemberApi,
   addMemberImageApi,
   getAllMembersApi,
   getMemberByIdApi,
@@ -23,7 +23,7 @@ const store = configureStore({
     [clubProfileApi.reducerPath]: clubProfileApi.reducer,
     [clubTemporaryLogin.reducerPath]: clubTemporaryLogin.reducer,
     [operatorProfileApi.reducerPath]: operatorProfileApi.reducer,
-    [operatorAllProfileApi.reducerPath]: operatorAllProfileApi.reducer,
+    [allProfileApi.reducerPath]: allProfileApi.reducer,
     [operatorForgetPasswordApi.reducerPath]: operatorForgetPasswordApi.reducer,
     [operatorUpdateProfileApi.reducerPath]: operatorUpdateProfileApi.reducer,
     [operatorImageApi.reducerPath]: operatorImageApi.reducer,
@@ -35,13 +35,14 @@ const store = configureStore({
     [getMemberByIdApi.reducerPath]: getMemberByIdApi.reducer,
     [updateMemberApi.reducerPath]: updateMemberApi.reducer,
     [deleteMemberApi.reducerPath]: deleteMemberApi.reducer,
+    [changeAdminOperatorPasswordApi.reducerPath]: changeAdminOperatorPasswordApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(clubProfileApi.middleware)
       .concat(clubTemporaryLogin.middleware)
       .concat(operatorProfileApi.middleware)
-      .concat(operatorAllProfileApi.middleware)
+      .concat(allProfileApi.middleware)
       .concat(operatorForgetPasswordApi.middleware)
       .concat(operatorImageApi.middleware)
       .concat(operatorUpdateProfileApi.middleware)
@@ -52,7 +53,8 @@ const store = configureStore({
       .concat(getAllMembersApi.middleware)
       .concat(getMemberByIdApi.middleware)
       .concat(updateMemberApi.middleware)
-      .concat(deleteMemberApi.middleware),
+      .concat(deleteMemberApi.middleware)
+      .concat(changeAdminOperatorPasswordApi.middleware),
 });
 
 export default store;

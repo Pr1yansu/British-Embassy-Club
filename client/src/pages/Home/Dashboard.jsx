@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainCard from "../../components/ui/MainCard";
 import { cardData } from "../../constants";
 import profile from "../../assets/icons/Snehashis.png";
@@ -27,8 +27,12 @@ const Dashboard = ({ profiledata, isLoading, error }) => {
   }
 
   if (error) {
-    return <div>Error</div>;
+    navigate("/login/club");
   }
+
+
+  if(!profiledata)  navigate("/login/club");
+  
 
   return (
     <div className="background h-screen bg-cover bg-center">
@@ -69,6 +73,7 @@ const Dashboard = ({ profiledata, isLoading, error }) => {
                 background={items.background}
                 page={items.page}
                 profiledata={profiledata}
+                key={index}
               />
             );
           })}
