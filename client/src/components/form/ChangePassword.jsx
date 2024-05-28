@@ -7,13 +7,25 @@ import { useNavigate } from "react-router-dom";
 import Toasts from "../ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdError } from "react-icons/md";
+import { useChangeAdminPasswordMutation } from "../../store/api/clubAPI";
+import { LuLoader2 } from "react-icons/lu";
 
-const ChangePassword = ({ colStart, colEnd }) => {
+const ChangePassword = ({
+  colStart,
+  colEnd,
+  profiledata,
+  profileLoading,
+  profileError,
+}) => {
   const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [
+    changeAdminPassword,
+    { isLoading: AdminLoading, isSuccess: AdminSuccess },
+  ] = useChangeAdminPasswordMutation();
   const [
     changePassword,
     { isError, isLoading, isSuccess },
@@ -25,11 +37,22 @@ const ChangePassword = ({ colStart, colEnd }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await changePassword({
-      oldPassword: oldPassword,
-      newPassword: newPassword,
-      confirmPassword: confirmPassword,
-    }).unwrap();
+    let data;
+    if (profileLoading) return <>loading....</>;
+    if (profiledata.data.role === "admin") {
+      console.log("profiledata role", profiledata.data.role === "admin");
+      data = await changeAdminPassword({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      }).unwrap();
+    } else {
+      data = await changePassword({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword,
+      }).unwrap();
+    }
 
     if (data) {
       toast.custom(
@@ -140,7 +163,15 @@ const ChangePassword = ({ colStart, colEnd }) => {
               onClick={handleCancel}
             />
             <ButtonGroup
-              name={"Confirm"}
+              name={
+                isLoading || AdminLoading ? (
+                  <>
+                    <LuLoader2 className="animate-spin" size={20} />
+                  </>
+                ) : (
+                  <>Confirm</>
+                )
+              }
               textColor={"text-text_secondary"}
               type={"submit"}
             />

@@ -49,12 +49,12 @@ const Dashboard = ({ profiledata, isLoading, error }) => {
           >
             <div className="flex flex-col items-end">
               <h4 className="text-xl font-roboto">
-                {profiledata.data.username}
+                { profiledata.data && profiledata.data.username}
               </h4>
-              <h6 className="text-text_primary">{profiledata.data.role}</h6>
+              <h6 className="text-text_primary">{profiledata.data && profiledata.data.role}</h6>
             </div>
             <img
-              src={profiledata.data.profileImage || profile}
+              src={profiledata.data && profiledata.data.profileImage || profile}
               alt=""
               className="w-16 h-16"
             />

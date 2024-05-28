@@ -37,7 +37,9 @@ function App() {
   return (
     <>
       <Toaster />
-      {locations.includes(location.pathname) ? <Sidebar profiledata={profiledata} /> : null}
+      {locations.includes(location.pathname) ? (
+        <Sidebar profiledata={profiledata} />
+      ) : null}
       <Routes>
         {/*Routes for Main pages */}
         <>
@@ -59,7 +61,16 @@ function App() {
 
         {/* Routes for Settings*/}
         <>
-          <Route path="/settings/admin" element={<SettingsAdmin />} />
+          <Route
+            path="/settings/admin"
+            element={
+              <SettingsAdmin
+                profiledata={profiledata}
+                isLoading={isLoading}
+                error={isError}
+              />
+            }
+          />
           <Route path="/settings" element={<Settings />} />
           <Route path="/settings/admin/temp" element={<SettingsAdminTemp />} />
         </>
