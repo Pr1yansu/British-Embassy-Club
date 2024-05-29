@@ -210,7 +210,7 @@ const CouponTable = () => {
         data={data}
         customStyles={customStyles}
         pagination
-        paginationPerPage={5}
+        paginationPerPage={10}
         paginationRowsPerPageOptions={[5, 10, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",

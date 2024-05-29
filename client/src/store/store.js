@@ -7,7 +7,15 @@ import {
   operatorChangePasswordApi,
   operatorLogoutApi,
 } from "./api/operatorAPI";
-import { changeAdminOperatorPasswordApi,allProfileApi,clubProfileApi, clubTemporaryLogin, changeAdminPasswordApi } from "./api/clubAPI";
+
+import {
+  changeAdminOperatorPasswordApi,
+  allProfileApi,
+  clubProfileApi,
+  clubTemporaryLogin,
+  changeAdminPasswordApi,
+} from "./api/clubAPI";
+
 import {
   addMemberApi,
   addMemberImageApi,
@@ -17,7 +25,13 @@ import {
   deleteMemberApi,
 } from "./api/memberAPI";
 
-import {getWalletApi} from "./api/walletAPI";
+import {
+  getWalletApi,
+  addTransactionApi,
+  fetchTransactionsApi,
+  updateTransactionApi,
+  updateCouponExpiresApi,
+} from "./api/walletAPI";
 
 const store = configureStore({
   reducer: {
@@ -37,8 +51,13 @@ const store = configureStore({
     [getMemberByIdApi.reducerPath]: getMemberByIdApi.reducer,
     [updateMemberApi.reducerPath]: updateMemberApi.reducer,
     [deleteMemberApi.reducerPath]: deleteMemberApi.reducer,
-    [changeAdminOperatorPasswordApi.reducerPath]: changeAdminOperatorPasswordApi.reducer,
+    [changeAdminOperatorPasswordApi.reducerPath]:
+      changeAdminOperatorPasswordApi.reducer,
     [getWalletApi.reducerPath]: getWalletApi.reducer,
+    [addTransactionApi.reducerPath]: addTransactionApi.reducer,
+    [fetchTransactionsApi.reducerPath]: fetchTransactionsApi.reducer,
+    [updateTransactionApi.reducerPath]: updateTransactionApi.reducer,
+    [updateCouponExpiresApi.reducerPath]: updateCouponExpiresApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -59,7 +78,11 @@ const store = configureStore({
       .concat(updateMemberApi.middleware)
       .concat(deleteMemberApi.middleware)
       .concat(changeAdminOperatorPasswordApi.middleware)
-      .concat(getWalletApi.middleware),
+      .concat(getWalletApi.middleware)
+      .concat(addTransactionApi.middleware)
+      .concat(fetchTransactionsApi.middleware)
+      .concat(updateTransactionApi.middleware)
+      .concat(updateCouponExpiresApi.middleware),
 });
 
 export default store;

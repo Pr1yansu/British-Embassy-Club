@@ -1,16 +1,90 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const getWalletApi = createApi({
-    reducerPath: "getWalletAPI",
-    baseQuery: fetchBaseQuery({
-      baseUrl: "/api/v1/wallet",
-      credentials: "include",
+  reducerPath: "getWalletAPI",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/wallet",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    getWallet: builder.query({
+      query: (memberId) => `/get/${memberId}`,
     }),
-    endpoints: (builder) => ({
-      getWallet: builder.query({
-        query: (memberId) => `/get/${memberId}`,
-      }),
-    }),
-  });
+  }),
+});
 
-  export const { useGetWalletQuery } = getWalletApi;
+export const addTransactionApi = createApi({
+  reducerPath: "addTransactionApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/wallet",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    addTransaction: builder.mutation({
+      query: ({ memberId, type, payableAmount, couponAmount }) => {
+        return {
+          url: "/addTransaction",
+          method: "POST",
+          body: { memberId, type, payableAmount, couponAmount },
+        };
+      },
+    }),
+  }),
+});
+
+export const fetchTransactionsApi = createApi({
+  reducerPath: "fetchTransactionsApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/wallet",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    fetchTransactions: builder.query({
+      query: (memberId) => `/fetchTransactions/${memberId}`,
+    }),
+  }),
+});
+
+export const updateTransactionApi = createApi({
+  reducerPath: "updateTransactionApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/wallet",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    updateTransaction: builder.mutation({
+      query: ({ transactionId, type, payableAmount, couponAmount }) => {
+        return {
+          url: `/update-transaction/${transactionId}`,
+          method: "PUT",
+          body: { type, payableAmount, couponAmount },
+        };
+      },
+    }),
+  }),
+});
+
+export const updateCouponExpiresApi = createApi({
+  reducerPath: "updateCouponExpiresApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/wallet",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    updateCouponExpires: builder.mutation({
+      query: ({ couponId, expiresAt }) => {
+        return {
+          url: `/update-coupon/${couponId}`,
+          method: "PUT",
+          body: { expiresAt,couponId },
+        };
+      },
+    }),
+  }),
+});
+
+export const { useGetWalletQuery } = getWalletApi;
+export const {useAddTransactionMutation} = addTransactionApi;
+export const {useFetchTransactionsQuery} = fetchTransactionsApi;
+export const {useUpdateTransactionMutation} = updateTransactionApi;
+export const {useUpdateCouponExpiresMutation} = updateCouponExpiresApi;
