@@ -41,7 +41,8 @@ class TransactionFilter {
       .find(this.queryString.sort ? this.queryString : {})
       .sort(this.queryString.sort)
       .limit(this.pagination.limit)
-      .skip(this.pagination.skip);
+      .skip(this.pagination.skip)
+      .populate("walletId memberId couponId");
     return transactions;
   }
 }
