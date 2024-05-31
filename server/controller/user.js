@@ -311,7 +311,7 @@ exports.changePassword = async (req, res) => {
   }
 };
 
-exports.addOperatorImage = async (req, res) => {
+exports.updateOperatorImage = async (req, res) => {
   try {
     const { id } = req.user;
     if (!id) {
@@ -433,8 +433,7 @@ exports.updateOperator = async (req, res) => {
         data: null,
       });
     }
-    const { email, mobileNumber, profileImage, idType, idNumber, address } =
-      req.body;
+    const { email, mobileNumber, idType, idNumber, address } = req.body;
     const user = await Operators.findById(id);
     if (!user) {
       return res.status(404).json({
@@ -450,7 +449,6 @@ exports.updateOperator = async (req, res) => {
     const updatedUser = await Operators.findByIdAndUpdate(id, {
       password: hashedPassword ? hashedPassword : user.password,
       mobileNumber,
-      profileImage,
       email,
       address,
       idProof: {

@@ -97,6 +97,7 @@ app.use((req, res) => {
   });
 });
 
+// every day at 3am delete unverified clubs
 cron.schedule("0 3 * * *", async () => {
   await deleteUnverifiedClubs();
   await removeTemporaryAdmins();
