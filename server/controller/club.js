@@ -1,5 +1,4 @@
 const ClubAuthorization = require("../models/club-authorization");
-const Operators = require("../models/operators");
 const AccessKey = require("../models/access-key");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");

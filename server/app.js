@@ -89,6 +89,15 @@ app.get("/", (req, res) => {
   res.send(`welcome to the club app, ${req.hostname}!`);
 });
 
+app.use((req, res) => {
+  res.status(404).json({
+    statusCode: 404,
+    message: "Route not found",
+    data: null,
+    exception: null,
+  });
+});
+
 cron.schedule("0 3 * * *", async () => {
   await deleteUnverifiedClubs();
   await removeTemporaryAdmins();
