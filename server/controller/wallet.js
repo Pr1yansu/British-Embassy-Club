@@ -265,26 +265,27 @@ exports.getAllTransactions = async () => {
     const totalTransactions = await TransactionSchema.find().countDocuments();
 
     if (transactions.length <= 0) {
-      return {
+      return res.status(404).json({
         statusCode: 404,
         message: "No transactions found",
         data: null,
-      };
+        exception: null,
+      });
     }
-    return {
+    return res.status(200).json({
       statusCode: 200,
       message: "Transactions fetched successfully",
       data: transactions,
-      totalTransactions: totalTransactions,
+      totalTransactions,
       exception: null,
-    };
+    });
   } catch (error) {
     console.log(error);
-    return {
+    return res.status(200).json({
       statusCode: 500,
       message: "Internal Server Error",
       exception: error,
       data: null,
-    };
+    });
   }
 };
