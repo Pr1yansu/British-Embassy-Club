@@ -39,7 +39,7 @@ class TransactionFilter {
     const transactions = await mongoose
       .model("TransactionSchema")
       .find(this.queryString.sort ? this.queryString : {})
-      .sort(this.queryString.sort)
+      .sort(-1)
       .limit(this.pagination.limit)
       .skip(this.pagination.skip)
       .populate("walletId memberId couponId");
