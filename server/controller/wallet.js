@@ -260,7 +260,7 @@ exports.getAllTransactions = async (req, res) => {
 
     const filter = new TransactionFilter(query);
 
-    const transactions = await filter.filter().sort().paginate().exec();
+    const transactions = await filter.filter().paginate().exec();
 
     const totalTransactions = await TransactionSchema.find().countDocuments();
 
