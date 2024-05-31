@@ -219,19 +219,16 @@ exports.fetchTransactions = async (req, res) => {
 
     const { type, startDate, endDate, sortBy } = req.query;
 
-    const filter = new TransactionFilter({
+    const transactions = await TransactionSchema.find({
       walletId: wallet._id,
-      memberId,
       type,
-      startDate,
-      endDate,
-      sortBy,
+      timeStamp: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      },
     })
-      .filter()
-      .sort()
-      .paginate();
-
-    const transactions = await filter.exec();
+      .sort({ timeStamp: sortBy === "asc" ? 1 : -1 })
+      .populate("walletId memberId couponId");
 
     if (transactions.length === 0) {
       return res.status(404).json({
@@ -259,9 +256,14 @@ exports.fetchTransactions = async (req, res) => {
 
 exports.getAllTransactions = async () => {
   try {
-    const transactions = await TransactionSchema.find().populate(
-      "walletId memberId couponId"
-    );
+    const query = req.query;
+
+    const filter = new TransactionFilter(query);
+
+    const transactions = await filter.filter().sort().paginate().exec();
+
+    const totalTransactions = await TransactionSchema.find().countDocuments();
+
     if (transactions.length <= 0) {
       return {
         statusCode: 404,
@@ -273,6 +275,7 @@ exports.getAllTransactions = async () => {
       statusCode: 200,
       message: "Transactions fetched successfully",
       data: transactions,
+      totalTransactions: totalTransactions,
       exception: null,
     };
   } catch (error) {
