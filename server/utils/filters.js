@@ -43,6 +43,7 @@ class TransactionFilter {
       .limit(this.pagination.limit)
       .skip(this.pagination.skip)
       .populate("walletId memberId couponId");
+      // console.log(transactions);
     return transactions;
   }
 }

@@ -2,36 +2,53 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
 
-const CouponTable = () => {
-    const {
-      data: allTransactions,
-      isSuccess,
-      isLoading: transLoading,
-      isError,
-    } = useGetAllTransactionsQuery();
+const CouponTable = ({walletdata, reloadQuery}) => {
+  const [count, setCount] = React.useState(0);
+  const {
+    data: allTransactions,
+    isSuccess,
+    isLoading: transLoading,
+    isError,
+  } = useGetAllTransactionsQuery();
 
-  
-    // if (transLoading) {
-    //   return <p>Loading...</p>;
-    // }
-
-    console.log("table",allTransactions);
-    console.log("table data",allTransactions.data);
-
-    if (isError) {
-      return <p>Error loading data.</p>;
+  React.useEffect(() => {
+    if (isSuccess) {
+      setCount(allTransactions.totalTransactions);
     }
+  }, [allTransactions.totalTransactions]);
+
+  if (transLoading) {
+    return <p>Loading...</p>;
+  }
+
+
+  const formattedData =
+    allTransactions.data?.map((transaction, index) => ({
+      SLNO: index + 1,
+      MEMBERID: transaction.memberId._id,
+      COUPONETYPE: transaction.type,
+      COUPONAMOUNT: transaction.couponId.amount,
+      PAYAMOUNT: transaction.payableAmount,
+      TIMESTAMP: new Date(transaction.timeStamp).toLocaleTimeString(),
+      STATUS: transaction.status.toUpperCase(),
+    })) || [];
+
+  if (isError) {
+    return <p>Error loading data.</p>;
+  }
+
+  console.log(allTransactions)
   return (
     <div className="p-6 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
       <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">
         Issue Coupons Table
       </h1>
       <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter mb-2">
-        100 Coupons Today
+        {count} Coupons Today
       </h1>
       <DataTable
         columns={columns}
-        data={allTransactions.data}
+        data={formattedData}
         customStyles={customStyles}
         pagination
         paginationPerPage={10}
@@ -93,8 +110,13 @@ const columns = [
     // sortable: true,
   },
   {
-    name: "Cash",
-    selector: (row) => row.CASH,
+    name: "Coupon Amount",
+    selector: (row) => row.COUPONAMOUNT,
+    // sortable: true,
+  },
+  {
+    name: "Pay Amount",
+    selector: (row) => row.PAYAMOUNT,
     // sortable: true,
   },
   {
@@ -108,9 +130,13 @@ const columns = [
     cell: (row) => (
       <p
         className={`rounded-full flex items-center text-white tracking-tighter ${
-          row.STATUS === "Paid" ? "bg-[#22C55E]" : "bg-[#E11D48]"
+          row.STATUS === "PAID"
+            ? "bg-[#22C55E]"
+            : row.STATUS === "DUE"
+            ? "bg-[#E11D48]"
+            : "bg-[#0000FF]"
         }`}
-        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px"}}
+        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
       >
         {row.STATUS}
       </p>

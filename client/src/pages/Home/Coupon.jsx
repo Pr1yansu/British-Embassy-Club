@@ -73,7 +73,7 @@ const Coupon = () => {
             />
           </div>
           <div className="row-start-3 row-end-12 col-start-3 col-end-11">
-            <CouponTable walletdata={walletdata} />
+            <CouponTable walletdata={walletdata} reloadQuery={openQuery} />
           </div>
         </div>
       </div>
