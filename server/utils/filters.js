@@ -23,7 +23,7 @@ class TransactionFilter {
 
   sort() {
     if (this.query.sortBy) {
-      const sortBy = this.query.sortBy === "asc" ? 1 : -1;
+      const sortBy = this.query.sortBy === "desc" ? -1 : 1;
       this.queryString.sort = { timeStamp: sortBy };
     }
     return this;
