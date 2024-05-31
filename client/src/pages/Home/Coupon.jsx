@@ -81,6 +81,7 @@ const Coupon = () => {
         <OperatorQuery
           walletdata={walletdata}
           setWalletData={setWalletData}
+          setopenQuery={setopenQuery}
           onOpen={() => setopenQuery(false)}
         />
       )}

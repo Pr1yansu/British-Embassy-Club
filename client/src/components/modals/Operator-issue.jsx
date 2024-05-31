@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { MdError } from "react-icons/md";
 
-const OperatorIssue = ({ onModal, walletdata }) => {
+const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
   const navigate = useNavigate();
   const [couponAmount, setCouponAmount] = useState();
   const [payableAmount, setPayableAmount] = useState(0);
@@ -91,6 +91,7 @@ const OperatorIssue = ({ onModal, walletdata }) => {
            }
          );
          onModal();
+         setopenQuery(false);
          navigate("/coupon");
       }
     } catch (error) {

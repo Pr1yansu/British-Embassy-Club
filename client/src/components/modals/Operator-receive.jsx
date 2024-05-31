@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { BsArrowUpSquareFill } from "react-icons/bs";
-import { MdAddCircle } from "react-icons/md";
+import { MdAddCircle, MdError } from "react-icons/md";
 import { AiFillMinusCircle } from "react-icons/ai";
 import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
-import { useUpdateTransactionMutation } from "../../store/api/walletAPI";
+import { useAddTransactionMutation } from "../../store/api/walletAPI";
+import Toasts from "../ui/Toasts";
+import toast from "react-hot-toast";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-const OperatorReceive = ({ onModal, walletdata }) => {
+const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
+  const navigate = useNavigate();
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
   console.log(walletdata && walletdata.wallet.transactions[0]._id);
 
   const [
-    updateTransaction,
+    addTransaction,
     {
-      isSuccess: updateTransactionSuccess,
-      isLoading: updateTransactionLoading,
-      isError: updateTransactionError,
+      isSuccess: addTransactionSuccess,
+      isLoading: addTransactionLoading,
+      isError: addTransactionError,
     },
-  ] = useUpdateTransactionMutation();
+  ] = useAddTransactionMutation();
+
+  
 
   useEffect(() => {
     if (walletdata && walletdata.wallet.balance !== undefined) {
@@ -48,20 +55,52 @@ const OperatorReceive = ({ onModal, walletdata }) => {
     setAmount((prevAmount) => (prevAmount - 50 >= 0 ? prevAmount - 50 : 0));
   };
 
-  const handleUpdateTransaction = async (e) => {
+  const handleReciveTransaction = async (e) => {
     e.preventDefault(); // Prevent form submission from reloading the page
     try {
-      const { data } = await updateTransaction({
-        transactionId: walletdata && walletdata.wallet.transactions._id,
+      const { data } = await addTransaction({
+        memberId: walletdata && walletdata.wallet.memberId._id,
         type: "receive",
-        payableAmount: amount,
-        couponAmount: walletdata && walletdata.wallet.balance,
+        payableAmount: 0,
+        couponAmount: amount,
       });
       if (data) {
-        console.log(data);
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={data.message}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+        onModal();
+        setopenQuery(false);
+        navigate("/coupon");
       }
     } catch (error) {
-      console.log(error);
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 
@@ -89,7 +128,7 @@ const OperatorReceive = ({ onModal, walletdata }) => {
           {/* Lower part starts here */}
           <form
             className="flex flex-col w-full px-9 py-6"
-            onSubmit={handleUpdateTransaction}
+            onSubmit={handleReciveTransaction}
           >
             {/* 1st row starts here */}
             <div className="flex justify-between items-center">
@@ -161,7 +200,7 @@ const OperatorReceive = ({ onModal, walletdata }) => {
                 name={"Confirm"}
                 color={"bg-[#F8FAFC]"}
                 textColor={"text-[#6B7280]"}
-                onClick={handleUpdateTransaction}
+                type={"submit"}
               />
             </div>
             {/* 3rd row ends here */}
