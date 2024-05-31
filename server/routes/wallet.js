@@ -18,24 +18,18 @@ router.get(
   "/get/:memberId",
   isAuthenticated,
   isInClub,
-  isUser,
-  isOperator,
   getWallet
 );
 router.post(
   "/addTransaction",
   isAuthenticated,
   isInClub,
-  isUser,
-  isOperator,
   addTransaction
 );
 router.get(
   "/fetchTransactions/:memberId",
   isAuthenticated,
   isInClub,
-  isUser,
-  isOperator,
   fetchTransactions
 );
 
@@ -43,8 +37,6 @@ router.put(
   "/update-transaction/:transactionId",
   isAuthenticated,
   isInClub,
-  isUser,
-  isOperator,
   updateTransaction
 );
 

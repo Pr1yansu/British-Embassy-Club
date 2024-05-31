@@ -1,5 +1,6 @@
 import React from "react";
 import DataTable from "react-data-table-component";
+import { useFetchTransactionsQuery } from "../../store/api/walletAPI";
 
 const data = [
   {
@@ -197,6 +198,20 @@ const customStyles = {
 };
 
 const CouponTable = () => {
+    const {
+      data: allTransactions,
+      isSuccess,
+      isLoading: transLoading,
+      isError,
+    } = useFetchTransactionsQuery();
+
+    // if (transLoading) {
+    //   return <p>Loading...</p>;
+    // }
+
+    // if (isError) {
+    //   return <p>Error loading data.</p>;
+    // }
   return (
     <div className="p-6 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
       <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">
@@ -210,7 +225,7 @@ const CouponTable = () => {
         data={data}
         customStyles={customStyles}
         pagination
-        paginationPerPage={5}
+        paginationPerPage={10}
         paginationRowsPerPageOptions={[5, 10, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",

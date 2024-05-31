@@ -141,13 +141,13 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
                             <ButtonGroup
                               name={isPassLoading ? "loading.." : "Submit"}
                               onClick={handleSubmit}
-                              className="bg-blue-500 text-white py-2 px-4 rounded"
+                              textColor={"text-btn_primary"}
                               // disabled={isPassLoading}
                             />
                             <ButtonGroup
                               name="Cancel"
                               onClick={handleCancel}
-                              className="bg-gray-500 text-white py-2 px-4 rounded"
+                              color={'text-text_primary'}
                             />
                           </div>
                         </div>

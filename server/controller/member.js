@@ -51,7 +51,7 @@ exports.addMember = async (req, res) => {
 
     const memberId = `BEC${timeStamp}${name}${allMembersCount + 1}`;
 
-    const member = await MemberSchema.create({
+    const member = new MemberSchema({
       _id: memberId.replace(/\s/g, ""),
       firstname: firstName,
       lastname: lastname,
@@ -75,6 +75,10 @@ exports.addMember = async (req, res) => {
     const wallet = await WalletSchema.create({
       memberId: memberId.replace(/\s/g, ""),
     });
+
+    member.wallet = wallet._id;
+
+    await member.save();
 
     if (!member || !wallet) {
       return res.status(400).json({

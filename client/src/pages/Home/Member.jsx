@@ -12,7 +12,7 @@ const Member = () => {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const { data, isSuccess, isLoading } = useGetAllMembersQuery({
+  const { data, isSuccess, isLoading }= useGetAllMembersQuery({
     page: page === 0 ? 1 : page,
     limit: 12,
     search: search,

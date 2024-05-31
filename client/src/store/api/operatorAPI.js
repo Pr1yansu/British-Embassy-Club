@@ -67,10 +67,11 @@ export const operatorUpdateProfileApi = createApi({
         address,
         idType,
         idNumber,
+        profileImage,
       }) => ({
         url: "/update",
         method: "PUT",
-        body: { username, email, mobileNumber, address, idType, idNumber },
+        body: { username, email, mobileNumber, address, idType, idNumber, profileImage },
       }),
     }),
   }),

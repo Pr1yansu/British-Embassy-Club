@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsArrowUpSquareFill } from "react-icons/bs";
 import { MdAddCircle } from "react-icons/md";
 import { AiFillMinusCircle } from "react-icons/ai";
 import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
+import { useUpdateTransactionMutation } from "../../store/api/walletAPI";
 
-const OperatorReceive = ({ onModal }) => {
+const OperatorReceive = ({ onModal, walletdata }) => {
   const [amount, setAmount] = useState(0);
+  const [updatedBalance, setUpdatedBalance] = useState(0);
+
+  const [
+    updateTransaction,
+    {
+      isSuccess: updateTransactionSuccess,
+      isLoading: updateTransactionLoading,
+      isError: updateTransactionError,
+    },
+  ] = useUpdateTransactionMutation();
+
+  useEffect(() => {
+    if (walletdata && walletdata.wallet.balance !== undefined) {
+      setUpdatedBalance(walletdata.wallet.balance + amount);
+    }
+  }, [amount, walletdata]);
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
@@ -29,6 +46,23 @@ const OperatorReceive = ({ onModal }) => {
     setAmount((prevAmount) => (prevAmount - 50 >= 0 ? prevAmount - 50 : 0));
   };
 
+  const handleUpdateTransaction = async (e) => {
+    e.preventDefault(); // Prevent form submission from reloading the page
+    try {
+      const { data } = await updateTransaction({
+        transactionId: walletdata && walletdata.wallet._id,
+        type: "receive",
+        payableAmount: amount,
+        couponAmount: walletdata && walletdata.wallet.balance,
+      });
+      if (data) {
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,.7)] z-20">
@@ -36,17 +70,25 @@ const OperatorReceive = ({ onModal }) => {
           <div className="bg-primary flex flex-col gap-3 justify-center w-full h-[104px] py-6 px-9 rounded-t-lg">
             <div className="flex gap-10">
               <p className="text-btn_primary roboto font-medium">Member Name</p>
-              <p className="lato">John Doe</p>
+              <p className="lato">
+                {walletdata && walletdata.wallet.memberId.firstname}{" "}
+                {walletdata && walletdata.wallet.memberId.lastname}
+              </p>
             </div>
             <div className="flex gap-[73px]">
               <p className="text-btn_primary roboto font-medium">Member ID</p>
-              <p className="lato">BEC20240201DEMO1</p>
+              <p className="lato">
+                {walletdata && walletdata.wallet.memberId._id}
+              </p>
             </div>
           </div>
           {/* Upper part ends here */}
 
           {/* Lower part starts here */}
-          <form className="flex flex-col w-full px-9 py-6">
+          <form
+            className="flex flex-col w-full px-9 py-6"
+            onSubmit={handleUpdateTransaction}
+          >
             {/* 1st row starts here */}
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-3">
@@ -84,7 +126,7 @@ const OperatorReceive = ({ onModal }) => {
                   Current Wallet Balance
                   <div className="w-28">
                     <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
-                      1200
+                      {walletdata && walletdata.wallet.balance}
                     </div>
                   </div>
                 </label>
@@ -99,7 +141,7 @@ const OperatorReceive = ({ onModal }) => {
               </p>
               <div className="w-32">
                 <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
-                  1200
+                  {updatedBalance}
                 </div>
               </div>
             </div>
@@ -117,6 +159,7 @@ const OperatorReceive = ({ onModal }) => {
                 name={"Confirm"}
                 color={"bg-[#F8FAFC]"}
                 textColor={"text-[#6B7280]"}
+                onClick={handleUpdateTransaction}
               />
             </div>
             {/* 3rd row ends here */}

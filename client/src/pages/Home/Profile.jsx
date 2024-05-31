@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
+import axios from "axios";
 
 const Profile = () => {
   const [open, SetOpen] = useState(false);
@@ -22,6 +23,8 @@ const Profile = () => {
   const [idType, setIdType] = useState("");
   const [idNumber, setIdNumber] = useState("");
   const [address, setAddress] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [publicId, setPublicId] = useState("");
 
   const [selectedFile, setSelectedFile] = useState(null);
   const { data: profiledata } = useGetOperatorProfileQuery();
@@ -43,32 +46,30 @@ const Profile = () => {
     setName(`${firstname}${lastname}`);
   }, [firstname, lastname]);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-    console.log(selectedFile);
-  };
+    const onFileDrop = async (e) => {
+      const newFile = e.target.files[0];
 
-  const handleImageSubmit = async (event) => {
-    event.preventDefault();
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("image", selectedFile);
-      console.log(formData);
-      try {
-        const data = await addOperatorImage(formData).unwrap();
-        console.log("Response data:", data);
+      if (newFile) {
+        const file = new FormData();
+        file.append("image", newFile);
+        console.log(file.get("image"));
+        const { data } = await axios.post(
+          `/api/v1/member/add-operator-image`,
+          file
+        );
+
         if (data) {
+          setImageUrl(data.data.image);
+          setPublicId(data.data.public_id);
+        }
+
+        if (data.status === 400) {
           toast.custom(
             <>
               <Toasts
-                boldMessage={"Success!"}
-                message={"Image uploaded successfully"}
-                icon={
-                  <IoCheckmarkDoneCircleOutline
-                    className="text-text_tertiaary"
-                    size={32}
-                  />
-                }
+                boldMessage={"Error!"}
+                message={data.message}
+                icon={<MdError className="text-text_red" size={32} />}
               />
             </>,
             {
@@ -77,24 +78,8 @@ const Profile = () => {
             }
           );
         }
-      } catch (error) {
-        console.log(error);
-        toast.custom(
-          <>
-            <Toasts
-              boldMessage={"Error!"}
-              message={"Image not uploaded"}
-              icon={<MdError className="text-text_red" size={32} />}
-            />
-          </>,
-          {
-            position: "top-left",
-            duration: 2000,
-          }
-        );
       }
-    }
-  };
+    };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -107,6 +92,10 @@ const Profile = () => {
         address: address,
         idType: idType,
         idNumber: idNumber,
+        profileImage: {
+          url: imageUrl ? imageUrl : null,
+          public_id: publicId ? publicId : null,
+        },
       }).unwrap();
 
       if (updateisSuccess) {
@@ -169,21 +158,29 @@ const Profile = () => {
           <div className="row-start-2 row-end-12 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
             <div className="flex justify-start items-center gap-6 mb-4">
               <div className="relative h-32 w-32">
-                <img
-                  src={profilePic ? profilePic : ""}
-                  alt=""
-                  className="w-32 h-32"
-                />
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="profile"
+                    className="h-full w-full object-cover rounded-full"
+                  />
+                ) : (
+                  <img
+                    src={profilePic}
+                    alt="profile"
+                    className="h-full w-full object-cover rounded-full"
+                  />
+                )}
                 <input
                   type="file"
                   name="image"
                   className=" w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer"
                   accept="image/*"
                   value=""
-                  onChange={handleFileChange}
+                  onChange={onFileDrop}
                 />
               </div>
-              <form onSubmit={handleImageSubmit} className="relative">
+              <form className="relative">
                 <ButtonGroup
                   color={"bg-btn_primary"}
                   textColor={"text-btn_secondary"}
