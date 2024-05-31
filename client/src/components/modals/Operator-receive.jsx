@@ -11,6 +11,8 @@ const OperatorReceive = ({ onModal, walletdata }) => {
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
+  console.log(walletdata && walletdata.wallet.transactions[0]._id);
+
   const [
     updateTransaction,
     {
@@ -50,7 +52,7 @@ const OperatorReceive = ({ onModal, walletdata }) => {
     e.preventDefault(); // Prevent form submission from reloading the page
     try {
       const { data } = await updateTransaction({
-        transactionId: walletdata && walletdata.wallet._id,
+        transactionId: walletdata && walletdata.wallet.transactions._id,
         type: "receive",
         payableAmount: amount,
         couponAmount: walletdata && walletdata.wallet.balance,

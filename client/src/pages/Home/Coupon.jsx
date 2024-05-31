@@ -17,7 +17,7 @@ import OperatorQuery from "../../components/modals/Operator-query";
 const Coupon = () => {
   const [openQuery, setopenQuery] = useState(false);
   const [search, setSearch] = useState();
-  const [walletdata, setWalletData] = useState();
+  const [walletdata, setWalletData] = useState(0);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -80,6 +80,7 @@ const Coupon = () => {
       {openQuery && (
         <OperatorQuery
           walletdata={walletdata}
+          setWalletData={setWalletData}
           onOpen={() => setopenQuery(false)}
         />
       )}

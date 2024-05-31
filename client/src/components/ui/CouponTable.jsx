@@ -1,6 +1,6 @@
 import React from "react";
 import DataTable from "react-data-table-component";
-import { useFetchTransactionsQuery } from "../../store/api/walletAPI";
+import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
 
 const data = [
   {
@@ -203,15 +203,19 @@ const CouponTable = () => {
       isSuccess,
       isLoading: transLoading,
       isError,
-    } = useFetchTransactionsQuery();
+    } = useGetAllTransactionsQuery();
+
+    
 
     // if (transLoading) {
     //   return <p>Loading...</p>;
     // }
 
-    // if (isError) {
-    //   return <p>Error loading data.</p>;
-    // }
+    console.log(allTransactions);
+
+    if (isError) {
+      return <p>Error loading data.</p>;
+    }
   return (
     <div className="p-6 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
       <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">

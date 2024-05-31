@@ -3,10 +3,17 @@ import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
 import { useAddTransactionMutation } from "../../store/api/walletAPI";
+import Toasts from "../ui/Toasts";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { MdError } from "react-icons/md";
 
 const OperatorIssue = ({ onModal, walletdata }) => {
-  const [couponAmount, setCouponAmount] = useState(0);
+  const navigate = useNavigate();
+  const [couponAmount, setCouponAmount] = useState();
   const [payableAmount, setPayableAmount] = useState(0);
+  const [walletBalance, setWalletBalance] = useState(0);
 
   const [
     addTransaction,
@@ -18,8 +25,11 @@ const OperatorIssue = ({ onModal, walletdata }) => {
   ] = useAddTransactionMutation();
 
   useEffect(() => {
-    // Calculate payable amount based on coupon amount (customize logic as needed)
-    setPayableAmount(couponAmount);
+    walletdata && setWalletBalance(walletdata.wallet.balance);
+  }, []);
+
+  useEffect(() => {
+    getPaybleAmountAndRemainingAmount(couponAmount);
   }, [couponAmount]);
 
   const handleCouponAmountChange = (e) => {
@@ -32,6 +42,25 @@ const OperatorIssue = ({ onModal, walletdata }) => {
         setCouponAmount(parsedValue);
       }
     }
+    // getPaybleAmountAndRemainingAmount(0);
+  };
+
+  const getPaybleAmountAndRemainingAmount = (parsedValue) => {
+    let coupon = couponAmount === "" ? 0 : couponAmount;
+    let wallet =
+      walletdata.wallet.balance === "" ? 0 : walletdata.wallet.balance;
+    let remainingAmount = wallet - coupon;
+    if (remainingAmount < 0) {
+      setPayableAmount(coupon - wallet);
+      wallet = 0;
+    } else {
+      setPayableAmount(0);
+      wallet = remainingAmount;
+    }
+    if (isNaN(wallet))
+      wallet = walletdata.wallet.balance === "" ? 0 : walletdata.wallet.balance;
+
+    setWalletBalance(wallet);
   };
 
   const handleConfirm = async () => {
@@ -43,10 +72,41 @@ const OperatorIssue = ({ onModal, walletdata }) => {
         couponAmount: couponAmount,
       });
       if (data) {
-        alert(data);
+         toast.custom(
+           <>
+             <Toasts
+               boldMessage={"Success!"}
+               message={data.message}
+               icon={
+                 <IoCheckmarkDoneCircleOutline
+                   className="text-text_tertiaary"
+                   size={32}
+                 />
+               }
+             />
+           </>,
+           {
+             position: "top-left",
+             duration: 2000,
+           }
+         );
+         onModal();
+         navigate("/coupon");
       }
     } catch (error) {
-      console.log(error);
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 
@@ -100,7 +160,8 @@ const OperatorIssue = ({ onModal, walletdata }) => {
                 >
                   Current Wallet Balance
                   <div className="bg-primary outline-none flex items-center justify-center h-12 py-5 px-4 rounded-lg text-lg text-text_primary">
-                    {walletdata && walletdata.wallet.balance}
+                    {/* {walletdata && walletdata.wallet.balance} */}
+                    {walletBalance}
                   </div>
                 </label>
               </div>

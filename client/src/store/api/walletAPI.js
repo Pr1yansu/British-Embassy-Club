@@ -45,6 +45,19 @@ export const fetchTransactionsApi = createApi({
   }),
 });
 
+export const getAllTransactionsApi = createApi({
+         reducerPath: "getAllTransactionsApi",
+         baseQuery: fetchBaseQuery({
+           baseUrl: "/api/v1/wallet",
+           credentials: "include",
+         }),
+         endpoints: (builder) => ({
+           getAllTransactions: builder.query({
+             query: () => "/get-transactions",
+           }),
+         }),
+       });
+
 export const updateTransactionApi = createApi({
   reducerPath: "updateTransactionApi",
   baseQuery: fetchBaseQuery({
@@ -76,7 +89,7 @@ export const updateCouponExpiresApi = createApi({
         return {
           url: `/update-coupon/${couponId}`,
           method: "PUT",
-          body: { expiresAt,couponId },
+          body: { expiresAt, couponId },
         };
       },
     }),
@@ -84,7 +97,8 @@ export const updateCouponExpiresApi = createApi({
 });
 
 export const { useGetWalletQuery } = getWalletApi;
-export const {useAddTransactionMutation} = addTransactionApi;
-export const {useFetchTransactionsQuery} = fetchTransactionsApi;
-export const {useUpdateTransactionMutation} = updateTransactionApi;
-export const {useUpdateCouponExpiresMutation} = updateCouponExpiresApi;
+export const { useAddTransactionMutation } = addTransactionApi;
+export const { useFetchTransactionsQuery } = fetchTransactionsApi;
+export const { useUpdateTransactionMutation } = updateTransactionApi;
+export const { useUpdateCouponExpiresMutation } = updateCouponExpiresApi;
+export const { useGetAllTransactionsQuery } = getAllTransactionsApi;
