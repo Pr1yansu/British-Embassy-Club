@@ -6,6 +6,9 @@ import { formatDate } from "../../config/FormatDate";
 const MemberCard = ({ item, index }) => {
   const [open, setOpen] = useState(false);
   const [memberId, setMemberId] = useState();
+
+  console.log(item);
+
   return (
     <>
       <div
@@ -49,13 +52,14 @@ const MemberCard = ({ item, index }) => {
             </div>
             <div className="">
               <p className="text-xs text-text_secondary">Wallet</p>
-              <p className="text-xs">1000</p>
+              <p className="text-xs">{item.wallet && item.wallet.balance ? item.wallet.balance : 0 }</p>
             </div>
           </div>
         </div>
       </div>
       {open && (
         <MembersDetails
+          image={item.image.url}
           memberId={memberId}
           expiryTime={item.expiryTime}
           setOpen={setOpen}

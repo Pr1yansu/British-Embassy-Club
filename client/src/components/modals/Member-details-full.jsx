@@ -8,7 +8,7 @@ import AddMember from "./Add-member";
 import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 import UpdateMember from "./Update-member";
 
-const MembersDetails = ({ setOpen, memberId, expiryTime }) => {
+const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
   const { data, isError, isLoading, isSuccess } = useGetMemberByIdQuery(
@@ -25,7 +25,11 @@ const MembersDetails = ({ setOpen, memberId, expiryTime }) => {
         <div className="w-full max-w-2xl h-auto border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
-              <CgProfile size={128} color="#6B7280" />
+              <img
+                src={image}
+                alt="member"
+                className="w-20"
+              />
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
                   {data.data.name}
@@ -164,7 +168,11 @@ const MembersDetails = ({ setOpen, memberId, expiryTime }) => {
               />
             )}
             {OpenUpdate && (
-              <UpdateMember expiryTime={expiryTime} memberId={memberId} onModal={() => setOpenUpdate(false)} />
+              <UpdateMember
+                expiryTime={expiryTime}
+                memberId={memberId}
+                onModal={() => setOpenUpdate(false)}
+              />
             )}
           </div>
         </div>

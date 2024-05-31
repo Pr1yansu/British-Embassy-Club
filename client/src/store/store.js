@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { clubProfileApi, clubTemporaryLogin } from "./api/clubAPI";
 import {
   operatorForgetPasswordApi,
   operatorProfileApi,
@@ -8,7 +7,15 @@ import {
   operatorChangePasswordApi,
   operatorLogoutApi,
 } from "./api/operatorAPI";
-import { changeAdminOperatorPasswordApi,allProfileApi } from "./api/clubAPI";
+
+import {
+  changeAdminOperatorPasswordApi,
+  allProfileApi,
+  clubProfileApi,
+  clubTemporaryLogin,
+  changeAdminPasswordApi,
+} from "./api/clubAPI";
+
 import {
   addMemberApi,
   addMemberImageApi,
@@ -18,10 +25,19 @@ import {
   deleteMemberApi,
 } from "./api/memberAPI";
 
+import {
+  getWalletApi,
+  addTransactionApi,
+  fetchTransactionsApi,
+  updateTransactionApi,
+  updateCouponExpiresApi,
+} from "./api/walletAPI";
+
 const store = configureStore({
   reducer: {
     [clubProfileApi.reducerPath]: clubProfileApi.reducer,
     [clubTemporaryLogin.reducerPath]: clubTemporaryLogin.reducer,
+    [changeAdminPasswordApi.reducerPath]: changeAdminPasswordApi.reducer,
     [operatorProfileApi.reducerPath]: operatorProfileApi.reducer,
     [allProfileApi.reducerPath]: allProfileApi.reducer,
     [operatorForgetPasswordApi.reducerPath]: operatorForgetPasswordApi.reducer,
@@ -35,12 +51,19 @@ const store = configureStore({
     [getMemberByIdApi.reducerPath]: getMemberByIdApi.reducer,
     [updateMemberApi.reducerPath]: updateMemberApi.reducer,
     [deleteMemberApi.reducerPath]: deleteMemberApi.reducer,
-    [changeAdminOperatorPasswordApi.reducerPath]: changeAdminOperatorPasswordApi.reducer,
+    [changeAdminOperatorPasswordApi.reducerPath]:
+      changeAdminOperatorPasswordApi.reducer,
+    [getWalletApi.reducerPath]: getWalletApi.reducer,
+    [addTransactionApi.reducerPath]: addTransactionApi.reducer,
+    [fetchTransactionsApi.reducerPath]: fetchTransactionsApi.reducer,
+    [updateTransactionApi.reducerPath]: updateTransactionApi.reducer,
+    [updateCouponExpiresApi.reducerPath]: updateCouponExpiresApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(clubProfileApi.middleware)
       .concat(clubTemporaryLogin.middleware)
+      .concat(changeAdminPasswordApi.middleware)
       .concat(operatorProfileApi.middleware)
       .concat(allProfileApi.middleware)
       .concat(operatorForgetPasswordApi.middleware)
@@ -54,7 +77,12 @@ const store = configureStore({
       .concat(getMemberByIdApi.middleware)
       .concat(updateMemberApi.middleware)
       .concat(deleteMemberApi.middleware)
-      .concat(changeAdminOperatorPasswordApi.middleware),
+      .concat(changeAdminOperatorPasswordApi.middleware)
+      .concat(getWalletApi.middleware)
+      .concat(addTransactionApi.middleware)
+      .concat(fetchTransactionsApi.middleware)
+      .concat(updateTransactionApi.middleware)
+      .concat(updateCouponExpiresApi.middleware),
 });
 
 export default store;

@@ -1,12 +1,74 @@
 import React from "react";
 import UserManagement from "../../components/modals/UserManagement";
 import ButtonGroup from "../../components/ui/ButtonGroup";
+import { useGetAllProfileQuery } from "../../store/api/clubAPI";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import Toasts from "../../components/ui/Toasts";
+import toast from "react-hot-toast";
+import { useLogoutMutation } from "../../store/api/operatorAPI";
+import { useNavigate } from "react-router-dom";
+import { MdError } from "react-icons/md";
 const SettingsAdminTemp = () => {
+  const navigate = useNavigate();
+  const { data: allprofiledata, isError, isLoading } = useGetAllProfileQuery();
+    const [
+      logout,
+      { isLoading: logoutLoading, isError: logoutIsError, data: logoutData },
+    ] = useLogoutMutation();
+
+    const handleLogout = async () => {
+      try {
+        const data = await logout().unwrap();
+
+        if (data) {
+          toast.custom(
+            <>
+              <Toasts
+                boldMessage={"Success!"}
+                message={"Logout Successfully"}
+                icon={
+                  <IoCheckmarkDoneCircleOutline
+                    className="text-text_tertiaary"
+                    size={32}
+                  />
+                }
+              />
+            </>,
+            {
+              position: "top-left",
+              duration: 2000,
+            }
+          );
+          navigate("/login/club");
+        }
+      } catch (error) {
+        console.error("Failed to logout:", error);
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={"Logout Failed"}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      }
+    };
+
+    if (isLoading) return <>loading....</>;
   return (
     <>
       <div className="background bg-cover bg-center w-full h-screen">
         <div className="container grid grid-rows-12 grid-cols-12 gap-4">
-          <UserManagement colStart={"col-start-4"} colEnd={"col-end-10"} />
+          <UserManagement
+            allprofiledata={allprofiledata}
+            colStart={"col-start-4"}
+            colEnd={"col-end-10"}
+          />
           <div className="row-start-10 row-end-11 col-start-8 col-end-10 flex gap-4 justify-center">
             <ButtonGroup
               textColor={"text-red-600"}
@@ -15,6 +77,7 @@ const SettingsAdminTemp = () => {
               color={"bg-white"}
               HoverColor={"hover:bg-red-600"}
               name={"Log Out"}
+              onClick={handleLogout}
               Hovershadow={"hover:shadow-danger_shadow"}
               shadow={"shadow-danger_shadow"}
             />

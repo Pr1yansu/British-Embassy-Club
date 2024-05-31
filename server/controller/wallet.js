@@ -30,7 +30,7 @@ exports.getWallet = async (req, res) => {
     }
 
     const wallet = await WalletSchema.findById(member.wallet).populate(
-      "transactions"
+      "transactions memberId"
     );
 
     if (!wallet) {
@@ -42,10 +42,21 @@ exports.getWallet = async (req, res) => {
       });
     }
 
+    const walletMember = await MemberSchema.findById(wallet.memberId);
+
+    if (!walletMember) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Wallet member not found",
+        data: null,
+        exception: null,
+      });
+    }
+
     return res.status(200).json({
       statusCode: 200,
       message: "Wallet found",
-      data: wallet,
+      data: {wallet, member: walletMember},
       exception: null,
     });
   } catch (error) {

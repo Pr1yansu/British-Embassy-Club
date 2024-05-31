@@ -71,7 +71,31 @@ export const allProfileApi = createApi({
   }),
 });
 
+export const changeAdminPasswordApi = createApi({
+  reducerPath: "changeAdminPasswordApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/admin",
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    changeAdminPassword: builder.mutation({
+      query: ({ oldPassword,newPassword, confirmPassword }) => {
+        return {
+          url: "/change-password",
+          method: "PATCH",
+          body: {
+            oldPassword,
+            newPassword,
+            confirmPassword,
+          },
+        };
+      },
+    }),
+  }),
+});
+
 export const { useGetClubProfileQuery } = clubProfileApi;
 export const { useTemporaryLoginMutation } = clubTemporaryLogin;
 export const { useChangeAdminOperatorPasswordMutation } = changeAdminOperatorPasswordApi;
 export const { useGetAllProfileQuery } = allProfileApi;
+export const { useChangeAdminPasswordMutation } = changeAdminPasswordApi;

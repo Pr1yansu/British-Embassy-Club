@@ -11,6 +11,9 @@ import {
 } from "../../store/api/memberAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Toasts from "../ui/Toasts";
+import { MdError } from "react-icons/md";
 
 const UpdateMember = ({ onModal, memberId, expiryTime }) => {
   const {data:member, isLoading:isDataLoading}= useGetMemberByIdQuery(memberId);
@@ -18,7 +21,6 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [idType, setIdType] = useState("");
   const [idNumber, setIdNumber] = useState("");
@@ -30,6 +32,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
   const [bloodGroup, setBloodGroup] = useState("");
   const [organization, setOrganization] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
+  const [publicId, setPublicId] = useState(null);
 
    
 
@@ -40,19 +43,15 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
     { isSuccess, isLoading, isError },
   ] = useUpdateMemberMutation();
 
-  const [
-    addMemberImage,
-    {
-      isSuccess: isImageSuccess,
-      isLoading: isImageLoading,
-      isError: isImageError,
-    },
-  ] = useAddMemberImageMutation();
+  // const [
+  //   addMemberImage,
+  //   {
+  //     isSuccess: isImageSuccess,
+  //     isLoading: isImageLoading,
+  //     isError: isImageError,
+  //   },
+  // ] = useAddMemberImageMutation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setName(`${firstname}${lastname}`);
-  }, [firstname, lastname]);
 
   useEffect(() => {
     if (expiryTime) {
@@ -88,7 +87,9 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
     try {
       const data = await updateMember({
         memberId,
-        username: name,
+        firstname,
+        lastname,
+        username,
         email,
         mobileNumber,
         address,
@@ -109,7 +110,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
           },
         });
         onModal();
-        navigate(0);
+        navigate("/member");
       }
 
       console.log(data);
@@ -130,11 +131,32 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
 
     if (newFile) {
       const file = new FormData();
-      file.append("name", "newFile");
       file.append("image", newFile);
-      const { data } = await addMemberImage(file).unwrap();
-      if (data && data.imageUrl) {
-        setImageUrl(data.imageUrl);
+      console.log(file.get("image"));
+      const { data } = await axios.put(
+        `/api/v1/member/update-member-image/${memberId}`,
+        file
+      );
+
+      if (data) {
+        setImageUrl(data.data.image);
+        setPublicId(data.data.public_id);
+      }
+
+      if (data.status === 400) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={data.message}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
       }
     }
   };
@@ -153,13 +175,14 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
             <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
               {imageUrl ? (
                 <img
-                  src={imageUrl}
+                  src={imageUrl ? imageUrl : <>loading...</>}
                   alt="profile"
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               ) : (
-                <CgProfile size={80} color="#6B7280" />
+                <CgProfile size={50} />
               )}
+
               <input
                 type="file"
                 name="image"

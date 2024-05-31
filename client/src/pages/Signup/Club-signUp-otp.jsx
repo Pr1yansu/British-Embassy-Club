@@ -86,6 +86,53 @@ const ClubSignUpOtp = () => {
     }
   };
 
+  const handleResend = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        "/api/v1/club/resend-accessKey",
+        {
+          OneTimeKey: otp,
+        },
+        { withCredentials: true }
+      );
+      if (data) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={data.message}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      }
+    } catch (error) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
+    }
+  }
+
   return (
     <div
       className={`background relative h-screen bg-cover bg-center py-10 px-20 `}

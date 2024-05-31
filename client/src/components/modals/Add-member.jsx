@@ -46,9 +46,6 @@ const AddMember = ({ onModal }) => {
   ] = useAddMemberImageMutation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setName(`${firstname} ${lastname}`);
-  }, [firstname, lastname]);
 
   useEffect(() => {
     if (membershipFromDate && expiryLimit) {
@@ -69,46 +66,52 @@ const AddMember = ({ onModal }) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    if (
-      !name ||
-      !email ||
-      !mobileNumber ||
-      !address ||
-      !expiryDate ||
-      !bloodGroup ||
-      !organization ||
-      !idType ||
-      !idNumber
-    ) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={"Please enter a valid search"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
-      return;
-    }
+    // if (
+    //   !imageUrl ||
+    //   !publicId ||
+    //   !firstname ||
+    //   !lastname ||
+    //   !name ||
+    //   !email ||
+    //   !mobileNumber ||
+    //   !address ||
+    //   !expiryDate ||
+    //   !bloodGroup ||
+    //   !organization ||
+    //   !idType ||
+    //   !idNumber
+    // ) {
+    //   toast.custom(
+    //     <>
+    //       <Toasts
+    //         boldMessage={"Error!"}
+    //         message={"Please enter a valid search"}
+    //         icon={<MdError className="text-text_red" size={32} />}
+    //       />
+    //     </>,
+    //     {
+    //       position: "top-left",
+    //       duration: 2000,
+    //     }
+    //   );
+    //   return;
+    // }
     try {
       const data = await addMember({
-        name,
-        email,
-        mobileNumber,
-        address,
-        expiryDate,
-        bloodGroup,
-        organization,
-        idType,
-        idNumber,
+        firstName: firstname,
+        lastname: lastname,
+        name: username,
+        email: email,
+        mobileNumber: mobileNumber,
+        address: address,
+        expiryDate: expiryDate,
+        bloodGroup: bloodGroup,
+        organization: organization,
+        idType: idType,
+        idNumber: idNumber,
+        url: imageUrl ? imageUrl : null,
+        public_id : publicId ? publicId : null,
       }).unwrap();
-
-      console.log(data);
 
       if (data) {
         toast.custom(
@@ -130,7 +133,7 @@ const AddMember = ({ onModal }) => {
           }
         );
         onModal();
-        navigate(0);
+        navigate("/member");
       }
     } catch (error) {
       console.log(error);
@@ -161,10 +164,10 @@ const AddMember = ({ onModal }) => {
         "/api/v1/member/add-member-image",
         file
       );
-      console.log(data);
+      
       if (data) {
-        setImageUrl(data.image);
-        setPublicId(data.public_id);
+        setImageUrl(data.data.image);
+        setPublicId(data.data.public_id);
       }
 
       if (data.status === 400) {
@@ -197,7 +200,7 @@ const AddMember = ({ onModal }) => {
             <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
               {imageUrl ? (
                 <img
-                  src={imageUrl}
+                  src={imageUrl ? imageUrl : <>loading...</>}
                   alt="profile"
                   className="w-24 h-24 object-cover rounded-lg"
                 />
