@@ -80,7 +80,6 @@ app.use("/api/v1/member", memberRoutes);
 app.use("/api/v1/wallet", walletRoutes);
 app.get("/api/v1/logout", logout);
 
-// Port Running on process.env.PORT
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
