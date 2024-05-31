@@ -254,7 +254,7 @@ exports.fetchTransactions = async (req, res) => {
   }
 };
 
-exports.getAllTransactions = async () => {
+exports.getAllTransactions = async (req, res) => {
   try {
     const query = req.query;
 

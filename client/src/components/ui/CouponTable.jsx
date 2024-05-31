@@ -15,7 +15,8 @@ const CouponTable = () => {
     //   return <p>Loading...</p>;
     // }
 
-    console.log("table data",allTransactions);
+    console.log("table",allTransactions);
+    console.log("table data",allTransactions.data);
 
     if (isError) {
       return <p>Error loading data.</p>;
@@ -30,7 +31,7 @@ const CouponTable = () => {
       </h1>
       <DataTable
         columns={columns}
-        data={data}
+        data={allTransactions.data}
         customStyles={customStyles}
         pagination
         paginationPerPage={10}
