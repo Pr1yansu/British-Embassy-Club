@@ -211,6 +211,15 @@ exports.resendAccessKey = async (req, res) => {
   try {
     const { username } = req.body;
 
+    if (!username) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Username is required",
+        data: null,
+        error: null,
+      });
+    }
+
     const club = await ClubAuthorization.findOne({ username: username });
 
     if (!club) {
@@ -940,7 +949,6 @@ exports.getAllClub = async (req, res) => {
 
 exports.changePasswordAll = async (req, res) => {
   try {
-
     const { newPassword, confirmPassword } = req.body;
     const { id } = req.params;
     console.log(id);
