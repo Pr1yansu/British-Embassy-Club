@@ -264,6 +264,15 @@ exports.getAllTransactions = async (req, res) => {
 
     const totalTransactions = await TransactionSchema.find().countDocuments();
 
+    const today = new Date();
+
+    const todaysTotalTransactions = await TransactionSchema.find({
+      timeStamp: {
+        $gte: new Date(today.setHours(0, 0, 0, 0)),
+        $lte: new Date(today.setHours(23, 59, 59, 999)),
+      },
+    }).countDocuments();
+
     if (transactions.length <= 0) {
       return res.status(404).json({
         statusCode: 404,
@@ -277,6 +286,7 @@ exports.getAllTransactions = async (req, res) => {
       message: "Transactions fetched successfully",
       data: transactions,
       totalTransactions,
+      todaysTotalTransactions,
       exception: null,
     });
   } catch (error) {
