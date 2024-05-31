@@ -56,7 +56,7 @@ exports.getWallet = async (req, res) => {
     return res.status(200).json({
       statusCode: 200,
       message: "Wallet found",
-      data: {wallet, member: walletMember},
+      data: { wallet, member: walletMember },
       exception: null,
     });
   } catch (error) {
@@ -235,6 +235,34 @@ exports.fetchTransactions = async (req, res) => {
       exception: error,
       data: null,
     });
+  }
+};
+
+exports.getAllTransactions = async () => {
+  try {
+    const transactions = await TransactionSchema.find().populate(
+      "walletId memberId couponId"
+    );
+    if (transactions.length <= 0) {
+      return {
+        statusCode: 404,
+        message: "No transactions found",
+        data: null,
+      };
+    }
+    return {
+      statusCode: 200,
+      message: "Transactions fetched successfully",
+      data: transactions,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      statusCode: 500,
+      message: "Internal Server Error",
+      exception: error,
+      data: null,
+    };
   }
 };
 
