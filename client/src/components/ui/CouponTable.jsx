@@ -11,11 +11,11 @@ const CouponTable = ({walletdata, reloadQuery}) => {
     isError,
   } = useGetAllTransactionsQuery();
 
-  React.useEffect(() => {
-    if (isSuccess) {
-      setCount(allTransactions.totalTransactions);
-    }
-  }, [allTransactions.totalTransactions]);
+  // React.useEffect(() => {
+  //   if (isSuccess) {
+  //     setCount(allTransactions.todaysTotalTransactions);
+  //   }
+  // }, [allTransactions.todaysTotalTransactions]);
 
   if (transLoading) {
     return <p>Loading...</p>;

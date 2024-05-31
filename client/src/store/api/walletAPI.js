@@ -53,7 +53,7 @@ export const getAllTransactionsApi = createApi({
          }),
          endpoints: (builder) => ({
            getAllTransactions: builder.query({
-             query: () => "/get-transactions",
+             query: () => `/get-transactions`,
            }),
          }),
        });
