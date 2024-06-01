@@ -2,42 +2,47 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
 
-const CouponTable = ({walletdata, reloadQuery}) => {
+const CouponTable = ({ walletdata, reloadQuery }) => {
   const [count, setCount] = React.useState(0);
   const {
     data: allTransactions,
     isSuccess,
     isLoading: transLoading,
     isError,
+    refetch,
   } = useGetAllTransactionsQuery();
 
-  // React.useEffect(() => {
-  //   if (isSuccess) {
-  //     setCount(allTransactions.todaysTotalTransactions);
-  //   }
-  // }, [allTransactions.todaysTotalTransactions]);
+  React.useEffect(() => {
+    if (isSuccess && allTransactions) {
+      setCount(allTransactions.todaysTotalTransactions);
+    }
+    console.log(reloadQuery);
+  }, [allTransactions, isSuccess, reloadQuery]);
+
+  React.useEffect(() => {
+    refetch();
+  }, [reloadQuery, refetch]);
+
+  const formattedData = React.useMemo(() => (
+    allTransactions?.data?.map((transaction, index) => ({
+      SLNO: index + 1,
+      MEMBERID: transaction.memberId._id,
+      COUPONTYPE: transaction.type,
+      COUPONAMOUNT: transaction.couponId.amount,
+      PAYAMOUNT: transaction.payableAmount,
+      TIMESTAMP: new Date(transaction.timeStamp).toLocaleTimeString(),
+      STATUS: transaction.status.toUpperCase(),
+    })) || []
+  ), [allTransactions]);
 
   if (transLoading) {
     return <p>Loading...</p>;
   }
 
-
-  const formattedData =
-    allTransactions.data?.map((transaction, index) => ({
-      SLNO: index + 1,
-      MEMBERID: transaction.memberId._id,
-      COUPONETYPE: transaction.type,
-      COUPONAMOUNT: transaction.couponId.amount,
-      PAYAMOUNT: transaction.payableAmount,
-      TIMESTAMP: new Date(transaction.timeStamp).toLocaleTimeString(),
-      STATUS: transaction.status.toUpperCase(),
-    })) || [];
-
   if (isError) {
     return <p>Error loading data.</p>;
   }
 
-  console.log(allTransactions)
   return (
     <div className="p-6 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
       <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">
@@ -105,8 +110,8 @@ const columns = [
     wrap: true,
   },
   {
-    name: "Coupone Type",
-    selector: (row) => row.COUPONETYPE,
+    name: "Coupon Type",
+    selector: (row) => row.COUPONTYPE,
     // sortable: true,
   },
   {
