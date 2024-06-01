@@ -31,6 +31,7 @@ import {
   fetchTransactionsApi,
   updateTransactionApi,
   updateCouponExpiresApi,
+  getAllTransactionsApi
 } from "./api/walletAPI";
 
 const store = configureStore({
@@ -58,6 +59,7 @@ const store = configureStore({
     [fetchTransactionsApi.reducerPath]: fetchTransactionsApi.reducer,
     [updateTransactionApi.reducerPath]: updateTransactionApi.reducer,
     [updateCouponExpiresApi.reducerPath]: updateCouponExpiresApi.reducer,
+    [getAllTransactionsApi.reducerPath]: getAllTransactionsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -82,7 +84,8 @@ const store = configureStore({
       .concat(addTransactionApi.middleware)
       .concat(fetchTransactionsApi.middleware)
       .concat(updateTransactionApi.middleware)
-      .concat(updateCouponExpiresApi.middleware),
+      .concat(updateCouponExpiresApi.middleware)
+      .concat(getAllTransactionsApi.middleware),
 });
 
 export default store;

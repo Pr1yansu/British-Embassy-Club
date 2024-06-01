@@ -5,7 +5,7 @@ import ButtonGroup from "../ui/ButtonGroup";
 import OperatorIssue from "./Operator-issue";
 import OperatorReceive from "./Operator-receive";
 
-const OperatorQuery = ({ onOpen, walletdata }) => {
+const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
   const [openIssue, SetopenIssue] = useState(false);
   const [openReceive, SetopenReceive] = useState(false);
 
@@ -61,6 +61,8 @@ const OperatorQuery = ({ onOpen, walletdata }) => {
             {openIssue && (
               <OperatorIssue
                 walletdata={walletdata}
+                setWalletData={setWalletData}
+                setopenQuery={setopenQuery}
                 onModal={() => SetopenIssue(false)}
               />
             )}
@@ -81,6 +83,7 @@ const OperatorQuery = ({ onOpen, walletdata }) => {
             {openReceive && (
               <OperatorReceive
                 walletdata={walletdata}
+                setopenQuery={setopenQuery}
                 onModal={() => SetopenReceive(false)}
               />
             )}

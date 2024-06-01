@@ -92,10 +92,6 @@ const Profile = () => {
         address: address,
         idType: idType,
         idNumber: idNumber,
-        profileImage: {
-          url: imageUrl ? imageUrl : null,
-          public_id: publicId ? publicId : null,
-        },
       }).unwrap();
 
       if (updateisSuccess) {
