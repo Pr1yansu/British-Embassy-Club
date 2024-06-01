@@ -495,6 +495,7 @@ exports.forgetPassword = async (req, res) => {
       message: "Password reset link sent to your email",
       exception: null,
       data: null,
+      link: resetUrl,
     });
   } catch (error) {
     console.log(error);
