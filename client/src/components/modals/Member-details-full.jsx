@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { CgProfile } from "react-icons/cg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { FaIdCard } from "react-icons/fa";
 import ButtonGroup from "../ui/ButtonGroup";
+import VirtualCard from "../ui/VirtualCard";
 import Warning from "./Warning";
 import AddMember from "./Add-member";
 import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
@@ -10,6 +12,7 @@ import UpdateMember from "./Update-member";
 
 const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
+  const [OpenCard, setOpenCard] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
   const { data, isError, isLoading, isSuccess } = useGetMemberByIdQuery(
     memberId
@@ -23,13 +26,9 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/35 z-20">
         <div className="w-full max-w-2xl h-auto border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
-          <div className="w-full flex justify-between border-b-2 border-gray-600 pb-6">
+          <div className="w-full flex justify-between items-center border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
-              <img
-                src={image}
-                alt="member"
-                className="w-20"
-              />
+              <img src={image} alt="member" className="w-20" />
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
                   {data.data.name}
@@ -37,6 +36,15 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                 <p className="text-text_primary roboto">{data.data.userName}</p>
               </div>
             </div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setOpenCard(true);
+              }}
+            >
+              <FaIdCard size={28} className="text-btn_primary" />
+            </div>
+
             <div
               onClick={() => {
                 setOpen(false);
@@ -177,6 +185,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
           </div>
         </div>
       </div>
+      {OpenCard && <VirtualCard onModal={() => setOpenCard(false)} />}
     </>,
     document.getElementById("portal")
   );

@@ -21,43 +21,43 @@ const Coupon = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-   try {
-     const { data } = await axios.get(`/api/v1/wallet/get/${search}`, {
-       withCredentials: true,
-     });
-     if (data) {
-       console.log(data);
-      
-       setWalletData(data.data);
-       setopenQuery(true);
-     }
-   } catch (error) {
-     if (error.response && error.response.data) {
-       toast.custom(
-         <Toasts
-           boldMessage={"Error!"}
-           message={error.response.data.message}
-           icon={<MdError className="text-red-600" size={32} />}
-         />,
-         {
-           position: "top-left",
-           duration: 2000,
-         }
-       );
-     } else {
-       toast.custom(
-         <Toasts
-           boldMessage={"Error!"}
-           message={"An unexpected error occurred. Please try again later."}
-           icon={<MdError className="text-red-600" size={32} />}
-         />,
-         {
-           position: "top-left",
-           duration: 2000,
-         }
-       );
-     }
-   }
+    try {
+      const { data } = await axios.get(`/api/v1/wallet/get/${search}`, {
+        withCredentials: true,
+      });
+      if (data) {
+        console.log(data);
+
+        setWalletData(data.data);
+        setopenQuery(true);
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message}
+            icon={<MdError className="text-red-600" size={32} />}
+          />,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      } else {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"An unexpected error occurred. Please try again later."}
+            icon={<MdError className="text-red-600" size={32} />}
+          />,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      }
+    }
   };
 
   return (
