@@ -9,6 +9,7 @@ export const operatorProfileApi = createApi({
   endpoints: (builder) => ({
     getOperatorProfile: builder.query({
       query: () => "/",
+      refetchOnMountOrArgChange: true,
     }),
   }),
 });

@@ -98,22 +98,23 @@ const ClubSignUp = () => {
           <>
             <Toasts
               boldMessage={"Success!"}
-             
+              
               icon={
                 <IoCheckmarkDoneCircleOutline
-                  className="text-text_tertiaary"
-                  size={32}
+                className="text-text_tertiaary"
+                size={32}
                 />
               }
-            />
+              />
           </>,
           {
             position: "top-left",
             duration: 2000,
           }
         );
+        localStorage.setItem("clubUsername", JSON.stringify(data));
       }
-
+      
       if (role === "operator") {
         navigate("/signup/club/otp");
         return;
