@@ -1,38 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MainCard from "../../components/ui/MainCard";
 import { cardData } from "../../constants";
 import profile from "../../assets/icons/Snehashis.png";
 import { useNavigate } from "react-router-dom";
-import Lottie from "react-lottie";
-import loadingAnimationData from "../../assets/animations/loader.json";
 import logo from "../../assets/images/LOGO.png";
+import Loader from "../../components/ui/loader";
 const Dashboard = ({ profiledata, isLoading, error }) => {
   const navigate = useNavigate();
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: loadingAnimationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Lottie options={defaultOptions} height={400} width={400} />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
     navigate("/login/club");
   }
 
-
-  if(!profiledata)  navigate("/login/club");
-  
+  if (!profiledata) navigate("/login/club");
 
   return (
     <div className="background h-screen bg-cover bg-center">
@@ -49,12 +33,16 @@ const Dashboard = ({ profiledata, isLoading, error }) => {
           >
             <div className="flex flex-col items-end">
               <h4 className="text-xl font-roboto">
-                { profiledata.data && profiledata.data.username}
+                {profiledata.data && profiledata.data.username}
               </h4>
-              <h6 className="text-text_primary">{profiledata.data && profiledata.data.role}</h6>
+              <h6 className="text-text_primary">
+                {profiledata.data && profiledata.data.role}
+              </h6>
             </div>
             <img
-              src={profiledata.data && profiledata.data.profileImage || profile}
+              src={
+                (profiledata.data && profiledata.data.profileImage) || profile
+              }
               alt=""
               className="w-16 h-16"
             />

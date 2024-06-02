@@ -6,7 +6,6 @@ const {
   forgetPassword,
   resetPassword,
   sendResetTokenAgain,
-  addOperatorImage,
   changePassword,
   getCurrentUser,
   getAllOperators,

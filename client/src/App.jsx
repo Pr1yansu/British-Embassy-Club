@@ -23,16 +23,21 @@ import ClubForgotPass from "./pages/Signup/Club-forgot-pass";
 import ClubLoginTemp from "./pages/Login/Club-login-temp";
 import { useGetOperatorProfileQuery } from "./store/api/operatorAPI";
 import ErrorPage from "./pages/Error/NotFound";
+import Loader from "./components/ui/loader";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const {
     data: profiledata,
     isError,
     isLoading,
   } = useGetOperatorProfileQuery();
 
-  // console.log(profiledata);
+  if (!profiledata && !isLoading) navigate("/login/club");
+
+  if (isLoading) return <Loader />;
 
   return (
     <>
@@ -54,57 +59,76 @@ function App() {
             }
           />
 
-          <Route path="/member" element={<Member />} />
-          <Route path="/coupon" element={<Coupon />} />
-          <Route path="/profile" element={<Profile />} />
+          {profiledata && profiledata.data && (
+            <>
+              <Route path="/member" element={<Member />} />
+              <Route path="/coupon" element={<Coupon />} />
+              <Route path="/profile" element={<Profile />} />
+            </>
+          )}
         </>
 
         {/* Routes for Settings*/}
         <>
-          <Route
-            path="/settings/admin"
-            element={
-              <SettingsAdmin
-                profiledata={profiledata}
-                isLoading={isLoading}
-                error={isError}
+          {profiledata &&
+            profiledata.data &&
+            profiledata.data.role === "admin" && (
+              <Route
+                path="/settings/admin"
+                element={
+                  <SettingsAdmin
+                    profiledata={profiledata}
+                    isLoading={isLoading}
+                    error={isError}
+                  />
+                }
               />
-            }
-          />
-          <Route path="/settings" element={<Settings />} />
+            )}
+          {profiledata &&
+            profiledata.data &&
+            profiledata.data.role === "operator" && (
+              <Route path="/settings" element={<Settings />} />
+            )}
           <Route path="/settings/admin/temp" element={<SettingsAdminTemp />} />
         </>
 
         {/* Routes for Club Auths */}
-        <>
-          <Route path="/signup/club" element={<ClubSignUp />} />
-          <Route path="/login/club" element={<ClubLogin />} />
-          <Route path="/signup/club/otp" element={<ClubSignUpOtp />} />
-          <Route
-            path="/signup/club/otp/resend"
-            element={<ClubSignUpOtpResend />}
-          />
-          <Route path="/login/club/forgotPass" element={<ClubForgotPass />} />
-          <Route path="/login/club/temp" element={<ClubLoginTemp />} />
-        </>
+        {!profiledata && (
+          <>
+            <>
+              <Route path="/signup/club" element={<ClubSignUp />} />
+              <Route path="/login/club" element={<ClubLogin />} />
+              <Route path="/signup/club/otp" element={<ClubSignUpOtp />} />
+              <Route
+                path="/signup/club/otp/resend"
+                element={<ClubSignUpOtpResend />}
+              />
+              <Route
+                path="/login/club/forgotPass"
+                element={<ClubForgotPass />}
+              />
+              <Route path="/login/club/temp" element={<ClubLoginTemp />} />
+            </>
 
-        {/* Routes for Operator Auths */}
-        <>
-          <Route path="/signup/operator" element={<OperatorSignup />} />
-          <Route path="/login/operator" element={<OperatoLogin />} />
-          <Route
-            path="/login/operator/forgotPass"
-            element={<OperatorSignUpOtp />}
-          />
-          <Route
-            path="/login/operator/forgotPass/mail"
-            element={<OperatorResetPassMail />}
-          />
-          <Route
-            path="/operator/reset-password/:token"
-            element={<OperatorResetPass />}
-          />
-        </>
+            {/* Routes for Operator Auths */}
+            <>
+              <Route path="/signup/operator" element={<OperatorSignup />} />
+              <Route path="/login/operator" element={<OperatoLogin />} />
+              <Route
+                path="/login/operator/forgotPass"
+                element={<OperatorSignUpOtp />}
+              />
+              <Route
+                path="/login/operator/forgotPass/mail"
+                element={<OperatorResetPassMail />}
+              />
+              <Route
+                path="/operator/reset-password/:token"
+                element={<OperatorResetPass />}
+              />
+            </>
+          </>
+        )}
         <>
           <Route path="*" element={<ErrorPage />} />
         </>
