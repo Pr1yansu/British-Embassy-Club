@@ -130,7 +130,16 @@ function App() {
           </>
         )}
         <>
-          <Route path="*" element={<ErrorPage />} />
+          <Route
+            path="*"
+            element={
+              <ErrorPage
+                profiledata={profiledata}
+                isLoading={isLoading}
+                error={isError}
+              />
+            }
+          />
         </>
       </Routes>
     </>

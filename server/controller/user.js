@@ -46,10 +46,7 @@ exports.decryptPayload = async (token) => {
 exports.getCurrentUser = async (req, res) => {
   try {
     const { username } = req.club;
-    const token = req.cookies["user-token"];
-
-    const decryptedToken = await this.decryptPayload(token);
-    const { id } = JSON.parse(decryptedToken);
+    console.log(username);
 
     if (!username) {
       return res.status(401).json({
@@ -60,26 +57,26 @@ exports.getCurrentUser = async (req, res) => {
       });
     }
 
-    if (node_cache.has("Club") && node_cache.has("Operators")) {
-      const club = node_cache.get("Club");
-      const user = node_cache.get("Operators");
-      if (club && club.role === "admin") {
-        return res.status(200).json({
-          statusCode: 200,
-          message: "Club found",
-          data: club,
-          exception: null,
-        });
-      }
-      if (user && user.role === "operator") {
-        return res.status(200).json({
-          statusCode: 200,
-          message: "User found",
-          data: user,
-          exception: null,
-        });
-      }
-    }
+    // if (node_cache.has("Club") || node_cache.has("Operators")) {
+    //   const club = node_cache.get("Club");
+    //   const user = node_cache.get("Operators");
+    //   if (club && club.role === "admin") {
+    //     return res.status(200).json({
+    //       statusCode: 200,
+    //       message: "Club found",
+    //       data: club,
+    //       exception: null,
+    //     });
+    //   }
+    //   if (user && user.role === "operator") {
+    //     return res.status(200).json({
+    //       statusCode: 200,
+    //       message: "User found",
+    //       data: user,
+    //       exception: null,
+    //     });
+    //   }
+    // }
 
     const admin = await ClubAuthorization.findOne({
       username,
@@ -101,7 +98,7 @@ exports.getCurrentUser = async (req, res) => {
           data: null,
         });
       }
-      node_cache.set("Club", club);
+      // node_cache.set("Club", club);
       return res.status(200).json({
         statusCode: 200,
         message: "Club found",
@@ -109,10 +106,20 @@ exports.getCurrentUser = async (req, res) => {
         exception: null,
       });
     }
+    const token = req.cookies["user-token"];
+    if (!token) {
+      return res.status(401).json({
+        statusCode: 401,
+        message: "Unauthorized access",
+        exception: null,
+        data: null,
+      });
+    }
+    const decryptedToken = await this.decryptPayload(token);
+    const { user } = JSON.parse(decryptedToken);
+    const operator = await Operators.findById(user.id).select("-password");
 
-    const user = await Operators.findById(id);
-
-    if (!user) {
+    if (!operator) {
       return res.status(404).json({
         statusCode: 404,
         message: "User not found",
@@ -121,12 +128,12 @@ exports.getCurrentUser = async (req, res) => {
       });
     }
 
-    node_cache.set("Operators", user);
+    // node_cache.set("Operators", user);
 
     return res.status(200).json({
       statusCode: 200,
       message: "User found",
-      data: user,
+      data: operator,
       exception: null,
     });
   } catch (error) {

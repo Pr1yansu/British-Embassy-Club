@@ -1,18 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FiInfo } from "react-icons/fi";
 import MembersDetails from "../modals/Member-details-full";
 import { formatDate } from "../../config/FormatDate";
+import toast from "react-hot-toast";
 
 const MemberCard = ({ item, index }) => {
   const [open, setOpen] = useState(false);
   const [memberId, setMemberId] = useState();
 
+  const handleCopy = () => {
+    toast.custom(
+      <div className="border border-black p-1 rounded-sm text-xs">copied</div>,
+      {
+        duration: 2000,
+        position: "top-left",
+      }
+    );
+  };
+
   console.log(item);
+
+  // Define textToCopy as the membership ID of the member
+  const textToCopy = item._id;
 
   return (
     <>
       <div
-        className="col-span-3 p-2 rounded-lg shadow-member_card cursor-pointer bg-white"
+        className="col-span-3 p-2 rounded-lg shadow-member_card bg-white"
         key={index}
       >
         <div className="flex items-center justify-between my-1 pb-3 border-b-2 border-primary mb-2">
@@ -26,6 +41,7 @@ const MemberCard = ({ item, index }) => {
           <FiInfo
             size={20}
             color="#1d4ed8"
+            className="cursor-pointer"
             onClick={() => {
               setOpen(true);
               setMemberId(item._id);
@@ -36,7 +52,15 @@ const MemberCard = ({ item, index }) => {
           <div className="flex flex-col justify-between gap-3">
             <div className="">
               <p className="text-xs text-text_secondary">Membership ID</p>
-              <p className="text-xs">{item._id}</p>
+              <CopyToClipboard text={textToCopy} onCopy={handleCopy}>
+                <p
+                  className="text-xs"
+                  id="idToCopy"
+                  style={{ cursor: "pointer" }}
+                >
+                  {textToCopy}
+                </p>
+              </CopyToClipboard>
             </div>
             <div className="">
               <p className="text-xs text-text_secondary">Membership</p>
@@ -52,7 +76,9 @@ const MemberCard = ({ item, index }) => {
             </div>
             <div className="">
               <p className="text-xs text-text_secondary">Wallet</p>
-              <p className="text-xs">{item.wallet && item.wallet.balance ? item.wallet.balance : 0 }</p>
+              <p className="text-xs">
+                {item.wallet && item.wallet.balance ? item.wallet.balance : 0}
+              </p>
             </div>
           </div>
         </div>

@@ -14,9 +14,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Toasts from "../ui/Toasts";
 import { MdError } from "react-icons/md";
+import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 
 const UpdateMember = ({ onModal, memberId, expiryTime }) => {
-  const {data:member, isLoading:isDataLoading}= useGetMemberByIdQuery(memberId);
+  const { data: member, isLoading: isDataLoading } = useGetMemberByIdQuery(
+    memberId
+  );
   const [openExtend, setOpenExtend] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -34,9 +37,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [publicId, setPublicId] = useState(null);
 
-   
-
-    // console.log(member);
+  // console.log(member);
 
   const [
     updateMember,
@@ -83,7 +84,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const data = await updateMember({
         memberId,
@@ -101,28 +102,43 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
       }).unwrap();
 
       if (data) {
-        toast.success(data.message, {
-          duration: 2000,
-          position: "top-right",
-          style: {
-            background: "#10B981",
-            color: "#fff",
-          },
-        });
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={data.message}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
         onModal();
         navigate("/member");
       }
 
       console.log(data);
     } catch (error) {
-      toast.error(error?.data?.message || "Internal Server Error", {
-        duration: 2000,
-        position: "top-left",
-        style: {
-          background: "#FF0000",
-          color: "#FFFFFF",
-        },
-      });
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error?.data?.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 
@@ -161,7 +177,9 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
     }
   };
 
-  {isDataLoading && <p>Loading...</p>}
+  {
+    isDataLoading && <p>Loading...</p>;
+  }
 
   return ReactDOM.createPortal(
     <>
