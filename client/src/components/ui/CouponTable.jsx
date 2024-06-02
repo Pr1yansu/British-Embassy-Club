@@ -142,6 +142,7 @@ const columns = [
             : "bg-[#0000FF]"
         }`}
         style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
+        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
       >
         {row.STATUS}
       </p>
