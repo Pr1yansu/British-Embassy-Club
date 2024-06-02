@@ -13,87 +13,7 @@ const ClubForgotPass = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState();
 
-  const handleForgetPass = async (e) => {
-    e.preventDefault();
 
-    if (!username) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={"Please enter your username"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
-      return;
-    }
-
-
-    const { data } = await axios.post(
-      "/api/v1/club/forget-password",
-      { username },
-      { withCredentials: true }
-    );  
-
-    // if (username !== data.findone.username) {
-    //   toast.custom(
-    //     <>
-    //       <Toasts
-    //         boldMessage={"Error!"}
-    //         message={"Username not found"}
-    //         icon={<MdError className="text-text_red" size={32} />}
-    //       />
-    //     </>,
-    //     {
-    //       position: "top-left",
-    //       duration: 2000,
-    //     }
-    //   );
-    //   return;
-    // }
-
-    if (data) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Success!"}
-            message={data.message}
-            icon={
-              <IoCheckmarkDoneCircleOutline
-                className="text-text_tertiaary"
-                size={32}
-              />
-            }
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
-      navigate("/login/club/temp");
-
-    } else {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={data.message}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
-    }
-  };
 
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
@@ -102,7 +22,6 @@ const ClubForgotPass = () => {
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-24">
         <form
-          onSubmit={handleForgetPass}
           className="flex flex-col gap-6 w-full px-25"
         >
           <h1 className="font-semibold font-inter tracking-tight">

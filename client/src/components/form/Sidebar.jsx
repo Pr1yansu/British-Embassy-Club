@@ -8,8 +8,7 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const Sidebar = ({ profiledata }) => {
-  const { data: { role } = {} } = profiledata || {};
-
+  const role = profiledata?.data?.role;
   const menus = [
     {
       names: "Dashboard",

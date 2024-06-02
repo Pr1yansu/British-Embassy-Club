@@ -1,46 +1,50 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import ClubSignUp from "./pages/Signup/ClubSignUp";
-import ClubLogin from "./pages/Login/ClubLogin";
-import OperatoLogin from "./pages/Login/OperatorLogin";
-import ClubSignUpOtp from "./pages/Signup/Club-signUp-otp";
-import ClubSignUpOtpResend from "./pages/Signup/Club-signUp-otp-resend";
-import OperatorSignup from "./pages/Signup/OperatorSignup";
-import OperatorSignUpOtp from "./pages/Signup/Operator-forgot-pass";
-import OperatorResetPass from "./pages/Signup/Operator-forgotpass-reset";
-import OperatorResetPassMail from "./pages/Signup/Operator-forgotpass-mail";
-import Dashboard from "./pages/Home/Dashboard";
-import Member from "./pages/Home/Member";
 import { Toaster } from "react-hot-toast";
-import Coupon from "./pages/Home/Coupon";
-import Settings from "./pages/Home/Settings";
-import Profile from "./pages/Home/Profile";
-import SettingsAdmin from "./pages/Home/SettingsAdmin";
-import SettingsAdminTemp from "./pages/Home/SettingsAdminTemp";
 import Sidebar from "./components/form/Sidebar";
 import { locations } from "./constants";
-import ClubForgotPass from "./pages/Signup/Club-forgot-pass";
-import ClubLoginTemp from "./pages/Login/Club-login-temp";
 import { useGetOperatorProfileQuery } from "./store/api/operatorAPI";
-import ErrorPage from "./pages/Error/NotFound";
 import Loader from "./components/ui/loader";
-import { useNavigate } from "react-router-dom";
+import { Suspense, lazy } from "react";
+
+const ErrorPage = lazy(() => import("./pages/Error/NotFound"));
+const ClubLogin = lazy(() => import("./pages/Login/ClubLogin"));
+const ClubSignUp = lazy(() => import("./pages/Signup/ClubSignUp"));
+const ClubSignUpOtp = lazy(() => import("./pages/Signup/Club-signUp-otp"));
+const ClubSignUpOtpResend = lazy(() => import("./pages/Signup/Club-signUp-otp-resend"));
+const OperatorSignup = lazy(() => import("./pages/Signup/OperatorSignup"));
+const OperatorSignUpOtp = lazy(() => import("./pages/Signup/Operator-forgot-pass"));
+const OperatorResetPass = lazy(() => import("./pages/Signup/Operator-forgotpass-reset"));
+const OperatorResetPassMail = lazy(() => import("./pages/Signup/Operator-forgotpass-mail"));
+const OperatorLogin = lazy(() => import("./pages/Login/OperatorLogin"));
+const Dashboard = lazy(() => import("./pages/Home/Dashboard"));
+const Member = lazy(() => import("./pages/Home/Member"));
+const Coupon = lazy(() => import("./pages/Home/Coupon"));
+const Settings = lazy(() => import("./pages/Home/Settings"));
+const Profile = lazy(() => import("./pages/Home/Profile"));
+const SettingsAdmin = lazy(() => import("./pages/Home/SettingsAdmin"));
+const SettingsAdminTemp = lazy(() => import("./pages/Home/SettingsAdminTemp"));
+const ClubForgotPass = lazy(() => import("./pages/Signup/Club-forgot-pass"));
+const ClubLoginTemp = lazy(() => import("./pages/Login/Club-login-temp"));
 
 function App() {
   const location = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const {
     data: profiledata,
     isError,
     isLoading,
   } = useGetOperatorProfileQuery();
 
-  if (!profiledata && !isLoading) navigate("/login/club");
+  // if (!profiledata && !isLoading) navigate("/login/club");
+
 
   if (isLoading) return <Loader />;
 
+console.log(profiledata, isLoading, isError);
+
   return (
-    <>
+    <Suspense fallback={<Loader/>}>
       <Toaster />
       {locations.includes(location.pathname) ? (
         <Sidebar profiledata={profiledata} />
@@ -113,7 +117,7 @@ function App() {
             {/* Routes for Operator Auths */}
             <>
               <Route path="/signup/operator" element={<OperatorSignup />} />
-              <Route path="/login/operator" element={<OperatoLogin />} />
+              <Route path="/login/operator" element={<OperatorLogin />} />
               <Route
                 path="/login/operator/forgotPass"
                 element={<OperatorSignUpOtp />}
@@ -129,6 +133,7 @@ function App() {
             </>
           </>
         )}
+
         <>
           <Route
             path="*"
@@ -142,7 +147,7 @@ function App() {
           />
         </>
       </Routes>
-    </>
+    </Suspense>
   );
 }
 

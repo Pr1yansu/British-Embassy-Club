@@ -10,11 +10,13 @@ import toast from "react-hot-toast";
 import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/LOGO.png";
+import { MdError } from "react-icons/md";
+import { LuLoader2 } from "react-icons/lu";
 const ClubLogin = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
     const { data } = await axios.post("/api/v1/club/login", {
@@ -49,6 +51,54 @@ const ClubLogin = () => {
       );
     }
   };
+  const handleForgetPass = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/v1/club/forget-password", {
+        withCredentials: true,
+      });
+
+      if (data) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={data.message}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+        setLoading(false);
+        navigate("/login/club/temp");
+      }
+    } catch (error) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
+      setLoading(false);
+    }
+
+  };
   return (
     <>
       <div
@@ -59,7 +109,11 @@ const ClubLogin = () => {
           alt="arrow"
           className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
         />
-        <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
+        <img
+          src={logo}
+          alt="logo"
+          className="font-bold absolute top-6 left-20"
+        />
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
           <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
             <form
@@ -76,12 +130,12 @@ const ClubLogin = () => {
                 onchange={(e) => setPassword(e.target.value)}
               />
               <Button name={"Login"} type={"submit"} />
-              <a
-                href="/login/club/forgotPass"
-                className="text-blue-700 font-medium text-xs roboto"
+              <p
+                className="text-blue-700 font-medium text-xs roboto cursor-pointer"
+                onClick={handleForgetPass}
               >
-                Forget your password?
-              </a>
+                {loading? <LuLoader2 className="animate-spin" size={20} />: 'Forget your password?'}
+              </p>
             </form>
           </div>
 
