@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MainCard from "../../components/ui/MainCard";
 import { cardData } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/LOGO.png";
 import Loader from "../../components/ui/loader";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
+import { CgProfile } from "react-icons/cg";
 const Dashboard = () => {
+  const [imageUrl, setImageUrl] = useState("");
+
   const navigate = useNavigate();
   const { data: profiledata, isLoading } = useGetOperatorProfileQuery();
+
+  useEffect(() => {
+    if (profiledata && profiledata.data.profileImage) {
+      setImageUrl(profiledata.data.profileImage.url);
+    }
+  }, [profiledata]);  
 
   if (isLoading) {
     return <Loader />;
@@ -28,13 +37,14 @@ const Dashboard = () => {
           />
           <div className="flex gap-4 items-center justify-center">
             <div className="flex flex-col items-end">
-              <h4 className="text-xl font-roboto">
+              <h4 className="text-xl font-roboto capitalize">
                 {profiledata && profiledata.data && profiledata.data.username}
               </h4>
-              <h6 className="text-text_primary">
+              <h6 className="text-text_primary capitalize">
                 {profiledata && profiledata.data && profiledata.data.role}
               </h6>
             </div>
+            { imageUrl ? <img src={imageUrl} alt="profile" className="w-16 h-16 rounded-full"/> : <CgProfile size={60} color="#6B7280" />}
           </div>
         </div>
         <div className="row-start-3 row-end-11 col-start-4 col-end-10 grid grid-rows-2 grid-cols-2 gap-6">

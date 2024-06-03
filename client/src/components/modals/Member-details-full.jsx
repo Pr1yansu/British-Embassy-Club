@@ -31,7 +31,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
               <img
                 src={image}
                 alt="member"
-                className="w-20 aspect-auto rounded-full object-cover object-center"
+                className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
               />
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">

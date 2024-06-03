@@ -93,7 +93,7 @@ const Member = () => {
           </div>
           <div className="row-start-3 row-end-11 col-start-2 col-end-12 items-center">
             <div className="grid grid-cols-12 gap-4 ">
-              {data && data.data && data.data.length < 0 ? (
+              {data && data.data && data.data.length > 0 ? (
                 data.data.map((item, index) => {
                   return <MemberCard item={item} index={index} key={index} />;
                 })

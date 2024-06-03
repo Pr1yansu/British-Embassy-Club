@@ -177,6 +177,7 @@ const OperatorSignup = () => {
           duration: 2000,
         }
       );
+      setLoading(false);
     }
   };
 

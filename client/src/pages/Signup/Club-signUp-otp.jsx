@@ -12,6 +12,7 @@ import { MdError } from "react-icons/md";
 import logo from "../../assets/images/LOGO.png";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import Loader from "../../components/ui/loader";
+import { LuLoader2 } from "react-icons/lu";
 
 const ClubSignUpOtp = () => {
   const navigate = useNavigate();
@@ -197,7 +198,15 @@ const ClubSignUpOtp = () => {
                 disabled={!isSubmitEnabled}
               />
               <Button
-                name={"Resend"}
+                name={
+                  !isResendEnabled ? (
+                    <>
+                      <LuLoader2 className="animate-spin" size={20} />
+                    </>
+                  ) : (
+                    <>Resend</>
+                  )
+                }
                 type={"button"}
                 onClick={handleResend}
                 disabled={!isResendEnabled || loading}

@@ -35,6 +35,7 @@ const AddMember = ({ onModal }) => {
   const [organization, setOrganization] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [publicId, setPublicId] = useState(null);
+  const [imgLoading, setImgLoading] = useState(false);
 
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
   const navigate = useNavigate();
@@ -120,6 +121,7 @@ const AddMember = ({ onModal }) => {
     const newFile = e.target.files[0];
 
     if (newFile) {
+      setImgLoading(true);
       const file = new FormData();
       file.append("image", newFile);
       console.log(file.get("image"));
@@ -131,6 +133,7 @@ const AddMember = ({ onModal }) => {
       if (data) {
         setImageUrl(data.data.image);
         setPublicId(data.data.public_id);
+        setImgLoading(false);
       }
 
       if (data.status === 400) {
@@ -147,6 +150,7 @@ const AddMember = ({ onModal }) => {
             duration: 2000,
           }
         );
+        setImgLoading(false);
       }
     }
   };
@@ -353,7 +357,7 @@ const AddMember = ({ onModal }) => {
             />
             <ButtonGroup
               name={
-                isLoading ? (
+                isLoading || imgLoading ? (
                   <>
                     <LuLoader2 className="animate-spin" size={20} />
                   </>
