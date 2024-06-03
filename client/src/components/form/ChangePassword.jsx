@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Passwordbox from "../ui/Passwordbox";
 import ButtonGroup from "../../components/ui/ButtonGroup";
-import { useChangePasswordMutation } from "../../store/api/operatorAPI";
+import { useChangePasswordMutation, useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Toasts from "../ui/Toasts";
@@ -12,11 +12,13 @@ import { LuLoader2 } from "react-icons/lu";
 
 const ChangePassword = ({
   colStart,
-  colEnd,
-  profiledata,
-  profileLoading,
-  profileError,
+  colEnd
 }) => {
+    const {
+      data: profiledata,
+      isLoading: profileLoading,
+      isError: profileError,
+    } = useGetOperatorProfileQuery();
   const navigate = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -81,7 +83,7 @@ const ChangePassword = ({
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={error.response.data.message || "Internal Server Error"}
+            message={error.data.message || "Internal Server Error"}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
