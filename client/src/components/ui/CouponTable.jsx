@@ -12,6 +12,8 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
     refetch,
   } = useGetAllTransactionsQuery();
 
+  console.log(allTransactions);
+
   React.useEffect(() => {
     if (isSuccess && allTransactions) {
       setCount(allTransactions.todaysTotalTransactions);
@@ -65,6 +67,7 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
         customStyles={customStyles}
         pagination
         paginationPerPage={10}
+        paginationTotalRows={Math.floor(allTransactions.totalTransactions/10)}
         paginationRowsPerPageOptions={[5, 10, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",
