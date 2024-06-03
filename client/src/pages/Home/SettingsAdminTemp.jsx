@@ -52,8 +52,8 @@ const SettingsAdminTemp = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         navigate("/login/club");
@@ -69,8 +69,8 @@ const SettingsAdminTemp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }

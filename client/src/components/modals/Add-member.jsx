@@ -92,8 +92,8 @@ const AddMember = ({ onModal }) => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         onModal();
@@ -110,8 +110,8 @@ const AddMember = ({ onModal }) => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -147,8 +147,8 @@ const AddMember = ({ onModal }) => {
                   />
                 </>,
                 {
-                  position: "top-left",
-                  duration: 2000,
+                  position: "bottom-right",
+                  duration: 1000,
                 }
               );
             }
@@ -163,8 +163,8 @@ const AddMember = ({ onModal }) => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }

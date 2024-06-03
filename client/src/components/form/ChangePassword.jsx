@@ -9,6 +9,7 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdError } from "react-icons/md";
 import { useChangeAdminPasswordMutation } from "../../store/api/clubAPI";
 import { LuLoader2 } from "react-icons/lu";
+import Loader from "../ui/loader";
 
 const ChangePassword = ({
   colStart,
@@ -41,7 +42,7 @@ const ChangePassword = ({
     e.preventDefault();
     try {
          let data;
-         if (profileLoading) return <>loading....</>;
+         if (profileLoading) return <Loader/>;
          if (profiledata.data.role === "admin") {
            console.log("profiledata role", profiledata.data.role === "admin");
            data = await changeAdminPassword({
@@ -56,7 +57,7 @@ const ChangePassword = ({
              confirmPassword: confirmPassword,
            }).unwrap();
          }
-         if (AdminLoading || isLoading) return <>loading....</>;
+         if (AdminLoading || isLoading) return <Loader/>;
          if (data) {
            toast.custom(
              <>
@@ -72,8 +73,8 @@ const ChangePassword = ({
                />
              </>,
              {
-               position: "top-left",
-               duration: 2000,
+               position: "bottom-right",
+               duration: 1000,
              }
            );
            navigate("/");
@@ -88,8 +89,8 @@ const ChangePassword = ({
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -161,7 +162,7 @@ const ChangePassword = ({
           <div className="flex justify-end gap-4">
             <ButtonGroup
               name={"Cancel"}
-              textColor={"text-text_secondary"}
+              textColor={"text-text_primary"}
               color={"bg-btn_secondary"}
               onClick={handleCancel}
             />

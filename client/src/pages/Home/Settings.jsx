@@ -48,8 +48,8 @@ const Settings = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         navigate("/login/club");
@@ -65,8 +65,8 @@ const Settings = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }

@@ -76,8 +76,8 @@ const ClubSignUpOtp = () => {
               />
             </>,
             {
-              position: "top-left",
-              duration: 2000,
+              position: "bottom-right",
+              duration: 1000,
             }
           );
           if (data.data.role === "admin") {
@@ -98,8 +98,8 @@ const ClubSignUpOtp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -136,8 +136,8 @@ const ClubSignUpOtp = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
       }
@@ -152,8 +152,8 @@ const ClubSignUpOtp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }

@@ -49,8 +49,8 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       return;
@@ -66,8 +66,8 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       return;
@@ -83,8 +83,8 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       return;
@@ -113,8 +113,8 @@ const ClubSignUp = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         localStorage.setItem("clubUsername", JSON.stringify(data));
@@ -139,8 +139,8 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     } finally {
