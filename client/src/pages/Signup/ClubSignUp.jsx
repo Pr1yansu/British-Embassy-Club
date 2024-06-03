@@ -98,7 +98,6 @@ const ClubSignUp = () => {
           <>
             <Toasts
               boldMessage={"Success!"}
-             
               icon={
                 <IoCheckmarkDoneCircleOutline
                   className="text-text_tertiaary"
@@ -124,7 +123,19 @@ const ClubSignUp = () => {
         return;
       }
     } catch (error) {
-      console.log(error);
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     } finally {
       setLoading(false);
     }

@@ -90,7 +90,7 @@ const ClubSignUpOtp = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "/api/v1/club/resend-accessKey",
+        "/api/v1/club/resend-otp",
         {
           OneTimeKey: otp,
         },
