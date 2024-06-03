@@ -70,7 +70,7 @@ const FileUpload = (props) => {
           <>
             <Toasts
               boldMessage={"Error!"}
-              message={error?.data?.message || "Internal Server Error"}
+              message={error.response.data.message || "Internal Server Error"}
               icon={<MdError className="text-text_red" size={32} />}
             />
           </>,

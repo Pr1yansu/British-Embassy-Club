@@ -37,51 +37,51 @@ const ChangePassword = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let data;
-    if (profileLoading) return <>loading....</>;
-    if (profiledata.data.role === "admin") {
-      console.log("profiledata role", profiledata.data.role === "admin");
-      data = await changeAdminPassword({
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-        confirmPassword: confirmPassword,
-      }).unwrap();
-    } else {
-      data = await changePassword({
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-        confirmPassword: confirmPassword,
-      }).unwrap();
-    }
-
-    if (data) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Success!"}
-            message={"Password Changed Successfully"}
-            icon={
-              <IoCheckmarkDoneCircleOutline
-                className="text-text_tertiaary"
-                size={32}
-              />
-            }
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
-      navigate("/");
-    }
-
-    if (isError) {
+    try {
+         let data;
+         if (profileLoading) return <>loading....</>;
+         if (profiledata.data.role === "admin") {
+           console.log("profiledata role", profiledata.data.role === "admin");
+           data = await changeAdminPassword({
+             oldPassword: oldPassword,
+             newPassword: newPassword,
+             confirmPassword: confirmPassword,
+           }).unwrap();
+         } else {
+           data = await changePassword({
+             oldPassword: oldPassword,
+             newPassword: newPassword,
+             confirmPassword: confirmPassword,
+           }).unwrap();
+         }
+         if (AdminLoading || isLoading) return <>loading....</>;
+         if (data) {
+           toast.custom(
+             <>
+               <Toasts
+                 boldMessage={"Success!"}
+                 message={"Password Changed Successfully"}
+                 icon={
+                   <IoCheckmarkDoneCircleOutline
+                     className="text-text_tertiaary"
+                     size={32}
+                   />
+                 }
+               />
+             </>,
+             {
+               position: "top-left",
+               duration: 2000,
+             }
+           );
+           navigate("/");
+         }
+    } catch (error) {
       toast.custom(
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={data.error || "Password Change Failed"}
+            message={error.response.data.message || "Internal Server Error"}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
@@ -91,6 +91,7 @@ const ChangePassword = ({
         }
       );
     }
+ 
   };
   const handleCancel = () => {
     setOldPassword("");

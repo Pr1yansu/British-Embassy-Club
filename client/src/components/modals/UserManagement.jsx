@@ -51,14 +51,14 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
         );
         setNewPassword("");
         setConfirmPassword("");
-        setOperatorId(null)
+        setOperatorId(null);
       }
     } catch (error) {
       toast.custom(
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={"error"}
+            message={error.response.data.message || "Internal Server Error"}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,

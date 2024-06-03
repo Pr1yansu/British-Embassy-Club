@@ -110,7 +110,7 @@ const AddMember = ({ onModal }) => {
         idType: idType,
         idNumber: idNumber,
         url: imageUrl ? imageUrl : null,
-        public_id : publicId ? publicId : null,
+        public_id: publicId ? publicId : null,
       }).unwrap();
 
       if (data) {
@@ -136,12 +136,11 @@ const AddMember = ({ onModal }) => {
         navigate("/member");
       }
     } catch (error) {
-      console.log(error);
       toast.custom(
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={error?.data?.message || "Internal Server Error"}
+            message={error.response.data.message || "Internal Server Error"}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
@@ -154,37 +153,52 @@ const AddMember = ({ onModal }) => {
   };
 
   const onFileDrop = async (e) => {
-    const newFile = e.target.files[0];
+    try {
+          const newFile = e.target.files[0];
+          if (newFile) {
+            const file = new FormData();
+            file.append("image", newFile);
+            console.log(file.get("image"));
+            const { data } = await axios.post(
+              "/api/v1/member/add-member-image",
+              file
+            );
 
-    if (newFile) {
-      const file = new FormData();
-      file.append("image", newFile);
-      console.log(file.get("image"));
-      const { data } = await axios.post(
-        "/api/v1/member/add-member-image",
-        file
-      );
-      
-      if (data) {
-        setImageUrl(data.data.image);
-        setPublicId(data.data.public_id);
-      }
+            if (data) {
+              setImageUrl(data.data.image);
+              setPublicId(data.data.public_id);
+            }
 
-      if (data.status === 400) {
-        toast.custom(
-          <>
-            <Toasts
-              boldMessage={"Error!"}
-              message={data.message}
-              icon={<MdError className="text-text_red" size={32} />}
-            />
-          </>,
-          {
-            position: "top-left",
-            duration: 2000,
+            if (data.status === 400) {
+              toast.custom(
+                <>
+                  <Toasts
+                    boldMessage={"Error!"}
+                    message={data.message}
+                    icon={<MdError className="text-text_red" size={32} />}
+                  />
+                </>,
+                {
+                  position: "top-left",
+                  duration: 2000,
+                }
+              );
+            }
           }
-        );
-      }
+    } catch (error) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 
