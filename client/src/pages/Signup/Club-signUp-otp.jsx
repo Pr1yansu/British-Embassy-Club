@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
@@ -10,18 +10,22 @@ import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdError } from "react-icons/md";
 import logo from "../../assets/images/LOGO.png";
+
 const ClubSignUpOtp = () => {
   const navigate = useNavigate();
 
-  const [otp, setOtp] = useState();
+  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [seconds, setSeconds] = useState(59);
+  const [isResendEnabled, setIsResendEnabled] = useState(false);
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
       if (seconds > 0) {
-        setSeconds(seconds - 1);
+        setSeconds((prev) => prev - 1);
+      } else {
+        setIsResendEnabled(true);
       }
     }, 1000);
 
@@ -88,15 +92,21 @@ const ClubSignUpOtp = () => {
 
   const handleResend = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    const otpResend = JSON.parse(localStorage.getItem("clubUsername"));
     try {
       const { data } = await axios.post(
         "/api/v1/club/resend-otp",
         {
-          OneTimeKey: otp,
+          username: otpResend.data.username,
         },
         { withCredentials: true }
       );
       if (data) {
+        setSeconds(59);
+        setIsResendEnabled(false);
+        setIsSubmitEnabled(true);
+        setLoading(false);
         toast.custom(
           <>
             <Toasts
@@ -117,6 +127,7 @@ const ClubSignUpOtp = () => {
         );
       }
     } catch (error) {
+      setLoading(false);
       toast.custom(
         <>
           <Toasts
@@ -131,20 +142,17 @@ const ClubSignUpOtp = () => {
         }
       );
     }
-  }
+  };
 
   return (
-    <div
-      className={`background relative h-screen bg-cover bg-center py-10 px-20 `}
-    >
+    <div className={`background relative h-screen bg-cover bg-center py-10 px-20 `}>
       <img
         src={arrow}
         alt="arrow"
-        className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+        className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden"
       />
       <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
 
-      {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
           <form
@@ -159,18 +167,15 @@ const ClubSignUpOtp = () => {
             <h2 className="text-text_primary roboto font-medium flex gap-2">
               Your OTP will expire in{" "}
               <h3 className="text-blue-700 roboto font-medium">
-                00:{formatedTime}
-                seconds
+                00:{formatedTime} seconds
               </h3>
             </h2>
             <div className="flex gap-10">
-              <Button name={"Submit"} />
-              <Button name={"Resend"} />
+              <Button name={"Submit"} type={'submit'} disabled={!isSubmitEnabled} />
+              <Button name={"Resend"} type={'button'} onClick={handleResend} disabled={!isResendEnabled || loading} />
             </div>
           </form>
         </div>
-        {/* Input ends here  */}
-
         <ClubRight />
       </div>
     </div>

@@ -42,12 +42,11 @@ const SettingsAdminTemp = () => {
           navigate("/login/club");
         }
       } catch (error) {
-        console.error("Failed to logout:", error);
         toast.custom(
           <>
             <Toasts
               boldMessage={"Error!"}
-              message={"Logout Failed"}
+              message={error.response.data.message || "Internal Server Error"}
               icon={<MdError className="text-text_red" size={32} />}
             />
           </>,

@@ -38,12 +38,11 @@ const Warning = ({ onModal, memberId }) => {
         navigate(0);
       }
     } catch (error) {
-      console.log(error);
       toast.custom(
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={"Failed to delete the member"}
+            message={error.response.data.message || "Internal Server Error"}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,

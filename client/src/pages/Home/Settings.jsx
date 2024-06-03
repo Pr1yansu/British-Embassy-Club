@@ -43,20 +43,19 @@ const Settings = () => {
         navigate("/login/club");
       }
     } catch (error) {
-      console.error("Failed to logout:", error);
-       toast.custom(
-         <>
-           <Toasts
-             boldMessage={"Error!"}
-             message={"Logout Failed"}
-             icon={<MdError className="text-text_red" size={32} />}
-           />
-         </>,
-         {
-           position: "top-left",
-           duration: 2000,
-         }
-       );
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
   return (

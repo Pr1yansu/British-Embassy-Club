@@ -33,8 +33,9 @@ import {
   updateCouponExpiresApi,
   getAllTransactionsApi
 } from "./api/walletAPI";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     [clubProfileApi.reducerPath]: clubProfileApi.reducer,
     [clubTemporaryLogin.reducerPath]: clubTemporaryLogin.reducer,
@@ -88,4 +89,4 @@ const store = configureStore({
       .concat(getAllTransactionsApi.middleware),
 });
 
-export default store;
+setupListeners(store.dispatch)
