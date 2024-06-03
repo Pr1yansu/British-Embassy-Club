@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import InputBox from "../../components/ui/InputBox";
-import profilePic from "../../assets/images/profilePic.png";
 import {
   useAddOperatorImageMutation,
   useGetOperatorProfileQuery,
@@ -12,12 +11,12 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import axios from "axios";
+import { CgProfile } from "react-icons/cg";
+import Loader from "../../components/ui/loader";
+import { LuLoader2 } from "react-icons/lu";
 
 const Profile = () => {
   const [open, SetOpen] = useState(false);
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [idType, setIdType] = useState("");
@@ -27,7 +26,6 @@ const Profile = () => {
   const [publicId, setPublicId] = useState("");
 
   const [selectedFile, setSelectedFile] = useState(null);
-  const { data: profiledata } = useGetOperatorProfileQuery();
   const [
     updateOperatorProfile,
     {
@@ -36,15 +34,28 @@ const Profile = () => {
       isSuccess: updateisSuccess,
     },
   ] = useUpdateOperatorProfileMutation();
-  console.log(profiledata);
   const [
     addOperatorImage,
     { isLoading, isSuccess, isError },
   ] = useAddOperatorImageMutation();
 
+  const {
+    data: profiledata,
+    isError: profileisError,
+    isLoading: profileisLoading,
+  } = useGetOperatorProfileQuery();
+
   useEffect(() => {
-    setName(`${firstname}${lastname}`);
-  }, [firstname, lastname]);
+    if (profiledata) {
+      setEmail(profiledata.data.email);
+      setMobile(profiledata.data.mobileNumber);
+      setIdType(profiledata.data.idProof.idType);
+      setIdNumber(profiledata.data.idProof.idNumber);
+      setAddress(profiledata.data.address);
+      setImageUrl(profiledata.data.profileImage.url);
+      setPublicId(profiledata.data.profileImage.public_id);
+    } 
+  }, [profiledata]);
 
     const onFileDrop = async (e) => {
       const newFile = e.target.files[0];
@@ -54,7 +65,7 @@ const Profile = () => {
         file.append("image", newFile);
         console.log(file.get("image"));
         const { data } = await axios.post(
-          `/api/v1/member/add-operator-image`,
+          `/api/v1/operator/update-operator-image`,
           file
         );
 
@@ -86,7 +97,7 @@ const Profile = () => {
     // console.log("Update profile data:", name, email, mobile, address, idType, idNumber);
     try {
       const updatedData = await updateOperatorProfile({
-        username: name,
+        // username: name,
         email: email,
         mobileNumber: mobile,
         address: address,
@@ -94,7 +105,7 @@ const Profile = () => {
         idNumber: idNumber,
       }).unwrap();
 
-      if (updateisSuccess) {
+      if (updatedData) {
         toast.custom(
           <>
             <Toasts
@@ -147,11 +158,15 @@ const Profile = () => {
     }
   };
 
+  if (profileisLoading) {
+    return <LuLoader2/>
+  }
+
   return (
     <>
       <div className="background bg-cover bg-center">
         <div className="container grid grid-rows-12 grid-cols-12  h-screen">
-          <div className="row-start-2 row-end-12 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
+          <div className="row-start-2 row-end-11 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
             <div className="flex justify-start items-center gap-6 mb-4">
               <div className="relative h-32 w-32">
                 {imageUrl ? (
@@ -161,11 +176,7 @@ const Profile = () => {
                     className="h-full w-full object-cover rounded-full"
                   />
                 ) : (
-                  <img
-                    src={profilePic}
-                    alt="profile"
-                    className="h-full w-full object-cover rounded-full"
-                  />
+                  <CgProfile className="w-full h-full" color="#6B7280" />
                 )}
                 <input
                   type="file"
@@ -185,34 +196,9 @@ const Profile = () => {
                   disable={isLoading}
                 />
               </form>
-              <ButtonGroup
-                color={"bg-btn_secondary"}
-                textColor={"text-text_primary"}
-                name={"Remove"}
-              />
             </div>
             <form onSubmit={handleUpdateProfile}>
               <div className="grid grid-cols-2 gap-x-4 gap-y-4">
-                <label
-                  htmlFor=""
-                  className="roboto font-medium text-btn_primary"
-                >
-                  First Name
-                  <InputBox
-                    type={"text"}
-                    onChange={(e) => setFirstname(e.target.value)}
-                  />
-                </label>
-                <label
-                  htmlFor=""
-                  className="roboto font-medium text-btn_primary"
-                >
-                  Last Name
-                  <InputBox
-                    type={"text"}
-                    onChange={(e) => setLastname(e.target.value)}
-                  />
-                </label>
                 <label
                   htmlFor=""
                   className="roboto font-medium text-btn_primary"
@@ -221,6 +207,7 @@ const Profile = () => {
                   <InputBox
                     type={"text"}
                     onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                   />
                 </label>
                 <label
@@ -231,6 +218,7 @@ const Profile = () => {
                   <InputBox
                     type={"text"}
                     onChange={(e) => setMobile(e.target.value)}
+                    value={mobile}
                   />
                 </label>
                 <label
@@ -244,6 +232,7 @@ const Profile = () => {
                       id=""
                       className="bg-primary w-52 rounded-l-lg text-text_primary outline-none roboto font-medium p-2 text-base"
                       onChange={(e) => setIdType(e.target.value)}
+                      value={idType}
                     >
                       <option value="Addhar Card">Addhar Card</option>
                       <option value="Voter Card">Voter Card</option>
@@ -255,6 +244,7 @@ const Profile = () => {
                       placeholder="Id Number"
                       className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-sm text-text_primary "
                       onChange={(e) => setIdNumber(e.target.value)}
+                      value={idNumber}
                     />
                   </div>
                 </label>
@@ -268,10 +258,11 @@ const Profile = () => {
                     id=""
                     className="w-full h-24 text-sm bg-primary outline-none resize-none p-3 text-text_primary rounded-xl"
                     onChange={(e) => setAddress(e.target.value)}
+                    value={address}
                   ></textarea>
                 </label>
               </div>
-              <div className="fixed bottom-18 right-80 flex justify-end w-full gap-6">
+              <div className=" flex justify-end mt-10 w-full gap-6">
                 <ButtonGroup
                   name={"Cancel"}
                   color={"bg-[#F8FAFC]"}
@@ -279,7 +270,15 @@ const Profile = () => {
                   onClick={() => window.location.reload()}
                 />
                 <ButtonGroup
-                  name={"Update Profile"}
+                  name={
+                    updateisLoading ? (
+                      <>
+                        <LuLoader2 className="animate-spin" size={20} />
+                      </>
+                    ) : (
+                      <>Confirm</>
+                    )
+                  }
                   color={"bg-btn_primary"}
                   textColor={"text-btn_secondary"}
                   type={"submit"}

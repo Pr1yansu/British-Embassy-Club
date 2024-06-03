@@ -15,8 +15,9 @@ import axios from "axios";
 import Toasts from "../ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { LuLoader2 } from "react-icons/lu";
 
-const UpdateMember = ({ onModal, memberId, expiryTime }) => {
+const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
   const { data: member, isLoading: isDataLoading } = useGetMemberByIdQuery(
     memberId
   );
@@ -37,21 +38,15 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [publicId, setPublicId] = useState(null);
 
-  // console.log(member);
+  const [imgLoading, setImgLoading] = useState(false);
+
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const [
     updateMember,
     { isSuccess, isLoading, isError },
   ] = useUpdateMemberMutation();
 
-  // const [
-  //   addMemberImage,
-  //   {
-  //     isSuccess: isImageSuccess,
-  //     isLoading: isImageLoading,
-  //     isError: isImageError,
-  //   },
-  // ] = useAddMemberImageMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,6 +81,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
     e.preventDefault();
 
     try {
+      setUpdateLoading(true);
       const data = await updateMember({
         memberId,
         firstname,
@@ -120,12 +116,15 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
             duration: 2000,
           }
         );
-        onModal();
-        navigate("/member");
+        setUpdateLoading(false);
+        onModal()
+        setOpen(false);
+        navigate(0);
       }
 
       console.log(data);
     } catch (error) {
+      setUpdateLoading(false);
       toast.custom(
         <>
           <Toasts
@@ -144,6 +143,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
 
   const onFileDrop = async (e) => {
     try {
+      setImgLoading(true);
       const newFile = e.target.files[0];
   
       if (newFile) {
@@ -158,6 +158,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
         if (data) {
           setImageUrl(data.data.image);
           setPublicId(data.data.public_id);
+          setImgLoading(false);
         }
   
         if (data.status === 400) {
@@ -177,6 +178,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
         }
       }
     } catch (error) {
+      setImgLoading(false);
       toast.custom(
         <>
           <Toasts
@@ -292,7 +294,7 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
                     {[0, 1, 2, 3, 4, 5].map((year) => (
                       <li
                         key={year}
-                        onClick={() => setExpiryLimit(year)}
+                        onClick={() => {setExpiryLimit(year); setOpenExtend(false);}}
                         className="hover:bg-btn_secondary hover:text-btn_primary w-full py-1 px-4"
                       >
                         {year === 0
@@ -372,7 +374,15 @@ const UpdateMember = ({ onModal, memberId, expiryTime }) => {
               onClick={() => onModal()}
             />
             <ButtonGroup
-              name={"Confirm"}
+              name={
+                imgLoading || updateLoading ? (
+                  <>
+                    <LuLoader2 className="animate-spin" size={20} />
+                  </>
+                ) : (
+                  <>Confirm</>
+                )
+              }
               color={"bg-blue-700"}
               textColor={"text-white"}
               type={"submit"}
