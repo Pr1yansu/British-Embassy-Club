@@ -24,12 +24,12 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
 
   const handleSubmit = async () => {
     try {
-      await changeAdminOperatorPassword({
+    const {data} =  await changeAdminOperatorPassword({
         id: operatorId,
         newPassword: newPassword,
         confirmPassword: confirmPassword,
       }).unwrap();
-      if (isPassSuccess) {
+      if (data) {
         toast.custom(
           <>
             <Toasts

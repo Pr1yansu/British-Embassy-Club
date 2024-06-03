@@ -118,40 +118,55 @@ const AddMember = ({ onModal }) => {
   };
 
   const onFileDrop = async (e) => {
-    const newFile = e.target.files[0];
+    try {
+          const newFile = e.target.files[0];
 
-    if (newFile) {
-      setImgLoading(true);
+          if (newFile) {
+            setImgLoading(true);
       const file = new FormData();
-      file.append("image", newFile);
-      console.log(file.get("image"));
-      const { data } = await axios.post(
-        "/api/v1/member/add-member-image",
-        file
-      );
-      
-      if (data) {
-        setImageUrl(data.data.image);
-        setPublicId(data.data.public_id);
-        setImgLoading(false);
+            file.append("image", newFile);
+            console.log(file.get("image"));
+            const { data } = await axios.post(
+              "/api/v1/member/add-member-image",
+              file
+            );
+
+            if (data) {
+              setImageUrl(data.data.image);
+              setPublicId(data.data.public_id);
+              setImgLoading(false);
       }
 
-      if (data.status === 400) {
-        toast.custom(
-          <>
-            <Toasts
-              boldMessage={"Error!"}
-              message={data.message}
-              icon={<MdError className="text-text_red" size={32} />}
-            />
-          </>,
-          {
-            position: "top-left",
-            duration: 2000,
+            if (data.status === 400) {
+              toast.custom(
+                <>
+                  <Toasts
+                    boldMessage={"Error!"}
+                    message={data.message}
+                    icon={<MdError className="text-text_red" size={32} />}
+                  />
+                </>,
+                {
+                  position: "top-left",
+                  duration: 2000,
+                }
+              );
+            }
           }
-        );
-        setImgLoading(false);
-      }
+    } catch (error) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
     }
   };
 
@@ -294,7 +309,7 @@ const AddMember = ({ onModal }) => {
             <label className="flex flex-col font-medium">
               Membership Valid Upto
               <div className=" bg-primary outline-none flex items-center h-6 py-5 px-4 rounded-lg text-sm text-text_primary">
-                {expiryDate}
+                {expiryDate.split("T")[0]}
               </div>
             </label>
           </div>

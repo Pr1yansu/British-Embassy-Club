@@ -34,30 +34,46 @@ const ClubLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post("/api/v1/club/login", {
-      username,
-      password,
-    });
-    if (data) {
-      if (data.data.role === "admin") {
-        navigate("/");
-        navigate(0);
+    try{
+      const { data } = await axios.post("/api/v1/club/login", {
+        username,
+        password,
+      });
+      if (data) {
+        if (data.data.role === "admin") {
+          navigate("/");
+          navigate(0);
+        }
+        if (data.data.role === "operator") {
+          navigate("/login/operator");
+          navigate(0);
+        }
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={data.message}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
       }
-      if (data.data.role === "operator") {
-        navigate("/login/operator");
-        navigate(0);
-      }
+    }catch(error){
       toast.custom(
         <>
           <Toasts
-            boldMessage={"Success!"}
-            message={data.message}
-            icon={
-              <IoCheckmarkDoneCircleOutline
-                className="text-text_tertiaary"
-                size={32}
-              />
-            }
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
         {

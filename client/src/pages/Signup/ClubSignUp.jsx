@@ -39,7 +39,6 @@ const ClubSignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     if (!username || !email || !password || !confirmpassword) {
       toast.custom(
         <>
@@ -54,7 +53,6 @@ const ClubSignUp = () => {
           duration: 2000,
         }
       );
-      setLoading(false);
       return;
     }
 
@@ -72,7 +70,6 @@ const ClubSignUp = () => {
           duration: 2000,
         }
       );
-      setLoading(false);
       return;
     }
 
@@ -94,6 +91,7 @@ const ClubSignUp = () => {
     }
 
     try {
+      setLoading(true);
       const { data } = await axios.post("/api/v1/club/create", {
         username,
         email,

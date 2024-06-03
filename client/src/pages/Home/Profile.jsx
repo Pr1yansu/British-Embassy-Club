@@ -41,10 +41,20 @@ const Profile = () => {
       setIdType(profiledata.data.idProof.idType);
       setIdNumber(profiledata.data.idProof.idNumber);
       setAddress(profiledata.data.address);
-    }
-    if ( profiledata && profiledata.data.profileImage) {
-      setImageUrl(profiledata.data.profileImage.url);
-      setPublicId(profiledata.data.profileImage.public_id);
+      if (profiledata.data.profileImage) {
+        setImageUrl(profiledata.data.profileImage.url);
+      }else{
+       <>
+         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+       </>
+      }
+      if (profiledata.data.profileImage) {
+       setPublicId(profiledata.data.profileImage.public_id);
+      } else {
+        <>
+          "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+        </>;
+      }
     }
   }, [profiledata]);
 
@@ -150,19 +160,19 @@ const Profile = () => {
         );
       }
     } catch (error) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={error || "Profile not updated"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
-      );
+     toast.custom(
+       <>
+         <Toasts
+           boldMessage={"Error!"}
+           message={error.response.data.message || "Internal Server Error"}
+           icon={<MdError className="text-text_red" size={32} />}
+         />
+       </>,
+       {
+         position: "top-left",
+         duration: 2000,
+       }
+     );
     }
   };
 
@@ -286,13 +296,8 @@ const Profile = () => {
                   ></textarea>
                 </label>
               </div>
-              <div className="flex justify-end mt-10 w-full gap-6">
-                <ButtonGroup
-                  name={"Cancel"}
-                  color={"bg-[#F8FAFC]"}
-                  textColor={"text-[#1D4ED8]"}
-                  onClick={() => window.location.reload()}
-                />
+              <div className=" flex justify-end mt-10 w-full gap-6">
+                
                 <ButtonGroup
                   name={
                     updateisLoading ? (
