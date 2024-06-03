@@ -28,7 +28,11 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
         <div className="w-full max-w-2xl h-auto border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between items-center border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
-              <img src={image} alt="member" className="w-20" />
+              <img
+                src={image}
+                alt="member"
+                className="w-20 aspect-auto rounded-full object-cover object-center"
+              />
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
                   {data.data.name}
@@ -36,22 +40,24 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                 <p className="text-text_primary roboto">{data.data.userName}</p>
               </div>
             </div>
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setOpenCard(true);
-              }}
-            >
-              <FaIdCard size={28} className="text-btn_primary" />
-            </div>
 
-            <div
-              onClick={() => {
-                setOpen(false);
-              }}
-              className="cursor-pointer"
-            >
-              <IoIosCloseCircleOutline size={30} color="blue" />
+            <div className="flex gap-16 items-center justify-center">
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  setOpenCard(true);
+                }}
+              >
+                <FaIdCard size={100} className="text-btn_primary" />
+              </div>
+              <div
+                onClick={() => {
+                  setOpen(false);
+                }}
+                className="cursor-pointer"
+              >
+                <IoIosCloseCircleOutline size={30} color="blue" />
+              </div>
             </div>
           </div>
           {/* <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
@@ -180,6 +186,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                 expiryTime={expiryTime}
                 memberId={memberId}
                 onModal={() => setOpenUpdate(false)}
+                setOpen={setOpen}
               />
             )}
           </div>

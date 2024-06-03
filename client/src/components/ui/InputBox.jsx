@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const InputBox = ({ type, placeholder, id, onChange }) => {
+const InputBox = ({ type, placeholder, id, onChange,value }) => {
 
   return (
     <>
@@ -15,6 +15,7 @@ const InputBox = ({ type, placeholder, id, onChange }) => {
           id={id}
           placeholder={placeholder && placeholder}
           className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
+          value={value && value}
         />
       ) : (
         <input
@@ -23,6 +24,7 @@ const InputBox = ({ type, placeholder, id, onChange }) => {
           placeholder={placeholder && placeholder}
           onChange={onChange} 
           className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-lg text-sm text-text_primary "
+          value={value && value}
         />
       )}
     </>

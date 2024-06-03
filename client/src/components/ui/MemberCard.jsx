@@ -32,7 +32,7 @@ const MemberCard = ({ item, index }) => {
       >
         <div className="flex items-center justify-between my-1 pb-3 border-b-2 border-primary mb-2">
           <div className="flex items-center gap-3">
-            <img src={item.image.url} className="w-10" alt="member" />
+            <img src={item.image.url} className="w-10 aspect-auto rounded-full object-cover object-center" alt="member" />
             <div className="flex flex-col">
               <p className="roboto text-base text-btn_primary">{item.name}</p>
               <p className="text-xs">{item.username}</p>

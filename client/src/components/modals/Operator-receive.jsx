@@ -16,7 +16,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
-  console.log(walletdata && walletdata.wallet.transactions[0]._id);
+  // console.log(walletdata && walletdata.wallet.transactions[0]._id);
 
   const [
     addTransaction,

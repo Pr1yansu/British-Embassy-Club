@@ -15,6 +15,7 @@ import Toasts from "../ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import axios from "axios";
+import { LuLoader2 } from "react-icons/lu";
 
 const AddMember = ({ onModal }) => {
   const [openExtend, setOpenExtend] = useState(false);
@@ -36,14 +37,6 @@ const AddMember = ({ onModal }) => {
   const [publicId, setPublicId] = useState(null);
 
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
-  const [
-    addMemberImage,
-    {
-      isSuccess: isImageSuccess,
-      isLoading: isImageLoading,
-      isError: isImageError,
-    },
-  ] = useAddMemberImageMutation();
   const navigate = useNavigate();
 
 
@@ -66,36 +59,6 @@ const AddMember = ({ onModal }) => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    // if (
-    //   !imageUrl ||
-    //   !publicId ||
-    //   !firstname ||
-    //   !lastname ||
-    //   !name ||
-    //   !email ||
-    //   !mobileNumber ||
-    //   !address ||
-    //   !expiryDate ||
-    //   !bloodGroup ||
-    //   !organization ||
-    //   !idType ||
-    //   !idNumber
-    // ) {
-    //   toast.custom(
-    //     <>
-    //       <Toasts
-    //         boldMessage={"Error!"}
-    //         message={"Please enter a valid search"}
-    //         icon={<MdError className="text-text_red" size={32} />}
-    //       />
-    //     </>,
-    //     {
-    //       position: "top-left",
-    //       duration: 2000,
-    //     }
-    //   );
-    //   return;
-    // }
     try {
       const data = await addMember({
         firstName: firstname,
@@ -110,7 +73,7 @@ const AddMember = ({ onModal }) => {
         idType: idType,
         idNumber: idNumber,
         url: imageUrl ? imageUrl : null,
-        public_id: publicId ? publicId : null,
+        public_id : publicId ? publicId : null,
       }).unwrap();
 
       if (data) {
@@ -136,11 +99,12 @@ const AddMember = ({ onModal }) => {
         navigate("/member");
       }
     } catch (error) {
+      console.log(error);
       toast.custom(
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={error.response.data.message || "Internal Server Error"}
+            message={error?.data?.message || "Internal Server Error"}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
@@ -153,52 +117,37 @@ const AddMember = ({ onModal }) => {
   };
 
   const onFileDrop = async (e) => {
-    try {
-          const newFile = e.target.files[0];
-          if (newFile) {
-            const file = new FormData();
-            file.append("image", newFile);
-            console.log(file.get("image"));
-            const { data } = await axios.post(
-              "/api/v1/member/add-member-image",
-              file
-            );
+    const newFile = e.target.files[0];
 
-            if (data) {
-              setImageUrl(data.data.image);
-              setPublicId(data.data.public_id);
-            }
-
-            if (data.status === 400) {
-              toast.custom(
-                <>
-                  <Toasts
-                    boldMessage={"Error!"}
-                    message={data.message}
-                    icon={<MdError className="text-text_red" size={32} />}
-                  />
-                </>,
-                {
-                  position: "top-left",
-                  duration: 2000,
-                }
-              );
-            }
-          }
-    } catch (error) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={error.response.data.message || "Internal Server Error"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-left",
-          duration: 2000,
-        }
+    if (newFile) {
+      const file = new FormData();
+      file.append("image", newFile);
+      console.log(file.get("image"));
+      const { data } = await axios.post(
+        "/api/v1/member/add-member-image",
+        file
       );
+      
+      if (data) {
+        setImageUrl(data.data.image);
+        setPublicId(data.data.public_id);
+      }
+
+      if (data.status === 400) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Error!"}
+              message={data.message}
+              icon={<MdError className="text-text_red" size={32} />}
+            />
+          </>,
+          {
+            position: "top-left",
+            duration: 2000,
+          }
+        );
+      }
     }
   };
 
@@ -403,7 +352,15 @@ const AddMember = ({ onModal }) => {
               onClick={() => onModal()}
             />
             <ButtonGroup
-              name={"Confirm"}
+              name={
+                isLoading ? (
+                  <>
+                    <LuLoader2 className="animate-spin" size={20} />
+                  </>
+                ) : (
+                  <>Confirm</>
+                )
+              }
               color={"bg-blue-700"}
               textColor={"text-white"}
               type={"submit"}
