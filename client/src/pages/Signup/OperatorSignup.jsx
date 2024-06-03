@@ -3,7 +3,6 @@ import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
 import Button from "../../components/ui/Button";
 import InputBox from "../../components/ui/InputBox";
-import { IoIosArrowDown } from "react-icons/io";
 import { FaArrowRight } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -13,6 +12,8 @@ import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/LOGO.png";
+import Loader from "../../components/ui/loader";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 
 const OperatorSignup = () => {
   const [show, setShow] = useState(false);
@@ -29,6 +30,14 @@ const OperatorSignup = () => {
   const [idType, setIdType] = useState("Select your documnet");
   const [idNumber, setIdNumber] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
+
+  if (profileLoading) return <Loader />;
+  if (profiledata) navigate("/");
 
   const handleChange = async (event) => {
     setIdType(event.target.value);
@@ -171,18 +180,6 @@ const OperatorSignup = () => {
     }
   };
 
-  const handleConsole = (e) => {
-    e.preventDefault();
-    console.log(username);
-    console.log(email);
-    console.log(password);
-    console.log(confirmPassword);
-    console.log(mobileNumber);
-    console.log(address);
-    console.log(idType);
-    console.log(idNumber);
-  };
-
   return (
     <div
       className={`background relative min-h-screen bg-cover bg-center py-10 px-20 `}
@@ -192,7 +189,11 @@ const OperatorSignup = () => {
         alt="arrow"
         className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
       />
-      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
+      <img
+        src={logo}
+        alt="logo"
+        className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
+      />
 
       {/* Input starts here */}
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">

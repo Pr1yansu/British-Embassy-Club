@@ -11,11 +11,21 @@ import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/LOGO.png";
 import { MdError, MdErrorOutline, MdOutlineErrorOutline } from "react-icons/md";
+import Loader from "../../components/ui/loader";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 
 const OperatorLogin = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
+
+  if (profileLoading) return <Loader />;
+  if (profiledata) navigate("/");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -47,12 +57,7 @@ const OperatorLogin = () => {
           <Toasts
             boldMessage={"Error!"}
             message={error.response.data.message}
-            icon={
-              <MdError
-                className="text-red-600"
-                size={32}
-              />
-            }
+            icon={<MdError className="text-red-600" size={32} />}
           />,
           {
             position: "top-left",

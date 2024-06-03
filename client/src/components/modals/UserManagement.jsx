@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { MdError, MdModeEditOutline } from "react-icons/md";
 import Roles from "../ui/Roles";
 import { useChangeAdminOperatorPasswordMutation } from "../../store/api/clubAPI";
@@ -16,8 +16,6 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
     setOperatorId(userId);
   };
 
-  console.log("operatorID", operatorId);
-
   const [
     changeAdminOperatorPassword,
     { isSuccess: isPassSuccess, isLoading: isPassLoading, data },
@@ -25,7 +23,7 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
 
   const handleSubmit = async () => {
     try {
-      const updatedPassword = await changeAdminOperatorPassword({
+      await changeAdminOperatorPassword({
         id: operatorId,
         newPassword: newPassword,
         confirmPassword: confirmPassword,
@@ -103,10 +101,9 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
               </tr>
             )}
             {allprofiledata &&
-              allprofiledata.data.map((row) => (
-                <>
+              allprofiledata.data.map((row, _) => (
+                <Fragment key={_}>
                   <tr
-                    key={row.id}
                     onClick={() => handleRowClick(row._id)}
                     className="cursor-pointer"
                   >
@@ -142,19 +139,18 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
                               name={isPassLoading ? "loading.." : "Submit"}
                               onClick={handleSubmit}
                               textColor={"text-btn_primary"}
-                              // disabled={isPassLoading}
                             />
                             <ButtonGroup
                               name="Cancel"
                               onClick={handleCancel}
-                              color={'text-text_primary'}
+                              color={"text-text_primary"}
                             />
                           </div>
                         </div>
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               ))}
           </tbody>
         </table>

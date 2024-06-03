@@ -5,17 +5,29 @@ import ButtonGroup from "../../components/ui/ButtonGroup";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { TbLogout } from "react-icons/tb";
 import Warning from "../../components/modals/Warning";
-import { useLogoutMutation } from "../../store/api/operatorAPI";
+import {
+  useGetOperatorProfileQuery,
+  useLogoutMutation,
+} from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdError } from "react-icons/md";
+import Loader from "../../components/ui/loader";
 
 const Settings = () => {
   const navigate = useNavigate();
   const [warning, setWarning] = useState();
-  const [logout, { isLoading, isError, data }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
+
+  if (profileLoading) return <Loader />;
+  if (!profiledata) navigate("/login/club");
+  if (profiledata.data.role !== "operator") navigate("/");
 
   const handleLogout = async () => {
     try {
@@ -41,6 +53,7 @@ const Settings = () => {
           }
         );
         navigate("/login/club");
+        navigate(0);
       }
     } catch (error) {
       toast.custom(

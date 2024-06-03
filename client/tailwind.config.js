@@ -15,6 +15,7 @@ module.exports = {
         btn_primary: "#1d4ed8",
         btn_secondary: "#F8FAFC",
         text_black: "#030712",
+        text_orange: "#FFA500",
       },
       boxShadow: {
         main_card: "0px 6px 8px 0px rgba(0, 0, 0, 0.20)",
@@ -47,7 +48,6 @@ module.exports = {
       width: {
         150: "591px",
         120: "32rem",
-        // 227 px into rem
         57: "232px",
         "10xl": "200px",
         195: "822px",

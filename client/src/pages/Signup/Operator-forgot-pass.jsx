@@ -1,28 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import arrow from "../../assets/images/arrow.png";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import { useNavigate } from "react-router-dom";
-import { useSendResetLinkMutation } from "../../store/api/operatorAPI";
+import {
+  useGetOperatorProfileQuery,
+  useSendResetLinkMutation,
+} from "../../store/api/operatorAPI";
 import toast from "react-hot-toast";
 import { LuLoader2 } from "react-icons/lu";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
-import { MdError } from "react-icons/md";import logo from "../../assets/images/LOGO.png";
+import { MdError } from "react-icons/md";
+import logo from "../../assets/images/LOGO.png";
+import Loader from "../../components/ui/loader";
 
 const OperatorSignUpOtp = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
   const [
     sendResetLink,
     { isLoading, isSuccess, isError, data },
   ] = useSendResetLinkMutation();
 
+  if (profileLoading) return <Loader />;
+  if (profiledata) navigate("/");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-   const data =  await sendResetLink(username).unwrap();
+      const data = await sendResetLink(username).unwrap();
 
       if (isSuccess) {
         toast.custom(
@@ -46,7 +57,6 @@ const OperatorSignUpOtp = () => {
         navigate("/login/operator/forgotPass/mail");
       }
     } catch (error) {
-     
       toast.custom(
         <>
           <Toasts
@@ -66,7 +76,11 @@ const OperatorSignUpOtp = () => {
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute -top-10 h-56 left-96" />
-      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
+      <img
+        src={logo}
+        alt="logo"
+        className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
+      />
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-24">

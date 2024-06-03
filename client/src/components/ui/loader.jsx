@@ -13,7 +13,12 @@ const Loader = () => {
   };
   return (
     <div className="flex justify-center items-center h-screen">
-      <Lottie options={defaultOptions} height={400} width={400} />
+      <Lottie
+        options={defaultOptions}
+        height={400}
+        width={400}
+        isClickToPauseDisabled
+      />
     </div>
   );
 };

@@ -6,8 +6,13 @@ import { LuTicket } from "react-icons/lu";
 import { RxAvatar } from "react-icons/rx";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
+import Loader from "../ui/loader";
 
-const Sidebar = ({ profiledata }) => {
+const Sidebar = () => {
+  const { data: profiledata, isLoading } = useGetOperatorProfileQuery();
+  const [open, setOpen] = useState(false);
+  const [activeName, setActiveName] = useState("");
   const role = profiledata?.data?.role;
   const menus = [
     {
@@ -34,9 +39,9 @@ const Sidebar = ({ profiledata }) => {
       icon: IoIosSettings,
     },
   ];
-  const [open, setOpen] = useState(false);
-  const [activeName, setActiveName] = useState("");
-
+  if (isLoading) {
+    return <Loader />;
+  }
   const activeMenu = (name) => {
     setActiveName(name);
   };
@@ -100,7 +105,7 @@ const Sidebar = ({ profiledata }) => {
                 className={`${open &&
                   "hidden"} fixed left-48 bg-white font-semibold whitespace-pre text-sm text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
               >
-                {isProfileAdmin ? "disable" :  menu?.names}
+                {isProfileAdmin ? "disable" : menu?.names}
               </h2>
             </Link>
           );
