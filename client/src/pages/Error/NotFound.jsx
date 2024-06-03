@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
 import Error from "../../components/ui/Error";
 import { useNavigate } from "react-router-dom";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 
-const NotFound = ({ profiledata, isLoading, isError }) => {
+const NotFound = () => {
   const navigate = useNavigate();
   const [count, setCount] = React.useState(5);
+  const {
+    data: profiledata,
+    isError,
+    isLoading,
+  } = useGetOperatorProfileQuery();
 
   useEffect(() => {
     const timeout = setTimeout(() => {

@@ -10,14 +10,22 @@ import toast from "react-hot-toast";
 import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdError } from "react-icons/md";
+import Loader from "../../components/ui/loader";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 const ClubLoginTemp = () => {
-  const [
-    temporaryLogin,
-    { isLoading, isSuccess, isError },
-  ] = useTemporaryLoginMutation();
+  const [temporaryLogin] = useTemporaryLoginMutation();
   const navigate = useNavigate();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
+
+  if (profileLoading) return <Loader />;
+  if (profiledata) navigate("/");
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -42,6 +50,7 @@ const ClubLoginTemp = () => {
           }
         );
         navigate("/settings/admin/temp");
+        navigate(0);
       }
     } catch (error) {
       toast.custom(

@@ -9,35 +9,45 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
 import toast from "react-hot-toast";
 import { MdError } from "react-icons/md";
+import { useGetAllProfileQuery } from "../../store/api/clubAPI";
+import Loader from "../../components/ui/loader";
 const OperatorResetPass = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const {token} = useParams();
-  if(!token){
-     toast.custom(
-       <>
-         <Toasts
-           boldMessage={"Error!"}
-           message={"invalid token" || "Internal Server Error"}
-           icon={<MdError className="text-text_red" size={32} />}
-         />
-       </>,
-       {
-         position: "top-left",
-         duration: 2000,
-       }
-     );
-     navigate("/operator/login");
+  const { token } = useParams();
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetAllProfileQuery();
+
+  if (profileLoading) return <Loader />;
+  if (profiledata) navigate("/");
+  if (!token) {
+    toast.custom(
+      <>
+        <Toasts
+          boldMessage={"Error!"}
+          message={"invalid token" || "Internal Server Error"}
+          icon={<MdError className="text-text_red" size={32} />}
+        />
+      </>,
+      {
+        position: "top-left",
+        duration: 2000,
+      }
+    );
+    navigate("/operator/login");
   }
 
-  const resetPassword = async(e) => {
+  const resetPassword = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `/api/v1/operator/reset-password/${token}`,{
+        `/api/v1/operator/reset-password/${token}`,
+        {
           newPassword: newPassword,
-          confirmPassword: confirmPassword
+          confirmPassword: confirmPassword,
         }
       );
       if (data) {
@@ -79,7 +89,11 @@ const OperatorResetPass = () => {
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96 " />
-      <img src={logo} alt="logo" className="font-bold absolute top-6 left-20" />
+      <img
+        src={logo}
+        alt="logo"
+        className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
+      />
 
       {/* Input starts here */}
       <div className="flex flex-col justify-center row-start-4 row-end-10 col-start-3 col-end-11 px-62">
@@ -92,7 +106,10 @@ const OperatorResetPass = () => {
             placeholder={"New Password"}
             onchange={(e) => setNewPassword(e.target.value)}
           />
-          <Passwordbox placeholder={"Confirm Password"} onchange={(e)=>setConfirmPassword(e.target.value)}/>
+          <Passwordbox
+            placeholder={"Confirm Password"}
+            onchange={(e) => setConfirmPassword(e.target.value)}
+          />
           <div className="flex justify-center">
             <ButtonGroup
               textColor={"text-btn_primary"}

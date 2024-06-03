@@ -14,8 +14,6 @@ export const operatorProfileApi = createApi({
   }),
 });
 
-
-
 export const operatorForgetPasswordApi = createApi({
   reducerPath: "operatorForgetPasswordApi",
   baseQuery: fetchBaseQuery({
@@ -72,7 +70,15 @@ export const operatorUpdateProfileApi = createApi({
       }) => ({
         url: "/update",
         method: "PUT",
-        body: { username, email, mobileNumber, address, idType, idNumber, profileImage },
+        body: {
+          username,
+          email,
+          mobileNumber,
+          address,
+          idType,
+          idNumber,
+          profileImage,
+        },
       }),
     }),
   }),
@@ -96,35 +102,19 @@ export const operatorChangePasswordApi = createApi({
 });
 
 export const operatorLogoutApi = createApi({
-         reducerPath: "operatorLogoutApi",
-         baseQuery: fetchBaseQuery({
-           baseUrl: "/api/v1/logout",
-         }),
-         endpoints: (builder) => ({
-           logout: builder.mutation({
-             query: () => ({
-               url: "/",
-               method: "GET",
-             }),
-           }),
-         }),
-       });
-
-// export const operatorDeleteApi = createApi({
-//   reducerPath: "operatorDeleteApi",
-//   baseQuery: fetchBaseQuery({
-//     baseUrl: "/api/v1/operator",
-//     credentials: "include",
-//   }),
-//   endpoints: (builder) => ({
-//     deleteOperator: builder.mutation({
-//       query: (id) => ({
-//         url: `/${id}`,
-//         method: "DELETE",
-//       }),
-//     }),
-//   }),
-// });
+  reducerPath: "operatorLogoutApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "/api/v1/logout",
+  }),
+  endpoints: (builder) => ({
+    logout: builder.mutation({
+      query: () => ({
+        url: "/",
+        method: "GET",
+      }),
+    }),
+  }),
+});
 
 export const { useGetOperatorProfileQuery } = operatorProfileApi;
 export const { useSendResetLinkMutation } = operatorForgetPasswordApi;

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import InputBox from "../../components/ui/InputBox";
 import {
-  useAddOperatorImageMutation,
   useGetOperatorProfileQuery,
   useUpdateOperatorProfileMutation,
 } from "../../store/api/operatorAPI";
@@ -12,11 +11,9 @@ import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import axios from "axios";
 import { CgProfile } from "react-icons/cg";
-import Loader from "../../components/ui/loader";
 import { LuLoader2 } from "react-icons/lu";
 
 const Profile = () => {
-  const [open, SetOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [idType, setIdType] = useState("");
@@ -24,24 +21,15 @@ const Profile = () => {
   const [address, setAddress] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [publicId, setPublicId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [selectedFile, setSelectedFile] = useState(null);
   const [
     updateOperatorProfile,
-    {
-      isError: updateisError,
-      isLoading: updateisLoading,
-      isSuccess: updateisSuccess,
-    },
+    { isError: updateisError, isLoading: updateisLoading },
   ] = useUpdateOperatorProfileMutation();
-  const [
-    addOperatorImage,
-    { isLoading, isSuccess, isError },
-  ] = useAddOperatorImageMutation();
 
   const {
     data: profiledata,
-    isError: profileisError,
     isLoading: profileisLoading,
   } = useGetOperatorProfileQuery();
 
@@ -54,10 +42,12 @@ const Profile = () => {
       setAddress(profiledata.data.address);
       setImageUrl(profiledata.data.profileImage.url);
       setPublicId(profiledata.data.profileImage.public_id);
-    } 
+    }
   }, [profiledata]);
 
-    const onFileDrop = async (e) => {
+  const onFileDrop = async (e) => {
+    try {
+      setIsLoading(true);
       const newFile = e.target.files[0];
 
       if (newFile) {
@@ -90,14 +80,30 @@ const Profile = () => {
           );
         }
       }
-    };
+    } catch (error) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error || "Image not uploaded"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    // console.log("Update profile data:", name, email, mobile, address, idType, idNumber);
+
     try {
       const updatedData = await updateOperatorProfile({
-        // username: name,
         email: email,
         mobileNumber: mobile,
         address: address,
@@ -159,7 +165,7 @@ const Profile = () => {
   };
 
   if (profileisLoading) {
-    return <LuLoader2/>
+    return <LuLoader2 />;
   }
 
   return (

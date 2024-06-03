@@ -23,24 +23,32 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
     refetch();
   }, [reloadQuery, refetch]);
 
-  const formattedData = React.useMemo(() => (
-    allTransactions?.data?.map((transaction, index) => ({
-      SLNO: index + 1,
-      MEMBERID: transaction.memberId._id,
-      COUPONTYPE: transaction.type,
-      COUPONAMOUNT: transaction.couponId.amount,
-      PAYAMOUNT: transaction.payableAmount,
-      TIMESTAMP: new Date(transaction.timeStamp).toLocaleTimeString(),
-      STATUS: transaction.status.toUpperCase(),
-    })) || []
-  ), [allTransactions]);
+  const formattedData = React.useMemo(
+    () =>
+      allTransactions?.data?.map((transaction, index) => ({
+        SLNO: index + 1,
+        MEMBERID: transaction.memberId._id,
+        COUPONTYPE: transaction.type,
+        COUPONAMOUNT: transaction.couponId.amount,
+        PAYAMOUNT: transaction.payableAmount,
+        TIMESTAMP: new Date(transaction.timeStamp).toLocaleTimeString(),
+        STATUS: transaction.status.toUpperCase(),
+      })) || [],
+    [allTransactions]
+  );
 
   if (transLoading) {
     return <p>Loading...</p>;
   }
 
   if (isError) {
-    return <p>Error loading data.</p>;
+    return (
+      <div className="col-span-12 mt-6">
+        <h1 className="text-center text-3xl font-bold text-text_primary tracking-normal">
+          No data available
+        </h1>
+      </div>
+    );
   }
 
   return (
@@ -142,12 +150,10 @@ const columns = [
             : "bg-[#0000FF]"
         }`}
         style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
-        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
       >
         {row.STATUS}
       </p>
     ),
-    // width: "100px",
   },
 ];
 

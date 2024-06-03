@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchBox from "../../components/ui/SearchBox";
 import AddButton from "../../components/ui/AddButton";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -7,21 +7,56 @@ import MemberCard from "../../components/ui/MemberCard";
 import { useGetAllMembersQuery } from "../../store/api/memberAPI";
 import ReactPaginate from "react-paginate";
 import { GrPrevious, GrNext } from "react-icons/gr";
+import Loader from "../../components/ui/loader";
+import { useNavigate } from "react-router-dom";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
+import { toast } from "react-hot-toast";
+import Toasts from "../../components/ui/Toasts";
+import { FaExclamationTriangle } from "react-icons/fa";
 const Member = () => {
+  const navigate = useNavigate();
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
-  const { data, isSuccess, isLoading }= useGetAllMembersQuery({
+  const { data, isLoading: memberLoading } = useGetAllMembersQuery({
     page: page === 0 ? 1 : page,
     limit: 12,
     search: search,
   });
 
-  if (isLoading) return <div>Loading........</div>;
-  
+  const { data: profiledata, isLoading } = useGetOperatorProfileQuery();
 
-  console.log("From memeber ", data);
+  useEffect(() => {
+    if (profiledata) {
+      if (!profiledata.data) {
+        navigate("/login/operator");
+      }
+    }
+  }, [profiledata]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (memberLoading) return <Loader />;
+
+  if (data && data.data.length === 0) {
+    toast.custom(
+      <>
+        <Toasts
+          boldMessage={"Alert!"}
+          message={"No Member Found"}
+          icon={
+            <FaExclamationTriangle className="text-text_orange" size={32} />
+          }
+        />
+      </>,
+      {
+        position: "top-left",
+        duration: 2000,
+      }
+    );
+  }
 
   const pageCount = Math.ceil(data?.totalMembers / 12);
 
@@ -33,14 +68,18 @@ const Member = () => {
   return (
     <>
       <div className="background bg-cover bg-center">
-        <div className="container w-full h-screen grid grid-rows-12 grid-cols-12 gap-4">
+        <div className="container w-full h-screen grid grid-rows-12 grid-cols-12 gap-4 mx-auto">
           <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
             <SearchBox
               placeholder={
                 "Search by Member Ref. number, Name, Email, Phone number......"
               }
               type={"text"}
-              onchange={(e) => setTimeout(() => {setSearch(e.target.value)}, 2000)}
+              onchange={(e) =>
+                setTimeout(() => {
+                  setSearch(e.target.value);
+                }, 2000)
+              }
             />
           </div>
           <div
@@ -52,12 +91,19 @@ const Member = () => {
               icon={<IoMdAddCircleOutline size={22} />}
             />
           </div>
-          <div className="row-start-3 row-end-11 col-start-2 col-end-12">
-            <div className="grid grid-cols-12 gap-4">
-              {data &&
+          <div className="row-start-3 row-end-11 col-start-2 col-end-12 items-center">
+            <div className="grid grid-cols-12 gap-4 ">
+              {data && data.data && data.data.length < 0 ? (
                 data.data.map((item, index) => {
-                  return <MemberCard item={item} index={index} key={index} />
-                })}
+                  return <MemberCard item={item} index={index} key={index} />;
+                })
+              ) : (
+                <div className="col-span-12 mt-6">
+                  <h1 className="text-center text-3xl font-bold text-text_primary tracking-normal">
+                    No Member Found
+                  </h1>
+                </div>
+              )}
             </div>
             <div className="fixed right-20 bottom-5">
               <div className="flex gap-2">

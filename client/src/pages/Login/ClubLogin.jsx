@@ -12,11 +12,26 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/LOGO.png";
 import { MdError } from "react-icons/md";
 import { LuLoader2 } from "react-icons/lu";
+import Loader from "../../components/ui/loader";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 const ClubLogin = () => {
   const navigate = useNavigate();
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
+
+  if (profileLoading) {
+    return <Loader />;
+  }
+
+  if (profiledata) {
+    navigate("/");
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const { data } = await axios.post("/api/v1/club/login", {
@@ -24,12 +39,13 @@ const ClubLogin = () => {
       password,
     });
     if (data) {
-      // console.log(data.data.role);
       if (data.data.role === "admin") {
         navigate("/");
+        navigate(0);
       }
       if (data.data.role === "operator") {
         navigate("/login/operator");
+        navigate(0);
       }
       toast.custom(
         <>
@@ -51,6 +67,7 @@ const ClubLogin = () => {
       );
     }
   };
+
   const handleForgetPass = async (e) => {
     e.preventDefault();
     try {
@@ -97,7 +114,6 @@ const ClubLogin = () => {
       );
       setLoading(false);
     }
-
   };
   return (
     <>
@@ -134,7 +150,11 @@ const ClubLogin = () => {
                 className="text-blue-700 font-medium text-xs roboto cursor-pointer"
                 onClick={handleForgetPass}
               >
-                {loading? <LuLoader2 className="animate-spin" size={20} />: 'Forget your password?'}
+                {loading ? (
+                  <LuLoader2 className="animate-spin" size={20} />
+                ) : (
+                  "Forget your password?"
+                )}
               </p>
             </form>
           </div>

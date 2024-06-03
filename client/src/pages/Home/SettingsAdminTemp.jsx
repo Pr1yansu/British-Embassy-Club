@@ -5,49 +5,50 @@ import { useGetAllProfileQuery } from "../../store/api/clubAPI";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
 import toast from "react-hot-toast";
-import { useLogoutMutation } from "../../store/api/operatorAPI";
+import {
+  useGetOperatorProfileQuery,
+  useLogoutMutation,
+} from "../../store/api/operatorAPI";
 import { useNavigate } from "react-router-dom";
 import { MdError } from "react-icons/md";
+import Loader from "../../components/ui/loader";
 const SettingsAdminTemp = () => {
   const navigate = useNavigate();
   const { data: allprofiledata, isError, isLoading } = useGetAllProfileQuery();
-    const [
-      logout,
-      { isLoading: logoutLoading, isError: logoutIsError, data: logoutData },
-    ] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+  } = useGetOperatorProfileQuery();
 
-    const handleLogout = async () => {
-      try {
-        const data = await logout().unwrap();
+  if (profileLoading) {
+    return <Loader />;
+  }
 
-        if (data) {
-          toast.custom(
-            <>
-              <Toasts
-                boldMessage={"Success!"}
-                message={"Logout Successfully"}
-                icon={
-                  <IoCheckmarkDoneCircleOutline
-                    className="text-text_tertiaary"
-                    size={32}
-                  />
-                }
-              />
-            </>,
-            {
-              position: "top-left",
-              duration: 2000,
-            }
-          );
-          navigate("/login/club");
-        }
-      } catch (error) {
+  if (!profiledata) {
+    navigate("/login/club");
+  }
+  console.log(profiledata);
+  if (!profiledata.data.temporary) {
+    navigate("/");
+  }
+
+  const handleLogout = async () => {
+    try {
+      const data = await logout().unwrap();
+
+      if (data) {
         toast.custom(
           <>
             <Toasts
-              boldMessage={"Error!"}
-              message={error.response.data.message || "Internal Server Error"}
-              icon={<MdError className="text-text_red" size={32} />}
+              boldMessage={"Success!"}
+              message={"Logout Successfully"}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
             />
           </>,
           {
@@ -55,10 +56,27 @@ const SettingsAdminTemp = () => {
             duration: 2000,
           }
         );
+        navigate("/login/club");
+        navigate(0);
       }
-    };
+    } catch (error) {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-left",
+          duration: 2000,
+        }
+      );
+    }
+  };
 
-    if (isLoading) return <>loading....</>;
+  if (isLoading) return <>loading....</>;
   return (
     <>
       <div className="background bg-cover bg-center w-full h-screen">
