@@ -22,6 +22,8 @@ const Dashboard = () => {
     return <Loader />;
   }
 
+  console.log(profiledata);
+
   if (!profiledata) {
     navigate("/login/club");
   }

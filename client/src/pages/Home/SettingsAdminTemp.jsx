@@ -28,7 +28,7 @@ const SettingsAdminTemp = () => {
   if (!profiledata) {
     navigate("/login/club");
   }
-  console.log(profiledata);
+  // console.log(profiledata);
   if (!profiledata.data.temporary) {
     navigate("/");
   }

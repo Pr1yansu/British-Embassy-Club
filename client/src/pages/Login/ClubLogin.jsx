@@ -40,14 +40,6 @@ const ClubLogin = () => {
         password,
       });
       if (data) {
-        if (data.data.role === "admin") {
-          navigate("/");
-          navigate(0);
-        }
-        if (data.data.role === "operator") {
-          navigate("/login/operator");
-          navigate(0);
-        }
         toast.custom(
           <>
             <Toasts
@@ -66,6 +58,15 @@ const ClubLogin = () => {
             duration: 1000,
           }
         );
+        
+         if (data.data.role === "admin") {
+           navigate("/");
+           navigate(0);
+         }
+         if (data.data.role === "operator") {
+           navigate("/login/operator");
+           navigate(0);
+         }
       }
     }catch(error){
       toast.custom(
