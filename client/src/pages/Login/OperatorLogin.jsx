@@ -35,6 +35,9 @@ const OperatorLogin = () => {
         {
           username,
           password,
+        },
+        {
+          withCredentials: true,
         }
       );
       toast.custom(
