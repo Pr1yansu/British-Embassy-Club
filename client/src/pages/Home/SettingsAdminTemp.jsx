@@ -14,7 +14,7 @@ import { MdError } from "react-icons/md";
 import Loader from "../../components/ui/loader";
 const SettingsAdminTemp = () => {
   const navigate = useNavigate();
-  const { data: allprofiledata, isError, isLoading } = useGetAllProfileQuery();
+  const { data: allprofiledata, isLoading } = useGetAllProfileQuery();
   const [logout] = useLogoutMutation();
   const {
     data: profiledata,
@@ -28,8 +28,8 @@ const SettingsAdminTemp = () => {
   if (!profiledata) {
     navigate("/login/club");
   }
-  // console.log(profiledata);
-  if (!profiledata.data.temporary) {
+
+  if (!profiledata?.data?.temporary || !profiledata?.data?.role === "admin") {
     navigate("/");
   }
 
@@ -76,11 +76,11 @@ const SettingsAdminTemp = () => {
     }
   };
 
-  if (isLoading) return <>loading....</>;
+  if (isLoading) return <Loader />;
   return (
     <>
       <div className="background bg-cover bg-center w-full h-screen">
-        <div className="container grid grid-rows-12 grid-cols-12 gap-4">
+        <div className="container mx-auto grid grid-rows-12 grid-cols-12 gap-4">
           <UserManagement
             allprofiledata={allprofiledata}
             colStart={"col-start-4"}

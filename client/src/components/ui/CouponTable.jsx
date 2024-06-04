@@ -6,20 +6,12 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
   const [count, setCount] = React.useState(0);
   const {
     data: allTransactions,
-    isSuccess,
     isLoading: transLoading,
     isError,
     refetch,
   } = useGetAllTransactionsQuery();
 
   console.log(allTransactions);
-
-  React.useEffect(() => {
-    if (isSuccess && allTransactions) {
-      setCount(allTransactions.todaysTotalTransactions);
-    }
-    console.log(reloadQuery);
-  }, [allTransactions, isSuccess, reloadQuery]);
 
   React.useEffect(() => {
     refetch();
@@ -43,7 +35,7 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
     return <p>Loading...</p>;
   }
 
-  if (isError) {
+  if (allTransactions?.data?.length === 0) {
     return (
       <div className="col-span-12 mt-6">
         <h1 className="text-center text-3xl font-bold text-text_primary tracking-normal">
@@ -67,7 +59,7 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
         customStyles={customStyles}
         pagination
         paginationPerPage={10}
-        paginationTotalRows={Math.floor(allTransactions.totalTransactions/10)}
+        paginationTotalRows={formattedData.length}
         paginationRowsPerPageOptions={[5, 10, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",

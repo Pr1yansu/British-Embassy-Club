@@ -35,7 +35,7 @@ const OperatorSignUpOtp = () => {
     try {
       const data = await sendResetLink(username).unwrap();
 
-      if (isSuccess) {
+      if (data) {
         toast.custom(
           <>
             <Toasts
@@ -113,7 +113,7 @@ const OperatorSignUpOtp = () => {
                     <LuLoader2 className="animate-spin" size={20} />
                   </>
                 ) : (
-                  <>Sign up</>
+                  <>Send</>
                 )
               }
               textColor={"text-btn_primary"}

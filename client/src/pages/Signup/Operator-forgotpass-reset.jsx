@@ -9,20 +9,12 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
 import toast from "react-hot-toast";
 import { MdError } from "react-icons/md";
-import { useGetAllProfileQuery } from "../../store/api/clubAPI";
-import Loader from "../../components/ui/loader";
 const OperatorResetPass = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const { token } = useParams();
-  const {
-    data: profiledata,
-    isLoading: profileLoading,
-  } = useGetAllProfileQuery();
 
-  if (profileLoading) return <Loader />;
-  if (profiledata) navigate("/");
   if (!token) {
     toast.custom(
       <>
