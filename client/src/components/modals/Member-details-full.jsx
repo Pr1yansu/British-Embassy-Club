@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { CgProfile } from "react-icons/cg";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaIdCard } from "react-icons/fa";
 import ButtonGroup from "../ui/ButtonGroup";
@@ -17,13 +16,10 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenCard, setOpenCard] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
-  const { data, isError, isLoading, isSuccess } = useGetMemberByIdQuery(
-    memberId
-  );
+  const { data, isLoading } = useGetMemberByIdQuery(memberId);
 
-  if (isLoading) return <Loader/>;
+  if (isLoading) return <Loader />;
 
-  console.log("details", data);
   const handleCopy = () => {
     toast.custom(
       <div className="bg-white px-6 py-3 rounded-lg flex items-center justify-center gap-4 shadow-lg">
@@ -82,9 +78,9 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Member ID</p>
                 <CopyToClipboard text={data.data._id} onCopy={handleCopy}>
-                <p className="lato text-sm text-text_primary font-normal cursor-pointer">
-                  {data.data._id}
-                </p>
+                  <p className="lato text-sm text-text_primary font-normal cursor-pointer">
+                    {data.data._id}
+                  </p>
                 </CopyToClipboard>
               </div>
               <div className="w-1/2">

@@ -5,17 +5,8 @@ import ButtonGroup from "../../components/ui/ButtonGroup";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/LOGO.png";
-import Loader from "../../components/ui/loader";
-import { useGetAllProfileQuery } from "../../store/api/clubAPI";
 const OperatorResetPassMail = () => {
   const navigate = useNavigate();
-  const {
-    data: profiledata,
-    isLoading: profileLoading,
-  } = useGetAllProfileQuery();
-
-  if (profileLoading) return <Loader />;
-  if (profiledata) navigate("/");
   return (
     <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute -top-10 h-56 left-96 " />

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import Toasts from "../../components/ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import logo from "../../assets/images/LOGO.png";
-import { MdError, MdErrorOutline, MdOutlineErrorOutline } from "react-icons/md";
+import { MdError } from "react-icons/md";
 import Loader from "../../components/ui/loader";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 
@@ -87,7 +87,11 @@ const OperatorLogin = () => {
         alt="arrow"
         className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden"
       />
-      <img src={logo} alt="logo" className="absolute top-6 left-24 h-24 aspect-square object-cover object-center" />
+      <img
+        src={logo}
+        alt="logo"
+        className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
+      />
       <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40">
         <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center">
           <form

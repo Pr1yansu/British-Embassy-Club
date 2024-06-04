@@ -41,7 +41,7 @@ function App() {
       <Toaster
         position="bottom-right"
         toastOptions={{
-          duration: 1000,
+          duration: 1500,
         }}
       />
       {locations.includes(location.pathname) ? <Sidebar /> : null}

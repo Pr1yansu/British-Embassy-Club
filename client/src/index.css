@@ -7,6 +7,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #E2E8F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1d4ed8;
+  border-radius: 10px;
+}
+
 
 * {
   margin: 0;
@@ -14,11 +24,13 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 body {
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -44,6 +56,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 12px;
 }
+
 /* main Card Component end */
 
 .dragover {

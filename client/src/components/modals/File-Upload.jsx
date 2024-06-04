@@ -16,10 +16,7 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 const FileUpload = (props) => {
   const wrapperRef = useRef(null);
   const [file, setFile] = useState(null);
-  const [
-    addMemberImage,
-    { isSuccess, isLoading, isError },
-  ] = useAddMemberImageMutation();
+  const [addMemberImage, { isSuccess }] = useAddMemberImageMutation();
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
