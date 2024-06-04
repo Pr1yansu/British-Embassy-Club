@@ -92,12 +92,15 @@ const ClubSignUp = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post("/api/v1/club/create", {
-        username,
-        email,
-        password,
-        role,
-      });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/v1/club/create`,
+        {
+          username,
+          email,
+          password,
+          role,
+        }
+      );
       console.log(data);
       if (data) {
         toast.custom(

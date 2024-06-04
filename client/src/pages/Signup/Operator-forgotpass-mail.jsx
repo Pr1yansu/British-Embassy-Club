@@ -22,7 +22,7 @@ const OperatorResetPassMail = () => {
         <p className="font-medium text-xl font-inter tracking-tight">
           We just sent an email to your inbox with a link to reset your password
         </p>
-        <img src={mailbox} className="h-60 w-60 self-center" />
+        <img src={mailbox} className="h-60 w-60 self-center" alt="" />
       </div>
       <div className="row-start-10 row-end-11 col-start-5 col-end-9 flex justify-between">
         <ButtonGroup

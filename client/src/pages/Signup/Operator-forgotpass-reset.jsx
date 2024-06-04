@@ -36,7 +36,7 @@ const OperatorResetPass = () => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `/api/v1/operator/reset-password/${token}`,
+        `${process.env.REACT_APP_API_URL}/api/v1/operator/reset-password/${token}`,
         {
           newPassword: newPassword,
           confirmPassword: confirmPassword,

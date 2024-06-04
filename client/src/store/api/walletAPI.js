@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const getWalletApi = createApi({
   reducerPath: "getWalletAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/wallet",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -16,7 +16,7 @@ export const getWalletApi = createApi({
 export const addTransactionApi = createApi({
   reducerPath: "addTransactionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/wallet",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -35,7 +35,7 @@ export const addTransactionApi = createApi({
 export const fetchTransactionsApi = createApi({
   reducerPath: "fetchTransactionsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/wallet",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -46,22 +46,22 @@ export const fetchTransactionsApi = createApi({
 });
 
 export const getAllTransactionsApi = createApi({
-         reducerPath: "getAllTransactionsApi",
-         baseQuery: fetchBaseQuery({
-           baseUrl: "/api/v1/wallet",
-           credentials: "include",
-         }),
-         endpoints: (builder) => ({
-           getAllTransactions: builder.query({
-             query: () => `/get-transactions`,
-           }),
-         }),
-       });
+  reducerPath: "getAllTransactionsApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    getAllTransactions: builder.query({
+      query: () => `/get-transactions`,
+    }),
+  }),
+});
 
 export const updateTransactionApi = createApi({
   reducerPath: "updateTransactionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/wallet",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -80,7 +80,7 @@ export const updateTransactionApi = createApi({
 export const updateCouponExpiresApi = createApi({
   reducerPath: "updateCouponExpiresApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/wallet",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
     credentials: "include",
   }),
   endpoints: (builder) => ({

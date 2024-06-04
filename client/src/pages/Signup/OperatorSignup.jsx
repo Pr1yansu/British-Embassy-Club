@@ -127,7 +127,7 @@ const OperatorSignup = () => {
 
     try {
       const { data } = await axios.post(
-        "/api/v1/operator/register",
+        `${process.env.REACT_APP_API_URL}/api/v1/operator/register`,
         {
           username,
           email,

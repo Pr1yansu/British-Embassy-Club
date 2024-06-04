@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const operatorProfileApi = createApi({
   reducerPath: "operatorProfileApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/operator/profile",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/operator/profile`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -17,7 +17,7 @@ export const operatorProfileApi = createApi({
 export const operatorForgetPasswordApi = createApi({
   reducerPath: "operatorForgetPasswordApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/operator",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/operator`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -34,7 +34,7 @@ export const operatorForgetPasswordApi = createApi({
 export const operatorImageApi = createApi({
   reducerPath: "operatorImageApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/operator",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/operator`,
     credentials: "include",
     headers: {
       "Content-Type": "multipart/form-data",
@@ -54,7 +54,7 @@ export const operatorImageApi = createApi({
 export const operatorUpdateProfileApi = createApi({
   reducerPath: "operatorUpdateProfileApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/operator",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/operator`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -87,7 +87,7 @@ export const operatorUpdateProfileApi = createApi({
 export const operatorChangePasswordApi = createApi({
   reducerPath: "operatorChangePasswordApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/operator",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/operator`,
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -104,7 +104,7 @@ export const operatorChangePasswordApi = createApi({
 export const operatorLogoutApi = createApi({
   reducerPath: "operatorLogoutApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/logout",
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/logout`,
   }),
   endpoints: (builder) => ({
     logout: builder.mutation({

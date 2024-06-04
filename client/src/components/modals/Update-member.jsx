@@ -17,10 +17,9 @@ import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { LuLoader2 } from "react-icons/lu";
 
-const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
-  const { data: member, isLoading: isDataLoading } = useGetMemberByIdQuery(
-    memberId
-  );
+const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
+  const { data: member, isLoading: isDataLoading } =
+    useGetMemberByIdQuery(memberId);
   const [openExtend, setOpenExtend] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -42,10 +41,8 @@ const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
 
   const [updateLoading, setUpdateLoading] = useState(false);
 
-  const [
-    updateMember,
-    { isSuccess, isLoading, isError },
-  ] = useUpdateMemberMutation();
+  const [updateMember, { isSuccess, isLoading, isError }] =
+    useUpdateMemberMutation();
 
   const navigate = useNavigate();
 
@@ -117,7 +114,7 @@ const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
           }
         );
         setUpdateLoading(false);
-        onModal()
+        onModal();
         setOpen(false);
         navigate(0);
       }
@@ -145,22 +142,22 @@ const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
     try {
       setImgLoading(true);
       const newFile = e.target.files[0];
-  
+
       if (newFile) {
         const file = new FormData();
         file.append("image", newFile);
         console.log(file.get("image"));
         const { data } = await axios.put(
-          `/api/v1/member/update-member-image/${memberId}`,
+          `${process.env.REACT_APP_API_URL}/api/v1/member/update-member-image/${memberId}`,
           file
         );
-  
+
         if (data) {
           setImageUrl(data.data.image);
           setPublicId(data.data.public_id);
           setImgLoading(false);
         }
-  
+
         if (data.status === 400) {
           toast.custom(
             <>
@@ -284,8 +281,9 @@ const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
                 <BsArrowUpSquareFill
                   size={30}
                   onClick={() => setOpenExtend(!openExtend)}
-                  className={`${!openExtend &&
-                    "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
+                  className={`${
+                    !openExtend && "transform rotate-180"
+                  } ease-in-out duration-300 cursor-pointer`}
                 />
               </div>
               {openExtend && (
@@ -294,7 +292,10 @@ const UpdateMember = ({ onModal,setOpen, memberId, expiryTime }) => {
                     {[0, 1, 2, 3, 4, 5].map((year) => (
                       <li
                         key={year}
-                        onClick={() => {setExpiryLimit(year); setOpenExtend(false);}}
+                        onClick={() => {
+                          setExpiryLimit(year);
+                          setOpenExtend(false);
+                        }}
                         className="hover:bg-btn_secondary hover:text-btn_primary w-full py-1 px-4"
                       >
                         {year === 0
