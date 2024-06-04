@@ -40,6 +40,9 @@ const ClubLogin = () => {
         {
           username,
           password,
+        },
+        {
+          withCredentials: true,
         }
       );
       if (data) {
@@ -64,11 +67,9 @@ const ClubLogin = () => {
 
         if (data.data.role === "admin") {
           navigate("/");
-          navigate(0);
         }
         if (data.data.role === "operator") {
           navigate("/login/operator");
-          navigate(0);
         }
       }
     } catch (error) {

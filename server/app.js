@@ -51,6 +51,7 @@ app.use(
     credentials: true,
   })
 );
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -68,26 +69,9 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.DATABASE_URI,
     }),
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      secure: false,
-      sameSite: "none",
-    },
   })
 );
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Access-Control-Allow-Origin",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  })
-);
+
 app.use(morgan("dev"));
 
 // Routes

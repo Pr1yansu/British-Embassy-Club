@@ -105,6 +105,7 @@ export const operatorLogoutApi = createApi({
   reducerPath: "operatorLogoutApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/logout`,
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     logout: builder.mutation({
