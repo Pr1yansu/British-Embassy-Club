@@ -8,7 +8,7 @@ import {
 import toast from "react-hot-toast";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
-import { MdError } from "react-icons/md";
+import { MdError, MdModeEdit } from "react-icons/md";
 import axios from "axios";
 import { CgProfile } from "react-icons/cg";
 import { LuLoader2 } from "react-icons/lu";
@@ -22,6 +22,7 @@ const Profile = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [publicId, setPublicId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const [
     updateOperatorProfile,
@@ -65,7 +66,6 @@ const Profile = () => {
       if (newFile) {
         const file = new FormData();
         file.append("image", newFile);
-        console.log(file.get("image"));
         const { data } = await axios.post(
           `/api/v1/operator/update-operator-image`,
           file
@@ -86,8 +86,8 @@ const Profile = () => {
               />
             </>,
             {
-              position: "top-left",
-              duration: 2000,
+              position: "bottom-right",
+              duration: 1000,
             }
           );
         }
@@ -102,8 +102,8 @@ const Profile = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     } finally {
@@ -138,8 +138,8 @@ const Profile = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
       }
@@ -154,8 +154,8 @@ const Profile = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
       }
@@ -169,8 +169,8 @@ const Profile = () => {
          />
        </>,
        {
-         position: "top-left",
-         duration: 2000,
+         position: "bottom-right",
+         duration: 1000,
        }
      );
     }
@@ -183,23 +183,31 @@ const Profile = () => {
   return (
     <>
       <div className="background bg-cover bg-center">
-        <div className="container grid grid-rows-12 grid-cols-12  h-screen">
+        <div className="container grid grid-rows-12 grid-cols-12 h-screen">
           <div className="row-start-2 row-end-11 col-start-4 col-end-11 bg-white p-6 rounded-3xl shadow-table_shadow">
             <div className="flex justify-start items-center gap-6 mb-4">
-              <div className="relative h-32 w-32">
-                {imageUrl ? (
-                  <img
-                    src={imageUrl}
-                    alt="profile"
-                    className="h-full w-full object-cover rounded-full"
-                  />
+              <div
+                className="relative h-32 w-32 flex justify-center items-center border-2 border-primary rounded-full overflow-hidden bg-primary"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {isHovered ? (
+                  <MdModeEdit className="w-10 h-10 text-gray-500" />
                 ) : (
-                  <CgProfile className="w-full h-full" color="#6B7280" />
+                  imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt="profile"
+                      className="h-full w-full object-cover object-center rounded-full"
+                    />
+                  ) : (
+                    <CgProfile className="w-full h-full" color="#6B7280" />
+                  )
                 )}
                 <input
                   type="file"
                   name="image"
-                  className=" w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer"
+                  className="w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer"
                   accept="image/*"
                   value=""
                   onChange={onFileDrop}
@@ -209,7 +217,15 @@ const Profile = () => {
                 <ButtonGroup
                   color={"bg-btn_primary"}
                   textColor={"text-btn_secondary"}
-                  name={"Upload new picture"}
+                  name={
+                    isLoading ? (
+                      <>
+                        <LuLoader2 className="animate-spin" size={20} />
+                      </>
+                    ) : (
+                      <>Upload New Image</>
+                    )
+                  }
                   type={"submit"}
                   disable={isLoading}
                 />
@@ -260,7 +276,7 @@ const Profile = () => {
                       type="text"
                       id=""
                       placeholder="Id Number"
-                      className=" bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-sm text-text_primary "
+                      className="bg-primary outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-sm text-text_primary"
                       onChange={(e) => setIdNumber(e.target.value)}
                       value={idNumber}
                     />

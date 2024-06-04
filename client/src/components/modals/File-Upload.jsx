@@ -59,8 +59,8 @@ const FileUpload = (props) => {
               />
             </>,
             {
-              position: "top-left",
-              duration: 2000,
+              position: "bottom-right",
+              duration: 1000,
             }
           );
           props.onModal();
@@ -75,8 +75,8 @@ const FileUpload = (props) => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
       }

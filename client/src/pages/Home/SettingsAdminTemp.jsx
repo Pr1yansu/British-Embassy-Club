@@ -28,7 +28,7 @@ const SettingsAdminTemp = () => {
   if (!profiledata) {
     navigate("/login/club");
   }
-  console.log(profiledata);
+  // console.log(profiledata);
   if (!profiledata.data.temporary) {
     navigate("/");
   }
@@ -52,8 +52,8 @@ const SettingsAdminTemp = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         navigate("/login/club");
@@ -69,8 +69,8 @@ const SettingsAdminTemp = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }

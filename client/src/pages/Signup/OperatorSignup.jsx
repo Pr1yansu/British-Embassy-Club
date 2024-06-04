@@ -65,8 +65,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       setLoading(false);
@@ -83,8 +83,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       return;
@@ -100,8 +100,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       return;
@@ -117,8 +117,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       setLoading(false);
@@ -157,8 +157,8 @@ const OperatorSignup = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         navigate("/");
@@ -173,10 +173,11 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
+      setLoading(false);
     }
   };
 

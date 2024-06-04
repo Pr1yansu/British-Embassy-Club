@@ -52,8 +52,8 @@ const Member = () => {
         />
       </>,
       {
-        position: "top-left",
-        duration: 2000,
+        position: "bottom-right",
+        duration: 1000,
       }
     );
   }
@@ -78,7 +78,7 @@ const Member = () => {
               onchange={(e) =>
                 setTimeout(() => {
                   setSearch(e.target.value);
-                }, 2000)
+                }, 1000)
               }
             />
           </div>

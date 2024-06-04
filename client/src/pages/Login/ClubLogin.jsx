@@ -34,35 +34,52 @@ const ClubLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { data } = await axios.post("/api/v1/club/login", {
-      username,
-      password,
-    });
-    if (data) {
-      if (data.data.role === "admin") {
-        navigate("/");
-        navigate(0);
+    try{
+      const { data } = await axios.post("/api/v1/club/login", {
+        username,
+        password,
+      });
+      if (data) {
+        toast.custom(
+          <>
+            <Toasts
+              boldMessage={"Success!"}
+              message={data.message}
+              icon={
+                <IoCheckmarkDoneCircleOutline
+                  className="text-text_tertiaary"
+                  size={32}
+                />
+              }
+            />
+          </>,
+          {
+            position: "bottom-right",
+            duration: 1000,
+          }
+        );
+        
+         if (data.data.role === "admin") {
+           navigate("/");
+           navigate(0);
+         }
+         if (data.data.role === "operator") {
+           navigate("/login/operator");
+           navigate(0);
+         }
       }
-      if (data.data.role === "operator") {
-        navigate("/login/operator");
-        navigate(0);
-      }
+    }catch(error){
       toast.custom(
         <>
           <Toasts
-            boldMessage={"Success!"}
-            message={data.message}
-            icon={
-              <IoCheckmarkDoneCircleOutline
-                className="text-text_tertiaary"
-                size={32}
-              />
-            }
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -91,8 +108,8 @@ const ClubLogin = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         setLoading(false);
@@ -108,8 +125,8 @@ const ClubLogin = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
       setLoading(false);
@@ -128,7 +145,7 @@ const ClubLogin = () => {
         <img
           src={logo}
           alt="logo"
-          className="font-bold absolute top-6 left-20"
+          className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
         />
         <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
           <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">

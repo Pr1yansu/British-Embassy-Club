@@ -33,8 +33,8 @@ const OperatorResetPass = () => {
         />
       </>,
       {
-        position: "top-left",
-        duration: 2000,
+        position: "bottom-right",
+        duration: 1000,
       }
     );
     navigate("/operator/login");
@@ -64,8 +64,8 @@ const OperatorResetPass = () => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         navigate("/login/operator");
@@ -80,8 +80,8 @@ const OperatorResetPass = () => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }

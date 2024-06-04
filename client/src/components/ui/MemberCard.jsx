@@ -3,6 +3,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FiInfo } from "react-icons/fi";
 import MembersDetails from "../modals/Member-details-full";
 import { formatDate } from "../../config/FormatDate";
+import { FaRegCopy } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 const MemberCard = ({ item, index }) => {
@@ -11,10 +12,15 @@ const MemberCard = ({ item, index }) => {
 
   const handleCopy = () => {
     toast.custom(
-      <div className="border border-black p-1 rounded-sm text-xs">copied</div>,
+      <div className="bg-white px-6 py-3 rounded-lg flex items-center justify-center gap-4 shadow-lg">
+        <FaRegCopy size={24} className="text-text_secondary" />
+        <div className="text-text_primary  font-roboto text-xl flex gap-1">
+          Copied
+        </div>
+      </div>,
       {
-        duration: 2000,
-        position: "top-left",
+        duration: 1000,
+        position: "top-center",
       }
     );
   };
@@ -32,7 +38,11 @@ const MemberCard = ({ item, index }) => {
       >
         <div className="flex items-center justify-between my-1 pb-3 border-b-2 border-primary mb-2">
           <div className="flex items-center gap-3">
-            <img src={item.image.url} className="w-10 aspect-auto rounded-full object-cover object-center" alt="member" />
+            <img
+              src={item.image.url}
+              className="w-10 h-10 rounded-full object-cover object-center"
+              alt="member"
+            />
             <div className="flex flex-col">
               <p className="roboto text-base text-btn_primary">{item.name}</p>
               <p className="text-xs">{item.username}</p>

@@ -7,6 +7,7 @@ import InputBox from "../ui/InputBox";
 import toast from "react-hot-toast";
 import Toasts from "../ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import Passwordbox from "../ui/Passwordbox";
 
 const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
   const [operatorId, setOperatorId] = useState();
@@ -43,8 +44,8 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         setNewPassword("");
@@ -61,8 +62,8 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -122,16 +123,16 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
                     <tr>
                       <td colSpan="3" className="py-2 px-4">
                         <div className="flex flex-col gap-4">
-                          <InputBox
+                          <Passwordbox
                             type="password"
                             placeholder="Password"
-                            onChange={(e) => setNewPassword(e.target.value)}
+                            onchange={(e) => setNewPassword(e.target.value)}
                             className="border border-gray-300 p-2 rounded"
                           />
-                          <InputBox
+                          <Passwordbox
                             type="password"
                             placeholder="Confirm Password"
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onchange={(e) => setConfirmPassword(e.target.value)}
                             className="border border-gray-300 p-2 rounded"
                           />
                           <div className="flex gap-4">

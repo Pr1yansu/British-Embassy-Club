@@ -35,6 +35,7 @@ const AddMember = ({ onModal }) => {
   const [organization, setOrganization] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [publicId, setPublicId] = useState(null);
+  const [imgLoading, setImgLoading] = useState(false);
 
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
   const navigate = useNavigate();
@@ -91,8 +92,8 @@ const AddMember = ({ onModal }) => {
             />
           </>,
           {
-            position: "top-left",
-            duration: 2000,
+            position: "bottom-right",
+            duration: 1000,
           }
         );
         onModal();
@@ -109,8 +110,8 @@ const AddMember = ({ onModal }) => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -121,7 +122,8 @@ const AddMember = ({ onModal }) => {
           const newFile = e.target.files[0];
 
           if (newFile) {
-            const file = new FormData();
+            setImgLoading(true);
+      const file = new FormData();
             file.append("image", newFile);
             console.log(file.get("image"));
             const { data } = await axios.post(
@@ -132,7 +134,8 @@ const AddMember = ({ onModal }) => {
             if (data) {
               setImageUrl(data.data.image);
               setPublicId(data.data.public_id);
-            }
+              setImgLoading(false);
+      }
 
             if (data.status === 400) {
               toast.custom(
@@ -144,8 +147,8 @@ const AddMember = ({ onModal }) => {
                   />
                 </>,
                 {
-                  position: "top-left",
-                  duration: 2000,
+                  position: "bottom-right",
+                  duration: 1000,
                 }
               );
             }
@@ -160,8 +163,8 @@ const AddMember = ({ onModal }) => {
           />
         </>,
         {
-          position: "top-left",
-          duration: 2000,
+          position: "bottom-right",
+          duration: 1000,
         }
       );
     }
@@ -369,7 +372,7 @@ const AddMember = ({ onModal }) => {
             />
             <ButtonGroup
               name={
-                isLoading ? (
+                isLoading || imgLoading ? (
                   <>
                     <LuLoader2 className="animate-spin" size={20} />
                   </>

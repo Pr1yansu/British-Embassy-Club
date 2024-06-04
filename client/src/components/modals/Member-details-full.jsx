@@ -6,9 +6,12 @@ import { FaIdCard } from "react-icons/fa";
 import ButtonGroup from "../ui/ButtonGroup";
 import VirtualCard from "../ui/VirtualCard";
 import Warning from "./Warning";
-import AddMember from "./Add-member";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 import UpdateMember from "./Update-member";
+import Loader from "../ui/loader";
+import { FaRegCopy } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
@@ -18,10 +21,23 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
     memberId
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader/>;
 
   console.log("details", data);
-
+  const handleCopy = () => {
+    toast.custom(
+      <div className="bg-white px-6 py-3 rounded-lg flex items-center justify-center gap-4 shadow-lg">
+        <FaRegCopy size={24} className="text-text_secondary" />
+        <div className="text-text_primary  font-roboto text-xl flex gap-1">
+          Copied
+        </div>
+      </div>,
+      {
+        duration: 1000,
+        position: "top-center",
+      }
+    );
+  };
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/35 z-20">
@@ -31,7 +47,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
               <img
                 src={image}
                 alt="member"
-                className="w-20 aspect-auto rounded-full object-cover object-center"
+                className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
               />
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
@@ -60,24 +76,16 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
               </div>
             </div>
           </div>
-          {/* <div className="grid grid-cols-2 grid-rows-3 gap-y-3 items-center">
-            {filteredKeys.map((key, index) => (
-              <div key={index} className="flex flex-col">
-                <p className="text-btn_primary roboto font-normal">{key}</p>
-                <p className="lato text-sm text-text_primary font-normal">
-                  {data.data[key]}
-                </p>
-              </div>
-            ))}
-          </div> */}
           <div className="flex flex-col gap-3 border-1 border-red-600 w-full">
             {/* Row1 starts here */}
             <div className="flex">
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Member ID</p>
-                <p className="lato text-sm text-text_primary font-normal">
+                <CopyToClipboard text={data.data._id} onCopy={handleCopy}>
+                <p className="lato text-sm text-text_primary font-normal cursor-pointer">
                   {data.data._id}
                 </p>
+                </CopyToClipboard>
               </div>
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Email</p>
