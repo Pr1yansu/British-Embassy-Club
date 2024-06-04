@@ -6,19 +6,17 @@ import ButtonGroup from "../ui/ButtonGroup";
 import VirtualCard from "../ui/VirtualCard";
 import Warning from "./Warning";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 import UpdateMember from "./Update-member";
 import Loader from "../ui/loader";
 import { FaRegCopy } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import { CgProfile } from "react-icons/cg";
 
-const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
+const MembersDetails = ({ setOpen, expiryTime, image, data }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenCard, setOpenCard] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
-  const { data, isLoading } = useGetMemberByIdQuery(memberId);
 
-  if (isLoading) return <Loader />;
 
   const handleCopy = () => {
     toast.custom(
@@ -37,19 +35,21 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
   return ReactDOM.createPortal(
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/35 z-20">
-        <div className="w-full max-w-2xl h-auto border bg-[#E2E8F0] p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
+        <div className="w-full max-w-2xl h-auto border bg-btn_secondary p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between items-center border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
-              <img
+              {image ? <img
                 src={image}
                 alt="member"
                 className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
-              />
+              />:
+              <CgProfile className="w-20 h-20 aspect-auto rounded-full object-cover object-center" color="#6B7280" />
+              }
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
-                  {data.data.name}
+                  {data.name}
                 </p>
-                <p className="text-text_primary roboto">{data.data.userName}</p>
+                <p className="text-text_primary roboto">{data.userName}</p>
               </div>
             </div>
 
@@ -77,16 +77,16 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
             <div className="flex">
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Member ID</p>
-                <CopyToClipboard text={data.data._id} onCopy={handleCopy}>
+                <CopyToClipboard text={data._id} onCopy={handleCopy}>
                   <p className="lato text-sm text-text_primary font-normal cursor-pointer">
-                    {data.data._id}
+                    {data._id}
                   </p>
                 </CopyToClipboard>
               </div>
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Email</p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.email ? data.data.email : "abc@email"}
+                  {data.email ? data.email : "N/A"}
                 </p>
               </div>
             </div>
@@ -98,13 +98,13 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                   Membership Validity
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  Expires on {data.data.expiryTime}
+                  Expires on {data.expiryTime}
                 </p>
               </div>
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Address</p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.address}
+                  {data.address}
                 </p>
               </div>
             </div>
@@ -114,7 +114,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
               <div className="w-1/2">
                 <p className="text-btn_primary roboto font-normal">Mobile No</p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.mobileNumber}
+                  {data.mobileNumber}
                 </p>
               </div>
               <div className="w-1/2">
@@ -122,7 +122,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                   Wallet Amount
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.wallet ? data.data.wallet.balance : 0}
+                  {data.wallet ? data.wallet.balance : 0}
                 </p>
               </div>
             </div>
@@ -134,7 +134,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                   Blood Group
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.bloodGroup}
+                  {data.bloodGroup}
                 </p>
               </div>
               <div className="w-1/2">
@@ -142,7 +142,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                   Organization Name
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.organization}
+                  {data.organization}
                 </p>
               </div>
             </div>
@@ -154,7 +154,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                   National ID
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.idProof ? data.data.idProof.idNumber : "N/A"}
+                  {data.idProof ? data.idProof.idNumber : "N/A"}
                 </p>
               </div>
             </div>
@@ -169,7 +169,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
             />
             <ButtonGroup
               name={"Remove Member"}
-              textColor={"text-text_primary"}
+              textColor={"text-text_red"}
               HovertextColor={"hover:text-white"}
               toggle={false}
               color={"bg-btn_secondary"}
@@ -181,14 +181,14 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
             />
             {OpenWarning && (
               <Warning
-                memberId={memberId}
+                memberId={data._id}
                 onModal={() => setOpenWarning(false)}
               />
             )}
             {OpenUpdate && (
               <UpdateMember
-                expiryTime={expiryTime}
-                memberId={memberId}
+                expiryTime={data.expiryTime}
+                memberId={data._id}
                 onModal={() => setOpenUpdate(false)}
                 setOpen={setOpen}
               />

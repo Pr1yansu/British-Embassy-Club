@@ -189,21 +189,23 @@ const ClubSignUp = () => {
               placeholder="Confirm Password"
               onchange={(e) => setConfirmpassword(e.target.value)}
             />
-            <select
-              className="bg-primary outline-none sm:w-full max-sm:w-4/5 py-2.5 px-4 rounded-lg font-semibol text-text_primary"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option
-                value="Choose role"
-                disabled
-                className="bg-primary py-5 px-4"
+            <div className="bg-primary w-full py-2.5 rounded-lg">
+              <select
+                className="bg-primary w-11/12 outline-none font-semibol text-text_primary"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
               >
-                Choose role
-              </option>
-              <option value="admin">admin</option>
-              <option value="operator">operator</option>
-            </select>
+                <option
+                  value="Choose role"
+                  disabled
+                  className="bg-primary py-5 px-4"
+                >
+                  Choose role
+                </option>
+                <option value="admin">Admin</option>
+                <option value="operator">Operator</option>
+              </select>
+            </div>
             <div className="mt-20">
               <Button
                 name={

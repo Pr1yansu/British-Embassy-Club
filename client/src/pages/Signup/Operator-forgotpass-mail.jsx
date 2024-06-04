@@ -27,6 +27,7 @@ const OperatorResetPassMail = () => {
       <div className="row-start-10 row-end-11 col-start-5 col-end-9 flex justify-between">
         <ButtonGroup
           name={"Go Back"}
+          color={"bg-btn_secondary"}
           textColor={"text-btn_primary"}
           icon={<IoIosArrowRoundBack size={30} />}
           toggle={false}
@@ -34,6 +35,7 @@ const OperatorResetPassMail = () => {
         />
         <ButtonGroup
           name={"Login"}
+          color={"bg-btn_secondary"}
           textColor={"text-btn_primary"}
           onClick={() => navigate("/login/operator")}
         />

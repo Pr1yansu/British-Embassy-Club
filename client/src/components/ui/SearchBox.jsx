@@ -16,7 +16,7 @@ const SearchBox = ({ type, placeholder, onchange, value, onClick }) => {
           className="bg-primary w-full h-full rounded-lg px-6 py-4 text-text_primary outline-none"
         />
         <IoIosSearch
-          className=" absolute cursor-pointer right-5 top-1/3 "
+          className=" absolute cursor-pointer right-5 top-1/3 hover:scale-150 transition duration-300 ease-in-out"
           size={20}
           color="grey"
           onClick={onClick}

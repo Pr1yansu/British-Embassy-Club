@@ -102,6 +102,7 @@ const OperatorSignUpOtp = () => {
           <div className="flex justify-between">
             <ButtonGroup
               name={"Go Back"}
+              color={"bg-btn_secondary"}
               textColor={"text-btn_primary"}
               icon={<FaArrowLeft />}
               onClick={() => navigate("/login/operator/")}
@@ -116,6 +117,7 @@ const OperatorSignUpOtp = () => {
                   <>Send</>
                 )
               }
+              color={"bg-btn_secondary"}
               textColor={"text-btn_primary"}
               toggle={true}
               icon={<FaArrowRight />}

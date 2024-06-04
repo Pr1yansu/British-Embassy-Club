@@ -18,6 +18,7 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { LuLoader2 } from "react-icons/lu";
 
 const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
+
   const { data: member, isLoading: isDataLoading } =
     useGetMemberByIdQuery(memberId);
   const [openExtend, setOpenExtend] = useState(false);
@@ -40,6 +41,22 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
   const [imgLoading, setImgLoading] = useState(false);
 
   const [updateLoading, setUpdateLoading] = useState(false);
+
+  useEffect(() => {
+    if (member) {
+      setFirstname(member.data.firstname);
+      setLastname(member.data.lastname);
+      setUsername(member.data.username);
+      setEmail(member.data.email);
+      setMobileNumber(member.data.mobileNumber);
+      setAddress(member.data.address);
+      setBloodGroup(member.data.bloodGroup);
+      setOrganization(member.data.organization);
+      setIdType(member.data.idProof.idType);
+      setIdNumber(member.data.idProof.idNumber);
+      setImageUrl(member.data.image.url);
+    }
+  }, [member]);
 
   const [updateMember] =
     useUpdateMemberMutation();
@@ -144,7 +161,6 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
       if (newFile) {
         const file = new FormData();
         file.append("image", newFile);
-        console.log(file.get("image"));
         const { data } = await axios.put(
           `${process.env.REACT_APP_API_URL}/api/v1/member/update-member-image/${memberId}`,
           file,{
@@ -193,7 +209,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
   };
 
   {
-    isDataLoading && <p>Loading...</p>;
+    isDataLoading && <LuLoader2 />;
   }
 
   return ReactDOM.createPortal(
@@ -210,7 +226,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
                 <img
                   src={imageUrl && imageUrl }
                   alt="profile"
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-30 h-30 object-cover rounded-full"
                 />
               ) : (
                 <CgProfile size={50} />
@@ -341,6 +357,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
                   id=""
                   className="bg-primary h-10 text-sm w-52 rounded-l-lg text-text_primary p-2 outline-none font-roboto font-medium"
                   onChange={(e) => setIdType(e.target.value)}
+                  value={idType}
                 >
                   <option value="">Choose</option>
                   <option value="Aadhar Card">Aadhar Card</option>
@@ -353,6 +370,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
                   placeholder="Aadhar No. / Passport No. / Other"
                   className="bg-primary text-sm font-roboto font-normal outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-text_primary"
                   onChange={(e) => setIdNumber(e.target.value)}
+                  value={idNumber}
                 />
               </div>
             </label>

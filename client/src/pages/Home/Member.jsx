@@ -13,12 +13,13 @@ import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import { toast } from "react-hot-toast";
 import Toasts from "../../components/ui/Toasts";
 import { FaExclamationTriangle } from "react-icons/fa";
+import { LuLoader2 } from "react-icons/lu";
 const Member = () => {
   const navigate = useNavigate();
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { data, isLoading: memberLoading } = useGetAllMembersQuery({
+  const { data, isLoading: memberLoading , refetch} = useGetAllMembersQuery({
     page: page === 0 ? 1 : page,
     limit: 12,
     search: search,
@@ -35,10 +36,10 @@ const Member = () => {
   }, [profiledata]);
 
   if (isLoading) {
-    return <Loader />;
+    return <LuLoader2 />;
   }
 
-  if (memberLoading) return <Loader />;
+  if (memberLoading) return <LuLoader2 />;
 
   if (data && data.data.length === 0) {
     toast.custom(

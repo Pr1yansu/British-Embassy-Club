@@ -5,6 +5,7 @@ import MembersDetails from "../modals/Member-details-full";
 import { formatDate } from "../../config/FormatDate";
 import { FaRegCopy } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { CgProfile } from "react-icons/cg";
 
 const MemberCard = ({ item, index }) => {
   const [open, setOpen] = useState(false);
@@ -25,8 +26,6 @@ const MemberCard = ({ item, index }) => {
     );
   };
 
-  console.log(item);
-
   // Define textToCopy as the membership ID of the member
   const textToCopy = item._id;
 
@@ -38,25 +37,31 @@ const MemberCard = ({ item, index }) => {
       >
         <div className="flex items-center justify-between my-1 pb-3 border-b-2 border-primary mb-2">
           <div className="flex items-center gap-3">
-            <img
-              src={item.image.url}
-              className="w-10 h-10 rounded-full object-cover object-center"
-              alt="member"
-            />
+            {item.image.url ? (
+              <img
+                src={item.image.url}
+                className="w-10 h-10 rounded-full object-cover object-center"
+                alt="member"
+              />
+            ) : (
+              <CgProfile className="w-10 h-10" color="#6B7280" />
+            )}
             <div className="flex flex-col">
               <p className="roboto text-base text-btn_primary">{item.name}</p>
               <p className="text-xs">{item.username}</p>
             </div>
           </div>
-          <FiInfo
-            size={20}
-            color="#1d4ed8"
-            className="cursor-pointer"
-            onClick={() => {
-              setOpen(true);
-              setMemberId(item._id);
-            }}
-          />
+          {
+            <FiInfo
+              size={20}
+              color="#1d4ed8"
+              className="cursor-pointer"
+              onClick={() => {
+                setOpen(true);
+                setMemberId(item._id);
+              }}
+            />
+          }
         </div>
         <div className="flex justify-between items-center p-1">
           <div className="flex flex-col justify-between gap-3">
@@ -96,7 +101,7 @@ const MemberCard = ({ item, index }) => {
       {open && (
         <MembersDetails
           image={item.image.url}
-          memberId={memberId}
+          data={item}
           expiryTime={item.expiryTime}
           setOpen={setOpen}
         />

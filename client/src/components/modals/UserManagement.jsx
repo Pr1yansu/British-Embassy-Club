@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Toasts from "../ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Passwordbox from "../ui/Passwordbox";
+import { LuLoader2 } from "react-icons/lu";
 
 const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
   const [operatorId, setOperatorId] = useState();
@@ -89,7 +90,7 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
               <th className="py-2 px-4 text-start text-lg font-semibold">
                 Name
               </th>
-              <th className="py-2 px-4 text-lg font-semibold">Roles</th>
+              <th className="py-2 text-lg font-semibold">Roles</th>
               <th className="py-2 px-4 flex justify-end text-lg font-semibold">
                 Action
               </th>
@@ -98,7 +99,7 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
           <tbody>
             {isLoading && (
               <tr>
-                <td>Loading...</td>
+                <td><LuLoader2/></td>
               </tr>
             )}
             {allprofiledata &&
@@ -109,7 +110,7 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
                     className="cursor-pointer"
                   >
                     <td className="py-2 px-4 text-sm">{row.username}</td>
-                    <td className="py-2 px-4 text-start text-sm">
+                    <td className="py-2 text-start text-sm">
                       <Roles data={row.role} />
                     </td>
                     <td className="py-2 px-4 flex justify-end text-sm">

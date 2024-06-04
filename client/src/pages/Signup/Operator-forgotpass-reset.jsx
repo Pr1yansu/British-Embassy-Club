@@ -105,6 +105,7 @@ const OperatorResetPass = () => {
           <div className="flex justify-center">
             <ButtonGroup
               textColor={"text-btn_primary"}
+              color={"bg-btn_secondary"}
               name={"Login"}
               type={"submit"}
             />
