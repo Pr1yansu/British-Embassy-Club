@@ -29,8 +29,10 @@ const Profile = () => {
     { isError: updateisError, isLoading: updateisLoading },
   ] = useUpdateOperatorProfileMutation();
 
-  const { data: profiledata, isLoading: profileisLoading } =
-    useGetOperatorProfileQuery();
+  const {
+    data: profiledata,
+    isLoading: profileisLoading,
+  } = useGetOperatorProfileQuery();
 
   useEffect(() => {
     if (profiledata) {
@@ -66,7 +68,8 @@ const Profile = () => {
         file.append("image", newFile);
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/v1/operator/update-operator-image`,
-          file,{
+          file,
+          {
             withCredentials: true,
           }
         );
@@ -191,16 +194,19 @@ const Profile = () => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
-                {isHovered ? (
-                  <MdModeEdit className="w-10 h-10 text-gray-500" />
-                ) : imageUrl ? (
+                {imageUrl ? (
                   <img
                     src={imageUrl}
                     alt="profile"
-                    className="h-full w-full object-cover object-center rounded-full"
+                    className={`h-full w-full object-cover object-center rounded-full transition duration-100 ${
+                      isHovered ? "blur-sm" : ""
+                    }`}
                   />
                 ) : (
                   <CgProfile className="w-full h-full" color="#6B7280" />
+                )}
+                {isHovered && (
+                  <MdModeEdit className="w-10 h-10 text-white absolute" />
                 )}
                 <input
                   type="file"

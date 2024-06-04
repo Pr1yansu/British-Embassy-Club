@@ -241,6 +241,7 @@ const OperatorSignup = () => {
                 className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none"
                 onChange={handleChange}
               >
+                <option value="" >Choose ID type</option>
                 <option value="Aadhar Card">Aadhar Card</option>
                 <option value="Voter Card">Voter Card</option>
                 <option value="Pan Card">Pan Card</option>

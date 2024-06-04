@@ -45,7 +45,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
           {/* Buttons starts */}
           <div className="flex gap-24">
             <div
-              className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer group hover:bg-btn_primary"
+              className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer group hover:bg-gradient-to-br from-sky-400 to-btn_primary group-hover:bg"
               onClick={() => SetopenIssue(true)}
             >
               <p className="text-2xl font-roboto font-medium text-btn_primary group-hover:text-primary">
@@ -67,7 +67,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
               />
             )}
             <div
-              className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer group hover:bg-btn_primary"
+              className="bg-primary w-60 flex flex-col items-center gap-3 p-2 rounded-xl cursor-pointer group hover:bg-gradient-to-br from-sky-400 to-btn_primary"
               onClick={() => SetopenReceive(true)}
             >
               <p className="text-2xl font-roboto font-medium text-btn_primary group-hover:text-primary">

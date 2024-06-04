@@ -192,13 +192,13 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             <div className="flex justify-end w-full gap-6">
               <ButtonGroup
                 name={"Cancel"}
-                color={"bg-[#F8FAFC]"}
+                color={"bg-btn_secondary"}
                 textColor={"text-[#1D4ED8]"}
                 onClick={() => onModal()}
               />
               <ButtonGroup
                 name={"Confirm"}
-                color={"bg-[#F8FAFC]"}
+                color={"bg-btn_secondary"}
                 textColor={"text-[#6B7280]"}
                 type={"submit"}
               />

@@ -96,10 +96,9 @@ const AddMember = ({ onModal }) => {
           }
         );
         onModal();
-        navigate("/member");
+        navigate(0);
       }
     } catch (error) {
-      console.log(error);
       toast.custom(
         <>
           <Toasts
@@ -118,13 +117,12 @@ const AddMember = ({ onModal }) => {
 
   const onFileDrop = async (e) => {
     try {
+      setImgLoading(true);
       const newFile = e.target.files[0];
 
       if (newFile) {
-        setImgLoading(true);
         const file = new FormData();
         file.append("image", newFile);
-        console.log(file.get("image"));
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/v1/member/add-member-image`,
           file,{
@@ -187,7 +185,7 @@ const AddMember = ({ onModal }) => {
                 <img
                   src={imageUrl && imageUrl}
                   alt="profile"
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className="w-24 h-24 object-cover rounded-full object-center"
                 />
               ) : (
                 <CgProfile size={80} color="#6B7280" />

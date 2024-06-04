@@ -6,6 +6,7 @@ import logo from "../../assets/images/LOGO.png";
 import Loader from "../../components/ui/loader";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
 const Dashboard = () => {
   const [imageUrl, setImageUrl] = useState("");
 
@@ -16,7 +17,7 @@ const Dashboard = () => {
     if (profiledata && profiledata.data.profileImage) {
       setImageUrl(profiledata.data.profileImage.url);
     }
-  }, [profiledata]);  
+  }, [profiledata]);
 
   if (isLoading) {
     return <Loader />;
@@ -37,7 +38,7 @@ const Dashboard = () => {
             alt="logo"
             className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
           />
-          <div className="flex gap-4 items-center justify-center">
+          <div className="flex gap-4 items-center justify-center mx-2">
             <div className="flex flex-col items-end">
               <h4 className="text-xl font-roboto capitalize">
                 {profiledata && profiledata.data && profiledata.data.username}
@@ -46,7 +47,31 @@ const Dashboard = () => {
                 {profiledata && profiledata.data && profiledata.data.role}
               </h6>
             </div>
-            { imageUrl ? <img src={imageUrl} alt="profile" className="w-16 h-16 rounded-full"/> : <CgProfile size={60} color="#6B7280" />}
+            { profiledata && profiledata.data && profiledata.data.role === "operator" ? (
+              <Link to={"/profile"}>
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="profile"
+                    className="w-16 h-16 rounded-full"
+                  />
+                ) : (
+                  <CgProfile size={60} color="#6B7280" />
+                )}
+              </Link>
+            ) : (
+              <>
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="profile"
+                    className="w-16 h-16 rounded-full"
+                  />
+                ) : (
+                  <CgProfile size={60} color="#6B7280" />
+                )}
+              </>
+            )}
           </div>
         </div>
         <div className="row-start-3 row-end-11 col-start-4 col-end-10 grid grid-rows-2 grid-cols-2 gap-6">
