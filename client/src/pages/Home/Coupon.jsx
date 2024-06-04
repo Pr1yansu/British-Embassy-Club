@@ -34,9 +34,12 @@ const Coupon = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get(`/api/v1/wallet/get/${search}`, {
-        withCredentials: true,
-      });
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/wallet/get/${search}`,
+        {
+          withCredentials: true,
+        }
+      );
       if (data) {
         setWalletData(data.data);
         setopenQuery(true);

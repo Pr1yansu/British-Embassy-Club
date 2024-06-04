@@ -11,8 +11,6 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
     refetch,
   } = useGetAllTransactionsQuery();
 
-  console.log(allTransactions);
-
   React.useEffect(() => {
     refetch();
   }, [reloadQuery, refetch]);

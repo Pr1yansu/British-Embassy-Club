@@ -127,7 +127,9 @@ const AddMember = ({ onModal }) => {
         console.log(file.get("image"));
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/v1/member/add-member-image`,
-          file
+          file,{
+            withCredentials: true,
+          }
         );
 
         if (data) {
@@ -166,6 +168,8 @@ const AddMember = ({ onModal }) => {
           duration: 1000,
         }
       );
+    }finally{
+      setImgLoading(false);
     }
   };
 
@@ -181,7 +185,7 @@ const AddMember = ({ onModal }) => {
             <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
               {imageUrl ? (
                 <img
-                  src={imageUrl ? imageUrl : <>loading...</>}
+                  src={imageUrl && imageUrl}
                   alt="profile"
                   className="w-24 h-24 object-cover rounded-lg"
                 />

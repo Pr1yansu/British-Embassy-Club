@@ -66,7 +66,9 @@ const Profile = () => {
         file.append("image", newFile);
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/v1/operator/update-operator-image`,
-          file
+          file,{
+            withCredentials: true,
+          }
         );
 
         if (data) {
