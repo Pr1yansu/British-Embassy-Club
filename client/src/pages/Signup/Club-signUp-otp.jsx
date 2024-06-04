@@ -198,15 +198,7 @@ const ClubSignUpOtp = () => {
                 disabled={!isSubmitEnabled}
               />
               <Button
-                name={
-                  !isResendEnabled ? (
-                    <>
-                      <LuLoader2 className="animate-spin" size={20} />
-                    </>
-                  ) : (
-                    <>Resend</>
-                  )
-                }
+                name={"Resend"}
                 type={"button"}
                 onClick={handleResend}
                 disabled={!isResendEnabled || loading}

@@ -4,7 +4,7 @@ const Button = ({ name, icon, toggle , type, onClick,disabled }) => {
   return (
     <>
       <button
-        className={`flex gap-2 items-center justify-center px-9 py-2 rounded-xl transition ease-in-out delay-150 hover:text-white text-blue-600 ${disabled && 'text-text_primary'} hover:shadow-md hover:shadow-blue-500 hover:bg-blue-600 bg-white duration-300 roboto shadow-btn_shadow font-medium`}
+        className={`flex gap-2 items-center justify-center px-9 py-2 rounded-xl transition ease-in-out delay-150 text-blue-600 ${disabled && 'text-text_primary'} ${!disabled && "hover:bg-blue-600 hover:shadow-blue-500 hover:shadow-md hover:text-white"} bg-white duration-300 roboto shadow-btn_shadow font-medium`}
         type={type}
         onClick={onClick}
         disabled={disabled}
