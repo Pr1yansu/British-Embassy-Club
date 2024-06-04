@@ -30,10 +30,13 @@ const OperatorLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/v1/operator/login", {
-        username,
-        password,
-      });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/v1/operator/login`,
+        {
+          username,
+          password,
+        }
+      );
       toast.custom(
         <Toasts
           boldMessage={"Success!"}

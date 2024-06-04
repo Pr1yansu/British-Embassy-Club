@@ -34,11 +34,14 @@ const ClubLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try{
-      const { data } = await axios.post("/api/v1/club/login", {
-        username,
-        password,
-      });
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/v1/club/login`,
+        {
+          username,
+          password,
+        }
+      );
       if (data) {
         toast.custom(
           <>
@@ -58,17 +61,17 @@ const ClubLogin = () => {
             duration: 1000,
           }
         );
-        
-         if (data.data.role === "admin") {
-           navigate("/");
-           navigate(0);
-         }
-         if (data.data.role === "operator") {
-           navigate("/login/operator");
-           navigate(0);
-         }
+
+        if (data.data.role === "admin") {
+          navigate("/");
+          navigate(0);
+        }
+        if (data.data.role === "operator") {
+          navigate("/login/operator");
+          navigate(0);
+        }
       }
-    }catch(error){
+    } catch (error) {
       toast.custom(
         <>
           <Toasts

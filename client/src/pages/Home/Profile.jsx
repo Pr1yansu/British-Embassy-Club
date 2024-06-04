@@ -29,10 +29,8 @@ const Profile = () => {
     { isError: updateisError, isLoading: updateisLoading },
   ] = useUpdateOperatorProfileMutation();
 
-  const {
-    data: profiledata,
-    isLoading: profileisLoading,
-  } = useGetOperatorProfileQuery();
+  const { data: profiledata, isLoading: profileisLoading } =
+    useGetOperatorProfileQuery();
 
   useEffect(() => {
     if (profiledata) {
@@ -43,13 +41,13 @@ const Profile = () => {
       setAddress(profiledata.data.address);
       if (profiledata.data.profileImage) {
         setImageUrl(profiledata.data.profileImage.url);
-      }else{
-       <>
-         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-       </>
+      } else {
+        <>
+          "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+        </>;
       }
       if (profiledata.data.profileImage) {
-       setPublicId(profiledata.data.profileImage.public_id);
+        setPublicId(profiledata.data.profileImage.public_id);
       } else {
         <>
           "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
@@ -67,7 +65,7 @@ const Profile = () => {
         const file = new FormData();
         file.append("image", newFile);
         const { data } = await axios.post(
-          `/api/v1/operator/update-operator-image`,
+          `${process.env.REACT_APP_API_URL}/api/v1/operator/update-operator-image`,
           file
         );
 
@@ -160,19 +158,19 @@ const Profile = () => {
         );
       }
     } catch (error) {
-     toast.custom(
-       <>
-         <Toasts
-           boldMessage={"Error!"}
-           message={error.response.data.message || "Internal Server Error"}
-           icon={<MdError className="text-text_red" size={32} />}
-         />
-       </>,
-       {
-         position: "bottom-right",
-         duration: 1000,
-       }
-     );
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={error.response.data.message || "Internal Server Error"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "bottom-right",
+          duration: 1000,
+        }
+      );
     }
   };
 
@@ -193,16 +191,14 @@ const Profile = () => {
               >
                 {isHovered ? (
                   <MdModeEdit className="w-10 h-10 text-gray-500" />
+                ) : imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="profile"
+                    className="h-full w-full object-cover object-center rounded-full"
+                  />
                 ) : (
-                  imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="profile"
-                      className="h-full w-full object-cover object-center rounded-full"
-                    />
-                  ) : (
-                    <CgProfile className="w-full h-full" color="#6B7280" />
-                  )
+                  <CgProfile className="w-full h-full" color="#6B7280" />
                 )}
                 <input
                   type="file"
@@ -297,7 +293,6 @@ const Profile = () => {
                 </label>
               </div>
               <div className=" flex justify-end mt-10 w-full gap-6">
-                
                 <ButtonGroup
                   name={
                     updateisLoading ? (
