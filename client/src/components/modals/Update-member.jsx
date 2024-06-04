@@ -41,7 +41,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
 
   const [updateLoading, setUpdateLoading] = useState(false);
 
-  const [updateMember, { isSuccess, isLoading, isError }] =
+  const [updateMember] =
     useUpdateMemberMutation();
 
   const navigate = useNavigate();
@@ -118,8 +118,6 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
         setOpen(false);
         navigate(0);
       }
-
-      console.log(data);
     } catch (error) {
       setUpdateLoading(false);
       toast.custom(
@@ -149,7 +147,9 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
         console.log(file.get("image"));
         const { data } = await axios.put(
           `${process.env.REACT_APP_API_URL}/api/v1/member/update-member-image/${memberId}`,
-          file
+          file,{
+            withCredentials: true,
+          }
         );
 
         if (data) {
@@ -208,7 +208,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
             <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
               {imageUrl ? (
                 <img
-                  src={imageUrl ? imageUrl : <>loading...</>}
+                  src={imageUrl && imageUrl }
                   alt="profile"
                   className="w-full h-full object-cover rounded-lg"
                 />

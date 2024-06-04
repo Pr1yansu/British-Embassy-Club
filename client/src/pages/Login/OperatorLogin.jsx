@@ -40,23 +40,26 @@ const OperatorLogin = () => {
           withCredentials: true,
         }
       );
-      toast.custom(
-        <Toasts
-          boldMessage={"Success!"}
-          message={data.message}
-          icon={
-            <IoCheckmarkDoneCircleOutline
-              className="text-text_tertiaary"
-              size={32}
-            />
+      
+      if(data){
+        toast.custom(
+          <Toasts
+            boldMessage={"Success!"}
+            message={data.message}
+            icon={
+              <IoCheckmarkDoneCircleOutline
+                className="text-text_tertiaary"
+                size={32}
+              />
+            }
+          />,
+          {
+            position: "bottom-right",
+            duration: 1000,
           }
-        />,
-        {
-          position: "bottom-right",
-          duration: 1000,
-        }
-      );
-      navigate("/");
+        );
+        navigate("/");
+      }
     } catch (error) {
       if (error.response && error.response.data) {
         toast.custom(

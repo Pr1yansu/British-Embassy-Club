@@ -122,7 +122,7 @@ const MembersDetails = ({ setOpen, memberId, expiryTime, image }) => {
                   Wallet Amount
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  {data.data.wallet ? data.data.wallet : 1000}
+                  {data.data.wallet ? data.data.wallet.balance : 0}
                 </p>
               </div>
             </div>
