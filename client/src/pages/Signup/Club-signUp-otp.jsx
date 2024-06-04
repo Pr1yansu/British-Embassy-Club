@@ -111,7 +111,7 @@ const ClubSignUpOtp = () => {
     const otpResend = JSON.parse(localStorage.getItem("clubUsername"));
     try {
       const { data } = await axios.post(
-        "/api/v1/club/resend-otp",
+        `${process.env.REACT_APP_API_URL}/api/v1/club/resend-otp`,
         {
           username: otpResend.data.username,
         },
