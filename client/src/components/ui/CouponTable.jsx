@@ -19,7 +19,7 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
     () =>
       allTransactions?.data?.map((transaction, index) => ({
         SLNO: index + 1,
-        MEMBERID = typeof transaction.memberId === 'string'? transaction.memberId : transaction.memberId._id;,
+        MEMBERID = typeof transaction.memberId === 'string'? transaction.memberId : transaction.memberId._id,
         COUPONTYPE: transaction.type,
         COUPONAMOUNT: transaction.couponId.amount,
         PAYAMOUNT: transaction.payableAmount,
