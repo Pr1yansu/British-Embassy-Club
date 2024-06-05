@@ -186,11 +186,13 @@ exports.fetchTransactions = async (req, res) => {
 
 exports.getAllTransactions = async (req, res) => {
   try {
-    const transactions = await TransactionSchema.find().populate(
-      "walletId memberId couponId"
-    );
+    const transactions = await TransactionSchema.find().populate([
+      { path: "walletId" },
+      { path: "memberId", model: "MemberSchema", match: { _id: { $exists: true } } },
+      { path: "couponId" }
+    ]);
 
-    if (transactions.length <= 0) {
+    if (!transactions.length) {
       return res.status(404).json({
         statusCode: 404,
         message: "No transactions found",
@@ -199,32 +201,16 @@ exports.getAllTransactions = async (req, res) => {
       });
     }
 
-    const totalTransactions = await TransactionSchema.find().countDocuments();
+    const totalTransactions = await TransactionSchema.countDocuments();
 
-    if (transactions.length <= 0) {
-      return res.status(404).json({
-        statusCode: 404,
-        message: "No transactions found",
-        data: null,
-        exception: null,
-      });
-    }
     const today = new Date();
-    const todaysTotalTransactions = await TransactionSchema.find({
+    const todaysTotalTransactions = await TransactionSchema.countDocuments({
       timeStamp: {
         $gte: new Date(today.setHours(0, 0, 0, 0)),
         $lte: new Date(today.setHours(23, 59, 59, 999)),
       },
-    }).countDocuments();
+    });
 
-    if (transactions.length <= 0) {
-      return res.status(404).json({
-        statusCode: 404,
-        message: "No transactions found",
-        data: null,
-        exception: null,
-      });
-    }
     return res.status(200).json({
       statusCode: 200,
       message: "Transactions fetched successfully",
@@ -235,7 +221,7 @@ exports.getAllTransactions = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(200).json({
+    return res.status(500).json({
       statusCode: 500,
       message: "Internal Server Error",
       exception: error,
@@ -243,3 +229,4 @@ exports.getAllTransactions = async (req, res) => {
     });
   }
 };
+
