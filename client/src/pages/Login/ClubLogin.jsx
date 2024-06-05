@@ -77,7 +77,7 @@ const ClubLogin = () => {
         <>
           <Toasts
             boldMessage={"Error!"}
-            message={error.response.data.message || "Internal Server Error"}
+            message={error.response.data.message}
             icon={<MdError className="text-text_red" size={32} />}
           />
         </>,
