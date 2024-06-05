@@ -8,6 +8,7 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { MdError } from "react-icons/md";
+import { LuLoader2 } from "react-icons/lu";
 
 const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
   const navigate = useNavigate();
@@ -186,10 +187,19 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
             {/* 3rd row starts here */}
             <div className="flex justify-end gap-6 mt-3">
               <ButtonGroup
-                name={"Confirm"}
+               name={
+                addTransactionLoading ? (
+                  <>
+                    <LuLoader2 className="animate-spin" size={20} />
+                  </>
+                ) : (
+                  <>Confirm</>
+                )
+              }
                 color={"bg-btn_secondary"}
                 textColor={"text-btn_primary"}
                 onClick={handleConfirm}
+                disabled={addTransactionLoading}
               />
               <ButtonGroup
                 name={"Cancel"}

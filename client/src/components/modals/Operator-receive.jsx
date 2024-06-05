@@ -10,6 +10,7 @@ import Toasts from "../ui/Toasts";
 import toast from "react-hot-toast";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { LuLoader2 } from "react-icons/lu";
 
 const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const navigate = useNavigate();
@@ -193,14 +194,23 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
               <ButtonGroup
                 name={"Cancel"}
                 color={"bg-btn_secondary"}
-                textColor={"text-[#1D4ED8]"}
+                textColor={"text-text_primary"}
                 onClick={() => onModal()}
               />
               <ButtonGroup
-                name={"Confirm"}
+                name={
+                  addTransactionLoading ? (
+                    <>
+                      <LuLoader2 className="animate-spin" size={20} />
+                    </>
+                  ) : (
+                    <>Confirm</>
+                  )
+                }
                 color={"bg-btn_secondary"}
-                textColor={"text-[#6B7280]"}
+                textColor={"text-btn_primary"}
                 type={"submit"}
+                disabled={addTransactionLoading}
               />
             </div>
             {/* 3rd row ends here */}
