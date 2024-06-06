@@ -7,16 +7,14 @@ import VirtualCard from "../ui/VirtualCard";
 import Warning from "./Warning";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import UpdateMember from "./Update-member";
-import Loader from "../ui/loader";
 import { FaRegCopy } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { CgProfile } from "react-icons/cg";
 
-const MembersDetails = ({ setOpen, expiryTime, image, data }) => {
+const MembersDetails = ({ setOpen, image, data }) => {
   const [OpenWarning, setOpenWarning] = useState(false);
   const [OpenCard, setOpenCard] = useState(false);
   const [OpenUpdate, setOpenUpdate] = useState(false);
-
 
   const handleCopy = () => {
     toast.custom(
@@ -38,13 +36,18 @@ const MembersDetails = ({ setOpen, expiryTime, image, data }) => {
         <div className="w-full max-w-2xl h-auto border bg-btn_secondary p-6 rounded-lg flex flex-col items-center gap-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
           <div className="w-full flex justify-between items-center border-b-2 border-gray-600 pb-6">
             <div className="flex justify-center items-center gap-9">
-              {image ? <img
-                src={image}
-                alt="member"
-                className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
-              />:
-              <CgProfile className="w-20 h-20 aspect-auto rounded-full object-cover object-center" color="#6B7280" />
-              }
+              {image ? (
+                <img
+                  src={image}
+                  alt="member"
+                  className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
+                />
+              ) : (
+                <CgProfile
+                  className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
+                  color="#6B7280"
+                />
+              )}
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
                   {data.name}
@@ -196,7 +199,13 @@ const MembersDetails = ({ setOpen, expiryTime, image, data }) => {
           </div>
         </div>
       </div>
-      {OpenCard && <VirtualCard onModal={() => setOpenCard(false)} />}
+      {OpenCard && (
+        <VirtualCard
+          onModal={() => setOpenCard(false)}
+          data={data}
+          image={image}
+        />
+      )}
     </>,
     document.getElementById("portal")
   );

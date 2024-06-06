@@ -1,13 +1,12 @@
 import React from "react";
 import DataTable from "react-data-table-component";
 import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
+import { formatTime } from "../../hooks/formatTime";
 
-const CouponTable = ({ walletdata, reloadQuery }) => {
-  const [count, setCount] = React.useState(0);
+const CouponTable = ({ reloadQuery }) => {
   const {
     data: allTransactions,
     isLoading: transLoading,
-    isError,
     refetch,
   } = useGetAllTransactionsQuery();
 
@@ -19,15 +18,17 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
     () =>
       allTransactions?.data?.map((transaction, index) => ({
         SLNO: index + 1,
-        MEMBERID: typeof transaction.memberId === 'string'? transaction.memberId : transaction.memberId._id,
+        MEMBERID: transaction.memberId,
         COUPONTYPE: transaction.type,
         COUPONAMOUNT: transaction.couponId.amount,
         PAYAMOUNT: transaction.payableAmount,
-        TIMESTAMP: new Date(transaction.timeStamp).toLocaleTimeString(),
+        TIMESTAMP: formatTime(transaction.timeStamp),
         STATUS: transaction.status.toUpperCase(),
       })) || [],
     [allTransactions]
   );
+
+  console.log(allTransactions);
 
   if (transLoading) {
     return <p>Loading...</p>;
@@ -49,7 +50,9 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
         Issue Coupons Table
       </h1>
       <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter mb-2">
-        {count} Coupons Today
+        {allTransactions?.todaysTotalTransactions !== 0
+          ? `${allTransactions.todaysTotalTransactions} Coupons Today`
+          : "No Coupons Today"}
       </h1>
       <DataTable
         columns={columns}
@@ -80,25 +83,6 @@ const CouponTable = ({ walletdata, reloadQuery }) => {
 
 export default CouponTable;
 
-const data = [
-  {
-    SLNO: 1,
-    MEMBERID: "BEC2024-05-30tomcat51",
-    COUPONETYPE: "ISSUE",
-    CASH: 1000,
-    TIMESTAMP: "10:30",
-    STATUS: "Paid",
-  },
-  {
-    SLNO: 2,
-    MEMBERID: "BEC2024-05-31bikram12352",
-    COUPONETYPE: "RECEIVE",
-    CASH: 1000,
-    TIMESTAMP: "10:30",
-    STATUS: "Due",
-  },
-];
-
 const columns = [
   {
     name: "SL.No.",
@@ -128,11 +112,12 @@ const columns = [
   {
     name: "Timestamp",
     selector: (row) => row.TIMESTAMP,
-    // sortable: true,
+    sortable: true,
   },
   {
     name: "Status",
     selector: (row) => row.STATUS,
+    sortable: true,
     cell: (row) => (
       <p
         className={`rounded-full flex items-center text-white tracking-tighter ${
