@@ -65,8 +65,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
       setLoading(false);
@@ -83,8 +83,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
       return;
@@ -100,8 +100,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
       return;
@@ -117,8 +117,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
       setLoading(false);
@@ -157,8 +157,8 @@ const OperatorSignup = () => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
         navigate("/");
@@ -173,8 +173,8 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
       setLoading(false);
@@ -183,7 +183,7 @@ const OperatorSignup = () => {
 
   return (
     <div
-      className={`background relative min-h-screen bg-cover bg-center py-10 px-20 `}
+      className={`background_1 relative min-h-screen bg-cover bg-center py-10 px-20 `}
     >
       <img
         src={arrow}
@@ -241,7 +241,7 @@ const OperatorSignup = () => {
                 className="bg-primary w-52 rounded-l-lg text-text_primary p-2 outline-none"
                 onChange={handleChange}
               >
-                <option value="" >Choose ID type</option>
+                <option value="">Choose ID type</option>
                 <option value="Aadhar Card">Aadhar Card</option>
                 <option value="Voter Card">Voter Card</option>
                 <option value="Pan Card">Pan Card</option>

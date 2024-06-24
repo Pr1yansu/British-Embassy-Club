@@ -20,8 +20,8 @@ const MemberCard = ({ item, index }) => {
         </div>
       </div>,
       {
-        duration: 1000,
-        position: "top-center",
+        position: "top-right",
+        duration: 2000,
       }
     );
   };

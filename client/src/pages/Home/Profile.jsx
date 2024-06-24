@@ -89,8 +89,8 @@ const Profile = () => {
               />
             </>,
             {
-              position: "bottom-right",
-              duration: 1000,
+              position: "top-right",
+              duration: 2000,
             }
           );
         }
@@ -105,8 +105,8 @@ const Profile = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     } finally {
@@ -141,8 +141,8 @@ const Profile = () => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
       }
@@ -157,8 +157,8 @@ const Profile = () => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
       }
@@ -172,8 +172,8 @@ const Profile = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     }

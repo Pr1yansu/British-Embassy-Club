@@ -25,8 +25,8 @@ const MembersDetails = ({ setOpen, image, data }) => {
         </div>
       </div>,
       {
-        duration: 1000,
-        position: "top-center",
+        position: "top-right",
+        duration: 2000,
       }
     );
   };
@@ -101,7 +101,7 @@ const MembersDetails = ({ setOpen, image, data }) => {
                   Membership Validity
                 </p>
                 <p className="lato text-sm text-text_primary font-normal">
-                  Expires on {data.expiryTime}
+                  Expires on {data.expiryTime.split("T")[0]}
                 </p>
               </div>
               <div className="w-1/2">

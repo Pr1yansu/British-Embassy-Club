@@ -54,8 +54,8 @@ const OperatorLogin = () => {
             }
           />,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
         navigate("/");
@@ -69,8 +69,8 @@ const OperatorLogin = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
       } else {
@@ -81,8 +81,8 @@ const OperatorLogin = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
       }
@@ -90,7 +90,7 @@ const OperatorLogin = () => {
   };
 
   return (
-    <div className="background relative h-screen bg-cover bg-center overflow-hidden py-10 px-20">
+    <div className="background_1 relative h-screen bg-cover bg-center overflow-hidden py-10 px-20">
       <img
         src={arrow}
         alt="arrow"

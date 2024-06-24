@@ -25,8 +25,8 @@ const OperatorResetPass = () => {
         />
       </>,
       {
-        position: "bottom-right",
-        duration: 1000,
+        position: "top-right",
+        duration: 2000,
       }
     );
     navigate("/operator/login");
@@ -56,8 +56,8 @@ const OperatorResetPass = () => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
         navigate("/login/operator");
@@ -72,14 +72,14 @@ const OperatorResetPass = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     }
   };
   return (
-    <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
+    <div className="background_1 relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute top-0 h-56 left-96 " />
       <img
         src={logo}

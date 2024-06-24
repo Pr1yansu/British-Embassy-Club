@@ -60,8 +60,8 @@ const ClubLogin = () => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
 
@@ -82,8 +82,8 @@ const ClubLogin = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     }
@@ -115,8 +115,8 @@ const ClubLogin = () => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
         setLoading(false);
@@ -132,8 +132,8 @@ const ClubLogin = () => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
       setLoading(false);

@@ -53,8 +53,8 @@ const Member = () => {
         />
       </>,
       {
-        position: "bottom-right",
-        duration: 1000,
+        position: "top-right",
+        duration: 2000,
       }
     );
   }

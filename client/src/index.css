@@ -107,3 +107,10 @@ span {
   min-height: 100vh;
   overflow: hidden;
 }
+
+.background_1 {
+  background-image: url("./assets/images/background-1.jpeg");
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow: hidden;
+}
