@@ -49,7 +49,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
               onClick={() => SetopenIssue(true)}
             >
               <p className="text-2xl font-roboto font-medium text-btn_primary group-hover:text-primary">
-                Issue Coupon
+                Debit Wallet
               </p>
               <div>
                 <IoExitOutline
@@ -71,7 +71,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
               onClick={() => SetopenReceive(true)}
             >
               <p className="text-2xl font-roboto font-medium text-btn_primary group-hover:text-primary">
-                Receive Coupon
+                Credit Wallet
               </p>
               <div className="-rotate-180">
                 <IoExitOutline
