@@ -8,7 +8,7 @@ import logo from "../../assets/images/LOGO.png";
 const OperatorResetPassMail = () => {
   const navigate = useNavigate();
   return (
-    <div className="background relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
+    <div className="background_1 relative h-screen bg-cover bg-center px-20 grid grid-rows-12 grid-cols-12 gap-4">
       <img src={arrow} alt="arrow" className="absolute -top-10 h-56 left-96 " />
       <img
         src={logo}

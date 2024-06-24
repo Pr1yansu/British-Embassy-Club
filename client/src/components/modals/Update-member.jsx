@@ -126,8 +126,8 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
         setUpdateLoading(false);
@@ -146,8 +146,8 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     }
@@ -184,8 +184,8 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
               />
             </>,
             {
-              position: "bottom-right",
-              duration: 1000,
+              position: "top-right",
+              duration: 2000,
             }
           );
         }
@@ -201,8 +201,8 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     }

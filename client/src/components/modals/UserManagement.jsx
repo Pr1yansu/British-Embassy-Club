@@ -45,8 +45,8 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
             />
           </>,
           {
-            position: "bottom-right",
-            duration: 1000,
+            position: "top-right",
+            duration: 2000,
           }
         );
         setNewPassword("");
@@ -63,8 +63,8 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
           />
         </>,
         {
-          position: "bottom-right",
-          duration: 1000,
+          position: "top-right",
+          duration: 2000,
         }
       );
     }
