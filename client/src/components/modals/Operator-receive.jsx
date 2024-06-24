@@ -17,6 +17,8 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
+  const [Method, setMethod] = useState();
+  const [openExtend, setOpenExtend] = useState(false);
   // console.log(walletdata && walletdata.wallet.transactions[0]._id);
 
   const [
@@ -27,8 +29,6 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
       isError: addTransactionError,
     },
   ] = useAddTransactionMutation();
-
-  
 
   useEffect(() => {
     if (walletdata && walletdata.wallet.balance !== undefined) {
@@ -166,7 +166,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
                   className="flex flex-col items-end gap-3 text-btn_primary roboto font-medium"
                 >
                   Current Wallet Balance
-                  <div className="w-28">
+                  <div className="w-32">
                     <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
                       {walletdata && walletdata.wallet.balance}
                     </div>
@@ -177,13 +177,68 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             {/* 1st row ends here */}
 
             {/* 2nd row starts here */}
-            <div className="w-56 flex flex-col items-center gap-2 self-center mt-12 mb-20">
-              <p className="text-btn_primary roboto font-medium text-center">
-                Updated Wallet Balance
-              </p>
-              <div className="w-32">
-                <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
-                  {updatedBalance}
+            <div className="flex justify-between items-center mt-12 mb-20">
+              <div className="">
+                <label className="flex flex-col relative text-btn_primary roboto font-medium w-56 gap-2">
+                  Select Payment Method
+                  <div className={`flex items-center gap-1 bg-primary pr-2  ${openExtend ? 'rounded-t-lg':'rounded-lg'}`}>
+                    <InputBox
+                      type="text"
+                      onChange={(e) => setMethod(e.target.value)}
+                      value={Method}
+                      placeholder="Select Method"
+                      disabled={true}
+                    />
+                    <BsArrowUpSquareFill
+                      size={30}
+                      onClick={() => setOpenExtend(!openExtend)}
+                      className={`${!openExtend &&
+                        "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
+                    />
+                  </div>
+                  {openExtend && (
+                    <div className="bg-primary outline-none rounded-b-lg text-text_primary absolute top-20 border-t-2 border-btn_primary w-56 text-base">
+                      <ul className="flex flex-col items-center cursor-pointer">
+                        <li
+                          onClick={() => {
+                            setMethod("CASH");
+                            setOpenExtend(false);
+                          }}
+                          className="hover:bg-btn_secondary hover:text-btn_primary w-full  pt-2.5 pb-1 px-4"
+                        >
+                          CASH
+                        </li>
+                        <li
+                          onClick={() => {
+                            setMethod("CARD");
+                            setOpenExtend(false);
+                          }}
+                          className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
+                        >
+                          CARD
+                        </li>
+                        <li
+                          onClick={() => {
+                            setMethod("UPI");
+                            setOpenExtend(false);
+                          }}
+                          className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
+                        >
+                          UPI
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </label>
+              </div>
+              <div className="w-56 flex flex-col items-end gap-2 self-center">
+                <p className="text-btn_primary roboto font-medium text-center">
+                  Updated Wallet Balance
+                </p>
+                <div className="w-32">
+                  <div className="bg-primary outline-none flex items-center justify-center h-6 py-5 px-4 rounded-lg text-lg text-text_primary">
+                    {updatedBalance}
+                  </div>
                 </div>
               </div>
             </div>

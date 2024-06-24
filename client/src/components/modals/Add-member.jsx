@@ -257,7 +257,7 @@ const AddMember = ({ onModal }) => {
                 />
               </div>
               {openExtend && (
-                <div className="bg-primary outline-none rounded-b-lg font-semibol text-text_primary absolute top-17 left-40 border-t-2 border-btn_primary">
+                <div className="bg-primary outline-none rounded-b-lg text-text_primary absolute top-17 left-40 border-t-2 border-btn_primary">
                   <ul className="flex flex-col items-center cursor-pointer">
                     <li
                       onClick={() => {
