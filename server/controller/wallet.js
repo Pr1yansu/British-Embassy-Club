@@ -68,7 +68,7 @@ exports.getWallet = async (req, res) => {
 
 exports.addTransaction = async (req, res) => {
   try {
-    const { memberId, type, payableAmount, couponAmount } = req.body;
+    const { memberId, type, payableAmount, couponAmount, mode } = req.body;
 
     if (!memberId)
       return res.status(400).json({
@@ -94,6 +94,14 @@ exports.addTransaction = async (req, res) => {
         message: "Amount should be greater than 0",
         data: null,
       });
+
+    if (!mode) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Mode is required",
+        data: null,
+      });
+    }
 
     const member = await MemberSchema.findById(memberId);
     if (!member)
@@ -129,9 +137,10 @@ exports.addTransaction = async (req, res) => {
       walletAmount,
       payableAmount,
       couponAmount,
-      type,
+      type: type,
       status: transactionStatus,
       timeStamp: new Date(),
+      mode: mode.toUpperCase(),
     });
 
     await wallet.save();
