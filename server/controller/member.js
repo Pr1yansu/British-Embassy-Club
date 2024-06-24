@@ -461,7 +461,6 @@ exports.downloadCardPdf = async (req, res) => {
         .writeHead(200, {
           "Content-Type": "application/pdf",
           "Content-Disposition": "attachment; filename=virtual-card.pdf",
-          "Content-Length": buffer.length,
         })
         .end(buffer);
     });

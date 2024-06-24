@@ -223,7 +223,20 @@ exports.fetchTransactions = async (req, res) => {
 
 exports.getAllTransactions = async (req, res) => {
   try {
-    const transactions = await TransactionSchema.find()
+    const { startDate, endDate } = req.query;
+
+    const query = {};
+
+    if (startDate && endDate) {
+      query.timeStamp = {
+        $gte: new Date(startDate),
+        $lt: new Date(
+          new Date(endDate).setDate(new Date(endDate).getDate() + 1)
+        ),
+      };
+    }
+
+    const transactions = await TransactionSchema.find(query)
       .populate([{ path: "walletId" }, { path: "couponId" }])
       .sort({ timeStamp: -1 });
 
@@ -236,7 +249,7 @@ exports.getAllTransactions = async (req, res) => {
       });
     }
 
-    const totalTransactions = await TransactionSchema.countDocuments();
+    const totalTransactions = await TransactionSchema.countDocuments(query);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -257,6 +270,86 @@ exports.getAllTransactions = async (req, res) => {
       todaysTotalTransactions,
       exception: null,
     });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal Server Error",
+      exception: error,
+      data: null,
+    });
+  }
+};
+
+exports.downloadTransactionAsCSV = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    const query = {};
+
+    if (startDate && endDate) {
+      query.timeStamp = {
+        $gte: new Date(startDate),
+        $lt: new Date(
+          new Date(endDate).setDate(new Date(endDate).getDate() + 1)
+        ),
+      };
+    }
+
+    const transactions = await TransactionSchema.find(query)
+      .populate([{ path: "walletId" }, { path: "couponId" }])
+      .sort({ timeStamp: -1 });
+
+    if (!transactions.length) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "No transactions found",
+        data: null,
+        exception: null,
+      });
+    }
+
+    const fields = [
+      "Transaction ID",
+      "Member ID",
+      "Wallet ID",
+      "Coupon ID",
+      "Type",
+      "Payable Amount",
+      "Coupon Amount",
+      "Wallet Amount",
+      "Status",
+      "Time Stamp",
+    ];
+
+    const csv = transactions.map((transaction) => {
+      return {
+        "Transaction ID": transaction._id,
+        "Member ID": transaction.memberId._id,
+        "Wallet ID": transaction.walletId._id,
+        "Coupon ID": transaction.couponId._id,
+        Type: transaction.type,
+        "Payable Amount": transaction.payableAmount,
+        "Coupon Amount": transaction.couponAmount,
+        "Wallet Amount": transaction.walletAmount,
+        Status: transaction.status,
+        "Time Stamp": transaction.timeStamp,
+      };
+    });
+
+    const json2csvParser = new Json2csvParser({ fields });
+    const csvData = json2csvParser.parse(csv);
+
+    return res
+      .setHeader("Content-Type", "text/csv")
+      .setHeader("Content-Disposition", "attachment; filename=transactions.csv")
+      .status(200)
+      .end(csvData)
+      .json({
+        statusCode: 200,
+        message: "Transactions fetched successfully",
+        exception: null,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
