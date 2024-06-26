@@ -6,6 +6,7 @@ const { MemberFilter } = require("../utils/filters");
 const Cache = require("node-cache");
 const pdf = require("html-pdf");
 const { sendMail } = require("../utils/mail-service.js");
+const fs = require("fs");
 
 const cache = new Cache();
 
@@ -375,18 +376,6 @@ exports.getMemberById = async (req, res) => {
     const randomSecret = Math.random().toString(36).substring(7);
     const frontendUrl = `${process.env.FRONTEND_URL}/member/data/${randomSecret}/${memberId}`;
 
-    // if (cache.has(memberId)) {
-    //   const cachedMember = cache.get(memberId);
-    //   const qrCode = await generateQRCode(frontendUrl);
-    //   return res.status(200).json({
-    //     statusCode: 200,
-    //     message: "Member found",
-    //     exception: null,
-    //     data: cachedMember,
-    //     qrCode: qrCode,
-    //   });
-    // }
-
     const member = await MemberSchema.findById(memberId).populate("wallet");
     if (!member) {
       return res.status(404).json({
@@ -396,10 +385,7 @@ exports.getMemberById = async (req, res) => {
         data: null,
       });
     }
-    console.log(member);
     const qrCode = await generateQRCode(frontendUrl);
-
-    // cache.set(memberId, member);
 
     return res.status(200).json({
       statusCode: 200,
@@ -431,50 +417,16 @@ exports.downloadCardPdf = async (req, res) => {
         data: null,
       });
     }
+    const htmlTemplate = fs.readFileSync(
+      `${__dirname}/html/card-tamplate.html`,
+      "utf8"
+    );
 
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Virtual Card</title>
-        <style>
-          body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f3f4f6;
-          }
-          .card-container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            text-align: center;
-          }
-          img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="card-container">
-          <img src="${frontimage}" alt="Virtual Card"/>
-        </div>
-        <div class="card-container">
-          <img src="${backimage}" alt="Virtual Card"/>
-        </div>
-      </body>
-      </html>
-    `;
+    const htmlContent = htmlTemplate
+      .replace("{{frontimage}}", frontimage)
+      .replace("{{backimage}}", backimage);
 
+    // Generate PDF from HTML content
     pdf.create(htmlContent).toBuffer((err, buffer) => {
       if (err) {
         console.log(err);
@@ -502,8 +454,6 @@ exports.downloadCardPdf = async (req, res) => {
     });
   }
 };
-
-
 
 exports.sendCardAsEmail = async (req, res) => {
   try {
