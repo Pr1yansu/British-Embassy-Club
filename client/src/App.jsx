@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Sidebar from "./components/form/Sidebar";
 import { locations } from "./constants";
 import Loader from "./components/ui/loader";
+import MemberPage from "./pages/Home/MemberPage";
 
 const ErrorPage = lazy(() => import("./pages/Error/NotFound"));
 const ClubLogin = lazy(() => import("./pages/Login/ClubLogin"));
@@ -99,6 +100,7 @@ function App() {
         </>
 
         <>
+          <Route path="/member/data/:key/:id" element={<MemberPage/>} />
           <Route path="*" element={<ErrorPage />} />
         </>
       </Routes>

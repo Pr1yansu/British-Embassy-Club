@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import VirtualCardStyle from "../../style/virtualCard.module.css";
 import FrontView from "../modals/Card-front";
@@ -7,9 +7,27 @@ import html2canvas from "html2canvas";
 import toast from "react-hot-toast";
 import { BsFiletypePdf } from "react-icons/bs";
 import { TbMailShare } from "react-icons/tb";
+import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
+import Loader from "./loader";
 
-function VirtualCard({ onModal, data, image }) {
+function VirtualCard({ onModal, data }) {
   const [open, setOpen] = useState(true);
+  const frontendRef = useRef();
+  const backendRef = useRef();
+
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(data._id);
+    const {
+      data: virtualData,
+      isLoading: virtualCardLoading,
+      refetch,
+    } = useGetMemberByIdQuery({
+      memberId: data._id,
+    });
+
+  if (virtualCardLoading) return <Loader />;
+
+  console.log(virtualData);
 
   const sendCardAsEmail = async () => {
     const input = document.getElementById("virtual-card");
@@ -40,29 +58,44 @@ function VirtualCard({ onModal, data, image }) {
     }
   };
 
-  const downloadAsPdf = async () => {
-    const input = document.getElementById("virtual-card");
-    const canvas = await html2canvas(input);
-    const imgData = canvas.toDataURL("image/png");
+const downloadAsPdf = async () => {
+  setIsLoading(true);
+  try {
+    const frontcanvas = await html2canvas(frontendRef.current);
+    const backcanvas = await html2canvas(backendRef.current);
 
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/v1/member/download-card-pdf`,
-        {
-          image: imgData,
-        }
-      );
+    // Convert canvas elements to image data URLs
+    const frontimage = frontcanvas.toDataURL("image/png");
+    const backimage = backcanvas.toDataURL("image/png");
 
-      if (response.status === 200) {
-        alert("Pdf downloaded successfully!");
-      } else {
-        alert("Failed to download pdf.");
+    // Send image data URLs to the server
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/api/v1/member/download-card-pdf`,
+      {
+        frontimage,
+        backimage,
       }
-    } catch (error) {
-      console.error(error);
-      alert("Failed to download pdf.");
+    );
+
+    if (response.status === 200) {
+      // Create a blob from the response data and trigger download
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "virtual-card.pdf";
+      a.click();
+    } else {
+      toast.error("Failed to download pdf.");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to download pdf.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -80,15 +113,21 @@ function VirtualCard({ onModal, data, image }) {
           >
             <div id="virtual-card" className={VirtualCardStyle.flipCard}>
               <div className={VirtualCardStyle.flipCardInner}>
-                <div className={VirtualCardStyle.flipCardFront}>
-                  <FrontView data={data} image={image} />
+                <div className={VirtualCardStyle.flipCardFront} 
+                ref={frontendRef}
+                >
+                  <FrontView
+                    data={virtualData?.data} image={virtualData?.data?.image?.url}
+                  />
                 </div>
-                <div className={VirtualCardStyle.flipCardBack}>
-                  <BackView />
+                <div className={VirtualCardStyle.flipCardBack}
+                ref={backendRef}
+                >
+                  <BackView Qrcode={virtualData.qrCode} />
                 </div>
               </div>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center mt-6">
               <button
                 onClick={sendCardAsEmail}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
@@ -102,8 +141,8 @@ function VirtualCard({ onModal, data, image }) {
                 <BsFiletypePdf />
               </button>
             </div>
-          </div>
-        </div>
+            </div>
+            </div>
       )}
     </>
   );

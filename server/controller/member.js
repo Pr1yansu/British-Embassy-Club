@@ -375,17 +375,17 @@ exports.getMemberById = async (req, res) => {
     const randomSecret = Math.random().toString(36).substring(7);
     const frontendUrl = `${process.env.FRONTEND_URL}/member/data/${randomSecret}/${memberId}`;
 
-    if (cache.has(memberId)) {
-      const cachedMember = cache.get(memberId);
-      const qrCode = await generateQRCode(frontendUrl);
-      return res.status(200).json({
-        statusCode: 200,
-        message: "Member found",
-        exception: null,
-        data: cachedMember,
-        qrCode: qrCode,
-      });
-    }
+    // if (cache.has(memberId)) {
+    //   const cachedMember = cache.get(memberId);
+    //   const qrCode = await generateQRCode(frontendUrl);
+    //   return res.status(200).json({
+    //     statusCode: 200,
+    //     message: "Member found",
+    //     exception: null,
+    //     data: cachedMember,
+    //     qrCode: qrCode,
+    //   });
+    // }
 
     const member = await MemberSchema.findById(memberId).populate("wallet");
     if (!member) {
@@ -396,10 +396,10 @@ exports.getMemberById = async (req, res) => {
         data: null,
       });
     }
-
+    console.log(member);
     const qrCode = await generateQRCode(frontendUrl);
 
-    cache.set(memberId, member);
+    // cache.set(memberId, member);
 
     return res.status(200).json({
       statusCode: 200,
@@ -421,9 +421,9 @@ exports.getMemberById = async (req, res) => {
 
 exports.downloadCardPdf = async (req, res) => {
   try {
-    const { image } = req.body;
+    const { frontimage, backimage } = req.body;
 
-    if (!image) {
+    if (!frontimage && !backimage) {
       return res.status(400).json({
         statusCode: 400,
         message: "Image not provided",
@@ -439,16 +439,43 @@ exports.downloadCardPdf = async (req, res) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Virtual Card</title>
+        <style>
+          body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+          }
+          .card-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+          }
+          img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+          }
+        </style>
       </head>
       <body>
-        <div style="text-align: center;">
-          <img src="${image}" alt="Virtual Card" style="width: 100%; max-width: 600px;"/>
+        <div class="card-container">
+          <img src="${frontimage}" alt="Virtual Card"/>
+        </div>
+        <div class="card-container">
+          <img src="${backimage}" alt="Virtual Card"/>
         </div>
       </body>
       </html>
     `;
 
-    pdf.create(htmlContent).toStream((err, buffer) => {
+    pdf.create(htmlContent).toBuffer((err, buffer) => {
       if (err) {
         console.log(err);
         return res.status(500).json({
@@ -475,6 +502,8 @@ exports.downloadCardPdf = async (req, res) => {
     });
   }
 };
+
+
 
 exports.sendCardAsEmail = async (req, res) => {
   try {

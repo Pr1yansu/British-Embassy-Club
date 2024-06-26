@@ -1,14 +1,14 @@
 import React from "react";
 import VirtualCardStyle from "../../style/virtualCard.module.css";
 
-function BackView() {
+function BackView({ Qrcode }) {
   return (
     <div className={VirtualCardStyle.card}>
       <div className="container">
         <p className={VirtualCardStyle.cardHeader}>British Club Kolkata</p>
       </div>
       <div className="container flex justify-between flex-row-reverse">
-        <img className={VirtualCardStyle.cardImage} src={qrLink} alt="error" />
+        <img className={VirtualCardStyle.cardImage} src={Qrcode} alt="error" />
       </div>
     </div>
   );
