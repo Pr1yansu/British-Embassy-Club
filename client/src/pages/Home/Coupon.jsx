@@ -17,6 +17,7 @@ import OperatorQuery from "../../components/modals/Operator-query";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/loader";
+import TableDemo from "../../components/ui/Demo";
 const Coupon = () => {
   const navigate = useNavigate();
   const [openQuery, setopenQuery] = useState(false);
@@ -85,8 +86,9 @@ const Coupon = () => {
               onClick={handleSearch}
             />
           </div>
-          <div className="row-start-3 row-end-12 col-start-3 col-end-11">
-            <CouponTable walletdata={walletdata} reloadQuery={openQuery} />
+          <div className="row-start-3 row-end-12 col-start-2 col-end-12">
+            {/* <CouponTable walletdata={walletdata} reloadQuery={openQuery} /> */}
+            <TableDemo />
           </div>
         </div>
       </div>

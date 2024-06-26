@@ -25,6 +25,7 @@ const Member = () => {
     search: search,
   });
 
+
   const { data: profiledata, isLoading } = useGetOperatorProfileQuery();
 
   useEffect(() => {
@@ -65,6 +66,7 @@ const Member = () => {
     const selectedPage = event.selected;
     setPage(selectedPage + 1);
   };
+
 
   return (
     <>

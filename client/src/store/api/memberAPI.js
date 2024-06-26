@@ -151,7 +151,7 @@ export const getMemberByIdApi = createApi({
   }),
   endpoints: (builder) => ({
     getMemberById: builder.query({
-      query: (memberId) => `/get-member/${memberId}`,
+      query: ({memberId}) => `/get-member/${memberId}`,
     }),
   }),
 });

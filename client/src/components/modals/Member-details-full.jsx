@@ -203,6 +203,7 @@ const MembersDetails = ({ setOpen, image, data }) => {
         <VirtualCard
           onModal={() => setOpenCard(false)}
           data={data}
+          Qrcode={data}
           image={image}
         />
       )}

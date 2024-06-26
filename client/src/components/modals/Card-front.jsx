@@ -8,7 +8,7 @@ function FrontView({ data, image }) {
       <div className="container flex justify-between flex-row-reverse">
         <img
           className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
-          src={image ? image.url : profile}
+          src={image ? image : profile}
           alt="error"
         />
       </div>
