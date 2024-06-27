@@ -16,7 +16,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
   const [openExtend, setOpenExtend] = useState(false);
   const navigate = useNavigate();
   const [couponAmount, setCouponAmount] = useState();
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("WALLET");
   const [payableAmount, setPayableAmount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
   const [disable, setDisable] = useState(true);

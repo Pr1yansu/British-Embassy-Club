@@ -37,20 +37,6 @@ const Analytics = ({ reloadQuery }) => {
     return <p className="text-center">Loading...</p>;
   }
 
-   const today = new Date().toISOString().split("T")[0];
-   const todaysTransactions = formattedData.filter(
-     (transaction) => transaction.DATE === today
-   );
-
-   const totalCreditedAmount = todaysTransactions.reduce(
-     (acc, transaction) => acc + transaction.data.CREDITAMOUNT,
-     0
-   );
-
-   const totalDebitedAmount = todaysTransactions.reduce(
-     (acc, transaction) => acc + transaction.data.DEBITAMOUNT,
-     0
-   );
 
   if (allTransactions?.data?.length === 0) {
     return (
@@ -86,10 +72,10 @@ const Analytics = ({ reloadQuery }) => {
             </div>
           </div>
           <div className="flex gap-4">
-            <button className="w-20 h-8 rounded-md text-sm hover:bg-blue-500 hover:text-white transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base">
+            <button className="w-20 h-8 rounded-md  hover:bg-blue-500 hover:text-white transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base">
               Cancel
             </button>
-            <button className="w-20 h-8 text-text_secondary hover:bg-blue-500 hover:text-white rounded-md text-sm transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base">
+            <button className="w-20 h-8 text-text_secondary hover:bg-blue-500 hover:text-white rounded-md transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base">
               Confirm
             </button>
           </div>
@@ -107,7 +93,7 @@ const Analytics = ({ reloadQuery }) => {
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
-            <p className="text-base roboto font-bold">{totalCreditedAmount}</p>
+            <p className="text-base roboto font-bold">hoini</p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
