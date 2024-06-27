@@ -282,14 +282,12 @@ exports.getAllTransactions = async (req, res) => {
     if (startDate && endDate) {
       query.timeStamp = {
         $gte: new Date(startDate),
-        $lt: new Date(
-          new Date(endDate).setDate(new Date(endDate).getDate() + 1)
-        ),
+        $lt: new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)),
       };
     }
 
     const transactions = await TransactionSchema.find(query)
-      .populate([{ path: "walletId" }, { path: "couponId" }])
+      .populate("walletId couponId")
       .sort({ timeStamp: -1 });
 
     if (!transactions.length) {
@@ -297,22 +295,41 @@ exports.getAllTransactions = async (req, res) => {
         statusCode: 404,
         message: "No transactions found",
         data: null,
-        exception: null,
       });
     }
 
     const totalTransactions = await TransactionSchema.countDocuments(query);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const todaysTotalTransactions = await TransactionSchema.countDocuments({
-      timeStamp: {
-        $gte: today,
-        $lt: tomorrow,
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setDate(endOfDay.getDate() + 1);
+
+    const todayStats = await TransactionSchema.aggregate([
+      {
+        $match: {
+          timeStamp: {
+            $gte: startOfDay,
+            $lt: endOfDay,
+          },
+        },
       },
-    });
+      {
+        $group: {
+          _id: null,
+          totalCredited: { $sum: "$creditAmount" },
+          totalDebited: { $sum: "$debitAmount" },
+          totalTransactions: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const {
+      totalCredited = 0,
+      totalDebited = 0,
+      totalTransactions: todaysTotalTransactions = 0,
+    } = todayStats[0] || {};
 
     return res.status(200).json({
       statusCode: 200,
@@ -320,7 +337,8 @@ exports.getAllTransactions = async (req, res) => {
       data: transactions,
       totalTransactions,
       todaysTotalTransactions,
-      exception: null,
+      totalCredited,
+      totalDebited,
     });
   } catch (error) {
     console.log(error);
@@ -332,6 +350,7 @@ exports.getAllTransactions = async (req, res) => {
     });
   }
 };
+
 
 exports.downloadTransactionAsCSV = async (req, res) => {
   try {
