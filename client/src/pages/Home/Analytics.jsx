@@ -22,11 +22,11 @@ const Analytics = ({ reloadQuery }) => {
         DATE: formatTime(transaction.timeStamp),
         MEMBERID: transaction.memberId,
         FULLNAME: transaction.memberName,
-        CREDITAMOUNT: transaction.couponAmount,
-        COUPONAMOUNT: transaction.couponId.amount,
-        PAYAMOUNT: transaction.payableAmount,
-        TIMESTAMP: formatTime(transaction.timeStamp),
-        STATUS: transaction.status.toUpperCase(),
+        CREDITAMOUNT: transaction.creditAmount,
+        DEBITAMOUNT: transaction.debitAmount,
+        WALLETTR: transaction.couponAmount,
+        WALLETBALANCE: transaction.walletAmount,
+        MODE: transaction.mode,
       })) || [],
     [allTransactions]
   );
@@ -36,6 +36,21 @@ const Analytics = ({ reloadQuery }) => {
   if (transLoading) {
     return <p className="text-center">Loading...</p>;
   }
+
+   const today = new Date().toISOString().split("T")[0];
+   const todaysTransactions = formattedData.filter(
+     (transaction) => transaction.DATE === today
+   );
+
+   const totalCreditedAmount = todaysTransactions.reduce(
+     (acc, transaction) => acc + transaction.data.CREDITAMOUNT,
+     0
+   );
+
+   const totalDebitedAmount = todaysTransactions.reduce(
+     (acc, transaction) => acc + transaction.data.DEBITAMOUNT,
+     0
+   );
 
   if (allTransactions?.data?.length === 0) {
     return (
@@ -79,18 +94,20 @@ const Analytics = ({ reloadQuery }) => {
             </button>
           </div>
         </div>
-        
+
         <div className="w-117 lg:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
             Daily Transaction Analysis
           </p>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Transactions Today:</p>
-            <p className="text-base roboto font-bold">10</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.todaysTotalTransactions}
+            </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
-            <p className="text-base roboto font-bold">1090</p>
+            <p className="text-base roboto font-bold">{totalCreditedAmount}</p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
@@ -167,23 +184,18 @@ const columns = [
   {
     name: "Credit Amount",
     selector: (row) => row.CREDITAMOUNT,
-    // sortable: true,
   },
   {
     name: "Debit Amount",
     selector: (row) => row.DEBITAMOUNT,
-    // sortable: true,
   },
   {
     name: "Wallet Tr.",
     selector: (row) => row.WALLETTR,
-    // sortable: true,
   },
   {
     name: "Wallet Balance",
     selector: (row) => row.WALLETBALANCE,
-    wrap: true,
-    grow: 2,
   },
   {
     name: "Tr. Mode",
@@ -192,15 +204,17 @@ const columns = [
     cell: (row) => (
       <p
         className={`rounded-full flex items-center text-white tracking-tighter ${
-          row.STATUS === "PAID"
+          row.MODE === "CASH"
             ? "bg-[#22C55E]"
-            : row.STATUS === "DUE"
-            ? "bg-[#E11D48]"
-            : "bg-[#0000FF]"
+            : row.MODE === "CARD"
+            ? "bg-[#0000FF]"
+            : row.MODE === "UPI"
+            ? "bg-[#FBBF24]"
+            : "bg-[#F87171]"
         }`}
         style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
       >
-        {row.STATUS}
+        {row.MODE}
       </p>
     ),
   },
