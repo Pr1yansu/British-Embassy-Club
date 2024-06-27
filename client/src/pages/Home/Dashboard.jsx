@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className="background h-screen bg-cover bg-center">
-      <div className="container mx-auto grid grid-rows-12 grid-cols-12 gap-4">
+      <div className="container mx-auto grid grid-rows-12 grid-cols-12 gap-2">
         <div className="row-start-1 row-end-3 col-start-2 col-end-13 flex justify-end items-center">
           <img
             src={logo}
@@ -47,7 +47,9 @@ const Dashboard = () => {
                 {profiledata && profiledata.data && profiledata.data.role}
               </h6>
             </div>
-            { profiledata && profiledata.data && profiledata.data.role === "operator" ? (
+            {profiledata &&
+            profiledata.data &&
+            profiledata.data.role === "operator" ? (
               <Link to={"/profile"}>
                 {imageUrl ? (
                   <img
@@ -74,22 +76,38 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-        <div className="row-start-3 row-end-11 col-start-4 col-end-10 grid grid-rows-2 grid-cols-2 gap-6">
+        <div className="row-start-3 row-end-6 col-start-3 col-end-12 flex justify-center gap-6 mb-4">
           {cardData.map((items, index) => {
-            return (
-              <MainCard
-                img={items.img}
-                title={items.title}
-                subtitle={items.subtitle}
-                position={items.position}
-                shadow={items.shadow}
-                posV={items.posV}
-                background={items.background}
-                page={items.page}
-                profiledata={profiledata}
-                key={index}
-              />
-            );
+            if (index < 3)
+              return (
+                <MainCard
+                  img={items.img}
+                  title={items.title}
+                  subtitle={items.subtitle}
+                  shadow={items.shadow}
+                  background={items.background}
+                  page={items.page}
+                  profiledata={profiledata}
+                  key={index}
+                />
+              );
+          })}
+        </div>
+        <div className="row-start-6 row-end-11 col-start-3 col-end-12 flex justify-center gap-6">
+          {cardData.map((items, index) => {
+            if (index >= 3)
+              return (
+                <MainCard
+                  img={items.img}
+                  title={items.title}
+                  subtitle={items.subtitle}
+                  shadow={items.shadow}
+                  background={items.background}
+                  page={items.page}
+                  profiledata={profiledata}
+                  key={index}
+                />
+              );
           })}
         </div>
       </div>

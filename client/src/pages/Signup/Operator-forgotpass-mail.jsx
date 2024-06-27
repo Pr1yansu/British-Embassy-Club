@@ -4,7 +4,7 @@ import mailbox from "../../assets/images/mailbox.png";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/LOGO.png";
+import logo from "../../assets/images/logoP.png";
 const OperatorResetPassMail = () => {
   const navigate = useNavigate();
   return (
@@ -27,16 +27,20 @@ const OperatorResetPassMail = () => {
       <div className="row-start-10 row-end-11 col-start-5 col-end-9 flex justify-between">
         <ButtonGroup
           name={"Go Back"}
-          color={"bg-btn_secondary"}
-          textColor={"text-btn_primary"}
+          color={"bg-white"}
+          textColor={"text-text_purple"}
+          HoverColor={"hover:bg-text_purple"}
+          Hovershadow={"hover:shadow-purple-500"}
           icon={<IoIosArrowRoundBack size={30} />}
           toggle={false}
           onClick={() => navigate("/login/operator/forgotPass")}
         />
         <ButtonGroup
           name={"Login"}
-          color={"bg-btn_secondary"}
-          textColor={"text-btn_primary"}
+          color={"bg-white"}
+          textColor={"text-text_purple"}
+          HoverColor={"hover:bg-text_purple"}
+          Hovershadow={"hover:shadow-purple-500"}
           onClick={() => navigate("/login/operator")}
         />
       </div>
