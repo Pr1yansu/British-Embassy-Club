@@ -14,6 +14,14 @@ const transactionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "CouponSchema",
   },
+  creditAmount: {
+    type: Number,
+    required: true,
+  },
+  debitAmount: {
+    type: Number,
+    required: true,
+  },
   walletAmount: {
     type: Number,
     required: true,
@@ -23,6 +31,10 @@ const transactionSchema = new mongoose.Schema({
   },
   couponAmount: {
     type: Number,
+  },
+  memberName: {
+    type: String,
+    required: true,
   },
   type: {
     type: String,
