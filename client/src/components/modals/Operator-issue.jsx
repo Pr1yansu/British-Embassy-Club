@@ -16,7 +16,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
   const [openExtend, setOpenExtend] = useState(false);
   const navigate = useNavigate();
   const [couponAmount, setCouponAmount] = useState();
-  const [mode, setMode] = useState();
+  const [mode, setMode] = useState("");
   const [payableAmount, setPayableAmount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
   const [disable, setDisable] = useState(true);
@@ -74,6 +74,22 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
 
   const handleConfirm = async () => {
     try {
+
+      if(payableAmount > 0 && mode === "") {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please select payment method"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
+          {
+            position: "top-right",
+            duration: 2000,
+          }
+        );
+        return;
+      }
+
       const { data } = await addTransaction({
         memberId: walletdata && walletdata.wallet.memberId._id,
         type: "issue",
@@ -191,7 +207,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                   <div className={`flex items-center w-52 gap-1 h-12 bg-primary pr-2  ${openExtend ? 'rounded-t-lg':'rounded-lg'}`}>
                     <InputBox
                       type="text"
-                      onChange={(e) => setMethod(e.target.value)}
+                      onChange={(e) => setMode(e.target.value)}
                       value={mode}
                       placeholder="Select Method"
                       disabled = {disable}

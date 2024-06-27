@@ -17,7 +17,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
-  const [Method, setMethod] = useState();
+  const [mode, setMode] = useState("");
   const [openExtend, setOpenExtend] = useState(false);
   // console.log(walletdata && walletdata.wallet.transactions[0]._id);
 
@@ -64,6 +64,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
         type: "receive",
         payableAmount: 0,
         couponAmount: amount,
+        mode: mode,
       });
       if (data) {
         toast.custom(
@@ -184,8 +185,8 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
                   <div className={`flex items-center gap-1 bg-primary pr-2  ${openExtend ? 'rounded-t-lg':'rounded-lg'}`}>
                     <InputBox
                       type="text"
-                      onChange={(e) => setMethod(e.target.value)}
-                      value={Method}
+                      onChange={(e) => setMode(e.target.value)}
+                      value={mode}
                       placeholder="Select Method"
                       disabled={true}
                     />
@@ -201,7 +202,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
                       <ul className="flex flex-col items-center cursor-pointer">
                         <li
                           onClick={() => {
-                            setMethod("CASH");
+                            setMode("CASH");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full  pt-2.5 pb-1 px-4"
@@ -210,7 +211,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
                         </li>
                         <li
                           onClick={() => {
-                            setMethod("CARD");
+                            setMode("CARD");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
@@ -219,7 +220,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
                         </li>
                         <li
                           onClick={() => {
-                            setMethod("UPI");
+                            setMode("UPI");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"

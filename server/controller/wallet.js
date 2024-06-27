@@ -96,14 +96,6 @@ exports.addTransaction = async (req, res) => {
         data: null,
       });
 
-    if (!mode) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "Mode is required",
-        data: null,
-      });
-    }
-
     const member = await MemberSchema.findById(memberId);
     if (!member)
       return res
@@ -141,25 +133,25 @@ exports.addTransaction = async (req, res) => {
       type: type,
       status: transactionStatus,
       timeStamp: new Date(),
-      mode: mode.toUpperCase(),
+      mode: mode ? mode.toUpperCase() : "WALLET",
     });
 
     await wallet.save();
 
-    await sendMail({
-      to: member.email,
-      subject: "Transaction Details",
-      text: `Transaction ID: ${
+    await sendMail(
+      member.email,
+      "Transaction Details",
+      `Transaction ID: ${
         transaction._id
       }\nType: ${type}\nPayable Amount: ${payableAmount}\nCoupon Amount: ${couponAmount}\nWallet Amount: ${walletAmount}\nStatus: ${transactionStatus}\nTime Stamp: ${
         transaction.timeStamp
-      }\nMode: ${mode.toUpperCase()}`,
-      html: `<h1>Transaction Details</h1><p>Transaction ID: ${
+      }\nMode: ${mode ? mode.toUpperCase() : "WALLET"}`,
+      `<h1>Transaction Details</h1><p>Transaction ID: ${
         transaction._id
       }</p><p>Type: ${type}</p><p>Payable Amount: ${payableAmount}</p><p>Coupon Amount: ${couponAmount}</p><p>Wallet Amount: ${walletAmount}</p><p>Status: ${transactionStatus}</p><p>Time Stamp: ${
         transaction.timeStamp
-      }</p><p>Mode: ${mode.toUpperCase()}</p>`,
-    });
+      }</p><p>Mode: ${mode ? mode.toUpperCase() : "WALLET"}</p>`
+    );
 
     return res.status(201).json({
       statusCode: 201,
