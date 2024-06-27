@@ -2,9 +2,9 @@ import React from "react";
 import VirtualCardStyle from "../../style/virtualCard.module.css";
 import profile from "../../assets/images/profilePic.png";
 
-function FrontView({ data, image }) {
+function FrontView({ data, image, frontendRef }) {
   return (
-    <div className={VirtualCardStyle.card}>
+    <div className={VirtualCardStyle.card} ref={frontendRef}>
       <div className="container flex justify-between flex-row-reverse">
         <img
           className="w-20 h-20 aspect-auto rounded-full object-cover object-center"
