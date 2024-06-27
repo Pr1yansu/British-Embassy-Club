@@ -16,6 +16,7 @@ module.exports = {
         btn_secondary: "#F8FAFC",
         text_black: "#030712",
         text_orange: "#FFA500",
+        ocet: "#7E22CE",
       },
       boxShadow: {
         main_card: "0px 6px 8px 0px rgba(0, 0, 0, 0.20)",

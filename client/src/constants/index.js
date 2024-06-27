@@ -18,6 +18,7 @@ export const locations = [
   "/member",
   "/coupon",
   "/profile",
+  "/analytics",
   "/settings",
   "/settings/admin",
   "/",

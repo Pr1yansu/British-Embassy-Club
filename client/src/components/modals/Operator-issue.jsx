@@ -16,6 +16,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
   const [openExtend, setOpenExtend] = useState(false);
   const navigate = useNavigate();
   const [couponAmount, setCouponAmount] = useState();
+  const [mode, setMode] = useState();
   const [payableAmount, setPayableAmount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
   const [disable, setDisable] = useState(true);
@@ -78,6 +79,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
         type: "issue",
         payableAmount: payableAmount,
         couponAmount: couponAmount,
+        mode: mode,
       });
       if (data) {
         toast.custom(
@@ -190,7 +192,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                     <InputBox
                       type="text"
                       onChange={(e) => setMethod(e.target.value)}
-                      value={Method}
+                      value={mode}
                       placeholder="Select Method"
                       disabled = {disable}
                     />
@@ -208,7 +210,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                       <ul className="flex flex-col items-center cursor-pointer">
                         <li
                           onClick={() => {
-                            setMethod("CASH");
+                            setMode("CASH");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full pt-2.5 pb-1 px-4"
@@ -217,7 +219,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                         </li>
                         <li
                           onClick={() => {
-                            setMethod("CARD");
+                            setMode("CARD");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full py-1 px-4"
@@ -226,7 +228,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                         </li>
                         <li
                           onClick={() => {
-                            setMethod("UPI");
+                            setMode("UPI");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"
