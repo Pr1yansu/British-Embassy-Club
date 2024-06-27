@@ -9,6 +9,7 @@ const Loader = () => {
     animationData: loadingAnimationData,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
+      hideOnTransparent: true,
     },
   };
   return (
