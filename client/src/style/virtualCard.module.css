@@ -21,13 +21,7 @@
 
 .cardImage {
     @apply w-32 h-32 object-cover;
-    border-width: 10px;
-    border-style: solid;
-    border-image: linear-gradient(to right,
-            rgba(255, 255, 255, 0),
-            rgba(255, 255, 255, 1)) 1;
-    border-top-left-radius: 16px;
-    border-bottom-left-radius: 16px;
+    border-radius: 15px;
 }
 
 .cardFooter {

@@ -1,129 +1,186 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import VirtualCardStyle from "../../style/virtualCard.module.css";
 import FrontView from "../modals/Card-front";
 import BackView from "../modals/Card-back";
-import html2canvas from "html2canvas";
 import toast from "react-hot-toast";
 import { BsFiletypePdf } from "react-icons/bs";
 import { TbMailShare } from "react-icons/tb";
 import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 import Loader from "./loader";
+import { toJpeg } from "html-to-image";
 
 function VirtualCard({ onModal, data }) {
   const [open, setOpen] = useState(true);
   const frontendRef = useRef();
   const backendRef = useRef();
-
   const [isLoading, setIsLoading] = useState(false);
-  console.log(data._id);
-    const {
-      data: virtualData,
-      isLoading: virtualCardLoading,
-      refetch,
-    } = useGetMemberByIdQuery({
-      memberId: data._id,
-    });
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  const {
+    data: virtualData,
+    isLoading: virtualCardLoading,
+  } = useGetMemberByIdQuery({
+    memberId: data._id,
+  });
+
+  useEffect(() => {
+    if (isLoading) {
+      setLoadingProgress(0);
+      const interval = setInterval(() => {
+        setLoadingProgress((oldProgress) => {
+          if (oldProgress >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return Math.min(oldProgress + 10, 100);
+        });
+      }, 200);
+    } else {
+      setLoadingProgress(0);
+    }
+  }, [isLoading]);
 
   if (virtualCardLoading) return <Loader />;
 
-  console.log(virtualData);
-
   const sendCardAsEmail = async () => {
-    const input = document.getElementById("virtual-card");
-    const canvas = await html2canvas(input);
-    const imgData = canvas.toDataURL("image/png");
-
     try {
-      if (!data.email) {
-        return toast.error("Please provide an email address.");
-      }
+      setIsLoading(true);
+      const frontImage = await toJpeg(frontendRef.current, {
+        quality: 1,
+        width: 360,
+        height: 220,
+      });
+      const backImage = await toJpeg(backendRef.current, {
+        quality: 1,
+        width: 360,
+        height: 220,
+      });
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/v1/member/send-card-email`,
         {
-          image: imgData,
-          email: data.email,
+          frontImage,
+          backImage,
+          email: virtualData.data.email,
+        },
+        {
+          responseType: "blob",
         }
       );
 
       if (response.status === 200) {
-        alert("Email sent successfully!");
-      } else {
-        alert("Failed to send email.");
+        toast.success("Email sent successfully.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Failed to send email.");
+      toast.error("Failed to send email.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-const downloadAsPdf = async () => {
-  setIsLoading(true);
-  try {
-    const frontcanvas = await html2canvas(frontendRef.current);
-    const backcanvas = await html2canvas(backendRef.current);
+  const downloadAsPdf = async () => {
+    setIsLoading(true);
+    try {
+      const frontimage = await toJpeg(frontendRef.current, {
+        quality: 1,
+        width: 360,
+        height: 220,
+      });
+      const backimage = await toJpeg(backendRef.current, {
+        quality: 1,
+        width: 360,
+        height: 220,
+      });
 
-    // Convert canvas elements to image data URLs
-    const frontimage = frontcanvas.toDataURL("image/png");
-    const backimage = backcanvas.toDataURL("image/png");
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/v1/member/download-card-pdf`,
+        {
+          frontimage,
+          backimage,
+        },
+        {
+          responseType: "blob",
+        }
+      );
 
-    // Send image data URLs to the server
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/v1/member/download-card-pdf`,
-      {
-        frontimage,
-        backimage,
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "virtual-card.pdf";
+        a.click();
+        toast.success("Pdf downloaded successfully.");
+      } else {
+        toast.error("Failed to download pdf.");
       }
-    );
-
-    if (response.status === 200) {
-      // Create a blob from the response data and trigger download
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "virtual-card.pdf";
-      a.click();
-    } else {
+    } catch (error) {
+      console.error(error);
       toast.error("Failed to download pdf.");
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to download pdf.");
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+  };
 
   return (
     <>
       {open && (
         <div
-          className="fixed h-screen w-screen top-0 left-0 right-0 bottom-0 bg-black/50 z-20 flex items-center justify-center"
+          className={`fixed h-screen w-screen top-0 left-0 right-0 bottom-0 bg-black/50 z-20 flex items-center justify-center`}
           onClick={() => {
             onModal();
             setOpen(false);
           }}
         >
+          {isLoading && (
+            <>
+              <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/70 z-30">
+                <div className="w-full max-w-screen-sm rounded-md h-2 bg-gray-300 fixed top-1/2 left-1/2 z-40 -translate-x-1/2 -translate-y-1/2">
+                  <div
+                    className="h-full bg-blue-500 transition-all duration-300"
+                    style={{ width: `${loadingProgress}%` }}
+                  ></div>
+                  <h4
+                    className={`
+                    text-white
+                    text-center
+                    font-semibold
+                    absolute
+                    top-1/2
+                    left-1/2
+                    transform
+                    -translate-x-1/2
+                    -translate-y-1/2
+                    ${loadingProgress === 100 ? "opacity-0" : "opacity-100"}
+                    `}
+                  >
+                    {loadingProgress === 100
+                      ? "Please wait while we process your request."
+                      : "Processing your request."}
+                  </h4>
+                </div>
+              </div>
+            </>
+          )}
           <div
             onClick={(val) => val.stopPropagation()}
             className="hover:cursor-pointer"
           >
             <div id="virtual-card" className={VirtualCardStyle.flipCard}>
               <div className={VirtualCardStyle.flipCardInner}>
-                <div className={VirtualCardStyle.flipCardFront} 
-                ref={frontendRef}
-                >
+                <div className={VirtualCardStyle.flipCardFront}>
                   <FrontView
-                    data={virtualData?.data} image={virtualData?.data?.image?.url}
+                    data={virtualData?.data}
+                    image={virtualData?.data?.image?.url}
+                    frontendRef={frontendRef}
                   />
                 </div>
-                <div className={VirtualCardStyle.flipCardBack}
-                ref={backendRef}
-                >
-                  <BackView Qrcode={virtualData.qrCode} />
+                <div className={VirtualCardStyle.flipCardBack}>
+                  <BackView
+                    Qrcode={virtualData.qrCode}
+                    backendRef={backendRef}
+                  />
                 </div>
               </div>
             </div>
@@ -131,18 +188,20 @@ const downloadAsPdf = async () => {
               <button
                 onClick={sendCardAsEmail}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                disabled={isLoading}
               >
                 <TbMailShare />
               </button>
               <button
                 onClick={downloadAsPdf}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                disabled={isLoading}
               >
                 <BsFiletypePdf />
               </button>
             </div>
-            </div>
-            </div>
+          </div>
+        </div>
       )}
     </>
   );
