@@ -7,7 +7,7 @@ function BackView({ Qrcode, backendRef }) {
       <div className="container">
         <p className={VirtualCardStyle.cardHeader}>British Club Kolkata</p>
       </div>
-      <div className="container flex justify-between flex-row-reverse">
+      <div className=" flex justify-between flex-row-reverse">
         <img className={VirtualCardStyle.cardImage} src={Qrcode} alt="error" />
       </div>
     </div>
