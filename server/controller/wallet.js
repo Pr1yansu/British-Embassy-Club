@@ -122,11 +122,15 @@ exports.addTransaction = async (req, res) => {
     });
 
     let walletAmount, transactionStatus;
+    let creditAmount = 0,
+      debitAmount = 0;
     if (type === "issue") {
       walletAmount = wallet.balance - (couponAmount - payableAmount);
+      debitAmount = couponAmount - payableAmount;
       transactionStatus = "paid";
     } else {
       walletAmount = wallet.balance + couponAmount;
+      creditAmount = couponAmount;
       transactionStatus = "none";
     }
 
@@ -142,6 +146,9 @@ exports.addTransaction = async (req, res) => {
       status: transactionStatus,
       timeStamp: new Date(),
       mode: mode.toUpperCase(),
+      creditAmount,
+      debitAmount,
+      memberName: member.name,
     });
 
     await wallet.save();
