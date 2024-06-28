@@ -87,7 +87,12 @@ exports.addTransaction = async (req, res) => {
       });
     }
 
-    if (isNaN(payableAmount) || isNaN(couponAmount) || payableAmount < 0 || couponAmount < 0) {
+    if (
+      isNaN(payableAmount) ||
+      isNaN(couponAmount) ||
+      payableAmount < 0 ||
+      couponAmount < 0
+    ) {
       return res.status(400).json({
         statusCode: 400,
         message: "Amount should be a non-negative number",
@@ -118,7 +123,10 @@ exports.addTransaction = async (req, res) => {
       memberId: member._id,
     });
 
-    let walletAmount, transactionStatus, creditAmount = 0, debitAmount = 0;
+    let walletAmount,
+      transactionStatus,
+      creditAmount = 0,
+      debitAmount = 0;
 
     if (type === "issue") {
       walletAmount = wallet.balance - (couponAmount - payableAmount);
@@ -146,16 +154,26 @@ exports.addTransaction = async (req, res) => {
       creditAmount,
       debitAmount,
       memberName: member.name,
+      firstname: member.firstname,
+      lastname: member.lastname,
     });
 
     await wallet.save();
 
-    await sendMail({
-      to: member.email,
-      subject: "Transaction Details",
-      text: `Transaction ID: ${transaction._id}\nType: ${type}\nPayable Amount: ${payableAmount}\nCoupon Amount: ${couponAmount}\nWallet Amount: ${walletAmount}\nStatus: ${transactionStatus}\nTime Stamp: ${transaction.timeStamp}\nMode: ${mode.toUpperCase()}`,
-      html: `<h1>Transaction Details</h1><p>Transaction ID: ${transaction._id}</p><p>Type: ${type}</p><p>Payable Amount: ${payableAmount}</p><p>Coupon Amount: ${couponAmount}</p><p>Wallet Amount: ${walletAmount}</p><p>Status: ${transactionStatus}</p><p>Time Stamp: ${transaction.timeStamp}</p><p>Mode: ${mode.toUpperCase()}</p>`,
-    });
+    await sendMail(
+      member.email,
+      "Transaction Details",
+      `Your transaction with ID ${transaction._id} has been ${transactionStatus}.`,
+      `
+      <h1>Transaction Details</h1>
+      <p>Your transaction with ID ${transaction._id} has been ${transactionStatus}.</p>
+      <>MEMBER ID:${memberId} with Name:${member.name}</p>
+      <p>Transaction Type: ${type},Mode:${mode}</p>
+      <p>Credited Amount : ${creditAmount}</p>
+      <p>Debited Amount : ${debitAmount}</p>
+      <p>Wallet Amount : ${walletAmount}</p>
+      `
+    );
 
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
@@ -179,7 +197,12 @@ exports.addTransaction = async (req, res) => {
       },
     ]);
 
-    const { totalCredited, totalDebited, totalTransactions } = todayTransactions[0] || { totalCredited: 0, totalDebited: 0, totalTransactions: 0 };
+    const { totalCredited, totalDebited, totalTransactions } =
+      todayTransactions[0] || {
+        totalCredited: 0,
+        totalDebited: 0,
+        totalTransactions: 0,
+      };
 
     return res.status(201).json({
       statusCode: 201,
@@ -192,7 +215,6 @@ exports.addTransaction = async (req, res) => {
       },
       exception: null,
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -275,22 +297,32 @@ exports.fetchTransactions = async (req, res) => {
 
 exports.getAllTransactions = async (req, res) => {
   try {
-    const { startDate, endDate } = req.query;
-
+    const { startDate, endDate, search } = req.query;
     const query = {};
 
     if (startDate && endDate) {
       query.timeStamp = {
         $gte: new Date(startDate),
-        $lt: new Date(new Date(endDate).setDate(new Date(endDate).getDate() + 1)),
+        $lt: new Date(
+          new Date(endDate).setDate(new Date(endDate).getDate() + 1)
+        ),
       };
+    }
+
+    if (search) {
+      const searchRegex = new RegExp(search, "i");
+      query.$or = [
+        { memberName: { $regex: searchRegex } },
+        { memberId: { $regex: searchRegex } },
+      ];
     }
 
     const transactions = await TransactionSchema.find(query)
       .populate("walletId couponId")
-      .sort({ timeStamp: -1 });
-      console.log(transactions);
-    if (!transactions.length) {
+      .sort({ timeStamp: -1 })
+      .exec();
+
+    if (transactions.length < 1) {
       return res.status(404).json({
         statusCode: 404,
         message: "No transactions found",
@@ -302,7 +334,6 @@ exports.getAllTransactions = async (req, res) => {
 
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
-
     const endOfDay = new Date(startOfDay);
     endOfDay.setDate(endOfDay.getDate() + 1);
 
@@ -350,7 +381,6 @@ exports.getAllTransactions = async (req, res) => {
     });
   }
 };
-
 
 exports.downloadTransactionAsCSV = async (req, res) => {
   try {

@@ -3,42 +3,44 @@ import DataTable from "react-data-table-component";
 import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
 import { formatTime } from "../../hooks/formatTime";
 import SearchBox from "../../components/ui/SearchBox";
-import { ButtonGroup } from "@mui/material";
 import { Export } from "../../components/ui/Export";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const Analytics = ({ reloadQuery }) => {
+const Analytics = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [inputStartDate, setInputStartDate] = useState("");
   const [inputEndDate, setInputEndDate] = useState("");
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const {
     data: allTransactions,
     isLoading: transLoading,
     refetch,
-  } = useGetAllTransactionsQuery({ startDate, endDate });
+    isError,
+  } = useGetAllTransactionsQuery({ startDate, endDate, search });
 
   React.useEffect(() => {
     refetch();
-  }, [reloadQuery, refetch, startDate, endDate]);
+  }, [refetch, startDate, endDate, search]);
 
   const formattedData = React.useMemo(
     () =>
       allTransactions?.data?.map((transaction, index) => ({
         DATE: formatTime(transaction.timeStamp),
         MEMBERID: transaction.memberId,
-        FULLNAME: transaction.memberName,
+        FULLNAME: transaction.firstname
+          ? transaction.firstname + " " + transaction.lastname
+          : "Not Available",
         CREDITAMOUNT: transaction.creditAmount,
         DEBITAMOUNT: transaction.debitAmount,
         WALLETTR: transaction.couponAmount,
         WALLETBALANCE: transaction.walletAmount,
-        MODE: transaction.mode,
+        MODE: transaction.mode.toLowerCase(),
       })) || [],
-    [allTransactions]
+    [allTransactions?.data]
   );
-
-  console.log(allTransactions);
 
   if (transLoading) {
     return <p className="text-center">Loading...</p>;
@@ -86,18 +88,8 @@ const Analytics = ({ reloadQuery }) => {
     document.body.removeChild(link);
   };
 
-  if (allTransactions?.data?.length === 0) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <h1 className="text-center text-3xl font-bold text-text_primary tracking-normal">
-          No data available
-        </h1>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-3">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-3 background bg-cover bg-center">
       <div className="flex flex-col lg:flex-row justify-center items-center w-full max-w-6xl gap-10 mb-5 mt-5">
         <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-3 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
@@ -130,20 +122,20 @@ const Analytics = ({ reloadQuery }) => {
                 setInputEndDate("");
                 navigate(0);
               }}
-              className="w-20 h-8 rounded-md  hover:bg-blue-500 hover:text-white transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base"
+              className="w-20 h-8 rounded-md  hover:bg-blue-600 hover:text-white transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base shadow-btn_shadow hover:shadow-blue-600"
             >
               Cancel
             </button>
             <button
               onClick={() => {
                 if (inputStartDate === "" || inputEndDate === "") {
-                  alert("Please select start and end date to proceed");
+                  toast.error("Please select a date range");
                   return;
                 }
                 setStartDate(inputStartDate);
                 setEndDate(inputEndDate);
               }}
-              className="w-20 h-8 text-text_secondary hover:bg-blue-500 hover:text-white rounded-md transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base"
+              className="w-20 h-8 text-text_secondary hover:bg-blue-600 hover:text-white rounded-md transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base shadow-btn_shadow hover:shadow-blue-600"
             >
               Confirm
             </button>
@@ -167,7 +159,7 @@ const Analytics = ({ reloadQuery }) => {
             </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
-            <p className="text-base roboto">Total Credited Amount:</p>
+            <p className="text-base roboto">Total Debited Amount:</p>
             <p className="text-base roboto font-bold">
               {allTransactions?.totalDebited}
             </p>
@@ -181,21 +173,27 @@ const Analytics = ({ reloadQuery }) => {
           </h1>
           <div className="w-full md:w-1/2 h-10">
             <SearchBox
+              iconShow={false}
               placeholder={
                 "Search by Member Name or ID to view total Transaction data"
               }
               type={"text"}
+              onchange={(e) =>
+                setTimeout(() => {
+                  setSearch(e.target.value);
+                }, 1000)
+              }
             />
           </div>
           <Export onExport={handleExport} />
         </div>
         <DataTable
           columns={columns}
-          data={formattedData}
+          data={isError ? [] : formattedData}
           customStyles={customStyles}
           pagination
           paginationPerPage={8}
-          paginationTotalRows={formattedData.length}
+          paginationTotalRows={isError ? [] : formattedData.length}
           paginationRowsPerPageOptions={[5, 8, 15, 20]}
           paginationComponentOptions={{
             rowsPerPageText: "Rows:",
@@ -227,13 +225,13 @@ const columns = [
   {
     name: "Membership ID",
     selector: (row) => row.MEMBERID,
-    grow: 2,
     wrap: true,
   },
   {
-    name: "Full Name",
+    name: "Member Name",
     selector: (row) => row.FULLNAME,
     wrap: true,
+    cell: (row) => <p className="text-sm capitalize">{row.FULLNAME}</p>,
   },
   {
     name: "Credit Amount",
@@ -257,16 +255,16 @@ const columns = [
     sortable: true,
     cell: (row) => (
       <p
-        className={`rounded-full flex items-center text-white tracking-tighter ${
-          row.MODE === "CASH"
-            ? "bg-[#22C55E]"
-            : row.MODE === "CARD"
-            ? "bg-[#0000FF]"
-            : row.MODE === "UPI"
-            ? "bg-[#FBBF24]"
-            : "bg-[#F87171]"
+        className={`w-16 h-6 rounded-full flex items-center justify-center font-medium text-white roboto  ${
+          row.MODE.toUpperCase() === "CASH"
+            ? "bg-[#22C55E] text-[#BBF7D0] capitalize"
+            : row.MODE.toUpperCase() === "CARD"
+            ? "bg-[#0000FF] text-[#BAE6FD] capitalize"
+            : row.MODE.toUpperCase() === "UPI"
+            ? "bg-[#FBBF24] text-[#FEF3C7] uppercase"
+            : "bg-[#DC2626] text-[#FCA5A5] capitalize"
         }`}
-        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
+        style={{ fontSize: "12px", padding: "4px 6px" }}
       >
         {row.MODE}
       </p>
@@ -282,7 +280,7 @@ const customStyles = {
       borderRadius: "0.75rem",
       boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
       overflowY: "auto",
-      maxHeight: "400px", // Add this line to restrict table height
+      maxHeight: "400px",
     },
   },
   headRow: {
@@ -308,6 +306,7 @@ const customStyles = {
       fontStyle: "normal",
       fontWeight: 400,
       lineHeight: "normal",
+      height: "3rem",
     },
   },
 };

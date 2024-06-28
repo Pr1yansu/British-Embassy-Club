@@ -7,7 +7,6 @@ import MemberCard from "../../components/ui/MemberCard";
 import { useGetAllMembersQuery } from "../../store/api/memberAPI";
 import ReactPaginate from "react-paginate";
 import { GrPrevious, GrNext } from "react-icons/gr";
-import Loader from "../../components/ui/loader";
 import { useNavigate } from "react-router-dom";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import { toast } from "react-hot-toast";
@@ -19,12 +18,11 @@ const Member = () => {
   const [open, SetOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { data, isLoading: memberLoading , refetch} = useGetAllMembersQuery({
+  const { data, isLoading: memberLoading } = useGetAllMembersQuery({
     page: page === 0 ? 1 : page,
     limit: 12,
     search: search,
   });
-
 
   const { data: profiledata, isLoading } = useGetOperatorProfileQuery();
 
@@ -67,7 +65,6 @@ const Member = () => {
     setPage(selectedPage + 1);
   };
 
-
   return (
     <>
       <div className="background bg-cover bg-center">
@@ -75,7 +72,7 @@ const Member = () => {
           <div className="row-start-2 row-end-3 col-start-2 col-end-10 ">
             <SearchBox
               placeholder={
-                "Search by Member Ref. number, Name, Email, Phone number......"
+                "Search by Membership ID, Name, Email, Phone number......"
               }
               type={"text"}
               onchange={(e) =>
