@@ -46,17 +46,17 @@ export const fetchTransactionsApi = createApi({
 });
 
 export const getAllTransactionsApi = createApi({
-  reducerPath: "getAllTransactionsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
-    credentials: "include",
-  }),
-  endpoints: (builder) => ({
-    getAllTransactions: builder.query({
-      query: () => `/get-transactions`,
-    }),
-  }),
-});
+         reducerPath: "getAllTransactionsApi",
+         baseQuery: fetchBaseQuery({
+           baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
+           credentials: "include",
+         }),
+         endpoints: (builder) => ({
+           getAllTransactions: builder.query({
+             query: ({ startDate="", endDate="" }) => `/get-transactions?startDate=${startDate}&endDate=${endDate}`,
+           }),
+         }),
+       });
 
 export const updateTransactionApi = createApi({
   reducerPath: "updateTransactionApi",

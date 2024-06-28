@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
 import { formatTime } from "../../hooks/formatTime";
 import SearchBox from "../../components/ui/SearchBox";
 import { ButtonGroup } from "@mui/material";
+import { Export } from "../../components/ui/Export";
+import { useNavigate } from "react-router-dom";
 
 const Analytics = ({ reloadQuery }) => {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [inputStartDate, setInputStartDate] = useState("");
+  const [inputEndDate, setInputEndDate] = useState("");
+  const navigate = useNavigate();
   const {
     data: allTransactions,
     isLoading: transLoading,
     refetch,
-  } = useGetAllTransactionsQuery();
+  } = useGetAllTransactionsQuery({ startDate, endDate });
 
   React.useEffect(() => {
     refetch();
-  }, [reloadQuery, refetch]);
+  }, [reloadQuery, refetch, startDate, endDate]);
 
   const formattedData = React.useMemo(
     () =>
@@ -37,6 +44,47 @@ const Analytics = ({ reloadQuery }) => {
     return <p className="text-center">Loading...</p>;
   }
 
+  const handleExport = () => {
+    const csvData = formattedData.map((row) => ({
+      ...row,
+      TIMESTAMP: formatTime(row.TIMESTAMP),
+    }));
+
+    const csvContent = [
+      [
+        "Date",
+        "Membership ID",
+        "Full Name",
+        "Credit Amount",
+        "Debit Amount",
+        "Wallet Tr.",
+        "Wallet Balance",
+        "Tr. Mode",
+      ],
+      ...csvData.map((row) => [
+        `"${row.DATE}"`,
+        `"${row.MEMBERID}"`,
+        `"${row.FULLNAME}"`,
+        `"${row.CREDITAMOUNT}"`,
+        `"${row.DEBITAMOUNT}"`,
+        `"${row.WALLETTR}"`,
+        `"${row.WALLETBALANCE}"`,
+        `"${row.MODE}"`,
+      ]),
+    ]
+      .map((e) => e.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "transactions.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (allTransactions?.data?.length === 0) {
     return (
@@ -51,7 +99,7 @@ const Analytics = ({ reloadQuery }) => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-3">
       <div className="flex flex-col lg:flex-row justify-center items-center w-full max-w-6xl gap-10 mb-5 mt-5">
-        <div className="w-117 lg:w-117 py-3 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
+        <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-3 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
             Select options for the statement period
           </p>
@@ -61,6 +109,7 @@ const Analytics = ({ reloadQuery }) => {
               <input
                 type="date"
                 className="w-full lg:w-40 h-8 text-text_secondary p-2 border border-gray-300 rounded-md"
+                onChange={(e) => setInputStartDate(e.target.value)}
               />
             </div>
             <div className="flex justify-between items-center gap-2 w-full">
@@ -68,20 +117,40 @@ const Analytics = ({ reloadQuery }) => {
               <input
                 type="date"
                 className="w-full lg:w-40 h-8 text-text_secondary p-2 border border-gray-300 rounded-md"
+                onChange={(e) => setInputEndDate(e.target.value)}
               />
             </div>
           </div>
           <div className="flex gap-4">
-            <button className="w-20 h-8 rounded-md  hover:bg-blue-500 hover:text-white transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base">
+            <button
+              onClick={() => {
+                setStartDate("");
+                setEndDate("");
+                setInputStartDate("");
+                setInputEndDate("");
+                navigate(0);
+              }}
+              className="w-20 h-8 rounded-md  hover:bg-blue-500 hover:text-white transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base"
+            >
               Cancel
             </button>
-            <button className="w-20 h-8 text-text_secondary hover:bg-blue-500 hover:text-white rounded-md transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base">
+            <button
+              onClick={() => {
+                if (inputStartDate === "" || inputEndDate === "") {
+                  alert("Please select start and end date to proceed");
+                  return;
+                }
+                setStartDate(inputStartDate);
+                setEndDate(inputEndDate);
+              }}
+              className="w-20 h-8 text-text_secondary hover:bg-blue-500 hover:text-white rounded-md transition ease-in-out delay-150 duration-300 roboto text-base hover:roboto hover:text-base"
+            >
               Confirm
             </button>
           </div>
         </div>
 
-        <div className="w-117 lg:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
+        <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
             Daily Transaction Analysis
           </p>
@@ -93,15 +162,19 @@ const Analytics = ({ reloadQuery }) => {
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
-            <p className="text-base roboto font-bold">hoini</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.totalCredited}
+            </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
-            <p className="text-base roboto font-bold">10</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.totalDebited}
+            </p>
           </div>
         </div>
       </div>
-      <div className="w-full max-w-6xl p-3 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
+      <div className="md:w-full md:max-w-6xl w-96 ml-16 sm:ml-0 max-w-4xl p-3 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
         <div className="flex flex-col md:flex-row justify-between items-center p-2 gap-4">
           <h1 className="text-xl font-roboto font-medium text-black tracking-tighter text-center">
             Transaction Table
@@ -114,12 +187,7 @@ const Analytics = ({ reloadQuery }) => {
               type={"text"}
             />
           </div>
-          <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter text-center">
-            {allTransactions?.todaysTotalTransactions &&
-            allTransactions.todaysTotalTransactions !== 0
-              ? `${allTransactions.todaysTotalTransactions} Coupons Today`
-              : "No Coupons Today"}
-          </h1>
+          <Export onExport={handleExport} />
         </div>
         <DataTable
           columns={columns}
@@ -157,7 +225,7 @@ const columns = [
     selector: (row) => row.DATE,
   },
   {
-    name: "Member ID",
+    name: "Membership ID",
     selector: (row) => row.MEMBERID,
     grow: 2,
     wrap: true,

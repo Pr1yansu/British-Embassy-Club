@@ -99,8 +99,8 @@ const OperatorLogin = () => {
         className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
       />
       <div className="flex flex-col justify-center items-center gap-14 mt-40">
-        <div className="h-17 w-150 border-2 bg-gradient-to-br from-purple-300 to-purple-700 rounded-xl flex justify-center items-center">
-          <p className="font-semibold text-white text-5xl font-inter tracking-tight">
+        <div className="h-14 w-[500px] -ml-14 border-2 bg-gradient-to-br from-purple-300 to-purple-700 rounded-xl flex justify-center items-center">
+          <p className="font-semibold text-white text-3xl font-inter tracking-tight">
             Operator Authentication
           </p>
         </div>

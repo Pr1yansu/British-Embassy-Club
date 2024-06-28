@@ -58,6 +58,23 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const handleReciveTransaction = async (e) => {
     e.preventDefault(); // Prevent form submission from reloading the page
     try {
+      if (
+        walletdata?.wallet?.balance === 0  && mode === "WALLET"
+      ) {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"please select a payment method"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
+          {
+            position: "top-right",
+            duration: 2000,
+          }
+        );
+        return;
+      }
+
       const { data } = await addTransaction({
         memberId: walletdata && walletdata.wallet.memberId._id,
         type: "receive",
@@ -65,6 +82,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
         couponAmount: amount,
         mode: mode,
       });
+      
       if (data) {
         toast.custom(
           <>
