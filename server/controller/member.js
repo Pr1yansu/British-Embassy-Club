@@ -52,7 +52,7 @@ exports.addMember = async (req, res) => {
 
     const shortDate = new Date().toISOString().slice(2, 10).replace(/-/g, "");
 
-    const memberId = `BEC${shortDate}${allMembersCount + 1}`;
+    const memberId = `BCK/${shortDate}/${allMembersCount + 1}`;
 
     const member = new MemberSchema({
       _id: memberId.replace(/\s/g, ""),

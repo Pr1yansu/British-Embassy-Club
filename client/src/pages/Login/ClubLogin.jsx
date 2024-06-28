@@ -147,64 +147,71 @@ const ClubLogin = () => {
         <img
           src={arrow}
           alt="arrow"
-          className="absolute -top-10 h-56 xl:left-80 lg:left-64 max-lg:hidden "
+          className="absolute -top-10 left-96 h-56 "
         />
         <img
           src={logo}
           alt="logo"
           className="absolute top-6 left-24 h-24 aspect-square object-cover object-center"
         />
-        <div className="grid lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full lg:pt-40 ">
-          <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
-            <form
-              onSubmit={handleLogin}
-              className="w-3/5 flex flex-col gap-4 items-center justify-center"
-            >
-              <InputBox
-                type={"text"}
-                placeholder={"Username"}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <Passwordbox
-                placeholder="Password"
-                onchange={(e) => setPassword(e.target.value)}
-              />
-              <Button name={"Login"} type={"submit"} />
-              <p
-                className="text-blue-700 font-medium text-xs roboto cursor-pointer"
-                onClick={handleForgetPass}
-              >
-                {loading ? (
-                  <LuLoader2 className="animate-spin" size={20} />
-                ) : (
-                  "Forget your password?"
-                )}
-              </p>
-            </form>
-          </div>
-
-          <div className="flex flex-col">
-            <h1 className="mb-4">
-              are you a member of <br />{" "}
-              <span className="text-blue-700 font-bold">
-                british club kolkata?
-              </span>
-            </h1>
-            <p className="font-medium text-3xl font-inter tracking-tight">
-              if you don’t have an account
+        <div className="flex flex-col justify-center items-center gap-14 mt-40">
+          <div className="h-17 w-150 border-2 bg-gradient-to-br from-blue-300 to-blue-700 rounded-xl flex justify-center items-center">
+            <p className="font-semibold text-white text-5xl font-inter tracking-tight">
+              Club Authentication
             </p>
-            <h2 className="flex items-center max:lg-justify-center gap-2">
-              <p className="font-medium text-3xl font-inter tracking-tight">
-                please
-              </p>
-              <a
-                href="/signup/club"
-                className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
+          </div>
+          <div className="grid w-full lg:grid-rows-1 lg:grid-cols-2 max-lg:grid-rows-2 max-lg:grid-cols-1 h-full ">
+            <div className="flex flex-col gap-4 items-center text-center justify-start max-lg:order-2 max-lg:justify-center ">
+              <form
+                onSubmit={handleLogin}
+                className="w-3/5 flex flex-col gap-4 items-center justify-center"
               >
-                register
-              </a>
-              <FaArrowRight size={22} color="blue" />
-            </h2>
+                <InputBox
+                  type={"text"}
+                  placeholder={"Username"}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <Passwordbox
+                  placeholder="Password"
+                  onchange={(e) => setPassword(e.target.value)}
+                />
+                <Button name={"Login"} type={"submit"} />
+                <p
+                  className="text-blue-700 font-medium text-xs roboto cursor-pointer"
+                  onClick={handleForgetPass}
+                >
+                  {loading ? (
+                    <LuLoader2 className="animate-spin" size={20} />
+                  ) : (
+                    "Forget your password?"
+                  )}
+                </p>
+              </form>
+            </div>
+
+            <div className="flex flex-col">
+              <h1 className="mb-4">
+                are you a member of <br />{" "}
+                <span className="text-blue-700 font-bold">
+                  british club kolkata?
+                </span>
+              </h1>
+              <p className="font-medium text-3xl font-inter tracking-tight">
+                if you don’t have an account
+              </p>
+              <h2 className="flex items-center max:lg-justify-center gap-2">
+                <p className="font-medium text-3xl font-inter tracking-tight">
+                  please
+                </p>
+                <a
+                  href="/signup/club"
+                  className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
+                >
+                  register
+                </a>
+                <FaArrowRight size={22} color="blue" />
+              </h2>
+            </div>
           </div>
         </div>
       </div>

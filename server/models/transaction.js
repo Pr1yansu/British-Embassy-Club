@@ -48,8 +48,8 @@ const transactionSchema = new mongoose.Schema({
   },
   mode: {
     type: String,
-    enum: ["CASH", "CARD", "UPI"],
-    required: true,
+    enum: ["CASH", "CARD", "UPI", "WALLET"],
+    default: "WALLET",
   },
   timeStamp: {
     type: Date,
