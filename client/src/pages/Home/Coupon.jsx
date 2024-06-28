@@ -69,7 +69,7 @@ const Coupon = () => {
     <>
       <div className="background bg-cover bg-center w-full h-screen">
         <div className="container grid grid-rows-12 grid-cols-12 gap-4 mx-auto">
-          <div className="row-start-2 row-end-3 col-start-2 col-end-12">
+          <div className="row-start-2 row-end-3 col-start-2 col-end-12 overflow-y-auto">
             <SearchBox
               placeholder={"Search by MEMBERSHIP ID"}
               type={"text"}

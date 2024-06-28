@@ -98,7 +98,7 @@ const MemberPage = () => {
               National ID (
               {data.data.idProof
                 ? data.data.idProof && data.data.idProof.idType
-                : "Not Provided"}{" "}
+                : "Not Provided"}
               )
             </h4>
             <p className="lato !text-sm">
