@@ -11,6 +11,8 @@ const MemberCard = ({ item, index }) => {
   const [open, setOpen] = useState(false);
   const [memberId, setMemberId] = useState();
 
+  console.log(item);
+
   const handleCopy = () => {
     toast.custom(
       <div className="bg-white px-6 py-3 rounded-lg flex items-center justify-center gap-4 shadow-lg">
@@ -47,8 +49,10 @@ const MemberCard = ({ item, index }) => {
               <CgProfile className="w-10 h-10" color="#6B7280" />
             )}
             <div className="flex flex-col">
-              <p className="roboto text-base text-btn_primary">{item.name}</p>
-              <p className="text-xs">{item.username}</p>
+              <p className="roboto text-base text-btn_primary">
+                {item.firstname + " " + item.lastname}
+              </p>
+              <p className="text-xs">{item.name}</p>
             </div>
           </div>
           {
