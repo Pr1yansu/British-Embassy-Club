@@ -23,10 +23,9 @@ const CouponTable = ({ reloadQuery }) => {
         FULLNAME: transaction.firstname
           ? transaction.firstname + " " + transaction.lastname
           : "Not Available",
-        CREDITAMOUNT: transaction.creditAmount,
-        DEBITAMOUNT: transaction.debitAmount,
-        WALLETTR: transaction.couponAmount,
-        WALLETBALANCE: transaction.walletAmount,
+        TRTYPE: transaction.type,
+        TRAMOUNT: transaction.debitAmount + transaction.creditAmount,
+        EXPAYAMT: transaction.payableAmount,
         MODE: transaction.mode.toLowerCase(),
       })) || [],
     [allTransactions]
@@ -111,9 +110,9 @@ const CouponTable = ({ reloadQuery }) => {
         data={formattedData}
         customStyles={customStyles}
         pagination
-        paginationPerPage={10}
+        paginationPerPage={8}
         paginationTotalRows={formattedData.length}
-        paginationRowsPerPageOptions={[5, 10, 15, 20]}
+        paginationRowsPerPageOptions={[5, 8, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",
           rangeSeparatorText: "of",
@@ -152,28 +151,27 @@ const columns = [
     cell: (row) => <p className="text-sm capitalize">{row.FULLNAME}</p>,
   },
   {
-    name: "Credit Amount",
-    selector: (row) => row.CREDITAMOUNT,
+    name: "Tr. Type",
+    selector: (row) => row.TRTYPE,
+    cell: (row) => (
+      <p>{row.TRTYPE.toLowerCase() === "issue" ? "Credit" : "Debit"}</p>
+    ),
   },
   {
-    name: "Debit Amount",
-    selector: (row) => row.DEBITAMOUNT,
+    name: "Tr. Amount",
+    selector: (row) => row.TRAMOUNT,
   },
   {
-    name: "Wallet Tr.",
-    selector: (row) => row.WALLETTR,
-  },
-  {
-    name: "Wallet Balance",
-    selector: (row) => row.WALLETBALANCE,
+    name: "Ex-pay Amt.",
+    selector: (row) => row.EXPAYAMT,
   },
   {
     name: "Tr. Mode",
-    selector: (row) => row.TRMODE,
+    selector: (row) => row.MODE,
     sortable: true,
     cell: (row) => (
       <p
-        className={`w-16 h-6 rounded-full flex items-center justify-center font-medium text-white roboto  ${
+        className={`w-16 h-6 rounded-full flex items-center justify-center font-medium text-white roboto ${
           row.MODE.toUpperCase() === "CASH"
             ? "bg-[#22C55E] text-[#BBF7D0] capitalize"
             : row.MODE.toUpperCase() === "CARD"
@@ -189,6 +187,7 @@ const columns = [
     ),
   },
 ];
+
 
 const customStyles = {
   table: {

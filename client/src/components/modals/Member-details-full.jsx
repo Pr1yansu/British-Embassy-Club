@@ -50,9 +50,9 @@ const MembersDetails = ({ setOpen, image, data }) => {
               )}
               <div className="flex flex-col gap-2">
                 <p className="text-3xl text-btn_primary font-bold font-sans">
-                  {data.name}
+                  {data.firstname + " " + data.lastname}
                 </p>
-                <p className="text-text_primary roboto">{data.userName}</p>
+                <p className="text-text_primary roboto">{data.name}</p>
               </div>
             </div>
 
