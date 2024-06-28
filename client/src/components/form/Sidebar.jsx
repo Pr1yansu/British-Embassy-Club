@@ -15,6 +15,7 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const [activeName, setActiveName] = useState("");
   const role = profiledata?.data?.role;
+
   const menus = [
     {
       names: "Dashboard",
@@ -27,24 +28,29 @@ const Sidebar = () => {
       icon: MdOutlinePeopleAlt,
     },
     { names: "Coupon", link: "/coupon", icon: LuTicket },
-
-    { names: "Analytics", link: "/analytics", icon: SiGoogleanalytics },
-
+    {
+      names: "Analytics",
+      link: "/analytics",
+      icon: SiGoogleanalytics,
+      disabled: role === "operator",
+    },
     {
       names: "Profile",
       link: "/profile",
       icon: RxAvatar,
+      disabled: role === "admin",
     },
-
     {
       names: "Settings",
       link: role === "admin" ? "/settings/admin" : "/settings",
       icon: IoIosSettings,
     },
   ];
+
   if (isLoading) {
     return <Loader />;
   }
+
   const activeMenu = (name) => {
     setActiveName(name);
   };
@@ -58,31 +64,31 @@ const Sidebar = () => {
         open ? "items-center" : ""
       } shadow-sidebar_shadow rounded-r-3xl`}
     >
-      <div className=" flex flex-1 justify-center flex-col gap-4  relative">
-        {menus?.map((menu, i) => {
-          const isProfileAdmin = menu.names === "Profile" && role === "admin";
+      <div className="flex flex-1 justify-center flex-col gap-4 relative">
+        {menus.map((menu, i) => {
+          const isDisabled = menu.disabled;
           return (
             <Link
-              to={isProfileAdmin ? "#" : menu?.link}
+              to={isDisabled ? "#" : menu.link}
               key={i}
               onClick={() => {
-                if (!isProfileAdmin) {
+                if (!isDisabled) {
                   activeMenu(menu.names);
                 }
               }}
-              className={` ${menu?.margin &&
-                "mt-5"}  group flex items-center text-xl roboto gap-4 font-medium p-2 ${
-                isProfileAdmin ? "cursor-not-allowed" : ""
+              className={`${menu.margin &&
+                "mt-5"} group flex items-center text-xl roboto gap-4 font-medium p-2 ${
+                isDisabled ? "cursor-not-allowed" : ""
               }`}
             >
               <div
-                className={` ${
-                  activeName === menu?.names
+                className={`${
+                  activeName === menu.names
                     ? "text-black font-semibold"
                     : "text-text_primary"
                 }`}
               >
-                {React.createElement(menu?.icon, {
+                {React.createElement(menu.icon, {
                   size: "24",
                 })}
               </div>
@@ -95,20 +101,20 @@ const Sidebar = () => {
                   "opacity-0 translate-x-28 overflow-hidden"}`}
               >
                 <div
-                  className={` ${
-                    activeName === menu?.names
+                  className={`${
+                    activeName === menu.names
                       ? "text-black font-semibold"
                       : "text-text_primary"
                   }`}
                 >
-                  {menu?.names}
+                  {menu.names}
                 </div>
               </h2>
               <h2
                 className={`${open &&
-                  "hidden"} fixed left-48 bg-white font-semibold whitespace-pre text-sm text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
+                  "hidden"} fixed left-48 bg-white font-semibold whitespace-pre text-sm text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
               >
-                {isProfileAdmin ? "disable" : menu?.names}
+                {isDisabled ? "Disabled" : menu.names}
               </h2>
             </Link>
           );
