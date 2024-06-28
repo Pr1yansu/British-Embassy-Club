@@ -12,7 +12,6 @@ import { LuLoader2 } from "react-icons/lu";
 import { BsArrowUpSquareFill } from "react-icons/bs";
 
 const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
-  const [Method, setMethod] = useState("");
   const [openExtend, setOpenExtend] = useState(false);
   const navigate = useNavigate();
   const [couponAmount, setCouponAmount] = useState();
@@ -23,53 +22,47 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
 
   const [
     addTransaction,
-    {
-      isSuccess: addTransactionSuccess,
-      isLoading: addTransactionLoading,
-      isError: addTransactionError,
-    },
+    { isLoading: addTransactionLoading },
   ] = useAddTransactionMutation();
 
   useEffect(() => {
     walletdata && setWalletBalance(walletdata.wallet.balance);
-  }, []);
+  }, [walletdata]);
 
   useEffect(() => {
+    const getPaybleAmountAndRemainingAmount = () => {
+      let coupon = couponAmount === "" ? 0 : couponAmount;
+      let wallet =
+        walletdata.wallet.balance === "" ? 0 : walletdata.wallet.balance;
+      let remainingAmount = wallet - coupon;
+      if (remainingAmount < 0) {
+        setPayableAmount(coupon - wallet);
+        setDisable(false);
+        wallet = 0;
+      } else {
+        setDisable(true);
+        setPayableAmount(0);
+        wallet = remainingAmount;
+      }
+      if (isNaN(wallet))
+        wallet =
+          walletdata.wallet.balance === "" ? 0 : walletdata.wallet.balance;
+
+      setWalletBalance(wallet);
+    };
     getPaybleAmountAndRemainingAmount(couponAmount);
-  }, [couponAmount]);
+  }, [couponAmount, walletdata.wallet.balance]);
 
   const handleCouponAmountChange = (e) => {
     const value = e.target.value;
     if (value === "") {
-      setCouponAmount(0); // Set to 0 if input is empty
+      setCouponAmount(0);
     } else {
       const parsedValue = parseInt(value, 10);
       if (!isNaN(parsedValue)) {
         setCouponAmount(parsedValue);
       }
     }
-    // getPaybleAmountAndRemainingAmount(0);
-  };
-
-  const getPaybleAmountAndRemainingAmount = (parsedValue) => {
-    let coupon = couponAmount === "" ? 0 : couponAmount;
-    let wallet =
-      walletdata.wallet.balance === "" ? 0 : walletdata.wallet.balance;
-    let remainingAmount = wallet - coupon;
-    if (remainingAmount < 0) {
-      setPayableAmount(coupon - wallet);
-      setDisable(false);
-      wallet = 0;
-    } else {
-      setDisable(true);
-      setPayableAmount(0);
-      setMethod("");
-      wallet = remainingAmount;
-    }
-    if (isNaN(wallet))
-      wallet = walletdata.wallet.balance === "" ? 0 : walletdata.wallet.balance;
-
-    setWalletBalance(wallet);
   };
 
   const handleConfirm = async () => {
@@ -111,8 +104,8 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
         couponAmount: couponAmount,
         mode: mode,
       });
-      
-      if (addTransactionSuccess) {
+
+      if (data) {
         toast.custom(
           <>
             <Toasts

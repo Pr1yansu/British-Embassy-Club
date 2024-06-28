@@ -52,7 +52,7 @@ exports.addMember = async (req, res) => {
 
     const shortDate = new Date().toISOString().slice(2, 10).replace(/-/g, "");
 
-    const memberId = `BCK/${shortDate}/${allMembersCount + 1}`;
+    const memberId = `BCK${shortDate}${allMembersCount + 1}`;
 
     const member = new MemberSchema({
       _id: memberId.replace(/\s/g, ""),
@@ -375,7 +375,6 @@ exports.getMemberById = async (req, res) => {
     const randomSecret = Math.random().toString(36).substring(7);
     const frontendUrl = `${process.env.FRONTEND_URL}/member/data/${randomSecret}/${memberId}`;
 
-
     const member = await MemberSchema.findById(memberId).populate("wallet");
     if (!member) {
       return res.status(404).json({
@@ -488,7 +487,7 @@ exports.downloadCardPdf = async (req, res) => {
 
 exports.sendCardAsEmail = async (req, res) => {
   try {
-    const { email, frontImage,backImage } = req.body;
+    const { email, frontImage, backImage } = req.body;
     if (!email || !frontImage || !backImage) {
       return res.status(400).json({
         statusCode: 400,
@@ -500,7 +499,7 @@ exports.sendCardAsEmail = async (req, res) => {
 
     const member = await MemberSchema.findOne({
       email: email,
-    })
+    });
 
     if (!member) {
       return res.status(404).json({
@@ -544,8 +543,13 @@ exports.sendCardAsEmail = async (req, res) => {
       </html>
     `;
 
-
-    const response = await sendMail(email, "Virtual Card", "Virtual Card", htmlContent,attachment);
+    const response = await sendMail(
+      email,
+      "Virtual Card",
+      "Virtual Card",
+      htmlContent,
+      attachment
+    );
 
     if (!response) {
       return res.status(400).json({

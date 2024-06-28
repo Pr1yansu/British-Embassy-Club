@@ -9,7 +9,7 @@ const CouponTable = ({ reloadQuery }) => {
     data: allTransactions,
     isLoading: transLoading,
     refetch,
-  } = useGetAllTransactionsQuery({ startDate: "", endDate:"" });
+  } = useGetAllTransactionsQuery({ startDate: "", endDate: "" });
 
   React.useEffect(() => {
     refetch();
@@ -20,12 +20,14 @@ const CouponTable = ({ reloadQuery }) => {
       allTransactions?.data?.map((transaction, index) => ({
         DATE: formatTime(transaction.timeStamp),
         MEMBERID: transaction.memberId,
-        FULLNAME: transaction.memberName,
+        FULLNAME: transaction.firstname
+          ? transaction.firstname + " " + transaction.lastname
+          : "Not Available",
         CREDITAMOUNT: transaction.creditAmount,
         DEBITAMOUNT: transaction.debitAmount,
         WALLETTR: transaction.couponAmount,
         WALLETBALANCE: transaction.walletAmount,
-        MODE: transaction.mode,
+        MODE: transaction.mode.toLowerCase(),
       })) || [],
     [allTransactions]
   );
@@ -36,47 +38,47 @@ const CouponTable = ({ reloadQuery }) => {
     return <p>Loading...</p>;
   }
 
- const handleExport = () => {
-   const csvData = formattedData.map((row) => ({
-     ...row,
-     TIMESTAMP: formatTime(row.TIMESTAMP),
-   }));
+  const handleExport = () => {
+    const csvData = formattedData.map((row) => ({
+      ...row,
+      TIMESTAMP: formatTime(row.TIMESTAMP),
+    }));
 
-   const csvContent = [
-     [
-       "Date",
-       "Membership ID",
-       "Full Name",
-       "Credit Amount",
-       "Debit Amount",
-       "Wallet Tr.",
-       "Wallet Balance",
-       "Tr. Mode",
-     ],
-     ...csvData.map((row) => [
-       `"${row.DATE}"`,
-       `"${row.MEMBERID}"`,
-       `"${row.FULLNAME}"`,
-       `"${row.CREDITAMOUNT}"`,
-       `"${row.DEBITAMOUNT}"`,
-       `"${row.WALLETTR}"`,
-       `"${row.WALLETBALANCE}"`,
-       `"${row.MODE}"`,
-     ]),
-   ]
-     .map((e) => e.join(","))
-     .join("\n");
+    const csvContent = [
+      [
+        "Date",
+        "Membership ID",
+        "Full Name",
+        "Credit Amount",
+        "Debit Amount",
+        "Wallet Tr.",
+        "Wallet Balance",
+        "Tr. Mode",
+      ],
+      ...csvData.map((row) => [
+        `"${row.DATE}"`,
+        `"${row.MEMBERID}"`,
+        `"${row.FULLNAME}"`,
+        `"${row.CREDITAMOUNT}"`,
+        `"${row.DEBITAMOUNT}"`,
+        `"${row.WALLETTR}"`,
+        `"${row.WALLETBALANCE}"`,
+        `"${row.MODE}"`,
+      ]),
+    ]
+      .map((e) => e.join(","))
+      .join("\n");
 
-   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-   const link = document.createElement("a");
-   const url = URL.createObjectURL(blob);
-   link.setAttribute("href", url);
-   link.setAttribute("download", "transactions.csv");
-   link.style.visibility = "hidden";
-   document.body.appendChild(link);
-   link.click();
-   document.body.removeChild(link);
- };
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "transactions.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (allTransactions?.data?.length === 0) {
     return (
@@ -98,8 +100,8 @@ const CouponTable = ({ reloadQuery }) => {
           <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter mb-2">
             {allTransactions?.todaysTotalTransactions &&
             allTransactions.todaysTotalTransactions !== 0
-              ? `${allTransactions.todaysTotalTransactions} Coupons Today`
-              : "No Coupons Today"}
+              ? `${allTransactions.todaysTotalTransactions} Transactions Today`
+              : "No Transactions Today"}
           </h1>
         </div>
         <Export onExport={handleExport} />
@@ -141,13 +143,13 @@ const columns = [
   {
     name: "Membership ID",
     selector: (row) => row.MEMBERID,
-    grow: 2,
     wrap: true,
   },
   {
-    name: "Full Name",
+    name: "Member Name",
     selector: (row) => row.FULLNAME,
     wrap: true,
+    cell: (row) => <p className="text-sm capitalize">{row.FULLNAME}</p>,
   },
   {
     name: "Credit Amount",
@@ -171,16 +173,16 @@ const columns = [
     sortable: true,
     cell: (row) => (
       <p
-        className={`rounded-full flex items-center text-white tracking-tighter ${
-          row.MODE === "CASH"
-            ? "bg-[#22C55E]"
-            : row.MODE === "CARD"
-            ? "bg-[#0000FF]"
-            : row.MODE === "UPI"
-            ? "bg-[#FBBF24]"
-            : "bg-[#F87171]"
+        className={`w-16 h-6 rounded-full flex items-center justify-center font-medium text-white roboto  ${
+          row.MODE.toUpperCase() === "CASH"
+            ? "bg-[#22C55E] text-[#BBF7D0] capitalize"
+            : row.MODE.toUpperCase() === "CARD"
+            ? "bg-[#0000FF] text-[#BAE6FD] capitalize"
+            : row.MODE.toUpperCase() === "UPI"
+            ? "bg-[#FBBF24] text-[#FEF3C7] uppercase"
+            : "bg-[#DC2626] text-[#FCA5A5] capitalize"
         }`}
-        style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
+        style={{ fontSize: "12px", padding: "4px 6px" }}
       >
         {row.MODE}
       </p>
@@ -221,6 +223,7 @@ const customStyles = {
       fontStyle: "normal",
       fontWeight: 400,
       lineHeight: "normal",
+      height: "3rem",
     },
   },
 };

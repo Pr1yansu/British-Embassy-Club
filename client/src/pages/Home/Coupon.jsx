@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SearchBox from "../../components/ui/SearchBox";
 import CouponTable from "../../components/ui/CouponTable";
-import {
-  useGetWalletQuery,
-  useAddTransactionMutation,
-  useFetchTransactionsQuery,
-  useUpdateTransactionMutation,
-  useUpdateCouponExpiresMutation,
-} from "../../store/api/walletAPI";
 import axios from "axios";
 import Toasts from "../../components/ui/Toasts";
-import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import { MdError } from "react-icons/md";
 import OperatorQuery from "../../components/modals/Operator-query";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/loader";
-import TableDemo from "../../components/ui/Demo";
 const Coupon = () => {
   const navigate = useNavigate();
   const [openQuery, setopenQuery] = useState(false);
@@ -80,7 +71,7 @@ const Coupon = () => {
         <div className="container grid grid-rows-12 grid-cols-12 gap-4 mx-auto">
           <div className="row-start-2 row-end-3 col-start-2 col-end-12">
             <SearchBox
-              placeholder={"Search by ID"}
+              placeholder={"Search by MEMBERSHIP ID"}
               type={"text"}
               onchange={(e) => setSearch(e.target.value)}
               onClick={handleSearch}
@@ -88,7 +79,6 @@ const Coupon = () => {
           </div>
           <div className="row-start-3 row-end-12 col-start-2 col-end-12">
             <CouponTable walletdata={walletdata} reloadQuery={openQuery} />
-            {/*<TableDemo />*/}
           </div>
         </div>
       </div>

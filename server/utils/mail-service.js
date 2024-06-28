@@ -1,8 +1,7 @@
 const nodemailer = require("nodemailer");
 
-exports.sendMail = async (to, subject, text, html,attachment) => {
+exports.sendMail = async (to, subject, text, html, attachment) => {
   try {
-
     if (!to) {
       throw new Error("Email address is required");
     }
@@ -23,7 +22,7 @@ exports.sendMail = async (to, subject, text, html,attachment) => {
       subject,
       text,
       html,
-      attachments:attachment
+      attachments: attachment,
     });
     return info;
   } catch (error) {
