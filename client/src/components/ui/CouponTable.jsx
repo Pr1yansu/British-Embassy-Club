@@ -2,13 +2,14 @@ import React from "react";
 import DataTable from "react-data-table-component";
 import { useGetAllTransactionsQuery } from "../../store/api/walletAPI";
 import { formatTime } from "../../hooks/formatTime";
+import { Export } from "./Export";
 
 const CouponTable = ({ reloadQuery }) => {
   const {
     data: allTransactions,
     isLoading: transLoading,
     refetch,
-  } = useGetAllTransactionsQuery();
+  } = useGetAllTransactionsQuery({ startDate: "", endDate:"" });
 
   React.useEffect(() => {
     refetch();
@@ -17,13 +18,14 @@ const CouponTable = ({ reloadQuery }) => {
   const formattedData = React.useMemo(
     () =>
       allTransactions?.data?.map((transaction, index) => ({
-        SLNO: index + 1,
+        DATE: formatTime(transaction.timeStamp),
         MEMBERID: transaction.memberId,
-        COUPONTYPE: transaction.type,
-        COUPONAMOUNT: transaction.couponId.amount,
-        PAYAMOUNT: transaction.payableAmount,
-        TIMESTAMP: formatTime(transaction.timeStamp),
-        STATUS: transaction.status.toUpperCase(),
+        FULLNAME: transaction.memberName,
+        CREDITAMOUNT: transaction.creditAmount,
+        DEBITAMOUNT: transaction.debitAmount,
+        WALLETTR: transaction.couponAmount,
+        WALLETBALANCE: transaction.walletAmount,
+        MODE: transaction.mode,
       })) || [],
     [allTransactions]
   );
@@ -33,6 +35,48 @@ const CouponTable = ({ reloadQuery }) => {
   if (transLoading) {
     return <p>Loading...</p>;
   }
+
+ const handleExport = () => {
+   const csvData = formattedData.map((row) => ({
+     ...row,
+     TIMESTAMP: formatTime(row.TIMESTAMP),
+   }));
+
+   const csvContent = [
+     [
+       "Date",
+       "Membership ID",
+       "Full Name",
+       "Credit Amount",
+       "Debit Amount",
+       "Wallet Tr.",
+       "Wallet Balance",
+       "Tr. Mode",
+     ],
+     ...csvData.map((row) => [
+       `"${row.DATE}"`,
+       `"${row.MEMBERID}"`,
+       `"${row.FULLNAME}"`,
+       `"${row.CREDITAMOUNT}"`,
+       `"${row.DEBITAMOUNT}"`,
+       `"${row.WALLETTR}"`,
+       `"${row.WALLETBALANCE}"`,
+       `"${row.MODE}"`,
+     ]),
+   ]
+     .map((e) => e.join(","))
+     .join("\n");
+
+   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+   const link = document.createElement("a");
+   const url = URL.createObjectURL(blob);
+   link.setAttribute("href", url);
+   link.setAttribute("download", "transactions.csv");
+   link.style.visibility = "hidden";
+   document.body.appendChild(link);
+   link.click();
+   document.body.removeChild(link);
+ };
 
   if (allTransactions?.data?.length === 0) {
     return (
@@ -46,14 +90,20 @@ const CouponTable = ({ reloadQuery }) => {
 
   return (
     <div className="p-6 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
-      <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">
-        Issue Coupons Table
-      </h1>
-      <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter mb-2">
-        {allTransactions?.todaysTotalTransactions && allTransactions.todaysTotalTransactions !== 0
-          ? `${allTransactions.todaysTotalTransactions} Coupons Today`
-          : "No Coupons Today"}
-      </h1>
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h1 className="text-2xl font-roboto font-medium text-black tracking-tighter">
+            Transaction Table
+          </h1>
+          <h1 className="text-sm font-roboto font-medium text-text_primary tracking-tighter mb-2">
+            {allTransactions?.todaysTotalTransactions &&
+            allTransactions.todaysTotalTransactions !== 0
+              ? `${allTransactions.todaysTotalTransactions} Coupons Today`
+              : "No Coupons Today"}
+          </h1>
+        </div>
+        <Export onExport={handleExport} />
+      </div>
       <DataTable
         columns={columns}
         data={formattedData}
@@ -85,51 +135,54 @@ export default CouponTable;
 
 const columns = [
   {
-    name: "SL.No.",
-    selector: (row) => row.SLNO,
+    name: "Date",
+    selector: (row) => row.DATE,
   },
   {
-    name: "Member ID",
+    name: "Membership ID",
     selector: (row) => row.MEMBERID,
     grow: 2,
     wrap: true,
   },
   {
-    name: "Coupon Type",
-    selector: (row) => row.COUPONTYPE,
-    // sortable: true,
+    name: "Full Name",
+    selector: (row) => row.FULLNAME,
+    wrap: true,
   },
   {
-    name: "Coupon Amount",
-    selector: (row) => row.COUPONAMOUNT,
-    // sortable: true,
+    name: "Credit Amount",
+    selector: (row) => row.CREDITAMOUNT,
   },
   {
-    name: "Pay Amount",
-    selector: (row) => row.PAYAMOUNT,
-    // sortable: true,
+    name: "Debit Amount",
+    selector: (row) => row.DEBITAMOUNT,
   },
   {
-    name: "Timestamp",
-    selector: (row) => row.TIMESTAMP,
-    sortable: true,
+    name: "Wallet Tr.",
+    selector: (row) => row.WALLETTR,
   },
   {
-    name: "Status",
-    selector: (row) => row.STATUS,
+    name: "Wallet Balance",
+    selector: (row) => row.WALLETBALANCE,
+  },
+  {
+    name: "Tr. Mode",
+    selector: (row) => row.TRMODE,
     sortable: true,
     cell: (row) => (
       <p
         className={`rounded-full flex items-center text-white tracking-tighter ${
-          row.STATUS === "PAID"
+          row.MODE === "CASH"
             ? "bg-[#22C55E]"
-            : row.STATUS === "DUE"
-            ? "bg-[#E11D48]"
-            : "bg-[#0000FF]"
+            : row.MODE === "CARD"
+            ? "bg-[#0000FF]"
+            : row.MODE === "UPI"
+            ? "bg-[#FBBF24]"
+            : "bg-[#F87171]"
         }`}
         style={{ fontFamily: "Lato", fontSize: "12px", padding: "4px 12px" }}
       >
-        {row.STATUS}
+        {row.MODE}
       </p>
     ),
   },

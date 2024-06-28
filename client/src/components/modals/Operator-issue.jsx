@@ -74,12 +74,26 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
 
   const handleConfirm = async () => {
     try {
-
-      if(payableAmount > 0 && mode === "") {
+      if (payableAmount > 0 && mode === "") {
         toast.custom(
           <Toasts
             boldMessage={"Error!"}
             message={"Please select payment method"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
+          {
+            position: "top-right",
+            duration: 2000,
+          }
+        );
+        return;
+      }
+
+      if (payableAmount > 0 && mode === "WALLET") {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please select payment method your wallet balance is low"}
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
@@ -97,7 +111,8 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
         couponAmount: couponAmount,
         mode: mode,
       });
-      if (data) {
+      
+      if (addTransactionSuccess) {
         toast.custom(
           <>
             <Toasts
@@ -199,18 +214,21 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
             <div className="w-full flex justify-between">
               <div>
                 <label
-                  className={
-                    `flex flex-col items-start relative text-btn_primary roboto font-medium w-56 gap-2 ${disable && "text-text_primary"}`
-                  }
+                  className={`flex flex-col items-start relative text-btn_primary roboto font-medium w-56 gap-2 ${disable &&
+                    "text-text_primary"}`}
                 >
                   Select Payment Method
-                  <div className={`flex items-center w-52 gap-1 h-12 bg-primary pr-2  ${openExtend ? 'rounded-t-lg':'rounded-lg'}`}>
+                  <div
+                    className={`flex items-center w-52 gap-1 h-12 bg-primary pr-2  ${
+                      openExtend ? "rounded-t-lg" : "rounded-lg"
+                    }`}
+                  >
                     <InputBox
                       type="text"
                       onChange={(e) => setMode(e.target.value)}
                       value={mode}
                       placeholder="Select Method"
-                      disabled = {disable}
+                      disabled={disable}
                     />
                     <BsArrowUpSquareFill
                       size={30}
