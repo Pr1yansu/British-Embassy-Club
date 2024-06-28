@@ -289,7 +289,7 @@ exports.getAllTransactions = async (req, res) => {
     const transactions = await TransactionSchema.find(query)
       .populate("walletId couponId")
       .sort({ timeStamp: -1 });
-      console.log(transactions);
+
     if (!transactions.length) {
       return res.status(404).json({
         statusCode: 404,

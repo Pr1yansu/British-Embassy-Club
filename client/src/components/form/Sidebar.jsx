@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard, MdOutlinePeopleAlt } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";
-import { SiGoogleanalytics } from "react-icons/si";
 import { LuTicket } from "react-icons/lu";
 import { RxAvatar } from "react-icons/rx";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
@@ -27,8 +26,6 @@ const Sidebar = () => {
       icon: MdOutlinePeopleAlt,
     },
     { names: "Coupon", link: "/coupon", icon: LuTicket },
-
-    { names: "Analytics", link: "/analytics", icon: SiGoogleanalytics },
 
     {
       names: "Profile",

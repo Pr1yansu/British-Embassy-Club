@@ -16,7 +16,6 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
   const [openExtend, setOpenExtend] = useState(false);
   const navigate = useNavigate();
   const [couponAmount, setCouponAmount] = useState();
-  const [mode, setMode] = useState("WALLET");
   const [payableAmount, setPayableAmount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
   const [disable, setDisable] = useState(true);
@@ -74,28 +73,11 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
 
   const handleConfirm = async () => {
     try {
-
-      if(payableAmount > 0 && mode === "") {
-        toast.custom(
-          <Toasts
-            boldMessage={"Error!"}
-            message={"Please select payment method"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />,
-          {
-            position: "top-right",
-            duration: 2000,
-          }
-        );
-        return;
-      }
-
       const { data } = await addTransaction({
         memberId: walletdata && walletdata.wallet.memberId._id,
         type: "issue",
         payableAmount: payableAmount,
         couponAmount: couponAmount,
-        mode: mode,
       });
       if (data) {
         toast.custom(
@@ -207,8 +189,8 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                   <div className={`flex items-center w-52 gap-1 h-12 bg-primary pr-2  ${openExtend ? 'rounded-t-lg':'rounded-lg'}`}>
                     <InputBox
                       type="text"
-                      onChange={(e) => setMode(e.target.value)}
-                      value={mode}
+                      onChange={(e) => setMethod(e.target.value)}
+                      value={Method}
                       placeholder="Select Method"
                       disabled = {disable}
                     />
@@ -226,7 +208,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                       <ul className="flex flex-col items-center cursor-pointer">
                         <li
                           onClick={() => {
-                            setMode("CASH");
+                            setMethod("CASH");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full pt-2.5 pb-1 px-4"
@@ -235,7 +217,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                         </li>
                         <li
                           onClick={() => {
-                            setMode("CARD");
+                            setMethod("CARD");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full py-1 px-4"
@@ -244,7 +226,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
                         </li>
                         <li
                           onClick={() => {
-                            setMode("UPI");
+                            setMethod("UPI");
                             setOpenExtend(false);
                           }}
                           className="hover:bg-btn_secondary hover:text-btn_primary w-full  py-1 px-4"

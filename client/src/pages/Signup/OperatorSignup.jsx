@@ -11,10 +11,9 @@ import { LuLoader2 } from "react-icons/lu";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
-import logo from "../../assets/images/logoP.png";
+import logo from "../../assets/images/LOGO.png";
 import Loader from "../../components/ui/loader";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
-import ButtonGroup from "../../components/ui/ButtonGroup";
 
 const OperatorSignup = () => {
   const [show, setShow] = useState(false);
@@ -256,7 +255,7 @@ const OperatorSignup = () => {
               />
             </div>
 
-            <ButtonGroup
+            <Button
               name={
                 loading ? (
                   <>
@@ -266,10 +265,6 @@ const OperatorSignup = () => {
                   <>Sign up</>
                 )
               }
-              color={"bg-white"}
-              textColor={"text-text_purple"}
-              HoverColor={"hover:bg-text_purple"}
-              Hovershadow={"hover:shadow-purple-500"}
               type={"submit"}
             />
           </form>
@@ -280,7 +275,7 @@ const OperatorSignup = () => {
           <h1 className="mb-4">
             a new dashboard <br />
             system for the{" "}
-            <span className="text-text_purple font-bold">
+            <span className="text-blue-700 font-bold">
               british <br />
               club kolkata
             </span>
@@ -294,11 +289,11 @@ const OperatorSignup = () => {
             </p>
             <a
               href="/login/operator"
-              className="font-medium text-text_purple text-3xl font-inter tracking-tight"
+              className="font-medium text-blue-700 text-3xl font-inter tracking-tight"
             >
               login
             </a>
-            <FaArrowRight size={22} color="#7E22CE" />
+            <FaArrowRight size={22} color="blue" />
           </h2>
         </div>
       </div>

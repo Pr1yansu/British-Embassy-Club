@@ -14,23 +14,23 @@ export const getWalletApi = createApi({
 });
 
 export const addTransactionApi = createApi({
-         reducerPath: "addTransactionApi",
-         baseQuery: fetchBaseQuery({
-           baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
-           credentials: "include",
-         }),
-         endpoints: (builder) => ({
-           addTransaction: builder.mutation({
-             query: ({ memberId, type, payableAmount, couponAmount, mode }) => {
-               return {
-                 url: "/addTransaction",
-                 method: "POST",
-                 body: { memberId, type, payableAmount, couponAmount, mode },
-               };
-             },
-           }),
-         }),
-       });
+  reducerPath: "addTransactionApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    addTransaction: builder.mutation({
+      query: ({ memberId, type, payableAmount, couponAmount }) => {
+        return {
+          url: "/addTransaction",
+          method: "POST",
+          body: { memberId, type, payableAmount, couponAmount },
+        };
+      },
+    }),
+  }),
+});
 
 export const fetchTransactionsApi = createApi({
   reducerPath: "fetchTransactionsApi",

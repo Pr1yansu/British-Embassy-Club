@@ -87,8 +87,8 @@ const Coupon = () => {
             />
           </div>
           <div className="row-start-3 row-end-12 col-start-2 col-end-12">
-            <CouponTable walletdata={walletdata} reloadQuery={openQuery} />
-            {/*<TableDemo />*/}
+            {/* <CouponTable walletdata={walletdata} reloadQuery={openQuery} /> */}
+            <TableDemo />
           </div>
         </div>
       </div>

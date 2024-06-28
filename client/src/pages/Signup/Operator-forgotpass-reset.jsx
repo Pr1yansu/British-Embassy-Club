@@ -3,7 +3,7 @@ import arrow from "../../assets/images/arrow.png";
 import Passwordbox from "../../components/ui/Passwordbox";
 import ButtonGroup from "../../components/ui/ButtonGroup";
 import { useNavigate, useParams } from "react-router-dom";
-import logo from "../../assets/images/logoP.png";
+import logo from "../../assets/images/LOGO.png";
 import axios from "axios";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
@@ -104,10 +104,8 @@ const OperatorResetPass = () => {
           />
           <div className="flex justify-center">
             <ButtonGroup
-              color={"bg-white"}
-              textColor={"text-text_purple"}
-              HoverColor={"hover:bg-text_purple"}
-              Hovershadow={"hover:shadow-purple-500"}
+              textColor={"text-btn_primary"}
+              color={"bg-btn_secondary"}
               name={"Login"}
               type={"submit"}
             />

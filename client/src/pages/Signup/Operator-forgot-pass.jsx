@@ -12,7 +12,7 @@ import { LuLoader2 } from "react-icons/lu";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
-import logo from "../../assets/images/logoP.png";
+import logo from "../../assets/images/LOGO.png";
 import Loader from "../../components/ui/loader";
 
 const OperatorSignUpOtp = () => {
@@ -102,10 +102,8 @@ const OperatorSignUpOtp = () => {
           <div className="flex justify-between">
             <ButtonGroup
               name={"Go Back"}
-              color={"bg-white"}
-              textColor={"text-text_purple"}
-              HoverColor={"hover:bg-text_purple"}
-              Hovershadow={"hover:shadow-purple-500"}
+              color={"bg-btn_secondary"}
+              textColor={"text-btn_primary"}
               icon={<FaArrowLeft />}
               onClick={() => navigate("/login/operator/")}
             />
@@ -119,10 +117,8 @@ const OperatorSignUpOtp = () => {
                   <>Send</>
                 )
               }
-              color={"bg-white"}
-              textColor={"text-text_purple"}
-              HoverColor={"hover:bg-text_purple"}
-              Hovershadow={"hover:shadow-purple-500"}
+              color={"bg-btn_secondary"}
+              textColor={"text-btn_primary"}
               toggle={true}
               icon={<FaArrowRight />}
               type={"submit"}
@@ -132,7 +128,7 @@ const OperatorSignUpOtp = () => {
       </div>
       <p className="text-text_primary text-center row-start-11 row-end-12 col-start-5 col-end-9 roboto">
         Already have an account?{" "}
-        <a href="/login/operator" className="text-text_purple roboto">
+        <a href="/login/operator" className="text-blue-700 roboto">
           Login
         </a>
       </p>
