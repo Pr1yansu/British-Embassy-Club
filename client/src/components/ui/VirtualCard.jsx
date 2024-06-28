@@ -43,7 +43,7 @@ function VirtualCard({ onModal, data }) {
 
   if (virtualCardLoading) return <Loader />;
 
-  const sendCardAsEmail = async () => {
+  const handleAction = async (action) => {
     try {
       setIsLoading(true);
       const frontImage = await toJpeg(frontendRef.current, {
@@ -58,66 +58,30 @@ function VirtualCard({ onModal, data }) {
       });
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/v1/member/send-card-email`,
-        {
-          frontImage,
-          backImage,
-          email: virtualData.data.email,
-        },
-        {
-          responseType: "blob",
-        }
+        `${process.env.REACT_APP_API_URL}/api/v1/member/${action}`,
+        { frontImage, backImage, email: virtualData.data.email },
+        { responseType: "blob" }
       );
 
       if (response.status === 200) {
-        toast.success("Email sent successfully.");
-      }
-    } catch (error) {
-      toast.error("Failed to send email.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const downloadAsPdf = async () => {
-    setIsLoading(true);
-    try {
-      const frontimage = await toJpeg(frontendRef.current, {
-        quality: 1,
-        width: 360,
-        height: 220,
-      });
-      const backimage = await toJpeg(backendRef.current, {
-        quality: 1,
-        width: 360,
-        height: 220,
-      });
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/v1/member/download-card-pdf`,
-        {
-          frontimage,
-          backimage,
-        },
-        {
-          responseType: "blob",
+        if (action === "send-card-email") {
+          toast.success("Email sent successfully.");
+        } else {
+          const blob = new Blob([response.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "virtual-card.pdf";
+          a.click();
+          toast.success("PDF downloaded successfully.");
         }
-      );
-
-      if (response.status === 200) {
-        const blob = new Blob([response.data], { type: "application/pdf" });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "virtual-card.pdf";
-        a.click();
-        toast.success("Pdf downloaded successfully.");
-      } else {
-        toast.error("Failed to download pdf.");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to download pdf.");
+      toast.error(
+        `Failed to ${
+          action === "send-card-email" ? "send email" : "download PDF"
+        }.`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -127,44 +91,15 @@ function VirtualCard({ onModal, data }) {
     <>
       {open && (
         <div
-          className={`fixed h-screen w-screen top-0 left-0 right-0 bottom-0 bg-black/50 z-20 flex items-center justify-center`}
+          className="fixed h-screen w-screen top-0 left-0 right-0 bottom-0 bg-black/50 z-20 flex items-center justify-center"
           onClick={() => {
             onModal();
             setOpen(false);
           }}
         >
-          {isLoading && (
-            <>
-              <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/70 z-30">
-                <div className="w-full max-w-screen-sm rounded-md h-2 bg-gray-300 fixed top-1/2 left-1/2 z-40 -translate-x-1/2 -translate-y-1/2">
-                  <div
-                    className="h-full bg-blue-500 transition-all duration-300"
-                    style={{ width: `${loadingProgress}%` }}
-                  ></div>
-                  <h4
-                    className={`
-                    text-white
-                    text-center
-                    font-semibold
-                    absolute
-                    top-1/2
-                    left-1/2
-                    transform
-                    -translate-x-1/2
-                    -translate-y-1/2
-                    ${loadingProgress === 100 ? "opacity-0" : "opacity-100"}
-                    `}
-                  >
-                    {loadingProgress === 100
-                      ? "Please wait while we process your request."
-                      : "Processing your request."}
-                  </h4>
-                </div>
-              </div>
-            </>
-          )}
+          {isLoading && <LoadingIndicator progress={loadingProgress} />}
           <div
-            onClick={(val) => val.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
             className="hover:cursor-pointer"
           >
             <div id="virtual-card" className={VirtualCardStyle.flipCard}>
@@ -186,14 +121,14 @@ function VirtualCard({ onModal, data }) {
             </div>
             <div className="flex gap-2 items-center mt-6">
               <button
-                onClick={sendCardAsEmail}
+                onClick={() => handleAction("send-card-email")}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                 disabled={isLoading}
               >
                 <TbMailShare />
               </button>
               <button
-                onClick={downloadAsPdf}
+                onClick={() => handleAction("download-card-pdf")}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
                 disabled={isLoading}
               >
@@ -206,5 +141,25 @@ function VirtualCard({ onModal, data }) {
     </>
   );
 }
+
+const LoadingIndicator = ({ progress }) => (
+  <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/70 z-30 flex items-center justify-center">
+    <div className="w-full max-w-screen-sm rounded-md h-2 bg-gray-300 fixed">
+      <div
+        className="h-full bg-blue-500 transition-all duration-300"
+        style={{ width: `${progress}%` }}
+      ></div>
+      <h4
+        className={`text-white text-center font-semibold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${
+          progress === 100 ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        {progress === 100
+          ? "Please wait while we process your request."
+          : "Processing your request."}
+      </h4>
+    </div>
+  </div>
+);
 
 export default VirtualCard;

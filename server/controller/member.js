@@ -405,13 +405,12 @@ exports.getMemberById = async (req, res) => {
 
 exports.downloadCardPdf = async (req, res) => {
   try {
-    const { frontimage, backimage } = req.body;
+    const { frontImage: frontimage, backImage: backimage } = req.body;
 
-    if (!frontimage && !backimage) {
+    if (!frontimage || !backimage) {
       return res.status(400).json({
         statusCode: 400,
         message: "Image not provided",
-        exception: null,
         data: null,
       });
     }
@@ -437,21 +436,21 @@ exports.downloadCardPdf = async (req, res) => {
             background: white;
             border-radius: 8px;
             text-align: center;
-            }
-            img {
-              width: 100%;
-              height: auto;
-              border-radius: 8px;
-              border: 1px solid #e1e1e1;
+          }
+          img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #e1e1e1;
           }
         </style>
       </head>
       <body>
         <div class="card-container">
-          <img src="${frontimage}" alt="Virtual Card"/>
+          <img src="${frontimage}" alt="Virtual Card Front"/>
         </div>
         <div class="card-container">
-          <img src="${backimage}" alt="Virtual Card"/>
+          <img src="${backimage}" alt="Virtual Card Back"/>
         </div>
       </body>
       </html>
@@ -459,32 +458,33 @@ exports.downloadCardPdf = async (req, res) => {
 
     pdf.create(htmlContent).toBuffer((err, buffer) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).json({
           statusCode: 500,
-          message: "Failed to download pdf",
-          exception: err,
+          message: "Failed to create PDF",
           data: null,
         });
       }
-      return res
-        .writeHead(200, {
+
+      try {
+        res.writeHead(200, {
           "Content-Type": "application/pdf",
           "Content-Disposition": "attachment; filename=virtual-card.pdf",
-        })
-        .end(buffer);
+        });
+        res.end(buffer);
+      } catch (writeError) {
+        console.error("Failed to write response:", writeError);
+      }
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
       statusCode: 500,
-      message: "Failed to download pdf",
-      exception: error,
+      message: "Failed to process request",
       data: null,
     });
   }
 };
-
 exports.sendCardAsEmail = async (req, res) => {
   try {
     const { email, frontImage, backImage } = req.body;
