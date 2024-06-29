@@ -109,9 +109,9 @@ const CouponTable = ({ reloadQuery }) => {
         data={formattedData}
         customStyles={customStyles}
         pagination
-        paginationPerPage={8}
+        paginationPerPage={10}
         paginationTotalRows={formattedData.length}
-        paginationRowsPerPageOptions={[5, 8, 15, 20]}
+        paginationRowsPerPageOptions={[5, 10, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",
           rangeSeparatorText: "of",
@@ -196,6 +196,7 @@ const customStyles = {
       borderRadius: "0.75rem",
       boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
       overflowY: "auto",
+      maxHeight: "400px",
     },
   },
   headRow: {
