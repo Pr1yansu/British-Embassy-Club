@@ -58,6 +58,7 @@ exports.addMember = async (req, res) => {
       _id: memberId.replace(/\s/g, ""),
       firstname: firstName,
       lastname: lastname,
+      fullname: firstName + " " + lastname,
       name,
       mobileNumber,
       address,
@@ -177,9 +178,13 @@ exports.updateMember = async (req, res) => {
       });
     }
 
+    const fullname = firstName + " " + lastname;
+
     const member = await MemberSchema.findByIdAndUpdate(memberId, {
       firstname: firstName ? firstName : memberData.firstname,
       lastname: lastname ? lastname : memberData.lastname,
+      fullname: fullname ? fullname : memberData.fullname,
+
       mobileNumber: mobileNumber ? mobileNumber : memberData.mobileNumber,
       address: address ? address : memberData.address,
       idProof: {
@@ -295,6 +300,7 @@ exports.getMembers = async (req, res) => {
     const totalMembers = await MemberSchema.find().countDocuments();
     const filter = new MemberFilter(req.query).filter().sort().paginate();
     const members = await filter.exec();
+
     return res.status(200).json({
       statusCode: 200,
       message: "Members found",
