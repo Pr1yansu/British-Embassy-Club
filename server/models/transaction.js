@@ -44,6 +44,10 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mobileNumber: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
     enum: ["issue", "receive"],

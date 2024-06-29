@@ -156,6 +156,7 @@ exports.addTransaction = async (req, res) => {
       memberName: member.name,
       firstname: member.firstname,
       lastname: member.lastname,
+      mobileNumber: member.mobileNumber,
     });
 
     await wallet.save();
@@ -167,8 +168,9 @@ exports.addTransaction = async (req, res) => {
       `
       <h1>Transaction Details</h1>
       <p>Your transaction with ID ${transaction._id} has been ${transactionStatus}.</p>
-      <>MEMBER ID:${memberId} with Name:${member.name}</p>
-      <p>Transaction Type: ${type},Mode:${mode}</p>
+      <p>MEMBER ID:${memberId} with Name:${member.name}</p>
+      <p>Transaction Type: ${type}</p>
+      <p>Mode:${mode}</p>
       <p>Credited Amount : ${creditAmount}</p>
       <p>Debited Amount : ${debitAmount}</p>
       <p>Wallet Amount : ${walletAmount}</p>
@@ -314,6 +316,7 @@ exports.getAllTransactions = async (req, res) => {
       query.$or = [
         { memberName: { $regex: searchRegex } },
         { memberId: { $regex: searchRegex } },
+        { mobileNumber: { $regex: searchRegex } },
       ];
     }
 
