@@ -52,7 +52,7 @@ const SettingsAdminTemp = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -69,7 +69,7 @@ const SettingsAdminTemp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

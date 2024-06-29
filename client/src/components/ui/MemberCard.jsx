@@ -11,8 +11,6 @@ const MemberCard = ({ item, index }) => {
   const [open, setOpen] = useState(false);
   const [memberId, setMemberId] = useState();
 
-  console.log(item);
-
   const handleCopy = () => {
     toast.custom(
       <div className="bg-white px-6 py-3 rounded-lg flex items-center justify-center gap-4 shadow-lg">
@@ -22,7 +20,7 @@ const MemberCard = ({ item, index }) => {
         </div>
       </div>,
       {
-        position: "top-right",
+        position: "top-center",
         duration: 2000,
       }
     );

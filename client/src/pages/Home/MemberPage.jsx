@@ -15,8 +15,6 @@ const MemberPage = () => {
   if (isLoading) return <Loader />;
   if (!data.data) return <h1>Member not found</h1>;
 
-  console.log(data.data);
-
   return (
     <section className="background_3 flex justify-center items-center bg-cover bg-center">
       <div className="bg-[#D4D4D4]/10 w-full max-w-[400px] rounded-md border-white/50 border-[1px] m-9 relative backdrop-blur-lg">

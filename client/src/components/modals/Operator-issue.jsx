@@ -75,7 +75,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -90,7 +90,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -120,7 +120,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -138,7 +138,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

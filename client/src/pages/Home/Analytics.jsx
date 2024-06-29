@@ -137,7 +137,12 @@ const Analytics = () => {
             <button
               onClick={() => {
                 if (inputStartDate === "" || inputEndDate === "") {
-                  toast.error("Please select a date range");
+                  toast.error("Please select a date range",
+                    {
+                      position: "top-center",
+                      duration: 2000,
+                    }
+                  );
                   return;
                 }
                 setStartDate(inputStartDate);

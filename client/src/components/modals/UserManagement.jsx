@@ -45,7 +45,7 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -63,7 +63,7 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

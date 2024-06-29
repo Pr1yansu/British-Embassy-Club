@@ -31,7 +31,6 @@ const CouponTable = ({ reloadQuery }) => {
     [allTransactions]
   );
 
-  console.log(allTransactions);
 
   if (transLoading) {
     return <p>Loading...</p>;

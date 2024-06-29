@@ -66,7 +66,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -81,7 +81,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -98,7 +98,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
              icon={<MdError className="text-text_red" size={32} />}
            />,
            {
-             position: "top-right",
+             position: "top-center",
              duration: 2000,
            }
          );
@@ -129,11 +129,10 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
-        console.log(data);
         onModal();
         setopenQuery(false);
         navigate("/coupon");
@@ -148,7 +147,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
