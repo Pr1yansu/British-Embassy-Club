@@ -66,7 +66,7 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -84,7 +84,7 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -101,7 +101,7 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -118,7 +118,7 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -143,7 +143,6 @@ const OperatorSignup = () => {
         { withCredentials: true }
       );
       if (data) {
-        console.log(data);
 
         toast.custom(
           <>
@@ -158,7 +157,7 @@ const OperatorSignup = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -174,7 +173,7 @@ const OperatorSignup = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

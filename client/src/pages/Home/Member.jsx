@@ -40,24 +40,6 @@ const Member = () => {
 
   if (memberLoading) return <LuLoader2 />;
 
-  if (data && data.data.length === 0) {
-    toast.custom(
-      <>
-        <Toasts
-          boldMessage={"Alert!"}
-          message={"No Member Found"}
-          icon={
-            <FaExclamationTriangle className="text-text_orange" size={32} />
-          }
-        />
-      </>,
-      {
-        position: "top-right",
-        duration: 2000,
-      }
-    );
-  }
-
   const pageCount = Math.ceil(data?.totalMembers / 12);
 
   const handlePageChange = (event) => {

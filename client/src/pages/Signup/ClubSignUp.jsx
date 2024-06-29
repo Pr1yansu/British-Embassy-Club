@@ -49,7 +49,7 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -66,7 +66,7 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -83,7 +83,7 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -101,7 +101,6 @@ const ClubSignUp = () => {
           role,
         }
       );
-      console.log(data);
       if (data) {
         toast.custom(
           <>
@@ -116,7 +115,7 @@ const ClubSignUp = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -142,7 +141,7 @@ const ClubSignUp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

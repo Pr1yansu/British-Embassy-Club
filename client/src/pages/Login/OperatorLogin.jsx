@@ -19,7 +19,7 @@ const OperatorLogin = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  
   const {
     data: profiledata,
     isLoading: profileLoading,
@@ -55,7 +55,7 @@ const OperatorLogin = () => {
             }
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -70,7 +70,7 @@ const OperatorLogin = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -82,7 +82,7 @@ const OperatorLogin = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );

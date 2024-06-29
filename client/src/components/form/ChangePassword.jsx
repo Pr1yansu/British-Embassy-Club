@@ -44,7 +44,6 @@ const ChangePassword = ({
          let data;
          if (profileLoading) return <Loader/>;
          if (profiledata.data.role === "admin") {
-           console.log("profiledata role", profiledata.data.role === "admin");
            data = await changeAdminPassword({
              oldPassword: oldPassword,
              newPassword: newPassword,
@@ -73,7 +72,7 @@ const ChangePassword = ({
                />
              </>,
              {
-               position: "top-right",
+               position: "top-center",
                duration: 2000,
              }
            );
@@ -89,7 +88,7 @@ const ChangePassword = ({
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

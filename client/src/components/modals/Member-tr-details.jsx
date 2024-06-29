@@ -20,8 +20,6 @@ const MemberTrDetails = ({ onModal, search }) => {
     return <p className="text-center">Loading...</p>;
   }
 
-  console.log(fetchTransactions);
-
   if (fetchError) {
     toast.custom(
       <Toasts
@@ -30,7 +28,7 @@ const MemberTrDetails = ({ onModal, search }) => {
         icon={<MdError className="text-red-600" size={32} />}
       />,
       {
-        position: "top-right",
+        position: "top-center",
         duration: 2000,
       }
     );

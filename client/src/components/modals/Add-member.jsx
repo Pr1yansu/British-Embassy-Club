@@ -91,7 +91,7 @@ const AddMember = ({ onModal }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -108,7 +108,7 @@ const AddMember = ({ onModal }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -146,7 +146,7 @@ const AddMember = ({ onModal }) => {
               />
             </>,
             {
-              position: "top-right",
+              position: "top-center",
               duration: 2000,
             }
           );
@@ -162,7 +162,7 @@ const AddMember = ({ onModal }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

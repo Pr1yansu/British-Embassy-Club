@@ -35,7 +35,7 @@ const Coupon = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -60,7 +60,7 @@ const Coupon = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -72,7 +72,7 @@ const Coupon = () => {
             icon={<MdError className="text-red-600" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );

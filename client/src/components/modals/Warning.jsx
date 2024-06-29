@@ -30,7 +30,7 @@ const Warning = ({ onModal, memberId }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -47,7 +47,7 @@ const Warning = ({ onModal, memberId }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

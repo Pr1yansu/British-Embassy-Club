@@ -21,8 +21,6 @@ const FileUpload = (props) => {
   const onDragLeave = () => wrapperRef.current.classList.remove("dragover");
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
 
-  console.log(file);
-
   const onFileDrop = (e) => {
     const newFile = e.target.files[0];
     if (newFile) {
@@ -56,7 +54,7 @@ const FileUpload = (props) => {
               />
             </>,
             {
-              position: "top-right",
+              position: "top-center",
               duration: 2000,
             }
           );
@@ -72,7 +70,7 @@ const FileUpload = (props) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );

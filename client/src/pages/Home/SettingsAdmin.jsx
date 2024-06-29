@@ -42,7 +42,6 @@ const SettingsAdmin = () => {
   const handleLogout = async () => {
     try {
       const { data } = await logout();
-      console.log(logoutIsError);
 
       if (logoutIsError) {
         toast.custom(
@@ -54,7 +53,7 @@ const SettingsAdmin = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -74,7 +73,7 @@ const SettingsAdmin = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -82,7 +81,6 @@ const SettingsAdmin = () => {
         navigate(0);
       }
     } catch (error) {
-      console.error("Failed to logout:", error);
       toast.custom(
         <>
           <Toasts
@@ -92,7 +90,7 @@ const SettingsAdmin = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
