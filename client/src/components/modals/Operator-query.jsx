@@ -9,8 +9,6 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
   const [openIssue, SetopenIssue] = useState(false);
   const [openReceive, SetopenReceive] = useState(false);
 
-  console.log("exf",walletdata);
-
   return ReactDom.createPortal(
     <div className="fixed top-0 left-0 right-0 bottom-0 bg-zinc-400/25 z-10">
       <section className="w-[712px] h-[418px] border bg-btn_secondary rounded-lg flex flex-col items-center gap-6 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ">
@@ -33,9 +31,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
             <p className="text-btn_primary roboto font-medium">
               Wallet Balance
             </p>
-            <p className="lato">
-              {walletdata && walletdata?.wallet?.balance}
-            </p>
+            <p className="lato">{walletdata && walletdata?.wallet?.balance}</p>
           </div>
         </div>
         {/* Upper div ends hete */}

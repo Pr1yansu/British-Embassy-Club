@@ -28,7 +28,6 @@ const MemberCard = ({ item, index }) => {
     );
   };
 
-  // Define textToCopy as the membership ID of the member
   const textToCopy = item._id;
 
   return (
