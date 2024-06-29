@@ -24,7 +24,7 @@ const CouponTable = ({ reloadQuery }) => {
           ? transaction.firstname + " " + transaction.lastname
           : "Not Available",
         TRTYPE: transaction.type,
-        TRAMOUNT: transaction.debitAmount + transaction.creditAmount,
+        TRAMOUNT: transaction.couponAmount,
         EXPAYAMT: transaction.payableAmount,
         MODE: transaction.mode.toLowerCase(),
       })) || [],
