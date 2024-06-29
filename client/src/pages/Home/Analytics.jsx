@@ -6,6 +6,7 @@ import SearchBox from "../../components/ui/SearchBox";
 import { Export } from "../../components/ui/Export";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import MemberTrDetails from "../../components/modals/Member-tr-details";
 
 const Analytics = () => {
   const [startDate, setStartDate] = useState("");
@@ -13,6 +14,7 @@ const Analytics = () => {
   const [inputStartDate, setInputStartDate] = useState("");
   const [inputEndDate, setInputEndDate] = useState("");
   const [search, setSearch] = useState("");
+  const [openTr, SetOpenTr] = useState(false);
   const navigate = useNavigate();
   const {
     data: allTransactions,
@@ -173,10 +175,12 @@ const Analytics = () => {
           </h1>
           <div className="w-full md:w-1/2 h-10">
             <SearchBox
-              iconShow={false}
+              iconShow={true}
+              // onClick={}
               placeholder={
                 "Search by Member Name or ID to view total Transaction data"
               }
+              onClick={() => SetOpenTr(true)}
               type={"text"}
               onchange={(e) =>
                 setTimeout(() => {
@@ -184,6 +188,7 @@ const Analytics = () => {
                 }, 1000)
               }
             />
+            {openTr && <MemberTrDetails onModal={() => SetOpenTr(false)} />}
           </div>
           <Export onExport={handleExport} />
         </div>

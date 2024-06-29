@@ -75,6 +75,22 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
         return;
       }
 
+       if (walletdata?.wallet?.balance < amount && mode === "WALLET") {
+         toast.custom(
+           <Toasts
+             boldMessage={"Error!"}
+             message={"please select a payment method your wallet not have enough balance"}
+             icon={<MdError className="text-text_red" size={32} />}
+           />,
+           {
+             position: "top-right",
+             duration: 2000,
+           }
+         );
+         return;
+       }
+
+
       const { data } = await addTransaction({
         memberId: walletdata && walletdata.wallet.memberId._id,
         type: "receive",

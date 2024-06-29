@@ -154,7 +154,7 @@ const columns = [
     name: "Tr. Type",
     selector: (row) => row.TRTYPE,
     cell: (row) => (
-      <p>{row.TRTYPE.toLowerCase() === "issue" ? "Credit" : "Debit"}</p>
+      <p>{row.TRTYPE.toLowerCase() === "issue" ? "Debit" : "Credit"}</p>
     ),
   },
   {
