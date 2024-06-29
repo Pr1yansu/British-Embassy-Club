@@ -24,7 +24,7 @@ const CouponTable = ({ reloadQuery }) => {
           ? transaction.firstname + " " + transaction.lastname
           : "Not Available",
         TRTYPE: transaction.type,
-        TRAMOUNT: transaction.debitAmount + transaction.creditAmount,
+        TRAMOUNT: transaction.couponAmount,
         EXPAYAMT: transaction.payableAmount,
         MODE: transaction.mode.toLowerCase(),
       })) || [],
@@ -154,7 +154,7 @@ const columns = [
     name: "Tr. Type",
     selector: (row) => row.TRTYPE,
     cell: (row) => (
-      <p>{row.TRTYPE.toLowerCase() === "issue" ? "Credit" : "Debit"}</p>
+      <p>{row.TRTYPE.toLowerCase() === "issue" ? "Debit" : "Credit"}</p>
     ),
   },
   {

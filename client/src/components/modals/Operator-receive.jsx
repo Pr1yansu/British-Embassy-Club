@@ -17,7 +17,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
-  const [mode, setMode] = useState("WALLET");
+  const [mode, setMode] = useState("Choose Method");
   const [openExtend, setOpenExtend] = useState(false);
 
   const [
@@ -31,14 +31,14 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
 
   useEffect(() => {
     if (walletdata && walletdata.wallet.balance !== undefined) {
-      setUpdatedBalance(walletdata.wallet.balance + amount);
+      setUpdatedBalance(walletdata.wallet.balance + Number(amount));
     }
   }, [amount, walletdata]);
 
   const handleAmountChange = (e) => {
     const value = e.target.value;
     if (value === "") {
-      setAmount(""); // Set amount to empty string if input is empty
+      setAmount(0); // Set amount to empty string if input is empty
     } else {
       const parsedValue = parseInt(value, 10);
       if (!isNaN(parsedValue)) {
@@ -58,13 +58,11 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   const handleReciveTransaction = async (e) => {
     e.preventDefault(); // Prevent form submission from reloading the page
     try {
-      if (
-        walletdata?.wallet?.balance === 0  && mode === "WALLET"
-      ) {
+      if (!walletdata.wallet.memberId._id) {
         toast.custom(
           <Toasts
             boldMessage={"Error!"}
-            message={"please select a payment method"}
+            message={"Please select a member first"}
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
@@ -75,11 +73,44 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
         return;
       }
 
+      if (amount < 1) {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"please enter amount"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
+          {
+            position: "top-right",
+            duration: 2000,
+          }
+        );
+        return;
+      }
+
+       if (mode === "Choose Method") {
+         toast.custom(
+           <Toasts
+             boldMessage={"Error!"}
+             message={
+               "please select a payment method your wallet not have enough balance"
+             }
+             icon={<MdError className="text-text_red" size={32} />}
+           />,
+           {
+             position: "top-right",
+             duration: 2000,
+           }
+         );
+         return;
+       }
+
+
       const { data } = await addTransaction({
         memberId: walletdata && walletdata.wallet.memberId._id,
         type: "receive",
         payableAmount: 0,
-        couponAmount: amount,
+        couponAmount: Number(amount),
         mode: mode,
       });
       
@@ -102,6 +133,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             duration: 2000,
           }
         );
+        console.log(data);
         onModal();
         setopenQuery(false);
         navigate("/coupon");
@@ -122,6 +154,8 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
       );
     }
   };
+
+  
 
   return ReactDOM.createPortal(
     <>

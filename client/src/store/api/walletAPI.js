@@ -33,16 +33,16 @@ export const addTransactionApi = createApi({
 });
 
 export const fetchTransactionsApi = createApi({
-  reducerPath: "fetchTransactionsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
-    credentials: "include",
-  }),
-  endpoints: (builder) => ({
-    fetchTransactions: builder.query({
-      query: (memberId) => `/fetchTransactions/${memberId}`,
-    }),
-  }),
+         reducerPath: "fetchTransactionsApi",
+         baseQuery: fetchBaseQuery({
+           baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/wallet`,
+           credentials: "include",
+         }),
+         endpoints: (builder) => ({
+           fetchTransactions: builder.query({
+             query: ({search}) => `/fetchTransactions?search=${search}`,
+           }),
+         }),
 });
 
 export const getAllTransactionsApi = createApi({
