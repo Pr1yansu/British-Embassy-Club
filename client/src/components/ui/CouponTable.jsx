@@ -40,27 +40,25 @@ const CouponTable = ({ reloadQuery }) => {
     const csvData = formattedData.map((row) => ({
       ...row,
       TIMESTAMP: formatTime(row.TIMESTAMP),
+      TRTYPE: row.TRTYPE.toLowerCase() === "issue" ? "Debit" : "Credit",
     }));
-
     const csvContent = [
       [
         "Date",
         "Membership ID",
-        "Full Name",
-        "Credit Amount",
-        "Debit Amount",
-        "Wallet Tr.",
-        "Wallet Balance",
+        "Member Name",
+        "Tr. Type",
+        "Tr. Amount",
+        "Ex-pay Amt.",
         "Tr. Mode",
       ],
       ...csvData.map((row) => [
         `"${row.DATE}"`,
         `"${row.MEMBERID}"`,
         `"${row.FULLNAME}"`,
-        `"${row.CREDITAMOUNT}"`,
-        `"${row.DEBITAMOUNT}"`,
-        `"${row.WALLETTR}"`,
-        `"${row.WALLETBALANCE}"`,
+        `"${row.TRTYPE}"`,
+        `"${row.TRAMOUNT}"`,
+        `"${row.EXPAYAMT}"`,
         `"${row.MODE}"`,
       ]),
     ]
