@@ -40,8 +40,8 @@ const CouponTable = ({ reloadQuery }) => {
     const csvData = formattedData.map((row) => ({
       ...row,
       TIMESTAMP: formatTime(row.TIMESTAMP),
+      TRTYPE: row.TRTYPE.toLowerCase() === "issue" ? "Debit" : "Credit",
     }));
-
     const csvContent = [
       [
         "Date",
