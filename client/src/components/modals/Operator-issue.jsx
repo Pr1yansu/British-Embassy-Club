@@ -97,6 +97,21 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
         return;
       }
 
+      if (couponAmount === 0) {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"please enter the coupon amount"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
+          {
+            position: "top-center",
+            duration: 2000,
+          }
+        );
+        return;
+      }
+
       const { data } = await addTransaction({
         memberId: walletdata && walletdata.wallet.memberId._id,
         type: "issue",

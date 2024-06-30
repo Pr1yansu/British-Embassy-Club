@@ -18,7 +18,7 @@ const ButtonGroup = ({
   return (
     <>
       <button
-        className={`flex gap-2 items-center justify-center px-6 py-2 rounded-xl transition ease-in-out delay-150 ${color} ${HoverColor} ${textColor} ${HovertextColor} text-xl font-medium ${Hovershadow} duration-300 roboto ${shadow}`}
+        className={`flex gap-2 items-center justify-center px-6 py-2 rounded-xl transition ease-in-out delay-150 ${color} ${HoverColor} ${textColor} ${HovertextColor} lg:text-xl  font-medium ${Hovershadow} duration-300 roboto ${shadow}`}
         type={type}
         onClick={onClick}
         disabled={disabled}
