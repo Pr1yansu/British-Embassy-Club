@@ -279,6 +279,9 @@ exports.fetchTransactions = async (req, res) => {
         data: null,
       });
     }
+    
+    console.log(transactions);
+    
     const totalCreditedAmount = transactions.reduce(
       (acc, transaction) => acc + transaction.creditAmount,
       0
