@@ -82,7 +82,7 @@ const MemberTrDetails = ({ onModal, search }) => {
                   </div>
                   <div className="flex justify-start items-center gap-7 w-full mt-2">
                     <p className="text-btn_primary roboto font-medium">
-                      Recent Dedit
+                      Recent Debit
                     </p>
                     <p className="lato font-medium">
                       {fetchTransactions.recentDebit}
@@ -105,7 +105,7 @@ const MemberTrDetails = ({ onModal, search }) => {
                   </div>
                   <div className="flex justify-start items-center gap-7 w-full mt-2">
                     <p className="text-btn_primary roboto font-medium">
-                      Total Dedited
+                      Total Debited
                     </p>
                     <p className="lato font-medium">
                       {fetchTransactions.totalDebitedAmount}

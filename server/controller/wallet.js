@@ -279,6 +279,10 @@ exports.fetchTransactions = async (req, res) => {
         data: null,
       });
     }
+
+    // Reverse the transactions array
+    transactions.reverse();
+
     const totalCreditedAmount = transactions.reduce(
       (acc, transaction) => acc + transaction.creditAmount,
       0
@@ -312,6 +316,7 @@ exports.fetchTransactions = async (req, res) => {
     });
   }
 };
+
 
 exports.getAllTransactions = async (req, res) => {
   try {
