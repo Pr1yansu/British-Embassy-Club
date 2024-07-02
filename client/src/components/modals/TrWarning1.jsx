@@ -1,7 +1,6 @@
 import React from "react";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
-import { useDeleteMemberMutation } from "../../store/api/memberAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Toasts from "../ui/Toasts";
@@ -10,10 +9,9 @@ import { MdError } from "react-icons/md";
 import { useAddTransactionMutation } from "../../store/api/walletAPI";
 import { LuLoader2 } from "react-icons/lu";
 
-
-const TrWarning = ({
+const TrWarning1 = ({
   onModal,
-  onModall,
+  onModalll,
   memberId,
   mode,
   type,
@@ -30,7 +28,7 @@ const TrWarning = ({
     },
   ] = useAddTransactionMutation();
   const navigate = useNavigate();
-  const handleReciveTransaction = async (e) => {
+  const handleIssueTransaction = async (e) => {
     e.preventDefault();
     try {
       const { data } = await addTransaction({
@@ -61,7 +59,7 @@ const TrWarning = ({
           }
         );
         onModal();
-        onModall();
+        onModalll();
         setopenQuery(false);
         navigate("/coupon");
       }
@@ -99,7 +97,7 @@ const TrWarning = ({
             </p>
           </div>
           <form
-            onSubmit={handleReciveTransaction }
+            onSubmit={handleIssueTransaction}
             className="flex justify-between items-center"
           >
             <ButtonGroup
@@ -133,4 +131,4 @@ const TrWarning = ({
   );
 };
 
-export default TrWarning;
+export default TrWarning1;

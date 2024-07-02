@@ -23,6 +23,7 @@ import {
   getMemberByIdApi,
   updateMemberApi,
   deleteMemberApi,
+  gettotalAmountApi,
 } from "./api/memberAPI";
 
 import {
@@ -61,6 +62,7 @@ export const store = configureStore({
     [updateTransactionApi.reducerPath]: updateTransactionApi.reducer,
     [updateCouponExpiresApi.reducerPath]: updateCouponExpiresApi.reducer,
     [getAllTransactionsApi.reducerPath]: getAllTransactionsApi.reducer,
+    [gettotalAmountApi.reducerPath]: gettotalAmountApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -86,7 +88,8 @@ export const store = configureStore({
       .concat(fetchTransactionsApi.middleware)
       .concat(updateTransactionApi.middleware)
       .concat(updateCouponExpiresApi.middleware)
-      .concat(getAllTransactionsApi.middleware),
+      .concat(getAllTransactionsApi.middleware)
+      .concat(gettotalAmountApi.middleware),
 });
 
 setupListeners(store.dispatch)

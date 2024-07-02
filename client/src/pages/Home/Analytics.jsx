@@ -15,6 +15,7 @@ import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
 import Loader from "../../components/ui/loader";
+import { useGettotalAmountQuery } from "../../store/api/memberAPI";
 
 const Analytics = () => {
   const [startDate, setStartDate] = useState("");
@@ -33,6 +34,13 @@ const Analytics = () => {
   } = useGetAllTransactionsQuery({ startDate, endDate, search });
 
   const {
+    data: totalAmount,
+    isLoading: totalLoading,
+    refetch: refetchTotal,
+  } = useGettotalAmountQuery();
+
+
+  const {
     data: profiledata,
     isLoading: profileLoading,
     error: profileError,
@@ -40,7 +48,8 @@ const Analytics = () => {
 
   React.useEffect(() => {
     refetch();
-  }, [refetch, startDate, endDate, search]);
+    refetchTotal();
+  }, [refetch, startDate, endDate, search, refetchTotal]);
 
   const formattedData = React.useMemo(
     () =>
@@ -52,7 +61,6 @@ const Analytics = () => {
           : "Not Available",
         CREDITAMOUNT: transaction.creditAmount,
         DEBITAMOUNT: transaction.debitAmount,
-        WALLETTR: transaction.creditAmount - transaction.debitAmount,
         WALLETBALANCE: transaction.walletAmount,
         MODE: transaction.mode.toLowerCase(),
       })) || [],
@@ -63,47 +71,62 @@ const Analytics = () => {
     return <p className="text-center">Loading...</p>;
   }
 
-  const handleExport = () => {
-    const csvData = formattedData.map((row) => ({
-      ...row,
-      TIMESTAMP: formatTime(row.TIMESTAMP),
-    }));
+  if (totalLoading){
+    return <p className="text-center">Loading...</p>;
+  }
 
-    const csvContent = [
-      [
-        "Date",
-        "Membership ID",
-        "Full Name",
-        "Credit Amount",
-        "Debit Amount",
-        "Wallet Tr.",
-        "Wallet Balance",
-        "Tr. Mode",
-      ],
-      ...csvData.map((row) => [
-        `"${row.DATE}"`,
-        `"${row.MEMBERID}"`,
-        `"${row.FULLNAME}"`,
-        `"${row.CREDITAMOUNT}"`,
-        `"${row.DEBITAMOUNT}"`,
-        `"${row.WALLETTR}"`,
-        `"${row.WALLETBALANCE}"`,
-        `"${row.MODE}"`,
-      ]),
-    ]
-      .map((e) => e.join(","))
-      .join("\n");
+ const handleExport = () => {
+   const csvData = formattedData.map((row) => ({
+     ...row,
+     TIMESTAMP: formatTime(row.TIMESTAMP),
+   }));
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "transactions.csv");
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+   const header = [
+     "Date",
+     "Membership ID",
+     "Full Name",
+     "Credit Amount",
+     "Debit Amount",
+     "Wallet Balance",
+     "Tr. Mode",
+   ];
+
+   const csvContent = [
+     [...header],
+     ...csvData.map((row) => [
+       `"${row.DATE}"`,
+       `"${row.MEMBERID}"`,
+       `"${row.FULLNAME}"`,
+       `"${row.CREDITAMOUNT}"`,
+       `"${row.DEBITAMOUNT}"`,
+       `"${row.WALLETBALANCE}"`,
+       `"${row.MODE}"`,
+     ]),
+   ]
+     .map((e) => e.join(","))
+     .join("\n");
+
+   const summaryContent = [
+     `Total Wallet Balance,${totalAmount?.data?.totalWalletBalance}`,
+     `Total Credited Amount,${totalAmount?.data?.totalCredit}`,
+     `Total Debited Amount,${totalAmount?.data?.totalDebit}`,
+   ].join("\n");
+
+   const finalCsvContent = `${csvContent}\n\n${summaryContent}`;
+
+   const blob = new Blob([finalCsvContent], {
+     type: "text/csv;charset=utf-8;",
+   });
+   const link = document.createElement("a");
+   const url = URL.createObjectURL(blob);
+   link.setAttribute("href", url);
+   link.setAttribute("download", "transactions.csv");
+   link.style.visibility = "hidden";
+   document.body.appendChild(link);
+   link.click();
+   document.body.removeChild(link);
+ };
+
 
   if (profileLoading) return <Loader />;
   if (!profiledata) navigate("/login/club");
@@ -170,10 +193,10 @@ const Analytics = () => {
 
         <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
-            Daily Transaction Analysis
+            Transaction Analysis
           </p>
           <div className="flex justify-between items-center gap-2 w-full">
-            <p className="text-base roboto">Total Transactions Today:</p>
+            <p className="text-base roboto">Total Transactions:</p>
             <p className="text-base roboto font-bold">
               {allTransactions?.todaysTotalTransactions}
             </p>
@@ -194,28 +217,27 @@ const Analytics = () => {
 
         <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
-            Daily Transaction Analysis
+            Total Transaction Analysis
           </p>
           <div className="flex justify-between items-center gap-2 w-full">
-            <p className="text-base roboto">Total Transactions Today:</p>
+            <p className="text-base roboto">Total Wallet Balance:</p>
             <p className="text-base roboto font-bold">
-              {allTransactions?.todaysTotalTransactions}
+              {totalAmount?.data?.totalWalletBalance}
             </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Credited Amount:</p>
             <p className="text-base roboto font-bold">
-              {allTransactions?.totalCredited}
+              {totalAmount?.data?.totalCredit}
             </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Debited Amount:</p>
             <p className="text-base roboto font-bold">
-              {allTransactions?.totalDebited}
+              {totalAmount?.data?.totalDebit}
             </p>
           </div>
         </div>
-        
       </div>
       <div className="md:w-full md:max-w-7xl w-96 ml-16 sm:ml-0 max-w-4xl p-3 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
         <div className="flex flex-col md:flex-row justify-between items-center p-2 gap-4">
@@ -299,10 +321,6 @@ const columns = [
   {
     name: "Debit Amount",
     selector: (row) => row.DEBITAMOUNT,
-  },
-  {
-    name: "Wallet Tr.",
-    selector: (row) => row.WALLETTR,
   },
   {
     name: "Wallet Balance",

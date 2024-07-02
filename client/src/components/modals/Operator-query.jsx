@@ -88,7 +88,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
                 walletdata={walletdata}
                 setWalletData={setWalletData}
                 setopenQuery={setopenQuery}
-                onModal={() => SetopenIssue(false)}
+                onModalll={() => SetopenIssue(false)}
               />
             )}
           </div>

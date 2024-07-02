@@ -1,6 +1,7 @@
 const QRCode = require("qrcode");
 const MemberSchema = require("../models/members.js");
 const WalletSchema = require("../models/wallet.js");
+const TransactionSchema = require("../models/transaction.js");
 const { uploadImage, deleteImage } = require("../utils/cloudinary.js");
 const { MemberFilter } = require("../utils/filters");
 const Cache = require("node-cache");
@@ -739,3 +740,55 @@ exports.sendReminderBeforeOneDay = async (req, res) => {
     });
   }
 };
+
+exports.totalDebitCreditAndWalletBalance = async (req, res) => {
+
+  try {
+    const totalDebit = await TransactionSchema.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalDebit: { $sum: "$debitAmount" },
+        },
+      },
+    ]);
+
+
+    const totalCredit = await TransactionSchema.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalCredit: { $sum: "$creditAmount" },
+        },
+      },
+    ]);
+
+    const totalWalletBalance = await WalletSchema.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalWalletBalance: { $sum: "$balance" },
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Total Debit, Credit and Wallet Balance",
+      exception: null,
+      data: {
+        totalDebit: totalDebit[0].totalDebit,
+        totalCredit: totalCredit[0].totalCredit,
+        totalWalletBalance: totalWalletBalance[0].totalWalletBalance,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Failed to fetch data",
+      exception: error,
+      data: null,
+    });
+  }
+}

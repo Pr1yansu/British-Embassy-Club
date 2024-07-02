@@ -156,9 +156,23 @@ export const getMemberByIdApi = createApi({
   }),
 });
 
+export const gettotalAmountApi = createApi({
+  reducerPath: "gettotalAmountApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/member`,
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    gettotalAmount: builder.query({
+      query: () => `/get/total/amount`,
+    }),
+  }),
+});
+
 export const { useAddMemberMutation } = addMemberApi;
 export const { useDeleteMemberMutation } = deleteMemberApi;
 export const { useUpdateMemberMutation } = updateMemberApi;
 export const { useGetAllMembersQuery } = getAllMembersApi;
 export const { useAddMemberImageMutation } = addMemberImageApi;
 export const { useGetMemberByIdQuery } = getMemberByIdApi;
+export const { useGettotalAmountQuery } = gettotalAmountApi;

@@ -324,11 +324,12 @@ exports.getAllTransactions = async (req, res) => {
     const query = {};
 
     if (startDate && endDate) {
+      const endOfDay = new Date(endDate);
+      endOfDay.setHours(23, 59, 59, 999);
+
       query.timeStamp = {
         $gte: new Date(startDate),
-        $lt: new Date(
-          new Date(endDate).setDate(new Date(endDate).getDate() + 1)
-        ),
+        $lt: endOfDay,
       };
     }
 
@@ -338,11 +339,7 @@ exports.getAllTransactions = async (req, res) => {
         { memberName: { $regex: searchRegex } },
         { memberId: { $regex: searchRegex } },
         { mobileNumber: { $regex: searchRegex } },
-        {
-          fullname: {
-            $regex: searchRegex,
-          },
-        },
+        { fullname: { $regex: searchRegex } },
       ];
     }
 
@@ -361,19 +358,31 @@ exports.getAllTransactions = async (req, res) => {
 
     const totalTransactions = await TransactionSchema.countDocuments(query);
 
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(startOfDay);
-    endOfDay.setDate(endOfDay.getDate() + 1);
+    const aggregationMatch = {};
+    if (startDate && endDate) {
+      const endOfDay = new Date(endDate);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      aggregationMatch.timeStamp = {
+        $gte: new Date(startDate),
+        $lt: endOfDay,
+      };
+    } else {
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+      const endOfDay = new Date(startOfDay);
+      endOfDay.setDate(endOfDay.getDate() + 1);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      aggregationMatch.timeStamp = {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      };
+    }
 
     const todayStats = await TransactionSchema.aggregate([
       {
-        $match: {
-          timeStamp: {
-            $gte: startOfDay,
-            $lt: endOfDay,
-          },
-        },
+        $match: aggregationMatch,
       },
       {
         $group: {
@@ -410,6 +419,7 @@ exports.getAllTransactions = async (req, res) => {
     });
   }
 };
+
 
 exports.downloadTransactionAsCSV = async (req, res) => {
   try {
