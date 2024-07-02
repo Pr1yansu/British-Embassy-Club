@@ -18,9 +18,9 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { LuLoader2 } from "react-icons/lu";
 
 const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
-
-  const { data: member, isLoading: isDataLoading } =
-    useGetMemberByIdQuery(memberId);
+  const { data: member, isLoading: isDataLoading } = useGetMemberByIdQuery({
+    memberId,
+  });
   const [openExtend, setOpenExtend] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -37,6 +37,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
   const [organization, setOrganization] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [publicId, setPublicId] = useState(null);
+  const [idError, setIdError] = useState("");
 
   const [imgLoading, setImgLoading] = useState(false);
 
@@ -46,20 +47,19 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
     if (member) {
       setFirstname(member.data.firstname);
       setLastname(member.data.lastname);
-      setUsername(member.data.username);
+      setUsername(member.data.name);
       setEmail(member.data.email);
       setMobileNumber(member.data.mobileNumber);
       setAddress(member.data.address);
       setBloodGroup(member.data.bloodGroup);
       setOrganization(member.data.organization);
-      setIdType(member.data.idProof.idType);
-      setIdNumber(member.data.idProof.idNumber);
+      setIdType(member.data.idProof ? member.data.idProof.idType : "");
+      setIdNumber(member.data.idProof ? member.data.idProof.idNumber : "");
       setImageUrl(member.data.image.url);
     }
   }, [member]);
 
-  const [updateMember] =
-    useUpdateMemberMutation();
+  const [updateMember] = useUpdateMemberMutation();
 
   const navigate = useNavigate();
 
@@ -91,8 +91,44 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
     }
   }, [membershipFromDate, expiryLimit, expiryTime]);
 
+  const validateId = () => {
+    if (idType === "Aadhar Card") {
+      const aadharPattern = /^\d{4}\s\d{4}\s\d{4}$/;
+      if (!aadharPattern.test(idNumber)) {
+        setIdError("Invalid Aadhar Number. Format: XXXX XXXX XXXX");
+        return false;
+      }
+    } else if (idType === "Passport No") {
+      const passportPattern = /^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$/;
+      if (!passportPattern.test(idNumber)) {
+        setIdError("Invalid Passport Number");
+        return false;
+      }
+    }
+    setIdError("");
+    return true;
+  };
+
   const handlesubmit = async (e) => {
     e.preventDefault();
+    if (!validateId()) return;
+
+    if (idType === "Choose") {
+      toast.custom(
+        <>
+          <Toasts
+            boldMessage={"Error!"}
+            message={"Please select an ID type"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />
+        </>,
+        {
+          position: "top-center",
+          duration: 2000,
+        }
+      );
+      return;
+    }
 
     try {
       setUpdateLoading(true);
@@ -163,7 +199,8 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
         file.append("image", newFile);
         const { data } = await axios.put(
           `${process.env.REACT_APP_API_URL}/api/v1/member/update-member-image/${memberId}`,
-          file,{
+          file,
+          {
             withCredentials: true,
           }
         );
@@ -224,7 +261,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
             <div className="w-full h-32 border-4 border-dashed rounded-lg flex justify-center items-center cursor-pointer relative">
               {imageUrl ? (
                 <img
-                  src={imageUrl && imageUrl }
+                  src={imageUrl && imageUrl}
                   alt="profile"
                   className="w-30 h-30 object-cover rounded-full"
                 />
@@ -297,9 +334,8 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
                 <BsArrowUpSquareFill
                   size={30}
                   onClick={() => setOpenExtend(!openExtend)}
-                  className={`${
-                    !openExtend && "transform rotate-180"
-                  } ease-in-out duration-300 cursor-pointer`}
+                  className={`${!openExtend &&
+                    "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
                 />
               </div>
               {openExtend && (
@@ -357,7 +393,6 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
                   id=""
                   className="bg-primary h-10 text-sm w-52 rounded-l-lg text-text_primary p-2 outline-none font-roboto font-medium"
                   onChange={(e) => setIdType(e.target.value)}
-                  value={idType}
                 >
                   <option value="">Choose</option>
                   <option value="Aadhar Card">Aadhar Card</option>
@@ -367,12 +402,14 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
                 <input
                   type="text"
                   id=""
-                  placeholder="Aadhar No. / Passport No. / Other"
+                  placeholder="Aadhar No. / Passport No."
                   className="bg-primary text-sm font-roboto font-normal outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-text_primary"
                   onChange={(e) => setIdNumber(e.target.value)}
-                  value={idNumber}
                 />
               </div>
+              {idError && (
+                <p className="text-red-500 text-sm mt-1">{idError}</p>
+              )}
             </label>
           </div>
           <div>

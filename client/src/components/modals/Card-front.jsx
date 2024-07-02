@@ -3,10 +3,7 @@ import VirtualCardStyle from "../../style/virtualCard.module.css";
 import { CgProfile } from "react-icons/cg";
 
 function FrontView({ data, image, frontendRef }) {
-  const date_time =
-    data.expiryTime.split("T")[0] +
-    " " +
-    data.expiryTime.split("T")[1].split(".")[0];
+  const date_time = data.expiryTime.split("T")[0];
   return (
     <div className={VirtualCardStyle.card} ref={frontendRef}>
       <div className="absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-r from-black to-white opacity-45" />
@@ -58,7 +55,7 @@ function FrontView({ data, image, frontendRef }) {
           </p>
         </div>
         <div className="flex gap-2">
-          <h4 className="font-semibold text-sm text-white">Expired On:</h4>
+          <h4 className="font-semibold text-sm text-white">Valid Upto:</h4>
           <p className="text-sm text-start text-white">
             {date_time ? date_time : "N/A"}
           </p>

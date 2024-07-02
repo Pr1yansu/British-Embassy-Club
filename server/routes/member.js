@@ -9,6 +9,7 @@ const {
   getMemberById,
   downloadCardPdf,
   sendCardAsEmail,
+  totalDebitCreditAndWalletBalance
 } = require("../controller/member");
 const { isAuthenticated, isInClub } = require("../middleware/auth");
 const { validateAddMember } = require("../middleware/zod-user-middleware");
@@ -22,6 +23,7 @@ router.post(
   addMember
 );
 router.get("/get-member/:memberId", getMemberById);
+router.get("/get/total/amount", totalDebitCreditAndWalletBalance);
 
 router.put("/update-member/:memberId", isAuthenticated, isInClub, updateMember);
 router.put(

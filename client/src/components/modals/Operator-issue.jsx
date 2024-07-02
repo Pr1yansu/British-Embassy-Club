@@ -10,20 +10,17 @@ import { useNavigate } from "react-router-dom";
 import { MdError } from "react-icons/md";
 import { LuLoader2 } from "react-icons/lu";
 import { BsArrowUpSquareFill } from "react-icons/bs";
+import TrWarning1 from "./TrWarning1";
 
-const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
+const OperatorIssue = ({ onModalll, walletdata, setopenQuery }) => {
   const [openExtend, setOpenExtend] = useState(false);
   const navigate = useNavigate();
-  const [couponAmount, setCouponAmount] = useState();
+  const [couponAmount, setCouponAmount] = useState("");
   const [mode, setMode] = useState("WALLET");
   const [payableAmount, setPayableAmount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
   const [disable, setDisable] = useState(true);
-
-  const [
-    addTransaction,
-    { isLoading: addTransactionLoading },
-  ] = useAddTransactionMutation();
+  const [OpenWarning, setOpenWarning] = useState(false);
 
   useEffect(() => {
     walletdata && setWalletBalance(walletdata.wallet.balance);
@@ -65,8 +62,24 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
     }
   };
 
-  const handleConfirm = async () => {
+  const handleWarning = (e) => {
+    e.preventDefault();
     try {
+      if (couponAmount === "" || couponAmount === 0) {
+        toast.custom(
+          <Toasts
+            boldMessage={"Error!"}
+            message={"please enter the coupon amount"}
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
+          {
+            position: "top-center",
+            duration: 2000,
+          }
+        );
+        return;
+      }
+
       if (payableAmount > 0 && mode === "") {
         toast.custom(
           <Toasts
@@ -97,37 +110,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
         return;
       }
 
-      const { data } = await addTransaction({
-        memberId: walletdata && walletdata.wallet.memberId._id,
-        type: "issue",
-        payableAmount: payableAmount,
-        couponAmount: couponAmount,
-        mode: mode,
-      });
-
-      if (data) {
-        toast.custom(
-          <>
-            <Toasts
-              boldMessage={"Success!"}
-              message={data.message}
-              icon={
-                <IoCheckmarkDoneCircleOutline
-                  className="text-text_tertiaary"
-                  size={32}
-                />
-              }
-            />
-          </>,
-          {
-            position: "top-center",
-            duration: 2000,
-          }
-        );
-        onModal();
-        setopenQuery(false);
-        navigate("/coupon");
-      }
+      setOpenWarning(true);
     } catch (error) {
       toast.custom(
         <>
@@ -169,7 +152,7 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
           {/* Lower part starts here */}
           <form
             className="flex flex-col gap-6 w-full px-9 py-6"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleWarning}
           >
             {/* 1st row starts here */}
             <div className="flex justify-between">
@@ -284,26 +267,29 @@ const OperatorIssue = ({ onModal, walletdata, setopenQuery }) => {
             {/* 3rd row starts here */}
             <div className="flex justify-end gap-6 mt-3">
               <ButtonGroup
-                name={
-                  addTransactionLoading ? (
-                    <>
-                      <LuLoader2 className="animate-spin" size={20} />
-                    </>
-                  ) : (
-                    <>Confirm</>
-                  )
-                }
-                color={"bg-btn_secondary"}
-                textColor={"text-btn_primary"}
-                onClick={handleConfirm}
-                disabled={addTransactionLoading}
-              />
-              <ButtonGroup
                 name={"Cancel"}
                 color={"bg-btn_secondary"}
                 textColor={"text-text_primary"}
-                onClick={() => onModal()}
+                onClick={() => onModalll()}
               />
+              <ButtonGroup
+                name={"Confirm"}
+                color={"bg-btn_secondary"}
+                textColor={"text-btn_primary"}
+                type={"submit"}
+              />
+              {OpenWarning && (
+                <TrWarning1
+                  mode={mode}
+                  onModal={() => setOpenWarning(false)}
+                  onModalll={() => onModalll()}
+                  memberId={walletdata && walletdata.wallet.memberId._id}
+                  type={"issue"}
+                  payableAmount={payableAmount}
+                  couponAmount={couponAmount}
+                  setopenQuery={setopenQuery}
+                />
+              )}
             </div>
             {/* 3rd row ends here */}
           </form>

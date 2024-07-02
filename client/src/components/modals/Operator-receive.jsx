@@ -5,29 +5,21 @@ import { AiFillMinusCircle } from "react-icons/ai";
 import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import ReactDOM from "react-dom";
-import { useAddTransactionMutation } from "../../store/api/walletAPI";
 import Toasts from "../ui/Toasts";
 import toast from "react-hot-toast";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { LuLoader2 } from "react-icons/lu";
+import TrWarning from "./TrWarning";
 
-const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
+const OperatorReceive = ({ onModall, walletdata, setopenQuery }) => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState(0);
   const [updatedBalance, setUpdatedBalance] = useState(0);
 
   const [mode, setMode] = useState("Choose Method");
   const [openExtend, setOpenExtend] = useState(false);
-
-  const [
-    addTransaction,
-    {
-      isSuccess: addTransactionSuccess,
-      isLoading: addTransactionLoading,
-      isError: addTransactionError,
-    },
-  ] = useAddTransactionMutation();
+  const [OpenWarning, setOpenWarning] = useState(false);
 
   useEffect(() => {
     if (walletdata && walletdata.wallet.balance !== undefined) {
@@ -55,8 +47,8 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
     setAmount((prevAmount) => (prevAmount - 50 >= 0 ? prevAmount - 50 : 0));
   };
 
-  const handleReciveTransaction = async (e) => {
-    e.preventDefault(); 
+  const handleWarning = (e) => {
+    e.preventDefault();
     try {
       if (!walletdata.wallet.memberId._id) {
         toast.custom(
@@ -88,55 +80,24 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
         return;
       }
 
-       if (mode === "Choose Method") {
-         toast.custom(
-           <Toasts
-             boldMessage={"Error!"}
-             message={
-               "please select a payment method to proceed with the transaction"
-             }
-             icon={<MdError className="text-text_red" size={32} />}
-           />,
-           {
-             position: "top-center",
-             duration: 2000,
-           }
-         );
-         return;
-       }
-
-
-      const { data } = await addTransaction({
-        memberId: walletdata && walletdata.wallet.memberId._id,
-        type: "receive",
-        payableAmount: 0,
-        couponAmount: Number(amount),
-        mode: mode,
-      });
-      
-      if (data) {
+      if (mode === "Choose Method") {
         toast.custom(
-          <>
-            <Toasts
-              boldMessage={"Success!"}
-              message={data.message}
-              icon={
-                <IoCheckmarkDoneCircleOutline
-                  className="text-text_tertiaary"
-                  size={32}
-                />
-              }
-            />
-          </>,
+          <Toasts
+            boldMessage={"Error!"}
+            message={
+              "please select a payment method to proceed with the transaction"
+            }
+            icon={<MdError className="text-text_red" size={32} />}
+          />,
           {
             position: "top-center",
             duration: 2000,
           }
         );
-        onModal();
-        setopenQuery(false);
-        navigate("/coupon");
+        return;
       }
+
+      setOpenWarning(true);
     } catch (error) {
       toast.custom(
         <>
@@ -153,8 +114,6 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
       );
     }
   };
-
-  
 
   return ReactDOM.createPortal(
     <>
@@ -180,7 +139,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
           {/* Lower part starts here */}
           <form
             className="flex flex-col w-full px-9 py-6"
-            onSubmit={handleReciveTransaction}
+            onSubmit={handleWarning}
           >
             {/* 1st row starts here */}
             <div className="flex justify-between items-center">
@@ -232,7 +191,11 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
               <div className="">
                 <label className="flex flex-col relative text-btn_primary roboto font-medium w-56 gap-2">
                   Select Payment Method
-                  <div className={`flex items-center gap-1 bg-primary pr-2  ${openExtend ? 'rounded-t-lg':'rounded-lg'}`}>
+                  <div
+                    className={`flex items-center gap-1 bg-primary pr-2  ${
+                      openExtend ? "rounded-t-lg" : "rounded-lg"
+                    }`}
+                  >
                     <InputBox
                       type="text"
                       onChange={(e) => setMode(e.target.value)}
@@ -301,23 +264,26 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
                 name={"Cancel"}
                 color={"bg-btn_secondary"}
                 textColor={"text-text_primary"}
-                onClick={() => onModal()}
+                onClick={() => onModall()}
               />
               <ButtonGroup
-                name={
-                  addTransactionLoading ? (
-                    <>
-                      <LuLoader2 className="animate-spin" size={20} />
-                    </>
-                  ) : (
-                    <>Confirm</>
-                  )
-                }
+                name={"Confirm"}
                 color={"bg-btn_secondary"}
                 textColor={"text-btn_primary"}
                 type={"submit"}
-                disabled={addTransactionLoading}
               />
+              {OpenWarning && (
+                <TrWarning
+                  mode={mode}
+                  onModal={() => setOpenWarning(false)}
+                  onModall={() => onModall()}
+                  memberId={walletdata && walletdata.wallet.memberId._id}
+                  type={"receive"}
+                  payableAmount={0}
+                  couponAmount={Number(amount)}
+                  setopenQuery={setopenQuery}
+                />
+              )}
             </div>
             {/* 3rd row ends here */}
           </form>
