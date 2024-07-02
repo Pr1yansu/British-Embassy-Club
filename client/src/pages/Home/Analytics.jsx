@@ -113,10 +113,10 @@ const Analytics = () => {
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-3 background bg-cover bg-center">
-      <div className="flex flex-col lg:flex-row justify-center items-center w-full max-w-6xl gap-10 mb-5 mt-5">
+      <div className="flex flex-col lg:flex-row justify-center items-center w-full max-w-7xl gap-10 mb-5 mt-5">
         <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-3 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
-            Select options for the statement period
+            Select Date Range
           </p>
           <div className="flex flex-col gap-2 w-full">
             <div className="flex justify-between items-center gap-2 w-full">
@@ -191,8 +191,33 @@ const Analytics = () => {
             </p>
           </div>
         </div>
+
+        <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
+          <p className="text-xl text-text_secondary mb-1 text-center">
+            Daily Transaction Analysis
+          </p>
+          <div className="flex justify-between items-center gap-2 w-full">
+            <p className="text-base roboto">Total Transactions Today:</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.todaysTotalTransactions}
+            </p>
+          </div>
+          <div className="flex justify-between items-center gap-2 w-full">
+            <p className="text-base roboto">Total Credited Amount:</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.totalCredited}
+            </p>
+          </div>
+          <div className="flex justify-between items-center gap-2 w-full">
+            <p className="text-base roboto">Total Debited Amount:</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.totalDebited}
+            </p>
+          </div>
+        </div>
+        
       </div>
-      <div className="md:w-full md:max-w-6xl w-96 ml-16 sm:ml-0 max-w-4xl p-3 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
+      <div className="md:w-full md:max-w-7xl w-96 ml-16 sm:ml-0 max-w-4xl p-3 bg-white rounded-2xl shadow-lg custom-pagination font-roboto">
         <div className="flex flex-col md:flex-row justify-between items-center p-2 gap-4">
           <h1 className="text-xl font-roboto font-medium text-black tracking-tighter text-center">
             Transaction Table

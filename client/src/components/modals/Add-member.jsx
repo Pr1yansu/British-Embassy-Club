@@ -3,14 +3,11 @@ import ReactDOM from "react-dom";
 import InputBox from "../ui/InputBox";
 import ButtonGroup from "../ui/ButtonGroup";
 import { CgProfile } from "react-icons/cg";
-import FileUpload from "./File-Upload";
 import { BsArrowUpSquareFill } from "react-icons/bs";
 import ValidityExtend from "./ValidityExtend";
-import { motion, AnimatePresence } from "framer-motion";
 import { useAddMemberMutation } from "../../store/api/memberAPI";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { useAddMemberImageMutation } from "../../store/api/memberAPI";
 import Toasts from "../ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
@@ -19,23 +16,23 @@ import { LuLoader2 } from "react-icons/lu";
 
 const AddMember = ({ onModal }) => {
   const [openExtend, setOpenExtend] = useState(false);
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [username, setUsername] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [idType, setIdType] = useState("");
-  const [idNumber, setIdNumber] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [membershipFromDate, setMembershipFromDate] = useState("");
+  const [firstname, setFirstname] = useState(null);
+  const [lastname, setLastname] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [idType, setIdType] = useState(null);
+  const [idNumber, setIdNumber] = useState(null);
+  const [mobileNumber, setMobileNumber] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [membershipFromDate, setMembershipFromDate] = useState(null);
   const [expiryLimit, setExpiryLimit] = useState(1);
-  const [expiryDate, setExpiryDate] = useState("");
-  const [bloodGroup, setBloodGroup] = useState("");
-  const [organization, setOrganization] = useState("");
+  const [expiryDate, setExpiryDate] = useState(null);
+  const [bloodGroup, setBloodGroup] = useState(null);
+  const [organization, setOrganization] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [publicId, setPublicId] = useState(null);
   const [imgLoading, setImgLoading] = useState(false);
+  const [idError, setIdError] = useState(null);
 
   const [addMember, { isSuccess, isLoading, isError }] = useAddMemberMutation();
   const navigate = useNavigate();
@@ -57,37 +54,91 @@ const AddMember = ({ onModal }) => {
     }
   }, [membershipFromDate, expiryLimit]);
 
+  const validateId = () => {
+    if (idType === "Aadhar Card") {
+      const aadharPattern = /^\d{4}\s\d{4}\s\d{4}$/;
+      if (!aadharPattern.test(idNumber)) {
+        setIdError("Invalid Aadhar Number. Format: XXXX XXXX XXXX");
+        return false;
+      }
+    } else if (idType === "Passport No") {
+      const passportPattern = /^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$/;
+      if (!passportPattern.test(idNumber)) {
+        setIdError("Invalid Passport Number");
+        return false;
+      }
+    }
+    setIdError("");
+    return true;
+  };
+
   const handlesubmit = async (e) => {
     e.preventDefault();
-    try {
-      const data = await addMember({
-        firstName: firstname,
-        lastname: lastname,
-        name: username,
-        email: email,
-        mobileNumber: mobileNumber,
-        address: address,
-        expiryDate: expiryDate,
-        bloodGroup: bloodGroup,
-        organization: organization,
-        idType: idType,
-        idNumber: idNumber,
-        url: imageUrl ? imageUrl : null,
-        public_id: publicId ? publicId : null,
-      }).unwrap();
+    if (!validateId()) return;
 
-      if (data) {
+    if (idType === "Choose"){
+       toast.custom(
+         <>
+           <Toasts
+             boldMessage={"Error!"}
+             message={"Please select an ID type"}
+             icon={<MdError className="text-text_red" size={32} />}
+           />
+         </>,
+         {
+           position: "top-center",
+           duration: 2000,
+         }
+       );
+      return;
+    }
+      try {
+        const data = await addMember({
+          firstName: firstname ? firstname : null,
+          lastname: lastname ? lastname : null,
+          name: username ? username : null,
+          email: email ? email : null,
+          mobileNumber: mobileNumber ? mobileNumber : null,
+          address: address ? address : null,
+          expiryDate: expiryDate ? expiryDate : null,
+          bloodGroup: bloodGroup ? bloodGroup : null,
+          organization: organization ? organization : null,
+          idType: idType ? idType : null,
+          idNumber: idNumber ? idNumber : null,
+          url: imageUrl ? imageUrl : null,
+          public_id: publicId ? publicId : null,
+        }).unwrap();
+
+        if (data) {
+          toast.custom(
+            <>
+              <Toasts
+                boldMessage={"Success!"}
+                message={data.message}
+                icon={
+                  <IoCheckmarkDoneCircleOutline
+                    className="text-text_tertiaary"
+                    size={32}
+                  />
+                }
+              />
+            </>,
+            {
+              position: "top-center",
+              duration: 2000,
+            }
+          );
+          onModal();
+          navigate(0);
+        }
+      } catch (error) {
+       console.log(error);
         toast.custom(
           <>
             <Toasts
-              boldMessage={"Success!"}
-              message={data.message}
-              icon={
-                <IoCheckmarkDoneCircleOutline
-                  className="text-text_tertiaary"
-                  size={32}
-                />
-              }
+              boldMessage={"Error!"}
+              message={error?.data?.message || "Internal Server Error"}
+              icon={<MdError className="text-text_red" size={32} />}
             />
           </>,
           {
@@ -95,24 +146,7 @@ const AddMember = ({ onModal }) => {
             duration: 2000,
           }
         );
-        onModal();
-        navigate(0);
       }
-    } catch (error) {
-      toast.custom(
-        <>
-          <Toasts
-            boldMessage={"Error!"}
-            message={error?.data?.message || "Internal Server Error"}
-            icon={<MdError className="text-text_red" size={32} />}
-          />
-        </>,
-        {
-          position: "top-center",
-          duration: 2000,
-        }
-      );
-    }
   };
 
   const onFileDrop = async (e) => {
@@ -125,7 +159,8 @@ const AddMember = ({ onModal }) => {
         file.append("image", newFile);
         const { data } = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/v1/member/add-member-image`,
-          file,{
+          file,
+          {
             withCredentials: true,
           }
         );
@@ -166,7 +201,7 @@ const AddMember = ({ onModal }) => {
           duration: 2000,
         }
       );
-    }finally{
+    } finally {
       setImgLoading(false);
     }
   };
@@ -251,9 +286,8 @@ const AddMember = ({ onModal }) => {
                 <BsArrowUpSquareFill
                   size={30}
                   onClick={() => setOpenExtend(!openExtend)}
-                  className={`${
-                    !openExtend && "transform rotate-180"
-                  } ease-in-out duration-300 cursor-pointer`}
+                  className={`${!openExtend &&
+                    "transform rotate-180"} ease-in-out duration-300 cursor-pointer`}
                 />
               </div>
               {openExtend && (
@@ -311,7 +345,7 @@ const AddMember = ({ onModal }) => {
             <label className="flex flex-col font-medium">
               Membership Valid Upto
               <div className=" bg-primary outline-none flex items-center h-6 py-5 px-4 rounded-lg text-sm text-text_primary">
-                {expiryDate.split("T")[0]}
+                {expiryDate ? expiryDate.split("T")[0] : ""}
               </div>
             </label>
           </div>
@@ -341,19 +375,22 @@ const AddMember = ({ onModal }) => {
                   className="bg-primary h-10 text-sm w-52 rounded-l-lg text-text_primary p-2 outline-none font-roboto font-medium"
                   onChange={(e) => setIdType(e.target.value)}
                 >
-                  <option value="">Choose</option>
+                  <option value="Choose">Choose</option>
                   <option value="Aadhar Card">Aadhar Card</option>
-                  <option value="Voter Card">Passport No</option>
-                  <option value="Pan Card">Others</option>
+                  <option value="Passport No">Passport No</option>
+                  <option value="Others">Others</option>
                 </select>
                 <input
                   type="text"
                   id=""
-                  placeholder="Aadhar No. / Passport No. / Other"
+                  placeholder="Aadhar No. / Passport No."
                   className="bg-primary text-sm font-roboto font-normal outline-none sm:w-full max-sm:w-4/5 h-6 py-5 px-4 rounded-r-lg text-text_primary"
                   onChange={(e) => setIdNumber(e.target.value)}
                 />
               </div>
+              {idError && (
+                <p className="text-red-500 text-sm mt-1">{idError}</p>
+              )}
             </label>
           </div>
           <div>

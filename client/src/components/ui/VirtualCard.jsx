@@ -9,6 +9,7 @@ import { TbMailShare } from "react-icons/tb";
 import { useGetMemberByIdQuery } from "../../store/api/memberAPI";
 import Loader from "./loader";
 import { toJpeg } from "html-to-image";
+import { MdOutlineDownloading } from "react-icons/md";
 
 function VirtualCard({ onModal, data }) {
   const [open, setOpen] = useState(true);
@@ -128,20 +129,22 @@ function VirtualCard({ onModal, data }) {
                 </div>
               </div>
             </div>
-            <div className="flex gap-2 items-center mt-6">
-              <button
-                onClick={() => handleAction("send-card-email")}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                disabled={isLoading}
-              >
-                <TbMailShare />
-              </button>
+            <div className="flex justify-between items-center mt-6 w-full">
               <button
                 onClick={() => handleAction("download-card-pdf")}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded flex gap-2 justify-center items-center"
                 disabled={isLoading}
               >
-                <BsFiletypePdf />
+                Download
+                <MdOutlineDownloading />
+              </button>
+              <button
+                onClick={() => handleAction("send-card-email")}
+                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded flex gap-2 justify-center items-center ml-[72px]"
+                disabled={isLoading}
+              >
+                Send to mail
+                <TbMailShare />
               </button>
             </div>
           </div>

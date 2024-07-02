@@ -66,7 +66,7 @@ const OperatorQuery = ({ onOpen, walletdata, setWalletData, setopenQuery }) => {
               <OperatorReceive
                 walletdata={walletdata}
                 setopenQuery={setopenQuery}
-                onModal={() => SetopenReceive(false)}
+                onModall={() => SetopenReceive(false)}
               />
             )}
             <div

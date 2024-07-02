@@ -61,6 +61,7 @@ const validateResetPassword = (req, res, next) => {
 const validateAddMember = (req, res, next) => {
   try {
     addMemberSchema.parse(req.body);
+    console.log(req.body);
     next();
   } catch (error) {
     const errorMsg = error.errors.map((err) => err.message).join(", ");
