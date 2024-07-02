@@ -126,7 +126,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -146,7 +146,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -184,7 +184,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
               />
             </>,
             {
-              position: "top-right",
+              position: "top-center",
               duration: 2000,
             }
           );
@@ -201,7 +201,7 @@ const UpdateMember = ({ onModal, setOpen, memberId, expiryTime }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

@@ -89,7 +89,7 @@ const Profile = () => {
               />
             </>,
             {
-              position: "top-right",
+              position: "top-center",
               duration: 2000,
             }
           );
@@ -105,7 +105,7 @@ const Profile = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -141,7 +141,7 @@ const Profile = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -157,7 +157,7 @@ const Profile = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -172,7 +172,7 @@ const Profile = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

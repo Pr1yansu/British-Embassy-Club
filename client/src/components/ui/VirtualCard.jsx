@@ -65,7 +65,12 @@ function VirtualCard({ onModal, data }) {
 
       if (response.status === 200) {
         if (action === "send-card-email") {
-          toast.success("Email sent successfully.");
+          toast.success("Email sent successfully.",
+            {
+              duration: 2000,
+              position: "top-center",
+            }
+          );
         } else {
           const blob = new Blob([response.data], { type: "application/pdf" });
           const url = window.URL.createObjectURL(blob);
@@ -80,7 +85,11 @@ function VirtualCard({ onModal, data }) {
       toast.error(
         `Failed to ${
           action === "send-card-email" ? "send email" : "download PDF"
-        }.`
+        }.`,
+        {
+          duration: 2000,
+          position: "top-center",
+        }
       );
     } finally {
       setIsLoading(false);

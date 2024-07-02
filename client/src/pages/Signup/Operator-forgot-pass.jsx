@@ -50,7 +50,7 @@ const OperatorSignUpOtp = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -66,7 +66,7 @@ const OperatorSignUpOtp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

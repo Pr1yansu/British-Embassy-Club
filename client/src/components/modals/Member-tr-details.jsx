@@ -20,8 +20,6 @@ const MemberTrDetails = ({ onModal, search }) => {
     return <p className="text-center">Loading...</p>;
   }
 
-  console.log(fetchTransactions);
-
   if (fetchError) {
     toast.custom(
       <Toasts
@@ -30,7 +28,7 @@ const MemberTrDetails = ({ onModal, search }) => {
         icon={<MdError className="text-red-600" size={32} />}
       />,
       {
-        position: "top-right",
+        position: "top-center",
         duration: 2000,
       }
     );
@@ -84,7 +82,7 @@ const MemberTrDetails = ({ onModal, search }) => {
                   </div>
                   <div className="flex justify-start items-center gap-7 w-full mt-2">
                     <p className="text-btn_primary roboto font-medium">
-                      Recent Dedit
+                      Recent Debit
                     </p>
                     <p className="lato font-medium">
                       {fetchTransactions.recentDebit}
@@ -107,7 +105,7 @@ const MemberTrDetails = ({ onModal, search }) => {
                   </div>
                   <div className="flex justify-start items-center gap-7 w-full mt-2">
                     <p className="text-btn_primary roboto font-medium">
-                      Total Dedited
+                      Total Debited
                     </p>
                     <p className="lato font-medium">
                       {fetchTransactions.totalDebitedAmount}

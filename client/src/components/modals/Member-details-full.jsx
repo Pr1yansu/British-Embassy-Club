@@ -25,7 +25,7 @@ const MembersDetails = ({ setOpen, image, data }) => {
         </div>
       </div>,
       {
-        position: "top-right",
+        position: "top-center",
         duration: 2000,
       }
     );

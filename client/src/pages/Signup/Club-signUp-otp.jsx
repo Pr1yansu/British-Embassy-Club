@@ -76,7 +76,7 @@ const ClubSignUpOtp = () => {
               />
             </>,
             {
-              position: "top-right",
+              position: "top-center",
               duration: 2000,
             }
           );
@@ -98,7 +98,7 @@ const ClubSignUpOtp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );
@@ -136,7 +136,7 @@ const ClubSignUpOtp = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -152,7 +152,7 @@ const ClubSignUpOtp = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

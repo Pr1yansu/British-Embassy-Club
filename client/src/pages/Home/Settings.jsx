@@ -48,7 +48,7 @@ const Settings = () => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -65,7 +65,7 @@ const Settings = () => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

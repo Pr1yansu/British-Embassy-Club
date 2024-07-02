@@ -56,7 +56,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
   };
 
   const handleReciveTransaction = async (e) => {
-    e.preventDefault(); // Prevent form submission from reloading the page
+    e.preventDefault(); 
     try {
       if (!walletdata.wallet.memberId._id) {
         toast.custom(
@@ -66,7 +66,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -81,7 +81,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             icon={<MdError className="text-text_red" size={32} />}
           />,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
@@ -93,12 +93,12 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
            <Toasts
              boldMessage={"Error!"}
              message={
-               "please select a payment method your wallet not have enough balance"
+               "please select a payment method to proceed with the transaction"
              }
              icon={<MdError className="text-text_red" size={32} />}
            />,
            {
-             position: "top-right",
+             position: "top-center",
              duration: 2000,
            }
          );
@@ -129,11 +129,10 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
             />
           </>,
           {
-            position: "top-right",
+            position: "top-center",
             duration: 2000,
           }
         );
-        console.log(data);
         onModal();
         setopenQuery(false);
         navigate("/coupon");
@@ -148,7 +147,7 @@ const OperatorReceive = ({ onModal, walletdata, setopenQuery }) => {
           />
         </>,
         {
-          position: "top-right",
+          position: "top-center",
           duration: 2000,
         }
       );

@@ -31,7 +31,6 @@ const CouponTable = ({ reloadQuery }) => {
     [allTransactions]
   );
 
-  console.log(allTransactions);
 
   if (transLoading) {
     return <p>Loading...</p>;
@@ -41,27 +40,25 @@ const CouponTable = ({ reloadQuery }) => {
     const csvData = formattedData.map((row) => ({
       ...row,
       TIMESTAMP: formatTime(row.TIMESTAMP),
+      TRTYPE: row.TRTYPE.toLowerCase() === "issue" ? "Debit" : "Credit",
     }));
-
     const csvContent = [
       [
         "Date",
         "Membership ID",
-        "Full Name",
-        "Credit Amount",
-        "Debit Amount",
-        "Wallet Tr.",
-        "Wallet Balance",
+        "Member Name",
+        "Tr. Type",
+        "Tr. Amount",
+        "Ex-pay Amt.",
         "Tr. Mode",
       ],
       ...csvData.map((row) => [
         `"${row.DATE}"`,
         `"${row.MEMBERID}"`,
         `"${row.FULLNAME}"`,
-        `"${row.CREDITAMOUNT}"`,
-        `"${row.DEBITAMOUNT}"`,
-        `"${row.WALLETTR}"`,
-        `"${row.WALLETBALANCE}"`,
+        `"${row.TRTYPE}"`,
+        `"${row.TRAMOUNT}"`,
+        `"${row.EXPAYAMT}"`,
         `"${row.MODE}"`,
       ]),
     ]
@@ -110,9 +107,9 @@ const CouponTable = ({ reloadQuery }) => {
         data={formattedData}
         customStyles={customStyles}
         pagination
-        paginationPerPage={8}
+        paginationPerPage={10}
         paginationTotalRows={formattedData.length}
-        paginationRowsPerPageOptions={[5, 8, 15, 20]}
+        paginationRowsPerPageOptions={[5, 10, 15, 20]}
         paginationComponentOptions={{
           rowsPerPageText: "Rows:",
           rangeSeparatorText: "of",
@@ -197,6 +194,7 @@ const customStyles = {
       borderRadius: "0.75rem",
       boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
       overflowY: "auto",
+      maxHeight: "400px",
     },
   },
   headRow: {

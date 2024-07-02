@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
-import { useFetchTransactionsQuery, useGetAllTransactionsQuery } from "../../store/api/walletAPI";
+import {
+  useFetchTransactionsQuery,
+  useGetAllTransactionsQuery,
+} from "../../store/api/walletAPI";
 import { formatTime } from "../../hooks/formatTime";
 import SearchBox from "../../components/ui/SearchBox";
 import { Export } from "../../components/ui/Export";
@@ -10,6 +13,8 @@ import MemberTrDetails from "../../components/modals/Member-tr-details";
 import Toasts from "../../components/ui/Toasts";
 import { MdError } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
+import Loader from "../../components/ui/loader";
 
 const Analytics = () => {
   const [startDate, setStartDate] = useState("");
@@ -19,6 +24,7 @@ const Analytics = () => {
   const [search, setSearch] = useState("");
   const [openTr, SetOpenTr] = useState(false);
   const navigate = useNavigate();
+
   const {
     data: allTransactions,
     isLoading: transLoading,
@@ -26,7 +32,11 @@ const Analytics = () => {
     isError,
   } = useGetAllTransactionsQuery({ startDate, endDate, search });
 
-
+  const {
+    data: profiledata,
+    isLoading: profileLoading,
+    error: profileError,
+  } = useGetOperatorProfileQuery();
 
   React.useEffect(() => {
     refetch();
@@ -53,48 +63,53 @@ const Analytics = () => {
     return <p className="text-center">Loading...</p>;
   }
 
-  
-    const handleExport = () => {
-      const csvData = formattedData.map((row) => ({
-        ...row,
-        TIMESTAMP: formatTime(row.TIMESTAMP),
-      }));
+  const handleExport = () => {
+    const csvData = formattedData.map((row) => ({
+      ...row,
+      TIMESTAMP: formatTime(row.TIMESTAMP),
+    }));
 
-      const csvContent = [
-        [
-          "Date",
-          "Membership ID",
-          "Full Name",
-          "Credit Amount",
-          "Debit Amount",
-          "Wallet Tr.",
-          "Wallet Balance",
-          "Tr. Mode",
-        ],
-        ...csvData.map((row) => [
-          `"${row.DATE}"`,
-          `"${row.MEMBERID}"`,
-          `"${row.FULLNAME}"`,
-          `"${row.CREDITAMOUNT}"`,
-          `"${row.DEBITAMOUNT}"`,
-          `"${row.WALLETTR}"`,
-          `"${row.WALLETBALANCE}"`,
-          `"${row.MODE}"`,
-        ]),
-      ]
-        .map((e) => e.join(","))
-        .join("\n");
+    const csvContent = [
+      [
+        "Date",
+        "Membership ID",
+        "Full Name",
+        "Credit Amount",
+        "Debit Amount",
+        "Wallet Tr.",
+        "Wallet Balance",
+        "Tr. Mode",
+      ],
+      ...csvData.map((row) => [
+        `"${row.DATE}"`,
+        `"${row.MEMBERID}"`,
+        `"${row.FULLNAME}"`,
+        `"${row.CREDITAMOUNT}"`,
+        `"${row.DEBITAMOUNT}"`,
+        `"${row.WALLETTR}"`,
+        `"${row.WALLETBALANCE}"`,
+        `"${row.MODE}"`,
+      ]),
+    ]
+      .map((e) => e.join(","))
+      .join("\n");
 
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", "transactions.csv");
-      link.style.visibility = "hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    };
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "transactions.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  if (profileLoading) return <Loader />;
+  if (!profiledata) navigate("/login/club");
+  if (profiledata.data.role !== "admin") {
+    navigate("/");
+  }
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-3 background bg-cover bg-center">
@@ -137,7 +152,10 @@ const Analytics = () => {
             <button
               onClick={() => {
                 if (inputStartDate === "" || inputEndDate === "") {
-                  toast.error("Please select a date range");
+                  toast.error("Please select a date range", {
+                    position: "top-center",
+                    duration: 2000,
+                  });
                   return;
                 }
                 setStartDate(inputStartDate);
