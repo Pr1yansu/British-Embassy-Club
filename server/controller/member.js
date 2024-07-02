@@ -4,7 +4,7 @@ const WalletSchema = require("../models/wallet.js");
 const { uploadImage, deleteImage } = require("../utils/cloudinary.js");
 const { MemberFilter } = require("../utils/filters");
 const Cache = require("node-cache");
-const pdf = require("html-pdf");
+const pdf = require("html-pdf-node");
 const { sendMail } = require("../utils/mail-service.js");
 
 const cache = new Cache();
@@ -462,26 +462,23 @@ exports.downloadCardPdf = async (req, res) => {
       </html>
     `;
 
-    pdf.create(htmlContent).toBuffer((err, buffer) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({
-          statusCode: 500,
-          message: "Failed to create PDF",
-          data: null,
-        });
-      }
+    try {
+      const file = { content: htmlContent };
+      const buffer = await pdf.generatePdf(file, { format: "A4" });
 
-      try {
-        res.writeHead(200, {
-          "Content-Type": "application/pdf",
-          "Content-Disposition": "attachment; filename=virtual-card.pdf",
-        });
-        res.end(buffer);
-      } catch (writeError) {
-        console.error("Failed to write response:", writeError);
-      }
-    });
+      res.writeHead(200, {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=virtual-card.pdf",
+      });
+      res.end(buffer);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        statusCode: 500,
+        message: "Failed to create PDF",
+        data: null,
+      });
+    }
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -491,6 +488,7 @@ exports.downloadCardPdf = async (req, res) => {
     });
   }
 };
+
 exports.sendCardAsEmail = async (req, res) => {
   try {
     const { email, frontImage, backImage } = req.body;
