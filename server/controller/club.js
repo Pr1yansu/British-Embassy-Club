@@ -34,7 +34,7 @@ exports.createClub = async (req, res) => {
       role,
     });
 
-    const token = crypto.randomBytes(12).toString("hex");
+    const token = Math.floor(100000 + Math.random() * 900000);
 
     const accessKey = new AccessKey({
       key: token,
