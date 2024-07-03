@@ -6,6 +6,7 @@ import {
   operatorUpdateProfileApi,
   operatorChangePasswordApi,
   operatorLogoutApi,
+  removeClubApi,
 } from "./api/operatorAPI";
 
 import {
@@ -32,7 +33,7 @@ import {
   fetchTransactionsApi,
   updateTransactionApi,
   updateCouponExpiresApi,
-  getAllTransactionsApi
+  getAllTransactionsApi,
 } from "./api/walletAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
@@ -63,6 +64,7 @@ export const store = configureStore({
     [updateCouponExpiresApi.reducerPath]: updateCouponExpiresApi.reducer,
     [getAllTransactionsApi.reducerPath]: getAllTransactionsApi.reducer,
     [gettotalAmountApi.reducerPath]: gettotalAmountApi.reducer,
+    [removeClubApi]: removeClubApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -89,7 +91,8 @@ export const store = configureStore({
       .concat(updateTransactionApi.middleware)
       .concat(updateCouponExpiresApi.middleware)
       .concat(getAllTransactionsApi.middleware)
-      .concat(gettotalAmountApi.middleware),
+      .concat(gettotalAmountApi.middleware)
+      .concat(removeClubApi.middleware),
 });
 
-setupListeners(store.dispatch)
+setupListeners(store.dispatch);

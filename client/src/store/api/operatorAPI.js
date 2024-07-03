@@ -117,9 +117,29 @@ export const operatorLogoutApi = createApi({
   }),
 });
 
+export const removeClubApi = createApi({
+  reducerPath: "removeClubApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${process.env.REACT_APP_API_URL}/api/v1/admin`,
+    credentials: "include",
+  }),
+  endpoints: (builder) => ({
+    removeClub: builder.mutation({
+      query: ({ clubId, password }) => ({
+        url: `/delete-club/${clubId}`,
+        method: "DELETE",
+        body: {
+          password,
+        },
+      }),
+    }),
+  }),
+});
+
 export const { useGetOperatorProfileQuery } = operatorProfileApi;
 export const { useSendResetLinkMutation } = operatorForgetPasswordApi;
 export const { useAddOperatorImageMutation } = operatorImageApi;
 export const { useUpdateOperatorProfileMutation } = operatorUpdateProfileApi;
 export const { useChangePasswordMutation } = operatorChangePasswordApi;
 export const { useLogoutMutation } = operatorLogoutApi;
+export const { useRemoveClubMutation } = removeClubApi;

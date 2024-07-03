@@ -8,11 +8,17 @@ import toast from "react-hot-toast";
 import Toasts from "../ui/Toasts";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import Passwordbox from "../ui/Passwordbox";
-import { LuLoader2 } from "react-icons/lu";
+import { LuLoader2, LuTrash2 } from "react-icons/lu";
+import DeleteModal from "./delete-operator";
+import { useGetOperatorProfileQuery } from "../../store/api/operatorAPI";
+import Loader from "../ui/loader";
 
 const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
   const [operatorId, setOperatorId] = useState();
   const [newPassword, setNewPassword] = useState();
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+
   const [confirmPassword, setConfirmPassword] = useState();
   const handleRowClick = (userId) => {
     setOperatorId(userId);
@@ -22,10 +28,14 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
     changeAdminOperatorPassword,
     { isSuccess: isPassSuccess, isLoading: isPassLoading, data },
   ] = useChangeAdminOperatorPasswordMutation();
+  const {
+    data: user,
+    isLoading: isProfileLoading,
+  } = useGetOperatorProfileQuery();
 
   const handleSubmit = async () => {
     try {
-    const {data} =  await changeAdminOperatorPassword({
+      const { data } = await changeAdminOperatorPassword({
         id: operatorId,
         newPassword: newPassword,
         confirmPassword: confirmPassword,
@@ -76,6 +86,10 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
     setOperatorId(null);
   };
 
+  if (isProfileLoading) {
+    return <Loader />;
+  }
+
   return (
     <div
       className={`row-start-2 row-end-9 ${colStart} ${colEnd} flex flex-col p-8 bg-white shadow-member_card rounded-3xl`}
@@ -99,25 +113,43 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
           <tbody>
             {isLoading && (
               <tr>
-                <td><LuLoader2/></td>
+                <td>
+                  <LuLoader2 />
+                </td>
               </tr>
             )}
             {allprofiledata &&
               allprofiledata.data.map((row, _) => (
                 <Fragment key={_}>
-                  <tr
-                    onClick={() => handleRowClick(row._id)}
-                    className="cursor-pointer"
-                  >
+                  <tr>
                     <td className="py-2 px-4 text-sm">{row.username}</td>
                     <td className="py-2 text-start text-sm">
                       <Roles data={row.role} />
                     </td>
                     <td className="py-2 px-4 flex justify-end text-sm">
-                      <a href="#" className="flex gap-2 text-text_primary">
-                        <MdModeEditOutline size={20} color="primary" />
-                        <p>Edit Password</p>
-                      </a>
+                      <div
+                        className="flex gap-2 text-text_primary cursor-pointer"
+                        onClick={() => handleRowClick(row._id)}
+                      >
+                        <MdModeEditOutline
+                          size={20}
+                          className="text-text_primary"
+                        />
+                      </div>
+                      {row._id !== user?.data?._id && (
+                        <div
+                          className="ms-2"
+                          onClick={() => {
+                            setDeleteMode(true);
+                            setDeleteId(row._id);
+                          }}
+                        >
+                          <LuTrash2
+                            size={20}
+                            className="text-text_red cursor-pointer"
+                          />
+                        </div>
+                      )}
                     </td>
                   </tr>
                   {operatorId === row._id && (
@@ -157,6 +189,13 @@ const UserManagement = ({ colStart, colEnd, allprofiledata, isLoading }) => {
           </tbody>
         </table>
       </div>
+      {deleteMode && (
+        <DeleteModal
+          deleteMode={deleteMode}
+          setDeleteMode={setDeleteMode}
+          deleteId={deleteId}
+        />
+      )}
     </div>
   );
 };
