@@ -107,9 +107,9 @@ const Analytics = () => {
      .join("\n");
 
    const summaryContent = [
-     `Total Wallet Balance,${totalAmount?.data?.totalWalletBalance}`,
-     `Total Credited Amount,${totalAmount?.data?.totalCredit}`,
-     `Total Debited Amount,${totalAmount?.data?.totalDebit}`,
+     `Total Wallet Balance,${allTransactions?.totalCredited - allTransactions?.totalDebited}`,
+     `Total Credited Amount,${allTransactions?.totalCredited}`,
+     `Total Debited Amount,${allTransactions?.totalDebited}`,
    ].join("\n");
 
    const finalCsvContent = `${csvContent}\n\n${summaryContent}`;
@@ -191,9 +191,9 @@ const Analytics = () => {
           </div>
         </div>
 
-        <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
+        <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-6 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
-            Transaction Analysis
+            Transaction Analysis By Date Range
           </p>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Transactions:</p>
@@ -213,26 +213,32 @@ const Analytics = () => {
               {allTransactions?.totalDebited}
             </p>
           </div>
+          <div className="flex justify-between items-center gap-2 w-full">
+            <p className="text-base roboto">Total Wallet Balance:</p>
+            <p className="text-base roboto font-bold">
+              {allTransactions?.totalCredited - allTransactions?.totalDebited}
+            </p>
+          </div>
         </div>
 
         <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-12 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
-            Total Transaction Analysis
+            Lifetime Transaction Analysis
           </p>
           <div className="flex justify-between items-center gap-2 w-full">
-            <p className="text-base roboto">Total Wallet Balance:</p>
+            <p className="text-base roboto">Lifetime Wallet Balance:</p>
             <p className="text-base roboto font-bold">
               {totalAmount?.data?.totalWalletBalance}
             </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
-            <p className="text-base roboto">Total Credited Amount:</p>
+            <p className="text-base roboto">Lifetime Credited Amount:</p>
             <p className="text-base roboto font-bold">
               {totalAmount?.data?.totalCredit}
             </p>
           </div>
           <div className="flex justify-between items-center gap-2 w-full">
-            <p className="text-base roboto">Total Debited Amount:</p>
+            <p className="text-base roboto">Lifetime Debited Amount:</p>
             <p className="text-base roboto font-bold">
               {totalAmount?.data?.totalDebit}
             </p>
