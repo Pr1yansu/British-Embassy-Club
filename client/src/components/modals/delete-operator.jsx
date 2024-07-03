@@ -5,11 +5,13 @@ import Toasts from "../ui/Toasts";
 import { MdError } from "react-icons/md";
 import { useRemoveClubMutation } from "../../store/api/operatorAPI";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const DeleteModal = ({ deleteMode, setDeleteMode, deleteId }) => {
   const [removeClub] = useRemoveClubMutation();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   if (!deleteMode) return null;
   const handleDelete = async () => {
     try {
@@ -30,7 +32,7 @@ const DeleteModal = ({ deleteMode, setDeleteMode, deleteId }) => {
         );
         return;
       }
-      const data = await removeClub({ deleteId, password }).unwrap();
+      const data = await removeClub({ clubId:deleteId, password }).unwrap();
 
       if (data) {
         toast.custom(
@@ -52,6 +54,7 @@ const DeleteModal = ({ deleteMode, setDeleteMode, deleteId }) => {
           }
         );
         setDeleteMode(false);
+        navigate(0);
       }
     } catch (error) {
       toast.custom(

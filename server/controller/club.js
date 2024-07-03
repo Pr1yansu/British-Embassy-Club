@@ -731,6 +731,15 @@ exports.removeOperator = async (req, res) => {
     const { id } = req.params;
     const { username } = req.club;
 
+    if(!id) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Operator ID is required",
+        data: null,
+        error: null,
+      });
+    }
+
     if (!password) {
       return res.status(400).json({
         statusCode: 400,
