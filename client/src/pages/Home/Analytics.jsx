@@ -193,7 +193,7 @@ const Analytics = () => {
 
         <div className="w-96 ml-16 sm:ml-0 sm:w-117 py-6 px-6 bg-white flex flex-col justify-center items-center rounded-2xl shadow-lg custom-pagination gap-3 font-roboto">
           <p className="text-xl text-text_secondary mb-1 text-center">
-            Transaction Analysis By Date Range
+            Transaction Analysis by Date Range
           </p>
           <div className="flex justify-between items-center gap-2 w-full">
             <p className="text-base roboto">Total Transactions:</p>
