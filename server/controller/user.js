@@ -619,3 +619,44 @@ exports.logout = async (req, res) => {
     });
   }
 };
+
+exports.deleteOperator = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Operator ID is required",
+        exception: null,
+        data: null,
+      });
+    }
+
+    const operator = await Operators.findByIdAndDelete(id);
+
+    if (!operator) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Operator not found",
+        exception: null,
+        data: null,
+      });
+    }
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Operator deleted successfully",
+      data: null,
+      exception: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Internal server error",
+      exception: error,
+      data: null,
+    });
+  }
+};
