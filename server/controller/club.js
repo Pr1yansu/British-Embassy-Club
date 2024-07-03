@@ -727,10 +727,43 @@ exports.getAllUsers = async (req, res) => {
 
 exports.removeOperator = async (req, res) => {
   try {
-    const { operatorId } = req.params;
+    const { password } = req.body;
+    const { id } = req.params;
+    const { username } = req.club;
+
+    if (!password) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Password is required",
+        data: null,
+        error: null,
+      });
+    }
+
+    const club = await ClubAuthorization.findOne({ username });
+
+    if (!club) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Club not found",
+        data: null,
+        error: null,
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, club.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Invalid password",
+        data: null,
+        error: null,
+      });
+    }
+
     const isOperator = await ClubAuthorization.findOne({
-      _id: operatorId,
-      role: "operator",
+      _id: id,
     });
 
     if (!isOperator) {
@@ -743,7 +776,7 @@ exports.removeOperator = async (req, res) => {
     }
 
     const operator = await ClubAuthorization.findByIdAndDelete({
-      _id: operatorId,
+      _id: id,
     });
     if (!operator) {
       return res.status(400).json({

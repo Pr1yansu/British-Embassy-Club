@@ -10,7 +10,6 @@ const {
 const {
   validateClubRegistration,
   validateClubLogin,
-  validateForgetPassword,
 } = require("../middleware/zod-club-middleware");
 
 const app = Router();

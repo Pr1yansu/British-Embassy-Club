@@ -36,12 +36,7 @@ app.put(
 app.get("/get-all-operators", isAuthenticated, isAdmin, getAllOperators);
 app.get("/get-all-users", isAuthenticated, isAdmin, getAllUsers);
 app.post("/change-role", isAuthenticated, isAdmin, changeRole);
-app.delete(
-  "/delete-operator/:operatorId",
-  isAuthenticated,
-  isAdmin,
-  removeOperator
-);
+app.delete("/delete-club/:id", isAuthenticated, isAdmin, removeOperator);
 app.patch(
   "/change-password",
   isAuthenticated,
