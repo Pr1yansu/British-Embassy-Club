@@ -1017,7 +1017,7 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
   }
 };
 
-epxorts.renewMembership = async (req, res) => {
+exports.renewMembership = async (req, res) => {
   try {
     const { memberId, expiryDate } = req.body;
     const member = await MemberSchema.findById(memberId);
