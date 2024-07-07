@@ -262,7 +262,7 @@ exports.updateMember = async (req, res) => {
       });
     }
 
-    if (expiryDate) {
+    if (expiryDate > memberData.expiryTime) {
       const wallet = await WalletSchema.findOneAndUpdate(
         { memberId: member._id },
         {
@@ -280,7 +280,8 @@ exports.updateMember = async (req, res) => {
 
       const formattedExpiryDate = new Date(expiryDate).toDateString();
 
-      const subject = "Membership Renewed";
+      const subject = "Membership Updated";
+      const text = "Membership Renewed";
       const emailBody = `
         <p>Dear ${member.fullname},</p>
         <p>Your membership has been successfully renewed. Your new expiry date is ${formattedExpiryDate}.</p>
@@ -292,7 +293,7 @@ exports.updateMember = async (req, res) => {
         </p>
       `;
 
-      await sendMail(member.email, subject, emailBody);
+      await sendMail(member.email, subject, text, emailBody);
     }
 
     cache.del(memberId, member);
@@ -913,10 +914,6 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
         totalDebit: totalDebit[0].totalDebit,
         totalCredit: totalCredit[0].totalCredit,
         totalWalletBalance: totalWalletBalance[0].totalWalletBalance,
-        totalExpiredWalletBalance:
-          totalExpiredWalletBalance[0].totalExpiredWalletBalance,
-        totalActiveWalletBalance:
-          totalActiveWalletBalance[0].totalActiveWalletBalance,
       },
     });
   } catch (error) {
