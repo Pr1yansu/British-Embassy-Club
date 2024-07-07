@@ -183,6 +183,7 @@ exports.addTransaction = async (req, res) => {
     await sendMail(
       member.email,
       "Transaction Details",
+      "Transaction Notification",
       `<html lang="en">
           <head>
               <meta charset="UTF-8">
