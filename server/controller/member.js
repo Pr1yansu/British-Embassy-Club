@@ -262,7 +262,7 @@ exports.updateMember = async (req, res) => {
       });
     }
 
-    if (expiryDate > memberData.expiryTime) {
+    if (expiryDate) {
       const wallet = await WalletSchema.findOneAndUpdate(
         { memberId: member._id },
         {
