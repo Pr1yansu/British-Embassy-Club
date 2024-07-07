@@ -45,16 +45,9 @@ const app = express();
 connectDB();
 
 // Middlewares
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
-
+console.log(process.env.ALLOWED_ORIGINS);
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin:[process.env.ALLOWED_ORIGINS],
   allowedHeaders: [
     'Content-Type',
     'Authorization',
