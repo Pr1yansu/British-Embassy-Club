@@ -45,19 +45,28 @@ const app = express();
 connectDB();
 
 // Middlewares
-console.log(process.env.ALLOWED_ORIGINS);
-const corsOptions = {
-  origin:[process.env.ALLOWED_ORIGINS],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'Access-Control-Allow-Origin',
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  credentials: true,
-};
+console.log("all", process.env.ALLOWED_ORIGINS);
 
-app.options("*", cors());
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (process.env.ALLOWED_ORIGINS.split(" ").indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Access-Control-Allow-Origin",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+  })
+);
 app.use(
   express.json({
     limit: "10mb",
