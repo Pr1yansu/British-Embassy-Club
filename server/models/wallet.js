@@ -21,6 +21,10 @@ const walletSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  expired: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("WalletSchema", walletSchema);

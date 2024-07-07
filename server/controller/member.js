@@ -7,11 +7,97 @@ const { MemberFilter } = require("../utils/filters");
 const Cache = require("node-cache");
 const pdf = require("html-pdf-node");
 const { sendMail } = require("../utils/mail-service.js");
+const { v4: uuidv4 } = require("uuid");
+const clubAuthorization = require("../models/club-authorization.js");
+const operators = require("../models/operators.js");
+const { decryptPayload } = require("./user.js");
 
 const cache = new Cache();
 
+const getCurrentUser = async (req) => {
+  try {
+    let currentUser;
+    const { username } = req.club;
+
+    if (!username) {
+      return res.status(401).json({
+        statusCode: 401,
+        message: "Unauthorized access",
+        exception: null,
+        data: null,
+      });
+    }
+
+    const admin = await clubAuthorization.findOne({
+      username,
+      role: "admin",
+      verified: true,
+    });
+
+    if (admin) {
+      const club = await clubAuthorization
+        .findOne({
+          username,
+          role: "admin",
+          verified: true,
+        })
+        .select("-password");
+
+      if (!club) {
+        return res.status(404).json({
+          statusCode: 404,
+          message: "Club not found",
+          exception: null,
+          data: null,
+        });
+      }
+
+      currentUser = club.username;
+    }
+
+    const token = req.cookies["user-token"];
+    if (!token) {
+      return res.status(401).json({
+        statusCode: 401,
+        message: "Unauthorized access",
+        exception: null,
+        data: null,
+      });
+    }
+    const decryptedToken = await decryptPayload(token);
+    const { user } = JSON.parse(decryptedToken);
+    const operator = await operators.findById(user.id).select("-password");
+
+    if (!operator) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Operator not found",
+        exception: null,
+        data: null,
+      });
+    }
+
+    currentUser = operator.username;
+
+    return currentUser;
+  } catch (error) {
+    return null;
+  }
+};
+
 exports.addMember = async (req, res) => {
   try {
+    let currentUser = await getCurrentUser(req);
+
+    if (!currentUser) {
+      return res.status(401).json({
+        statusCode: 401,
+        message: "Unauthorized access",
+        exception: null,
+        data: null,
+      });
+    }
+
     const {
       firstName,
       lastname,
@@ -49,11 +135,7 @@ exports.addMember = async (req, res) => {
       });
     }
 
-    const allMembersCount = await MemberSchema.find().countDocuments();
-
-    const shortDate = new Date().toISOString().slice(2, 10).replace(/-/g, "");
-
-    const memberId = `BCK${shortDate}${allMembersCount + 1}`;
+    const memberId = `BCK${uuidv4().substring(0, 6)}`;
 
     const member = new MemberSchema({
       _id: memberId.replace(/\s/g, ""),
@@ -94,6 +176,29 @@ exports.addMember = async (req, res) => {
         data: null,
       });
     }
+
+    const formattedExpiryDate = new Date(expiryDate).toDateString();
+
+    const subject = "Welcome to the British Club Kolkata!";
+    const emailBody = `
+      <p>Dear ${member.fullname},</p>
+      <p>We are delighted to welcome you to the British Club Kolkata! Your membership has been successfully registered.</p>
+      <p><strong>Membership Details:</strong></p>
+      <ul>
+        <li><strong>Membership ID:</strong> ${member._id}</li>
+        <li><strong>Membership Validity:</strong> ${formattedExpiryDate}</li>
+      </ul>
+      <p>As a member, you now have access to our exclusive events, facilities, and community activities. We look forward to your active participation and hope you make the most of your time with us.</p>
+      <p>Once again, welcome to the British Club Kolkata family! If you have any questions or need assistance, feel free to reach out to us at any time.</p>
+      <p>Best regards,<br>
+      ${currentUser}<br>
+      Membership Coordinator<br>
+      British Club Kolkata<br>
+      http://www.britishclubkolkata.com<br>
+      </p>
+    `;
+
+    await sendMail(member.email, subject, emailBody);
 
     return res.status(201).json({
       statusCode: 201,
@@ -192,12 +297,17 @@ exports.updateMember = async (req, res) => {
         idType: idType ? idType : memberData.idType,
         idNumber: idNumber ? idNumber : memberData.idNumber,
       },
-      expiryTime: expiryDate ? expiryDate : memberData.expiryDate,
+      expiryTime: expiryDate ? expiryDate : memberData.expiryTime,
       timeStamp: timeStamp ? timeStamp : memberData.timeStamp,
       bloodGroup: bloodGroup ? bloodGroup : memberData.bloodGroup,
       organization: organization ? organization : memberData.organization,
       username: username ? username : memberData.username,
       email: email ? email : memberData.email,
+      expired:
+        expiryDate &&
+        new Date(memberData.expiryTime).getTime() < new Date().getTime()
+          ? false
+          : memberData.expired,
     });
 
     if (!member) {
@@ -207,6 +317,39 @@ exports.updateMember = async (req, res) => {
         exception: null,
         data: null,
       });
+    }
+
+    if (expiryDate) {
+      const wallet = await WalletSchema.findOneAndUpdate(
+        { memberId: member._id },
+        {
+          expired: new Date(expiryDate).getTime() < new Date().getTime(),
+        }
+      );
+      if (!wallet) {
+        return res.status(404).json({
+          statusCode: 404,
+          message: "Wallet not found",
+          exception: null,
+          data: null,
+        });
+      }
+
+      const formattedExpiryDate = new Date(expiryDate).toDateString();
+
+      const subject = "Membership Renewed";
+      const emailBody = `
+        <p>Dear ${member.fullname},</p>
+        <p>Your membership has been successfully renewed. Your new expiry date is ${formattedExpiryDate}.</p>
+        <p>If you have any questions or need assistance, feel free to reach out to us at any time.</p>
+        <p>Best regards,<br>
+        Membership Coordinator<br>
+        British Club Kolkata<br>
+        http://www.britishclubkolkata.com<br>
+        </p>
+      `;
+
+      await sendMail(member.email, subject, emailBody);
     }
 
     cache.del(memberId, member);
@@ -492,6 +635,7 @@ exports.downloadCardPdf = async (req, res) => {
 
 exports.sendCardAsEmail = async (req, res) => {
   try {
+    const currentUser = await getCurrentUser(req);
     const { email, frontImage, backImage } = req.body;
     if (!email || !frontImage || !backImage) {
       return res.status(400).json({
@@ -532,20 +676,27 @@ exports.sendCardAsEmail = async (req, res) => {
 
     const htmlContent = `
       <html>
-        <body>
-          <h1>Virtual Card</h1>
-          <div>
-            <span>${member.firstname}</span> 
-            <span>${member.lastname}</span>
-          </div>
-          <img src="cid:frontImage" alt="Front Image"
-            style="margin-top: 20px; width: 100%; max-width:360px; height: auto; border-radius: 8px; border: 1px solid #e1e1e1; margin-left: 20px;"
-           />
-          <img src="cid:backImage" alt="Back Image" 
-           style="margin-top: 20px; width: 100%; max-width:360px; height: auto; border-radius: 8px; border: 1px solid #e1e1e1; margin-left: 20px;"
-          />
-        </body>
-      </html>
+  <body>
+    <h1>Virtual Membership Card</h1>
+    <div>
+      <span>${member.firstname}</span> 
+      <span>${member.lastname}</span>
+    </div>
+    <p>Attached, you will find your digital membership card. Please keep it handy for easy access to club services and events.</p>
+    <img src="cid:frontImage" alt="Front Image" 
+      style="margin-top: 20px; width: 100%; max-width:360px; height: auto; border-radius: 8px; border: 1px solid #e1e1e1; margin-left: 20px;"
+    />
+    <img src="cid:backImage" alt="Back Image" 
+      style="margin-top: 20px; width: 100%; max-width:360px; height: auto; border-radius: 8px; border: 1px solid #e1e1e1; margin-left: 20px;"
+    />
+    <p>If you have any questions or need assistance, feel free to reach out to us at any time.</p>
+    <p>Best regards,<br>
+    ${currentUser}<br>
+    Membership Coordinator<br>
+    British Club Kolkata<br>
+    http://www.britishclubkolkata.com</p>
+  </body>
+</html>
     `;
 
     const response = await sendMail(
@@ -741,8 +892,50 @@ exports.sendReminderBeforeOneDay = async (req, res) => {
   }
 };
 
-exports.totalDebitCreditAndWalletBalance = async (req, res) => {
+exports.expireMemberships = async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const members = await MemberSchema.find({
+      expiryDate: {
+        $lte: currentDate,
+      },
+    });
 
+    if (!members) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "No members found",
+        exception: null,
+        data: null,
+      });
+    }
+
+    members.forEach(async (member) => {
+      if (member.expiryTime < currentDate) {
+        await MemberSchema.findByIdAndUpdate(member._id, {
+          expired: true,
+        });
+      }
+    });
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Memberships expired successfully",
+      exception: null,
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Failed to expire memberships",
+      exception: error,
+      data: null,
+    });
+  }
+};
+
+exports.totalDebitCreditAndWalletBalance = async (req, res) => {
   try {
     const totalDebit = await TransactionSchema.aggregate([
       {
@@ -752,7 +945,6 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
         },
       },
     ]);
-
 
     const totalCredit = await TransactionSchema.aggregate([
       {
@@ -772,6 +964,34 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
       },
     ]);
 
+    const totalExpiredWalletBalance = await WalletSchema.aggregate([
+      {
+        $match: {
+          expired: true,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalExpiredWalletBalance: { $sum: "$balance" },
+        },
+      },
+    ]);
+
+    const totalActiveWalletBalance = await WalletSchema.aggregate([
+      {
+        $match: {
+          expired: false,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalActiveWalletBalance: { $sum: "$balance" },
+        },
+      },
+    ]);
+
     return res.status(200).json({
       statusCode: 200,
       message: "Total Debit, Credit and Wallet Balance",
@@ -780,6 +1000,10 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
         totalDebit: totalDebit[0].totalDebit,
         totalCredit: totalCredit[0].totalCredit,
         totalWalletBalance: totalWalletBalance[0].totalWalletBalance,
+        totalExpiredWalletBalance:
+          totalExpiredWalletBalance[0].totalExpiredWalletBalance,
+        totalActiveWalletBalance:
+          totalActiveWalletBalance[0].totalActiveWalletBalance,
       },
     });
   } catch (error) {
@@ -791,4 +1015,109 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
       data: null,
     });
   }
-}
+};
+
+epxorts.renewMembership = async (req, res) => {
+  try {
+    const { memberId, expiryDate } = req.body;
+    const member = await MemberSchema.findById(memberId);
+    if (!member) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Member not found",
+        exception: null,
+        data: null,
+      });
+    }
+    const updatedMember = await MemberSchema.findByIdAndUpdate(memberId, {
+      expiryDate: expiryDate,
+      expired: false,
+    });
+    if (!updatedMember) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Failed to renew membership",
+        exception: null,
+        data: null,
+      });
+    }
+
+    await WalletSchema.findOneAndUpdate(
+      { memberId: member._id },
+      {
+        expired: false,
+      }
+    );
+
+    sendMail(
+      member.email,
+      "Membership Renewed",
+      "Membership Renewed",
+      `Your membership has been renewed successfully. Your new expiry date is ${new Date(
+        expiryDate
+      ).toDateString()}.`
+    );
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Membership renewed successfully",
+      exception: null,
+      data: updatedMember,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Failed to renew membership",
+      exception: error,
+      data: null,
+    });
+  }
+};
+
+exports.expireWalletAfterOneMonthOfMembershipExpiry = async (req, res) => {
+  try {
+    const members = await MemberSchema.find({
+      expiryDate: {
+        expired: true,
+      },
+    });
+
+    if (!members) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "No members found",
+        exception: null,
+        data: null,
+      });
+    }
+
+    const currentDate = new Date();
+
+    members.forEach(async (member) => {
+      if (member.expiryTime < currentDate + 30) {
+        await WalletSchema.findOneAndUpdate(
+          { memberId: member._id },
+          {
+            expired: true,
+          }
+        );
+      }
+    });
+
+    return res.status(200).json({
+      statusCode: 200,
+      message: "Wallets expired successfully",
+      exception: null,
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      statusCode: 500,
+      message: "Failed to expire wallets",
+      exception: error,
+      data: null,
+    });
+  }
+};
