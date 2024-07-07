@@ -905,34 +905,6 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
       },
     ]);
 
-    const totalExpiredWalletBalance = await WalletSchema.aggregate([
-      {
-        $match: {
-          expired: true,
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalExpiredWalletBalance: { $sum: "$balance" },
-        },
-      },
-    ]);
-
-    const totalActiveWalletBalance = await WalletSchema.aggregate([
-      {
-        $match: {
-          expired: false,
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalActiveWalletBalance: { $sum: "$balance" },
-        },
-      },
-    ]);
-
     return res.status(200).json({
       statusCode: 200,
       message: "Total Debit, Credit and Wallet Balance",
