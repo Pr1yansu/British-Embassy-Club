@@ -106,7 +106,6 @@ exports.addMember = async (req, res) => {
       <p>As a member, you now have access to our exclusive events, facilities, and community activities. We look forward to your active participation and hope you make the most of your time with us.</p>
       <p>Once again, welcome to the British Club Kolkata family! If you have any questions or need assistance, feel free to reach out to us at any time.</p>
       <p>Best regards,<br>
-      ${currentUser}<br>
       Membership Coordinator<br>
       British Club Kolkata<br>
       http://www.britishclubkolkata.com<br>
