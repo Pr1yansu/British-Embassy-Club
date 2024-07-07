@@ -49,42 +49,42 @@ exports.createClub = async (req, res) => {
     await (await club.save()).populate("accessKey");
 
     const html = `<html lang="en">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Club Authorization</title>
-  <head>
-    <title>Access Key for ${username}</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-      }
-      h1 {
-        color: #333333;
-      }
-      p {
-        color: #666666;
-        margin-bottom: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <p>Access key for ${username} is:</p>
-    <p><strong>${club.accessKey.key}</strong></p>
-    <p>The user wants to be an ${role} of the club.</p>
-    <p>Please verify the club and provide the key to the user</p>
-  </body>
-</html>`;
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>Club Authorization</title>
+                    <head>
+                      <title>Access Key for ${username}</title>
+                      <style>
+                        body {
+                          font-family: Arial, sans-serif;
+                          background-color: #f4f4f4;
+                          margin: 0;
+                          padding: 0;
+                        }
+                        .container {
+                          max-width: 600px;
+                          margin: 0 auto;
+                          padding: 20px;
+                          background-color: #ffffff;
+                          border-radius: 10px;
+                          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+                        }
+                        h1 {
+                          color: #333333;
+                        }
+                        p {
+                          color: #666666;
+                          margin-bottom: 20px;
+                        }
+                      </style>
+                    </head>
+                    <body>
+                      <p>Access key for ${username} is:</p>
+                      <p><strong>${club.accessKey.key}</strong></p>
+                      <p>The user wants to be an ${role} of the club.</p>
+                      <p>Please verify the club and provide the key to the user</p>
+                    </body>
+                  </html>`;
 
     if (adminMails.length < 1) {
       await sendMail(
@@ -731,7 +731,7 @@ exports.removeOperator = async (req, res) => {
     const { id } = req.params;
     const { username } = req.club;
 
-    if(!id) {
+    if (!id) {
       return res.status(400).json({
         statusCode: 400,
         message: "Operator ID is required",
