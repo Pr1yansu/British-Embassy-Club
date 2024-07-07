@@ -49,8 +49,11 @@ exports.addMember = async (req, res) => {
         data: null,
       });
     }
+    const uuid = uuidv4().replace(/\D/g, "");
 
-    const memberId = `BCK${uuidv4().substring(0, 6)}`;
+    const numericPart = uuid.substring(0, 6);
+
+    const memberId = `BCK${numericPart}`;
 
     const member = new MemberSchema({
       _id: memberId.replace(/\s/g, ""),
