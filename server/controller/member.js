@@ -40,7 +40,21 @@ exports.addMember = async (req, res) => {
       });
     }
 
-    const existingUser = await MemberSchema.findOne({ mobileNumber });
+    const existingUser = await MemberSchema.findOne({
+      $or: [
+        { email: email },
+        { mobileNumber: mobileNumber },
+        {
+          username: name,
+        },
+        {
+          idProof: {
+            idType: idType,
+            idNumber: idNumber,
+          },
+        },
+      ],
+    });
     if (existingUser) {
       return res.status(400).json({
         statusCode: 400,
