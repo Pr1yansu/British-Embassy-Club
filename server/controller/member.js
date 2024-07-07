@@ -40,7 +40,21 @@ exports.addMember = async (req, res) => {
       });
     }
 
-    const existingUser = await MemberSchema.findOne({ mobileNumber });
+    const existingUser = await MemberSchema.findOne({
+      $or: [
+        { email: email },
+        { mobileNumber: mobileNumber },
+        {
+          username: name,
+        },
+        {
+          idProof: {
+            idType: idType,
+            idNumber: idNumber,
+          },
+        },
+      ],
+    });
     if (existingUser) {
       return res.status(400).json({
         statusCode: 400,
@@ -887,34 +901,6 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
         $group: {
           _id: null,
           totalWalletBalance: { $sum: "$balance" },
-        },
-      },
-    ]);
-
-    const totalExpiredWalletBalance = await WalletSchema.aggregate([
-      {
-        $match: {
-          expired: true,
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalExpiredWalletBalance: { $sum: "$balance" },
-        },
-      },
-    ]);
-
-    const totalActiveWalletBalance = await WalletSchema.aggregate([
-      {
-        $match: {
-          expired: false,
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalActiveWalletBalance: { $sum: "$balance" },
         },
       },
     ]);
