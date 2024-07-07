@@ -45,27 +45,28 @@ const app = express();
 connectDB();
 
 // Middlewares
-console.log("Origins",process.env.ALLOWED_ORIGINS);
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (process.env.ALLOWED_ORIGINS.split(" ").indexOf(origin) === -1) {
-        var msg =
-          "The CORS policy for this site does not allow access from the specified Origin.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Access-Control-Allow-Origin",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    credentials: true,
-  })
-);
+var whitelist = process.env.ALLOWED_ORIGINS || [];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      console.log("origin:", origin);
+      callback(null, true);
+    } else {
+      console.log("error-origin:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Access-Control-Allow-Origin",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(
   express.json({
