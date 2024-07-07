@@ -100,21 +100,32 @@ exports.addMember = async (req, res) => {
     const subject = "Welcome to the British Club Kolkata!";
     const text = "Welcome to the British Club Kolkata!";
     const emailBody = `
-      <p>Dear ${member.fullname},</p>
-      <p>We are delighted to welcome you to the British Club Kolkata! Your membership has been successfully registered.</p>
-      <p><strong>Membership Details:</strong></p>
-      <ul>
-        <li><strong>Membership ID:</strong> ${member._id}</li>
-        <li><strong>Membership Validity:</strong> ${formattedExpiryDate}</li>
-      </ul>
-      <p>As a member, you now have access to our exclusive events, facilities, and community activities. We look forward to your active participation and hope you make the most of your time with us.</p>
-      <p>Once again, welcome to the British Club Kolkata family! If you have any questions or need assistance, feel free to reach out to us at any time.</p>
-      <p>Best regards,<br>
-      Membership Coordinator<br>
-      British Club Kolkata<br>
-      http://www.britishclubkolkata.com<br>
-      </p>
-    `;
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <p style="font-size: 16px;">Dear ${member.fullname},</p>
+          <p style="font-size: 16px;">We are delighted to welcome you to the British Club Kolkata! Your membership has been successfully registered.</p>
+          <p style="font-size: 16px;"><strong>Membership Details:</strong></p>
+          <ul style="font-size: 16px; list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 8px;"><strong>Membership ID:</strong> ${
+              member._id
+            }</li>
+            <li style="margin-bottom: 8px;">
+              <div style="display: flex; align-items: center;">
+                <strong>Membership Validity From:</strong> ${new Date(
+                  member.timeStamp
+                ).toDateString()}
+                <strong>Membership Validity To:</strong> ${formattedExpiryDate}
+              </div>
+            </li>
+          </ul>
+          <p style="font-size: 16px;">As a member, you now have access to our exclusive events, facilities, and community activities. We look forward to your active participation and hope you make the most of your time with us.</p>
+          <p style="font-size: 16px;">Once again, welcome to the British Club Kolkata family! If you have any questions or need assistance, feel free to reach out to us at any time.</p>
+          <p style="font-size: 16px;">
+            Best regards,<br>
+            Membership Coordinator<br>
+            <span style="font-weight: bold;">British Club Kolkata</span><br>
+            <a href="http://www.britishclubkolkata.com" style="color: #0073e6; text-decoration: none;">http://www.britishclubkolkata.com</a><br>
+          </p>
+        </div>`;
 
     await sendMail(member.email, subject, text, emailBody);
 
