@@ -18,6 +18,7 @@ const {
   sendReminderBeforeOneMonth,
   sendReminderBeforeOneWeek,
   sendReminderBeforeOneDay,
+  expireMemberships,
 } = require("./controller/member");
 const {
   deleteUnverifiedClubs,
@@ -115,4 +116,6 @@ cron.schedule("0 3 * * *", async () => {
   await sendReminderBeforeOneMonth();
   await sendReminderBeforeOneWeek();
   await sendReminderBeforeOneDay();
+  await expireMemberships();
+  await expireWalletAfterOneMonthOfMembershipExpiry();
 });

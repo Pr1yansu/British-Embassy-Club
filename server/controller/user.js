@@ -8,7 +8,7 @@ const Operators = require("../models/operators");
 
 const node_cache = new Node_cache();
 
-const encryptPayload = async (payload) => {
+exports.encryptPayload = async (payload) => {
   const algorithm = "aes-256-cbc";
   const iv = crypto.randomBytes(16);
 

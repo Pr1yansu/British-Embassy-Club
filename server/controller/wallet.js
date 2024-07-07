@@ -109,11 +109,28 @@ exports.addTransaction = async (req, res) => {
       });
     }
 
+    if (member.expired) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Member is expired",
+        data: null,
+      });
+    }
+
     const wallet = await WalletSchema.findById(member.wallet);
+
     if (!wallet) {
       return res.status(404).json({
         statusCode: 404,
         message: "Wallet not found",
+        data: null,
+      });
+    }
+
+    if (wallet.expired) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "Wallet is expired",
         data: null,
       });
     }
@@ -166,21 +183,70 @@ exports.addTransaction = async (req, res) => {
     await sendMail(
       member.email,
       "Transaction Details",
-      `Your transaction with ID ${transaction._id} has been ${transactionStatus}.`,
-      `
-      <h1>Transaction Details</h1>
-      <p>Your transaction with ID ${
-        transaction._id
-      } has been ${transactionStatus}.</p>
-      <p>MEMBER ID:${memberId} with Name:${
-        member.fullname + " " + member.lastname
-      }</p>
-      <p>Transaction Type: ${type}</p>
-      <p>Mode:${mode}</p>
-      <p>Credited Amount : ${creditAmount}</p>
-      <p>Debited Amount : ${debitAmount}</p>
-      <p>Wallet Amount : ${walletAmount}</p>
-      `
+      `<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Transaction Notification</title>
+              <style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      margin: 0;
+                      padding: 20px;
+                      background-color: #f9f9f9;
+                  }
+                  .container {
+                      max-width: 600px;
+                      margin: auto;
+                      padding: 20px;
+                      background-color: #ffffff;
+                      border: 1px solid #ddd;
+                      border-radius: 5px;
+                  }
+                  .header {
+                      font-size: 24px;
+                      font-weight: bold;
+                      color: #333;
+                      margin-bottom: 20px;
+                  }
+                  .content {
+                      font-size: 16px;
+                      color: #333;
+                  }
+                  .footer {
+                      margin-top: 20px;
+                      font-size: 14px;
+                      color: #666;
+                  }
+                  .highlight {
+                      font-weight: bold;
+                      color: #0056b3;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                      Transaction Notification
+                  </div>
+                  <div class="content">
+                      <h1>Transaction Details</h1>
+                      <p>Your transaction with ID <span class="highlight">${transaction._id}</span> has been <span class="highlight">${transactionStatus}</span>.</p>
+                      <p>MEMBER ID: <span class="highlight">${memberId}</span> with Name: <span class="highlight">${member.fullname} ${member.lastname}</span></p>
+                      <p>Transaction Type: <span class="highlight">${type}</span></p>
+                      <p>Mode: <span class="highlight">${mode}</span></p>
+                      <p>Credited Amount: <span class="highlight">${creditAmount}</span></p>
+                      <p>Debited Amount: <span class="highlight">${debitAmount}</span></p>
+                      <p>Wallet Amount: <span class="highlight">${walletAmount}</span></p>
+                  </div>
+                  <div class="footer">
+                      Thank you,<br>
+                      British Club Kolkata
+                  </div>
+              </div>
+          </body>
+          </html>`
     );
 
     const startOfDay = new Date();
@@ -280,7 +346,6 @@ exports.fetchTransactions = async (req, res) => {
       });
     }
 
-    // Reverse the transactions array
     transactions.reverse();
 
     const totalCreditedAmount = transactions.reduce(
@@ -316,7 +381,6 @@ exports.fetchTransactions = async (req, res) => {
     });
   }
 };
-
 
 exports.getAllTransactions = async (req, res) => {
   try {
@@ -419,7 +483,6 @@ exports.getAllTransactions = async (req, res) => {
     });
   }
 };
-
 
 exports.downloadTransactionAsCSV = async (req, res) => {
   try {
