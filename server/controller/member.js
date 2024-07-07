@@ -8,96 +8,11 @@ const Cache = require("node-cache");
 const pdf = require("html-pdf-node");
 const { sendMail } = require("../utils/mail-service.js");
 const { v4: uuidv4 } = require("uuid");
-const clubAuthorization = require("../models/club-authorization.js");
-const operators = require("../models/operators.js");
-const { decryptPayload } = require("./user.js");
 
 const cache = new Cache();
 
-const getCurrentUser = async (req) => {
-  try {
-    let currentUser;
-    const { username } = req.club;
-
-    if (!username) {
-      return res.status(401).json({
-        statusCode: 401,
-        message: "Unauthorized access",
-        exception: null,
-        data: null,
-      });
-    }
-
-    const admin = await clubAuthorization.findOne({
-      username,
-      role: "admin",
-      verified: true,
-    });
-
-    if (admin) {
-      const club = await clubAuthorization
-        .findOne({
-          username,
-          role: "admin",
-          verified: true,
-        })
-        .select("-password");
-
-      if (!club) {
-        return res.status(404).json({
-          statusCode: 404,
-          message: "Club not found",
-          exception: null,
-          data: null,
-        });
-      }
-
-      currentUser = club.username;
-    }
-
-    const token = req.cookies["user-token"];
-    if (!token) {
-      return res.status(401).json({
-        statusCode: 401,
-        message: "Unauthorized access",
-        exception: null,
-        data: null,
-      });
-    }
-    const decryptedToken = await decryptPayload(token);
-    const { user } = JSON.parse(decryptedToken);
-    const operator = await operators.findById(user.id).select("-password");
-
-    if (!operator) {
-      return res.status(404).json({
-        statusCode: 404,
-        message: "Operator not found",
-        exception: null,
-        data: null,
-      });
-    }
-
-    currentUser = operator.username;
-
-    return currentUser;
-  } catch (error) {
-    return null;
-  }
-};
-
 exports.addMember = async (req, res) => {
   try {
-    let currentUser = await getCurrentUser(req);
-
-    if (!currentUser) {
-      return res.status(401).json({
-        statusCode: 401,
-        message: "Unauthorized access",
-        exception: null,
-        data: null,
-      });
-    }
-
     const {
       firstName,
       lastname,
@@ -635,7 +550,6 @@ exports.downloadCardPdf = async (req, res) => {
 
 exports.sendCardAsEmail = async (req, res) => {
   try {
-    const currentUser = await getCurrentUser(req);
     const { email, frontImage, backImage } = req.body;
     if (!email || !frontImage || !backImage) {
       return res.status(400).json({
@@ -691,7 +605,6 @@ exports.sendCardAsEmail = async (req, res) => {
     />
     <p>If you have any questions or need assistance, feel free to reach out to us at any time.</p>
     <p>Best regards,<br>
-    ${currentUser}<br>
     Membership Coordinator<br>
     British Club Kolkata<br>
     http://www.britishclubkolkata.com</p>
