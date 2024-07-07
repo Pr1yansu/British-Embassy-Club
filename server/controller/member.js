@@ -98,6 +98,7 @@ exports.addMember = async (req, res) => {
     const formattedExpiryDate = new Date(expiryDate).toDateString();
 
     const subject = "Welcome to the British Club Kolkata!";
+    const text = "Welcome to the British Club Kolkata!";
     const emailBody = `
       <p>Dear ${member.fullname},</p>
       <p>We are delighted to welcome you to the British Club Kolkata! Your membership has been successfully registered.</p>
@@ -115,7 +116,7 @@ exports.addMember = async (req, res) => {
       </p>
     `;
 
-    await sendMail(member.email, subject, emailBody);
+    await sendMail(member.email, subject, text, emailBody);
 
     return res.status(201).json({
       statusCode: 201,
