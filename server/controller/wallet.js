@@ -183,8 +183,7 @@ exports.addTransaction = async (req, res) => {
     await sendMail(
       member.email,
       "Transaction Details",
-      `<!DOCTYPE html>
-          <html lang="en">
+      `<html lang="en">
           <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -246,7 +245,7 @@ exports.addTransaction = async (req, res) => {
                   </div>
               </div>
           </body>
-          </html>`
+        </html>`
     );
 
     const startOfDay = new Date();
