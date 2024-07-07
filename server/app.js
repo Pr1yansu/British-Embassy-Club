@@ -45,7 +45,7 @@ const app = express();
 connectDB();
 
 // Middlewares
-console.log(process.env.ALLOWED_ORIGINS);
+console.log("Origins",process.env.ALLOWED_ORIGINS);
 const corsOptions = {
   origin:[process.env.ALLOWED_ORIGINS],
   allowedHeaders: [
