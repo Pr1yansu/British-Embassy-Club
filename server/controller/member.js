@@ -912,11 +912,6 @@ exports.totalDebitCreditAndWalletBalance = async (req, res) => {
       data: {
         totalDebit: totalDebit[0].totalDebit,
         totalCredit: totalCredit[0].totalCredit,
-        totalWalletBalance: totalWalletBalance[0].totalWalletBalance,
-        totalExpiredWalletBalance:
-          totalExpiredWalletBalance[0].totalExpiredWalletBalance,
-        totalActiveWalletBalance:
-          totalActiveWalletBalance[0].totalActiveWalletBalance,
       },
     });
   } catch (error) {
