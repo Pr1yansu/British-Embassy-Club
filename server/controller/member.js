@@ -550,23 +550,26 @@ exports.downloadCardPdf = async (req, res) => {
       </html>
     `;
 
-    try {
-      const file = { content: htmlContent };
-      const buffer = await pdf.generatePdf(file, { format: "A4" });
+    const file = { content: htmlContent };
 
-      res.writeHead(200, {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": "attachment; filename=virtual-card.pdf",
+    pdf
+      .generatePdf(file, { format: "A4" })
+      .then((pdfBuffer) => {
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=virtual-card.pdf"
+        );
+        res.send(pdfBuffer);
+      })
+      .catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+          statusCode: 500,
+          message: "Failed to create PDF",
+          data: null,
+        });
       });
-      res.end(buffer);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({
-        statusCode: 500,
-        message: "Failed to create PDF",
-        data: null,
-      });
-    }
   } catch (error) {
     console.error(error);
     return res.status(500).json({
